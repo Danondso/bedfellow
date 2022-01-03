@@ -9,8 +9,8 @@ import {
 import { HomeScreenProps } from '../types';
 
 const spotifyConfig: ApiConfig = {
-    clientID: process.env.SPOTIFY_CLIENT_ID,
-    redirectURL: process.env.SPOTIFY_REDIRECT_URI,
+    clientID: '',
+    redirectURL: '',
     tokenRefreshURL: '',
     tokenSwapURL: '',
     scopes: [ApiScope.UserReadEmailScope],

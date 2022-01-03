@@ -1,5 +1,6 @@
 {
     "include": ["src/**/*"],
+    "typeRoots": ["./src/types"],
     "compilerOptions": {
       "allowJs": true,
       "allowSyntheticDefaultImports": true,
