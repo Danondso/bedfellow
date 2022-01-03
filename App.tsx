@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import type {Node} from 'react';
+import type { Node } from 'react';
 import RootNavigation from './src/screens';
 
 const App: () => Node = () => {
