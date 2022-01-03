@@ -12,6 +12,8 @@ target 'bedfellow' do
     :hermes_enabled => false
   )
 
+  pod 'RNEventEmitter', :path => "../node_modules/react-native-events"
+
   target 'bedfellowTests' do
     inherit! :complete
     # Pods for testing

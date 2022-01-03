@@ -339,9 +339,13 @@ PODS:
     - React-jsi (= 0.66.4)
     - React-logger (= 0.66.4)
     - React-perflogger (= 0.66.4)
+  - RNEventEmitter (1.0.20):
+    - React
   - RNScreens (3.10.1):
     - React-Core
     - React-RCTImage
+  - RNSpotifyRemote (0.3.10):
+    - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -400,7 +404,9 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNEventEmitter (from `../node_modules/react-native-events`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSpotifyRemote (from `../node_modules/react-native-spotify-remote`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -481,8 +487,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNEventEmitter:
+    :path: "../node_modules/react-native-events"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSpotifyRemote:
+    :path: "../node_modules/react-native-spotify-remote"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -530,10 +540,12 @@ SPEC CHECKSUMS:
   React-RCTVibration: e3ffca672dd3772536cb844274094b0e2c31b187
   React-runtimeexecutor: dec32ee6f2e2a26e13e58152271535fadff5455a
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
+  RNEventEmitter: f2d86e9f4c41db5fd8ac4bc739288d9800f34cec
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
+  RNSpotifyRemote: d99bc5dc5b59df472c51b3f8e6231259de26830a
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 7f4639efe3d2a312e97dc9eb9a2f6f7f802afbc1
+PODFILE CHECKSUM: 0fe1e186ed70a222eae459c1f9fef54c160e598e
 
 COCOAPODS: 1.10.1

@@ -22,4 +22,7 @@
         </intent-filter>
       </activity>
     </application>
+    <queries> 
+      <package android:name="com.spotify.music" />
+    </queries>
 </manifest>
