@@ -60,3 +60,6 @@ buck-out/
 /ios/Pods/
 
 **/.env
+
+# Rust 
+**/target
