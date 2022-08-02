@@ -3,6 +3,13 @@ module.exports = {
   extends: ['airbnb', '@react-native-community'],
   rules: {
     'react/jsx-filename-extension': 0,
-    'import/extensions': 'never',
+    'import/extensions': 0,
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
   },
 };

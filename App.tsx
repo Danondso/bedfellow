@@ -7,11 +7,11 @@
  */
 
 import React from 'react';
-import type { Node } from 'react';
+import type { ReactNode } from 'react';
 import RootNavigation from './src/screens';
 
-const App: () => Node = () => {
+function App(): ReactNode {
   return <RootNavigation />;
-};
+}
 
 export default App;
