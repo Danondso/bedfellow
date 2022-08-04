@@ -23,8 +23,6 @@ target 'bedfellow' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  pod 'RNEventEmitter', :path => "../node_modules/react-native-events"
-
   target 'bedfellowTests' do
     inherit! :complete
     # Pods for testing

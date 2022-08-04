@@ -13,7 +13,8 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		5BF75D4CA4CE780F53E25CDE /* libPods-bedfellow.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 172A08D3B7AB790A9C20EB85 /* libPods-bedfellow.a */; };
 		7F01611D558F6B3292FE0161 /* libPods-bedfellow-bedfellowTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CDC66C3F2F1A29B6CBB317B /* libPods-bedfellow-bedfellowTests.a */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		F53EEC80289AC8C400FDF7E4 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53EEC7F289AC8C400FDF7E4 /* Dynamic.swift */; };
+		F5574106289C203F001228AB /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = F5574105289C203F001228AB /* loading.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,9 +42,11 @@
 		330A8083AAAB7BE451F2FFB8 /* Pods-bedfellow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow.debug.xcconfig"; path = "Target Support Files/Pods-bedfellow/Pods-bedfellow.debug.xcconfig"; sourceTree = "<group>"; };
 		506C5AB27AD393F16CAF3F1C /* Pods-bedfellow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow.release.xcconfig"; path = "Target Support Files/Pods-bedfellow/Pods-bedfellow.release.xcconfig"; sourceTree = "<group>"; };
 		5CDC66C3F2F1A29B6CBB317B /* libPods-bedfellow-bedfellowTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bedfellow-bedfellowTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = bedfellow/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A0F112A3445E9EFD9AFA3501 /* Pods-bedfellow-bedfellowTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow-bedfellowTests.release.xcconfig"; path = "Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F53EEC7E289AC8C400FDF7E4 /* bedfellow-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "bedfellow-Bridging-Header.h"; sourceTree = "<group>"; };
+		F53EEC7F289AC8C400FDF7E4 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
+		F5574105289C203F001228AB /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = loading.json; path = ../../../Desktop/loading.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,12 +89,14 @@
 		13B07FAE1A68108700A75B9A /* bedfellow */ = {
 			isa = PBXGroup;
 			children = (
+				F5574105289C203F001228AB /* loading.json */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				F53EEC7F289AC8C400FDF7E4 /* Dynamic.swift */,
+				F53EEC7E289AC8C400FDF7E4 /* bedfellow-Bridging-Header.h */,
 			);
 			name = bedfellow;
 			sourceTree = "<group>";
@@ -207,7 +212,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -242,8 +247,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				F5574106289C203F001228AB /* loading.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +415,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F53EEC80289AC8C400FDF7E4 /* Dynamic.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -500,6 +506,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.danondso.bedfellow;
 				PRODUCT_NAME = bedfellow;
+				SWIFT_OBJC_BRIDGING_HEADER = "bedfellow-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -526,6 +533,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.danondso.bedfellow;
 				PRODUCT_NAME = bedfellow;
+				SWIFT_OBJC_BRIDGING_HEADER = "bedfellow-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
