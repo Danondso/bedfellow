@@ -1,20 +1,23 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { RootStackParamList } from './types';
-import HomeScreen from './Home/Home';
 import DetailsScreen from './Details/Details';
-import { DETAILS, HOME } from './constants/Screens';
+import { DETAILS, LOGIN } from './constants/Screens';
+import LoginScreen from './Login';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function () {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName={HOME}>
-        <Stack.Screen name={HOME} component={HomeScreen} />
-        <Stack.Screen name={DETAILS} component={DetailsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName={LOGIN}>
+          <Stack.Screen name={LOGIN} component={LoginScreen} />
+          <Stack.Screen name={DETAILS} component={DetailsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
