@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "TZ=UTC jest",
+    "test": "jest",
     "lint": "eslint .",
     "tsc": "tsc",
     "prepare": "husky install"

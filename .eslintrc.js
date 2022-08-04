@@ -4,6 +4,12 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': 0,
     'import/extensions': 0,
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
   settings: {
     'import/resolver': {
