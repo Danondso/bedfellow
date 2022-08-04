@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Linking, Button } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import {
   auth as SpotifyAuth,
   remote as SpotifyRemote,
