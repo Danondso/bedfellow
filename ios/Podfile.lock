@@ -355,9 +355,13 @@ PODS:
     - React-jsi (= 0.69.3)
     - React-logger (= 0.69.3)
     - React-perflogger (= 0.69.3)
+  - RNEventEmitter (1.0.21):
+    - React
   - RNScreens (3.15.0):
     - React-Core
     - React-RCTImage
+  - RNSpotifyRemote (0.3.10):
+    - React-Core
   - SocketRocket (0.6.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -422,7 +426,9 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNEventEmitter (from `../node_modules/react-native-events`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSpotifyRemote (from `../node_modules/react-native-spotify-remote`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -512,8 +518,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNEventEmitter:
+    :path: "../node_modules/react-native-events"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSpotifyRemote:
+    :path: "../node_modules/react-native-spotify-remote"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -565,11 +575,13 @@ SPEC CHECKSUMS:
   React-RCTVibration: dd8099eb46e9cee4692934bc8cbe5e9a4f5e8d31
   React-runtimeexecutor: 607eb048e22a16388c908ee1f6644200e8d1e19b
   ReactCommon: af7636436b382db7cde4583bbd642f0978e6e3ed
+  RNEventEmitter: 557106956ec2f9ccda6940afeea563936385efd3
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
+  RNSpotifyRemote: d99bc5dc5b59df472c51b3f8e6231259de26830a
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: 44c64131616253fa83366295acdbce3d14926041
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: c0522a20444ab24939f4bade0130d5191c9de601
+PODFILE CHECKSUM: b04484f5c26afaafb107ceb66660622dbe3d1f2d
 
 COCOAPODS: 1.10.1
