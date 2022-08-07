@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Button } from 'react-native';
 import {
   auth as SpotifyAuth,
   remote as SpotifyRemote,
@@ -9,15 +9,17 @@ import {
 import { HomeScreenProps } from '../types';
 
 async function authenticate() {
-  console.log('Do I work?>>?');
   try {
     // Api Config object, replace with your own applications client id and urls
     const spotifyConfig: ApiConfig = {
       clientID: '74632aad45994f23b3b9aabfcb6e4f8b',
-      redirectURL: 'http://localhost:8001',
-      tokenRefreshURL: 'http://localhost:8001/refresh',
-      tokenSwapURL: 'http://localhost:8001/token_swap',
-      scopes: [ApiScope.AppRemoteControlScope, ApiScope.UserFollowReadScope],
+      redirectURL: 'org.danondso.bedfellow://callback', // this should be the app
+      tokenRefreshURL: '',
+      tokenSwapURL: '',
+      scopes: [
+        ApiScope.UserReadCurrentlyPlayingScope,
+        ApiScope.UserFollowReadScope,
+      ],
     };
 
     const session = await SpotifyAuth.authorize(spotifyConfig);
@@ -33,7 +35,6 @@ async function authenticate() {
 function LoginScreen({ navigation }: HomeScreenProps) {
   return (
     <View>
-      <Text> Login Screen </Text>
       <Button title="Log in with Spotify" onPress={() => authenticate()} />
     </View>
   );
