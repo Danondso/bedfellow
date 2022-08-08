@@ -18,6 +18,7 @@
     "lottie-ios": "3.2.3",
     "react": "18.0.0",
     "react-native": "0.69.3",
+    "react-native-dotenv": "^3.3.1",
     "react-native-lottie-splash-screen": "^1.0.1",
     "react-native-paper": "^4.12.4",
     "react-native-safe-area-context": "^3.3.2",
