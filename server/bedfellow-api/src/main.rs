@@ -40,7 +40,7 @@ async fn swap(req_body: String) -> impl Responder {
     };
 
     debug!("{:?}", request);
-    // TODO make this a singleton, is that a rusty thing to do?
+    // TODO make this a singleton once refresh is present
     let result = reqwest::Client::new().post("https://accounts.spotify.com/api/token")
         .header("Authorization", authz_token)
         .header("Content-Type", "application/x-www-form-urlencoded")

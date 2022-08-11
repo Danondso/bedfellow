@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Button } from 'react-native-paper';
 import {
   auth as SpotifyAuth,
   ApiScope,
@@ -49,12 +48,18 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 
   return (
     <View style={styles.view}>
-      <Text> Bedfellow </Text>
-      <TouchableOpacity>
-        <Button onPress={() => authenticate()}>
-          <Text style={styles.text}>Login</Text>
-        </Button>
-      </TouchableOpacity>
+      <View style={styles.loginView}>
+        <Text style={styles.header}> Bedfellow </Text>
+        <Text style={styles.subHeader}>a smol bean app</Text>
+        <View style={styles.loginButtonView}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => authenticate()}
+          >
+            <Text style={styles.loginButtonText}>Login</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
