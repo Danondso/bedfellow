@@ -23,9 +23,11 @@ export default StyleSheet.create<Style>({
   header: {
     paddingTop: padding.triple,
     fontSize: padding.triple,
+    color: defaultPalette.primaryText,
   },
   subHeader: {
     fontSize: padding.base,
+    color: defaultPalette.primaryText,
     textAlign: 'center',
   },
   loginView: {
@@ -33,20 +35,26 @@ export default StyleSheet.create<Style>({
     width: '80%',
     paddingBottom: 200,
     backgroundColor: defaultPalette.secondaryBackground,
+    shadowColor: defaultPalette.shadow,
+    shadowOpacity: 1,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
     borderRadius,
   },
   loginButtonView: {
     paddingTop: padding.double,
   },
   loginButtonText: {
-    fontSize: padding.oneAndAHalf,
-    fontWeight: '700',
-    color: defaultPalette.black100,
+    fontSize: padding.double,
+    fontWeight: '500',
+    color: defaultPalette.primaryText,
   },
   button: {
     borderRadius,
+    borderColor: defaultPalette.success,
     padding: padding.base,
     width: '100%',
-    backgroundColor: defaultPalette.red100,
   },
 });
