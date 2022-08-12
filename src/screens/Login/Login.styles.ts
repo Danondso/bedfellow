@@ -35,20 +35,20 @@ export default StyleSheet.create<Style>({
     width: '80%',
     paddingBottom: 200,
     backgroundColor: defaultPalette.secondaryBackground,
-    shadowColor: defaultPalette.shadow,
-    shadowOpacity: 1,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
+    borderColor: defaultPalette.primaryText,
+    borderWidth: 1,
     borderRadius,
   },
   loginButtonView: {
-    paddingTop: padding.double,
+    backgroundColor: defaultPalette.primaryBackground100,
+    borderWidth: 1,
+    borderColor: defaultPalette.primaryText,
+    borderRadius,
+    marginTop: padding.double,
   },
   loginButtonText: {
     fontSize: padding.double,
-    fontWeight: '500',
+    fontWeight: '400',
     color: defaultPalette.primaryText,
   },
   button: {

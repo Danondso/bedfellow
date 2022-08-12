@@ -31,7 +31,6 @@ function LoginScreen({ navigation }: LoginScreenProps) {
           ApiScope.UserFollowReadScope,
         ],
       };
-      console.log(spotifyConfig);
 
       const session: SpotifyAuthentication = await SpotifyAuth.authorize(
         spotifyConfig,
@@ -42,6 +41,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
         navigation.navigate(DETAILS);
       }
     } catch (error) {
+      // TODO error message w/ animation here
       console.log('Spotify cannot login', error);
     }
   }
