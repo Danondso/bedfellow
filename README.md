@@ -11,6 +11,9 @@ A small React Native app and Rust web service that shows you what songs were sam
 ### Environment Variables (Mobile)
 
 SPOTIFY_CLIENT_ID=""
+
 SPOTIFY_REDIRECT_URI=""
+
 SPOTIFY_TOKEN_REFRESH_URL=""
+
 SPOTIFY_TOKEN_SWAP_URL=""
