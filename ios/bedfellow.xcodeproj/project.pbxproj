@@ -14,7 +14,7 @@
 		5BF75D4CA4CE780F53E25CDE /* libPods-bedfellow.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 172A08D3B7AB790A9C20EB85 /* libPods-bedfellow.a */; };
 		7F01611D558F6B3292FE0161 /* libPods-bedfellow-bedfellowTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CDC66C3F2F1A29B6CBB317B /* libPods-bedfellow-bedfellowTests.a */; };
 		F53EEC80289AC8C400FDF7E4 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53EEC7F289AC8C400FDF7E4 /* Dynamic.swift */; };
-		F5574106289C203F001228AB /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = F5574105289C203F001228AB /* loading.json */; };
+		F5B6C208289D5F9C006970D1 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = F5B6C207289D5F9C006970D1 /* loading.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +46,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F53EEC7E289AC8C400FDF7E4 /* bedfellow-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "bedfellow-Bridging-Header.h"; sourceTree = "<group>"; };
 		F53EEC7F289AC8C400FDF7E4 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
-		F5574105289C203F001228AB /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = loading.json; path = ../../../Desktop/loading.json; sourceTree = "<group>"; };
+		F5B6C207289D5F9C006970D1 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,9 +89,9 @@
 		13B07FAE1A68108700A75B9A /* bedfellow */ = {
 			isa = PBXGroup;
 			children = (
-				F5574105289C203F001228AB /* loading.json */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				F5B6C207289D5F9C006970D1 /* loading.json */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -247,8 +247,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5B6C208289D5F9C006970D1 /* loading.json in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				F5574106289C203F001228AB /* loading.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

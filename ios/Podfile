@@ -8,7 +8,6 @@ production = ENV["PRODUCTION"] == "1"
 
 target 'bedfellow' do
   config = use_native_modules!
-
   # Flags change depending on the env values.
 	flags = get_default_flags()
   
@@ -22,6 +21,9 @@ target 'bedfellow' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+
+  pod 'RNSpotifyRemote', :path => '../node_modules/react-native-spotify-remote'
+  pod 'RNEventEmitter', :path => "../node_modules/react-native-events"
 
   target 'bedfellowTests' do
     inherit! :complete
