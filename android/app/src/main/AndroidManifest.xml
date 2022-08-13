@@ -34,7 +34,7 @@
 
             <data
                 android:scheme="callback"
-                android:host="org.danondso.bedfellow"/>
+                android:host="com.bedfellow"/>
         </intent-filter>
     </activity>
 

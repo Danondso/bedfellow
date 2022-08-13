@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import {
   auth as SpotifyAuth,
   ApiScope,
@@ -8,6 +8,7 @@ import {
 import {
   SPOTIFY_CLIENT_ID,
   SPOTIFY_REDIRECT_URI,
+  SPOTIFY_REDIRECT_URI_ANDROID,
   SPOTIFY_TOKEN_REFRESH_URL,
   SPOTIFY_TOKEN_SWAP_URL,
 } from 'react-native-dotenv';
@@ -23,7 +24,10 @@ function LoginScreen({ navigation }: LoginScreenProps) {
     try {
       const spotifyConfig: ApiConfig = {
         clientID: SPOTIFY_CLIENT_ID,
-        redirectURL: SPOTIFY_REDIRECT_URI,
+        redirectURL:
+          Platform.OS === 'ios'
+            ? SPOTIFY_REDIRECT_URI
+            : SPOTIFY_REDIRECT_URI_ANDROID,
         tokenRefreshURL: SPOTIFY_TOKEN_REFRESH_URL,
         tokenSwapURL: SPOTIFY_TOKEN_SWAP_URL,
         scopes: [
