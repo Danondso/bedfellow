@@ -1,0 +1,19 @@
+name: bedfellow-test-runner
+on: [pull_request]
+jobs:
+  run-lint-and-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          node-version: '16'
+      - run: yarn install
+      - run: yarn run lint
+      - run: yarn run test
+    env:
+      SPOTIFY_CLIENT_ID: 'client_id'
+      SPOTIFY_REDIRECT_URI: 'redirect_uri'
+      SPOTIFY_REDIRECT_URI_ANDROID: 'redirect_uri_android'
+      SPOTIFY_TOKEN_REFRESH_URL: 'http://localhost:8080/refresh'
+      SPOTIFY_TOKEN_SWAP_URL: 'http://localhost:8080/refresh'
+      
