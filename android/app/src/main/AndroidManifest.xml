@@ -33,8 +33,8 @@
             <category android:name="android.intent.category.BROWSABLE"/>
 
             <data
-                android:scheme="<YOUR_APPLICATION_SCHEME>"
-                android:host="<YOUR_APPLICATION_CALLBACK>"/>
+                android:scheme="callback"
+                android:host="org.danondso.bedfellow"/>
         </intent-filter>
     </activity>
 
