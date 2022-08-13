@@ -6,12 +6,15 @@ jest.mock('../node_modules/react-native-spotify-remote', () => ({
   authorize: jest.fn(),
 }));
 
-it('Login Screen renders', async () => {
-  render(<AppNavigator />);
+describe('<App />', () => {
+  it('renders login screen snapshot', async () => {
+    const component = render(<AppNavigator />);
 
-  const loginText = await screen.findByText('a smol bean app');
-  const loginButton = await screen.findAllByText(/Login/);
+    const loginText = await screen.findByText('a smol bean app');
+    const loginButton = await screen.findAllByText(/Login/);
 
-  expect(loginText).toBeTruthy();
-  expect(loginButton.length).toBe(1);
+    expect(component.toJSON()).toMatchSnapshot();
+    expect(loginText).toBeTruthy();
+    expect(loginButton.length).toBe(1);
+  });
 });
