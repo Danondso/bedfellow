@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { RootStackParamList } from '../types';
-import DetailsScreen from './Details/Details';
+import DetailsScreen from './Details';
 import { DETAILS, LOGIN } from './constants/Screens';
 import LoginScreen from './Login';
 
@@ -36,7 +36,13 @@ export default function () {
               name={LOGIN}
               component={LoginScreen}
             />
-            <Stack.Screen name={DETAILS} component={DetailsScreen} />
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name={DETAILS}
+              component={DetailsScreen}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
