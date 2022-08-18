@@ -33,6 +33,7 @@ def build_response(sections):
             sample["artist"] = track_details.find_all("span", class_="trackArtist")[0].find_all("a")[0].contents[0]
             year = track_details.find_all("span", class_="trackArtist")[0].contents[-1]
             sample["year"] = int(re.findall(r"[0-9]+", year)[0])
+            sample["images"] = song.find_all("a")[0].find_all('img')[0]['srcset'].split(',')
             response[key].append(sample)
     return response
 
@@ -63,6 +64,7 @@ def get_whosampled_pages(song_path):
     return pages
 
 whosampled_pages = get_whosampled_pages(str(sys.argv[1]))
+print(whosampled_pages)
 sections = derive_sections(whosampled_pages)
 response = build_response(sections)
 

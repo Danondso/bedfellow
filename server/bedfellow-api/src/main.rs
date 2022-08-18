@@ -27,6 +27,7 @@ struct Track {
     track_name: String,
     artist: String,
     year: i32,
+    images: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
