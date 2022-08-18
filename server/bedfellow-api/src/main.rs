@@ -83,7 +83,6 @@ async fn sample_info(path: web::Path<(String, String)>) -> impl Responder {
     if python_output.is_ok() {
         let unwrapped_results = python_output.unwrap();
         let sample_results: String = String::from_utf8_lossy(&unwrapped_results.stdout).to_string();
-        // TODO error handle here if serialization fails
         let who_sampled_response: Result<WhoSampledResponse, serde_json::Error> = serde_json::from_str(&sample_results);
         if who_sampled_response.is_ok() {
             return HttpResponse::Ok().json(web::Json(who_sampled_response.unwrap()))
