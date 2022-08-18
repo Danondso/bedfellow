@@ -64,7 +64,6 @@ def get_whosampled_pages(song_path):
     return pages
 
 whosampled_pages = get_whosampled_pages(str(sys.argv[1]))
-print(whosampled_pages)
 sections = derive_sections(whosampled_pages)
 response = build_response(sections)
 
