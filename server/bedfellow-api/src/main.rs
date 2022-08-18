@@ -3,7 +3,7 @@ use actix_web::{get, web, post, App, HttpServer, Responder, HttpResponse};
 use serde::{Serialize, Deserialize};
 use::std::env;
 use base64;
-use std::process::{Command};
+use std::{process::{Command}};
 
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -83,7 +83,13 @@ async fn sample_info(path: web::Path<(String, String)>) -> impl Responder {
     if python_output.is_ok() {
         let unwrapped_results = python_output.unwrap();
         let sample_results: String = String::from_utf8_lossy(&unwrapped_results.stdout).to_string();
-        return HttpResponse::Ok().json(&sample_results);
+        // TODO error handle here if serialization fails
+        let who_sampled_response: Result<WhoSampledResponse, serde_json::Error> = serde_json::from_str(&sample_results);
+        if who_sampled_response.is_ok() {
+            return HttpResponse::Ok().json(web::Json(who_sampled_response.unwrap()))
+        } else {
+            return HttpResponse::InternalServerError().json("Unable to parse response from whosampled scraper script.");
+        }
     } else {
         let unwrapped_error = python_output.unwrap_err();
         return HttpResponse::BadRequest().json(&unwrapped_error.to_string());
