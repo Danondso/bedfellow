@@ -1,3 +1,4 @@
+import json
 from bs4 import BeautifulSoup
 import re
 import requests
@@ -20,10 +21,10 @@ headers = {
 def build_response(sections):
     response = {}
     response["samples"] = []
-    response["sampledBy"] = []
-    response["covered"] = []
+    response["sampled_by"] = []
+    response["covers"] = []
 
-    keys = ["samples", "sampledBy", "covered"]
+    keys = ["samples", "sampled_by", "covers"]
     for i in range(len(sections)):
         key = keys[i]
         for song in sections[i].find_all("div", class_="sampleEntry"):
@@ -33,7 +34,8 @@ def build_response(sections):
             sample["artist"] = track_details.find_all("span", class_="trackArtist")[0].find_all("a")[0].contents[0]
             year = track_details.find_all("span", class_="trackArtist")[0].contents[-1]
             sample["year"] = int(re.findall(r"[0-9]+", year)[0])
-            sample["images"] = song.find_all("a")[0].find_all('img')[0]['srcset'].split(',')
+            raw_images_list = song.find_all("a")[0].find_all('img')[0]['srcset'].split(',')
+            sample["images"] = list(map(lambda url: (base_url + url.strip()), raw_images_list))
             response[key].append(sample)
     return response
 
@@ -63,11 +65,11 @@ def get_whosampled_pages(song_path):
             pages[url_paths[i]] = None
     return pages
 
-whosampled_pages = get_whosampled_pages(str(sys.argv[1]))
+url_path = str(sys.argv[1])
+whosampled_pages = get_whosampled_pages(url_path)
 sections = derive_sections(whosampled_pages)
 response = build_response(sections)
 
 # we print to stdout so rust can pick it up via it's Command call
-print(response)
-
+print(json.dumps(response))
 
