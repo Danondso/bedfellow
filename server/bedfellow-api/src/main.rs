@@ -1,8 +1,9 @@
 
-use actix_web::{post, App, HttpServer, Responder, HttpResponse};
+use actix_web::{get, web, post, App, HttpServer, Responder, HttpResponse};
 use serde::{Serialize, Deserialize};
 use::std::env;
 use base64;
+use std::process::{Command};
 
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -19,6 +20,20 @@ struct ApiRequest {
     grant_type: String,
     redirect_uri: String,
     code: String
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Track {
+    track_name: String,
+    artist: String,
+    year: i32,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct WhoSampledResponse {
+    samples: Vec<Track>,
+    sampled_by: Vec<Track>,
+    covers: Vec<Track>
 }
 
 #[post("/swap")]
@@ -58,6 +73,22 @@ async fn swap(req_body: String) -> impl Responder {
     }
 }
 
+#[get("/sample-info/{artist}/{track_name}")]
+async fn sample_info(path: web::Path<(String, String)>) -> impl Responder {
+    let (artist, track_name) = path.into_inner();
+    let python_output = Command::new("./run_python.sh")
+        .arg(format!("/{}/{}", artist, track_name))
+        .output();
+    if python_output.is_ok() {
+        let unwrapped_results = python_output.unwrap();
+        let sample_results: String = String::from_utf8_lossy(&unwrapped_results.stdout).to_string();
+        return HttpResponse::Ok().json(&sample_results);
+    } else {
+        let unwrapped_error = python_output.unwrap_err();
+        return HttpResponse::BadRequest().json(&unwrapped_error.to_string());
+    }
+} 
+
 
 #[macro_use] extern crate log;
 #[actix_web::main]
@@ -66,6 +97,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .service(swap)
+            .service(sample_info)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
