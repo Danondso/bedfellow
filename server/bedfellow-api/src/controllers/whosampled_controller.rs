@@ -20,7 +20,7 @@ struct WhoSampledResponse {
 
 
 #[get("/sample-info/{artist}/{track_name}")]
-async fn sample_info(path: web::Path<(String, String)>) -> impl Responder {
+pub async fn sample_info(path: web::Path<(String, String)>) -> impl Responder {
     let (artist, track_name) = path.into_inner();
     let python_output = Command::new("./run_python_scraper.sh")
         .arg(format!("/{}/{}", artist, track_name))
@@ -66,7 +66,7 @@ struct WhoSampledSearchResponse {
 }
 
 #[get("/search")]
-async fn search(query: web::Query<SearchQuery>) -> impl Responder {
+pub async fn search(query: web::Query<SearchQuery>) -> impl Responder {
     let query_params: SearchQuery = query.into_inner();
     let python_output = Command::new("./run_python_search.sh")
         .arg(query_params.artist)

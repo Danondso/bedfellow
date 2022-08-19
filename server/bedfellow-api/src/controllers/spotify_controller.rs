@@ -4,7 +4,7 @@ use::std::env;
 use base64;
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct ApiResponse {
+struct ApiResponse {
     access_token: String,
     token_type: String,
     scope: String,
@@ -13,7 +13,7 @@ pub struct ApiResponse {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct ApiRequest {
+ struct ApiRequest {
     grant_type: String,
     redirect_uri: String,
     code: String
