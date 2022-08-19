@@ -42,12 +42,10 @@ pub async fn sample_info(path: web::Path<(String, String)>) -> impl Responder {
 } 
 
 #[derive(Serialize, Deserialize)]
-struct SearchQuery {
+pub struct SearchQuery {
     artist: String,
     track_name: String,
 }
-
-
 
 #[derive(Serialize, Deserialize, Debug)]
 struct WhoSampledSearchTrackResult {
