@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, SafeAreaView } from 'react-native';
 import axios from 'axios';
 import { Avatar } from 'react-native-paper';
 import { SpotifyAuthContext } from '../../context';
@@ -9,6 +9,7 @@ import {
   CurrentPlaybackResponse,
   TrackObjectFull,
 } from '../../types/spotify-api';
+import TrackList from './TrackList';
 
 function formatArtistNames(item: TrackObjectFull): string {
   if (!item) {
@@ -62,9 +63,10 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
           {item ? item.album.name : 'No Album Info Available'}
         </Text>
       </View>
-      <View>
+      <SafeAreaView style={styles.trackListView}>
         <Text style={styles.samplesHeading}>Who Sampled?</Text>
-      </View>
+        <TrackList trackInfo={item} />
+      </SafeAreaView>
     </View>
   );
 }
