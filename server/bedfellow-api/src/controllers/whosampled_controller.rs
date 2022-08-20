@@ -91,9 +91,8 @@ pub async fn search(query: web::Query<SearchQuery>) -> impl Responder {
     if response.is_ok() {
         let who_sampled_response: WhoSampledSearchResponse = response.unwrap().json().await.unwrap();
         return HttpResponse::Ok().json(web::Json(who_sampled_response));
-    } else {
-        
     }
+
     let error_response: WhoSampledErrorResponse = { WhoSampledErrorResponse {
         error: format!("Unable to process request for '{} {}'", query_params.artist, query_params.track_name),
     } };
