@@ -65,7 +65,9 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       </View>
       <SafeAreaView style={styles.trackListView}>
         <Text style={styles.samplesHeading}>Who Sampled?</Text>
-        <TrackList trackInfo={item} />
+        <View style={styles.trackListWrapper}>
+          <TrackList trackInfo={item} />
+        </View>
       </SafeAreaView>
     </View>
   );

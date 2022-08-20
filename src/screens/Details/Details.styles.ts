@@ -10,6 +10,7 @@ type Style = {
   albumDescription: TextStyle;
   button: ViewStyle;
   samplesHeading: TextStyle;
+  trackListWrapper: ViewStyle;
 };
 
 const { defaultPalette, padding, borderRadius } = theme;
@@ -33,6 +34,9 @@ export default StyleSheet.create<Style>({
   },
   trackListView: {
     flex: 2 / 3,
+  },
+  trackListWrapper: {
+    alignItems: 'center',
   },
   artistName: {
     padding: padding.eighth,
@@ -61,6 +65,7 @@ export default StyleSheet.create<Style>({
   },
   samplesHeading: {
     padding: padding.base,
+    paddingBottom: 0,
     fontSize: padding.double,
     fontWeight: '400',
   },
