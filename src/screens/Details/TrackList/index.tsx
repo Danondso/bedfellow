@@ -14,7 +14,7 @@ function TrackItem({ item }: { item: WhoSampledData }) {
     <Card style={styles.trackItem}>
       <Card.Cover
         style={styles.trackImage}
-        // TODO fix this so we get a straight url with sizes in the API response
+        // TODO fix this so we get a straight url with sizes in the API response see issue #7 
         source={{ uri: images[images.length - 1].split(' ')[0] }}
       />
       <Card.Title titleStyle={styles.trackName} title={track_name} />
