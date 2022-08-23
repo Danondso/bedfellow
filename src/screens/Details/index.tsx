@@ -32,7 +32,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
   const spotifyAuth = spotifyAuthContextData?.spotifyAuth;
   const [currentSongInfo, setCurrentSongInfo] =
-    useState<CurrentPlaybackResponse>(); // TODO type this
+    useState<CurrentPlaybackResponse>();
   useEffect(() => {
     axios
       .get<CurrentPlaybackResponse>(
