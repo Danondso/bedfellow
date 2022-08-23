@@ -26,7 +26,6 @@ function LoginScreen({ navigation }: LoginScreenProps) {
     SpotifyAuthContext,
   );
 
-  console.log(spotifyAuthContext);
 
   const { setSpotifyAuth } = spotifyAuthContext as SpotifyAuthContextData;
 
