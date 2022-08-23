@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
 import axios from 'axios';
 import { Avatar } from 'react-native-paper';
-import { SpotifyAuthContext } from '../../context';
 import { DetailsScreenProps } from '../../types';
 import styles from './Details.styles';
 import {
@@ -10,6 +9,10 @@ import {
   TrackObjectFull,
 } from '../../types/spotify-api';
 import TrackList from './TrackList';
+import {
+  SpotifyAuthContext,
+  SpotifyAuthContextData,
+} from '../../context/SpotifyAuthContext';
 
 function formatArtistNames(item: TrackObjectFull): string {
   if (!item) {
@@ -23,7 +26,11 @@ function formatArtistNames(item: TrackObjectFull): string {
 // TODO once we have cards to click on we'll remove this.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function DetailsScreen({ navigation }: DetailsScreenProps) {
-  const spotifyAuth = useContext(SpotifyAuthContext)?.[0];
+  const spotifyAuthContextData = useContext<SpotifyAuthContextData | undefined>(
+    SpotifyAuthContext,
+  );
+
+  const spotifyAuth = spotifyAuthContextData?.spotifyAuth;
   const [currentSongInfo, setCurrentSongInfo] =
     useState<CurrentPlaybackResponse>(); // TODO type this
   useEffect(() => {

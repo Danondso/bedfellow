@@ -9,11 +9,19 @@
 import React, { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import SplashScreen from 'react-native-lottie-splash-screen';
+import { Provider as PaperProvider } from 'react-native-paper';
 import RootNavigation from './src/screens';
+import SpotifyAuthContextProvider from './src/context';
 
 function App(): ReactNode {
   useEffect(() => SplashScreen.hide(), []);
-  return <RootNavigation />;
+  return (
+    <SpotifyAuthContextProvider>
+      <PaperProvider>
+        <RootNavigation />
+      </PaperProvider>
+    </SpotifyAuthContextProvider>
+  );
 }
 
 export default App;
