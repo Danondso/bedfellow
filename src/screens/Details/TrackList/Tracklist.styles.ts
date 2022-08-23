@@ -9,7 +9,7 @@ type Style = {
   artistName: TextStyle;
 };
 
-const { defaultPalette, padding, borderRadius } = theme;
+const { defaultPalette, padding, borderRadius, fontSizes } = theme;
 
 export default StyleSheet.create<Style>({
   view: {
@@ -28,10 +28,10 @@ export default StyleSheet.create<Style>({
     borderRadius,
   },
   trackName: {
-    fontSize: padding.oneAndAHalf,
+    fontSize: fontSizes[1],
   },
   artistName: {
-    fontSize: padding.base,
+    fontSize: fontSizes[0],
   },
   trackImage: {
     borderColor: defaultPalette.borderColor,

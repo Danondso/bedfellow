@@ -1,8 +1,8 @@
 import defaultPalette from './styles';
 
-const BASE: number = 16;
+const fontSizes = [16, 24, 32, 48];
 
-// TODO, make a fontSize equivalent here
+const BASE: number = 16;
 const padding: Record<string, number> = {
   eighth: BASE / 8,
   quarter: BASE / 4,
@@ -27,4 +27,5 @@ export default {
   padding,
   defaultPalette,
   borderRadius,
+  fontSizes,
 };
