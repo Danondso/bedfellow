@@ -47,8 +47,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       )
       .then(result => {
         setCurrentSongInfo(result.data);
-      })
-      .catch(err => console.log(err));
+      });
   }, [spotifyAuth?.accessToken]);
 
   const item = currentSongInfo?.item as TrackObjectFull;

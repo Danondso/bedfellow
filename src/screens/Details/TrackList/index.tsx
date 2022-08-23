@@ -47,8 +47,7 @@ function TrackList({ trackInfo }: TrackListProps) {
       .then(result => {
         console.log(result.data);
         setSampleData(result.data as WhoSampledResponse);
-      })
-      .catch(error => console.log(error));
+      });
   }, [trackInfo]);
   return (
     <View style={styles.view}>
