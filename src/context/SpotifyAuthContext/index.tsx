@@ -5,7 +5,9 @@ import React, {
   useState,
   useMemo,
   ReactNode,
+  useEffect,
 } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type SpotifyAuthentication = {
   accessToken: string;
@@ -50,6 +52,24 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
     }),
     [spotifyAuth, setSpotifyAuth],
   );
+
+  useEffect(() => {
+    if (spotifyAuth.accessToken !== '') {
+      AsyncStorage.setItem('SPOTIFY_AUTH_DATA', JSON.stringify(spotifyAuth));
+    }
+  }, [spotifyAuth]);
+
+  useEffect(() => {
+    AsyncStorage.getItem('SPOTIFY_AUTH_DATA')
+      .then((spotifyAuthData: string | null) => {
+        if (spotifyAuthData) {
+          setSpotifyAuth(JSON.parse(spotifyAuthData));
+        }
+      })
+      .catch(error =>
+        console.log('Failed to pull data from AsyncStorage', error),
+      );
+  }, []);
 
   return (
     <SpotifyAuthContext.Provider value={auth}>

@@ -1,6 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
+import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import App from '../App';
+
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 jest.mock('../node_modules/react-native-spotify-remote', () => ({
   authorize: jest.fn(),
