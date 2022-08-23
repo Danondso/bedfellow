@@ -22,11 +22,11 @@ export default StyleSheet.create<Style>({
   },
   header: {
     paddingTop: padding.triple,
-    fontSize: fontSizes[3],
+    fontSize: fontSizes.X_LARGE,
     color: defaultPalette.primaryText,
   },
   subHeader: {
-    fontSize: fontSizes[0],
+    fontSize: fontSizes.SMALL,
     color: defaultPalette.primaryText,
     textAlign: 'center',
   },
@@ -47,7 +47,7 @@ export default StyleSheet.create<Style>({
     marginTop: padding.double,
   },
   loginButtonText: {
-    fontSize: fontSizes[2],
+    fontSize: fontSizes.LARGE,
     fontWeight: '400',
     color: defaultPalette.primaryText,
   },

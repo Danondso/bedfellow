@@ -40,20 +40,20 @@ export default StyleSheet.create<Style>({
   },
   artistName: {
     padding: padding.eighth,
-    fontSize: fontSizes[0],
+    fontSize: fontSizes.SMALL,
     fontWeight: '400',
     textAlign: 'center',
     color: defaultPalette.primaryText,
   },
   trackName: {
     padding: padding.base,
-    fontSize: fontSizes[2],
+    fontSize: fontSizes.LARGE,
     fontWeight: '600',
     textAlign: 'center',
     color: defaultPalette.primaryText,
   },
   albumDescription: {
-    fontSize: fontSizes[0],
+    fontSize: fontSizes.SMALL,
     color: defaultPalette.primaryText,
     textAlign: 'center',
   },
@@ -66,7 +66,7 @@ export default StyleSheet.create<Style>({
   samplesHeading: {
     padding: padding.base,
     paddingBottom: 0,
-    fontSize: fontSizes[2],
+    fontSize: fontSizes.LARGE,
     fontWeight: '400',
   },
 });

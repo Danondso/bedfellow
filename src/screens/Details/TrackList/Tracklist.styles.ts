@@ -28,10 +28,10 @@ export default StyleSheet.create<Style>({
     borderRadius,
   },
   trackName: {
-    fontSize: fontSizes[1],
+    fontSize: fontSizes.MEDIUM,
   },
   artistName: {
-    fontSize: fontSizes[0],
+    fontSize: fontSizes.SMALL,
   },
   trackImage: {
     borderColor: defaultPalette.borderColor,
