@@ -23,7 +23,6 @@ target 'bedfellow' do
   )
 
   pod 'RNSpotifyRemote', :path => '../node_modules/react-native-spotify-remote'
-  pod 'RNEventEmitter', :path => "../node_modules/react-native-events"
 
   target 'bedfellowTests' do
     inherit! :complete

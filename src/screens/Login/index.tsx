@@ -12,13 +12,20 @@ import {
   SPOTIFY_TOKEN_REFRESH_URL,
   SPOTIFY_TOKEN_SWAP_URL,
 } from 'react-native-dotenv';
-import { SpotifyAuthContext, SpotifyAuthentication } from '../../context';
+import {
+  SpotifyAuthContext,
+  SpotifyAuthContextData,
+  SpotifyAuthentication,
+} from '../../context/SpotifyAuthContext';
 import { DETAILS } from '../constants/Screens';
 import { LoginScreenProps } from '../../types';
 import styles from './Login.styles';
 
 function LoginScreen({ navigation }: LoginScreenProps) {
-  const setSpotifyAuth = useContext(SpotifyAuthContext)?.[1];
+  const spotifyAuthContext = useContext<SpotifyAuthContextData | undefined>(
+    SpotifyAuthContext,
+  );
+  const { setSpotifyAuth } = spotifyAuthContext as SpotifyAuthContextData;
 
   async function authenticate() {
     try {

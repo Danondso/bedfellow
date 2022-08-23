@@ -1,51 +1,56 @@
-import React, { useMemo, useState } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Provider as PaperProvider } from 'react-native-paper';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import DetailsScreen from './Details';
 import { DETAILS, LOGIN } from './constants/Screens';
 import LoginScreen from './Login';
-
 import {
-  initialState,
   SpotifyAuthContext,
+  SpotifyAuthContextData,
   SpotifyAuthentication,
-} from '../context';
+} from '../context/SpotifyAuthContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function () {
-  // TODO make this a custom hook
-  const [spotifyAuth, setSpotifyAuth] =
-    useState<SpotifyAuthentication>(initialState);
+const commonOptions: NativeStackNavigationOptions = {
+  headerShown: false,
+};
 
-  const authState = useMemo<SpotifyAuthContext>(
-    () => [spotifyAuth, setSpotifyAuth],
-    [spotifyAuth, setSpotifyAuth],
+export default function () {
+  const spotifyAuthContext = useContext<SpotifyAuthContextData | undefined>(
+    SpotifyAuthContext,
   );
+
+  const spotifyAuth = spotifyAuthContext?.spotifyAuth as SpotifyAuthentication;
+
   return (
-    <SpotifyAuthContext.Provider value={authState}>
-      <PaperProvider>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName={LOGIN}>
+    <NavigationContainer>
+      <Stack.Navigator>
+        {spotifyAuth.accessToken === '' ? (
+          <>
             <Stack.Screen
-              options={{
-                headerShown: false,
-              }}
+              options={commonOptions}
               name={LOGIN}
               component={LoginScreen}
             />
             <Stack.Screen
-              options={{
-                headerShown: false,
-              }}
+              options={commonOptions}
               name={DETAILS}
               component={DetailsScreen}
             />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
-    </SpotifyAuthContext.Provider>
+          </>
+        ) : (
+          <Stack.Screen
+            options={commonOptions}
+            name={DETAILS}
+            component={DetailsScreen}
+          />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
