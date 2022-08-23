@@ -25,8 +25,6 @@ function LoginScreen({ navigation }: LoginScreenProps) {
   const spotifyAuthContext = useContext<SpotifyAuthContextData | undefined>(
     SpotifyAuthContext,
   );
-
-
   const { setSpotifyAuth } = spotifyAuthContext as SpotifyAuthContextData;
 
   async function authenticate() {
