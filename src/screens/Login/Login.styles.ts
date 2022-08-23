@@ -11,7 +11,7 @@ type Style = {
   loginButtonView: ViewStyle;
 };
 
-const { defaultPalette, padding, borderRadius } = theme;
+const { defaultPalette, padding, borderRadius, fontSizes } = theme;
 
 export default StyleSheet.create<Style>({
   view: {
@@ -22,11 +22,11 @@ export default StyleSheet.create<Style>({
   },
   header: {
     paddingTop: padding.triple,
-    fontSize: padding.triple,
+    fontSize: fontSizes.X_LARGE,
     color: defaultPalette.primaryText,
   },
   subHeader: {
-    fontSize: padding.base,
+    fontSize: fontSizes.SMALL,
     color: defaultPalette.primaryText,
     textAlign: 'center',
   },
@@ -47,7 +47,7 @@ export default StyleSheet.create<Style>({
     marginTop: padding.double,
   },
   loginButtonText: {
-    fontSize: padding.double,
+    fontSize: fontSizes.LARGE,
     fontWeight: '400',
     color: defaultPalette.primaryText,
   },

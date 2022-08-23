@@ -1,30 +1,35 @@
 import defaultPalette from './styles';
 
-const BASE: number = 16;
+enum FONT_SIZES {
+  SMALL = 16,
+  MEDIUM = 24,
+  LARGE = 32,
+  X_LARGE = 48,
+}
 
-// TODO, make a fontSize equivalent here
+const BASE_PADDING: number = 16;
 const padding: Record<string, number> = {
-  eighth: BASE / 8,
-  quarter: BASE / 4,
-  half: BASE / 2,
-  base: BASE,
-  oneAndAHalf: BASE * 1.5,
-  double: BASE * 2,
-  triple: BASE * 3,
-  quadruple: BASE * 4,
-  quintuple: BASE * 5,
-  sextuple: BASE * 6,
-  septuple: BASE * 7,
-  octuple: BASE * 8,
-  nonuple: BASE * 9,
-  dectuple: BASE * 10,
+  eighth: BASE_PADDING / 8,
+  quarter: BASE_PADDING / 4,
+  half: BASE_PADDING / 2,
+  base: BASE_PADDING,
+  oneAndAHalf: BASE_PADDING * 1.5,
+  double: BASE_PADDING * 2,
+  triple: BASE_PADDING * 3,
+  quadruple: BASE_PADDING * 4,
+  quintuple: BASE_PADDING * 5,
+  sextuple: BASE_PADDING * 6,
+  septuple: BASE_PADDING * 7,
+  octuple: BASE_PADDING * 8,
+  nonuple: BASE_PADDING * 9,
+  decuple: BASE_PADDING * 10,
 };
 
-// TODO create a better system for borderRadius as more arise
-const borderRadius: number = 16;
+const BORDER_RADIUS: number = 16;
 
 export default {
   padding,
   defaultPalette,
-  borderRadius,
+  borderRadius: BORDER_RADIUS,
+  fontSizes: FONT_SIZES,
 };

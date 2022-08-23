@@ -13,7 +13,7 @@ type Style = {
   trackListWrapper: ViewStyle;
 };
 
-const { defaultPalette, padding, borderRadius } = theme;
+const { defaultPalette, padding, borderRadius, fontSizes } = theme;
 
 export default StyleSheet.create<Style>({
   view: {
@@ -40,20 +40,20 @@ export default StyleSheet.create<Style>({
   },
   artistName: {
     padding: padding.eighth,
-    fontSize: padding.base,
+    fontSize: fontSizes.SMALL,
     fontWeight: '400',
     textAlign: 'center',
     color: defaultPalette.primaryText,
   },
   trackName: {
     padding: padding.base,
-    fontSize: padding.double,
+    fontSize: fontSizes.LARGE,
     fontWeight: '600',
     textAlign: 'center',
     color: defaultPalette.primaryText,
   },
   albumDescription: {
-    fontSize: padding.base,
+    fontSize: fontSizes.SMALL,
     color: defaultPalette.primaryText,
     textAlign: 'center',
   },
@@ -66,7 +66,7 @@ export default StyleSheet.create<Style>({
   samplesHeading: {
     padding: padding.base,
     paddingBottom: 0,
-    fontSize: padding.double,
+    fontSize: fontSizes.LARGE,
     fontWeight: '400',
   },
 });
