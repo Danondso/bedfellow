@@ -8,6 +8,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .service(controllers::spotify_controller::swap)
+            .service(controllers::spotify_controller::refresh)
             .service(controllers::whosampled_controller::sample_info)
             .service(controllers::whosampled_controller::search)
     })
