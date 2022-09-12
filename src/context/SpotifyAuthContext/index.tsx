@@ -36,23 +36,18 @@ export const SpotifyAuthContext = createContext<
   SpotifyAuthContextData | undefined
 >(undefined);
 
-function resetToken(
+async function resetToken(
   authData: SpotifyAuthentication,
-  setSpotifyAuth: Dispatch<SetStateAction<SpotifyAuthentication>>,
-) {
+): Promise<SpotifyAuthentication> {
   const tokenUrl = process.env.SPOTIFY_TOKEN_REFRESH_URL || '';
-  axios
-    .post(tokenUrl, {
-      refresh_token: authData.refreshToken,
-    })
-    .then(result => {
-      const refreshedAuthData: SpotifyAuthentication = {
-        ...authData,
-        accessToken: result.data.access_token,
-        expired: false,
-      };
-      setSpotifyAuth(refreshedAuthData);
-    });
+  const refreshData = await axios.post(tokenUrl, {
+    refresh_token: authData.refreshToken,
+  });
+  return {
+    ...authData,
+    accessToken: refreshData.data.access_token,
+    expired: false,
+  };
 }
 
 function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
@@ -63,7 +58,8 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
     () => ({
       spotifyAuth,
       setSpotifyAuth,
-      resetToken,
+      resetToken: () =>
+        resetToken(spotifyAuth).then(result => setSpotifyAuth(result)),
     }),
     [spotifyAuth, setSpotifyAuth],
   );
