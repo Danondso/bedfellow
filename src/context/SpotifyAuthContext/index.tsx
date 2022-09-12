@@ -8,6 +8,7 @@ import React, {
   useEffect,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 export type SpotifyAuthentication = {
   accessToken: string;
@@ -35,9 +36,23 @@ export const SpotifyAuthContext = createContext<
   SpotifyAuthContextData | undefined
 >(undefined);
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function resetToken(authData: SpotifyAuthentication) {
-  // TODO filling this out later see issue #9
+function resetToken(
+  authData: SpotifyAuthentication,
+  setSpotifyAuth: Dispatch<SetStateAction<SpotifyAuthentication>>,
+) {
+  const tokenUrl = process.env.SPOTIFY_TOKEN_REFRESH_URL || '';
+  axios
+    .post(tokenUrl, {
+      refresh_token: authData.refreshToken,
+    })
+    .then(result => {
+      const refreshedAuthData: SpotifyAuthentication = {
+        ...authData,
+        accessToken: result.data.access_token,
+        expired: false,
+      };
+      setSpotifyAuth(refreshedAuthData);
+    });
 }
 
 function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
