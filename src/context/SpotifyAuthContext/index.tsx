@@ -59,7 +59,9 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
       spotifyAuth,
       setSpotifyAuth,
       resetToken: () =>
-        resetToken(spotifyAuth).then(result => setSpotifyAuth(result)),
+        resetToken(spotifyAuth)
+          .then(result => setSpotifyAuth(result))
+          .catch(() => setSpotifyAuth(initialState)),
     }),
     [spotifyAuth, setSpotifyAuth],
   );
