@@ -26,11 +26,14 @@ export default function () {
   );
 
   const spotifyAuth = spotifyAuthContext?.spotifyAuth as SpotifyAuthentication;
-
+  const currentDate = new Date();
+  const expirationDate = spotifyAuth?.expirationDate
+    ? new Date(spotifyAuth.expirationDate)
+    : currentDate;
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {spotifyAuth.accessToken === '' ? (
+        {expirationDate.getTime() <= currentDate.getTime() ? (
           <>
             <Stack.Screen
               options={commonOptions}
