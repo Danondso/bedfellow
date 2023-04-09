@@ -29,6 +29,9 @@ build/
 local.properties
 *.iml
 *.hprof
+.cxx/
+*.keystore
+!debug.keystore
 
 # node.js
 #
@@ -63,3 +66,6 @@ buck-out/
 
 # Rust 
 **/target
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*

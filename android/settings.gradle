@@ -4,4 +4,7 @@ include ':react-native-lottie-splash-screen'
 project(':react-native-lottie-splash-screen').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-lottie-splash-screen/android')
 include ':react-native-spotify-remote'
 project(':react-native-spotify-remote').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-spotify-remote/android')
+includeBuild('../node_modules/react-native-gradle-plugin')
+include ':spotify-app-auth'
+include ':spotify-app-remote'
 include ':app'
