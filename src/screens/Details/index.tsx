@@ -1,5 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import axios from 'axios';
 import { Avatar } from 'react-native-paper';
 import { DetailsScreenProps } from '../../types';
@@ -33,7 +39,10 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   const spotifyAuth = spotifyAuthContextData?.spotifyAuth;
   const [currentSongInfo, setCurrentSongInfo] =
     useState<CurrentPlaybackResponse>();
-  useEffect(() => {
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
     axios
       .get<CurrentPlaybackResponse>(
         'https://api.spotify.com/v1/me/player/currently-playing',
@@ -47,12 +56,22 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       )
       .then(result => {
         setCurrentSongInfo(result.data);
-      });
+        setRefreshing(false);
+      })
+      .catch(() => setRefreshing(false));
   }, [spotifyAuth?.accessToken]);
+  useEffect(() => {
+    onRefresh();
+  }, [onRefresh]);
 
   const item = currentSongInfo?.item as TrackObjectFull;
   return (
-    <View style={styles.view}>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      style={styles.view}
+    >
       <View style={styles.currentSongView}>
         {item && 'album' in item ? (
           <Avatar.Image size={90} source={item?.album.images[0]} />
@@ -75,7 +94,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
           <TrackList trackInfo={item} />
         </View>
       </SafeAreaView>
-    </View>
+    </ScrollView>
   );
 }
 
