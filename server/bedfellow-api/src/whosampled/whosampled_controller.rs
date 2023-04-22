@@ -11,11 +11,11 @@ pub async fn sample_info(path: Path<(String, String)>) -> impl Responder {
     let response: Result<WhoSampledResponse, WhoSampledErrorResponse> =
         whosampled_service::get_sample_info(&artist, &track_name).await;
     
-    if response.is_err() {
-        return HttpResponse::InternalServerError().json(Json(response.err()));
-    }
     
-    return HttpResponse::Ok().json(Json(response.ok()));
+    match response {
+        Ok(ok) => HttpResponse::Ok().json(Json(ok)),
+        Err(error) => HttpResponse::InternalServerError().json(Json(error))
+    }
 } 
 
 #[get("/search")]
@@ -25,9 +25,8 @@ pub async fn search(query: Query<SearchQuery>) -> impl Responder {
     let response: Result<WhoSampledSearchResponse, WhoSampledErrorResponse> = 
         whosampled_service::get_sample_search_info(query_params.artist, query_params.track_name).await;
 
-    if response.is_err() {
-        return HttpResponse::InternalServerError().json(Json(response.err()));
+    match response {
+        Ok(ok) => HttpResponse::Ok().json(Json(ok)),
+        Err(error) => HttpResponse::InternalServerError().json(Json(error))
     }
-
-    return HttpResponse::Ok().json(Json(response.ok()));
 } 
