@@ -49,6 +49,7 @@ function TrackList({ trackInfo }: TrackListProps) {
         setSampleData(result.data as WhoSampledResponse);
       });
   }, [trackInfo]);
+
   return (
     <View style={styles.view}>
       <FlatList data={sampleData?.samples} renderItem={TrackItem} />
