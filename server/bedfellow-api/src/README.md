@@ -1,0 +1,29 @@
+# bedfellow-api
+
+This this is a server layer that handles auth and data fetching for the bedfellow mobile app.
+
+## Getting Started
+
+This guide is predicated on:
+
+- Setting up a [spotify dev account](https://developer.spotify.com/)
+- (Recommended if you're using VSCode) [Setting up a rust env](https://code.visualstudio.com/docs/languages/rust)
+
+---
+
+1. Export the following env variables with values from your spotify dev account:
+
+```zsh
+export SPOTIFY_CLIENT_ID=''
+export SPOTIFY_CLIENT_SECRET=''
+export SPOTIFY_CLIENT_CALLBACK=''
+export ENCRYPTION_SECRET=''
+export RUST_LOG=info # debug, error, warn, trace
+```
+
+2. run `cargo build`
+3. run `cargo watch` - this starts the server and watches for changes
+
+## Using the API
+
+TODO: fill this out with example payloads or better yet, an open api spec
