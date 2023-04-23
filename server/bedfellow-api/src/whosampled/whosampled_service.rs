@@ -93,24 +93,24 @@ fn parse_whosampled_page(section_title: &str, page: Html) -> Vec<Track> {
 
     if section.is_none() {
         info!("Unable to find section title {:?}", section_title);
-        // TODO consider returning something better than the empty tracks array
         return tracks;
     }
 
     let sample_entries = section
         .expect("Section is unwrapped")
-        .filter(|x| !x.value().is_text())
         .last()
-        .expect("Children are filtered of non text values")
-        .children()
-        .filter(|x| !x.value().is_text());
+        .unwrap()
+        .children();
 
     for sample in sample_entries {
-            let samples_children = sample.children().filter(|x| !x.value().is_text());
-            let track_details = ElementRef::wrap(samples_children.last().unwrap()).unwrap();            
-            let track = parse_track(track_details);
-            
-            tracks.push(track);
+            let samples_children = sample.children().last();
+            match samples_children {
+                Some(last_child) => {
+                    let track:Track = parse_track(ElementRef::wrap(last_child).expect(""));
+                    tracks.push(track);     
+                },
+                None => warn!("samples_children does not contain any children, skipping..")
+            }
         }
     return tracks;
 }
@@ -126,9 +126,9 @@ fn find_section_header<'a>(title: &'a str, html: &'a Html) -> Option<Children<'a
             // so we get the grandparent which contains the sample entries
             let section_grandparent = section_header_element
                 .parent()
-                .unwrap()
+                .expect("section header parent is unwrapped")
                 .parent()
-                .unwrap()
+                .expect("section header grandparent is unwrapped")
                 .children();
             return Some(section_grandparent);
         }
