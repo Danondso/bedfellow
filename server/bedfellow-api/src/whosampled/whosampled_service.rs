@@ -97,7 +97,7 @@ fn parse_whosampled_page(section_title: &str, page: Html) -> Vec<Track> {
     }
 
     let sample_entries = section
-        .expect("Section is unwrapped")
+        .expect("Header Section is unwrapped")
         .last()
         .unwrap()
         .children();
