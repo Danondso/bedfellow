@@ -146,9 +146,7 @@ fn find_section_header<'a>(title: &'a str, html: &'a Html) -> Option<Children<'a
 */
 fn parse_track (track_details :ElementRef) -> Track {
     let track_images:Vec<String> = parse_track_images(track_details);
-    
-    let details_inner = filter_element_ref_non_text_children(track_details);
-    let root_sample_element: NodeRef<Node> = filter_node_ref_non_text_children(details_inner);
+    let root_sample_element: NodeRef<Node> = track_details.children().next().unwrap().children().next().unwrap();
     let track_name: String = root_sample_element.value().as_element().unwrap().attr("title").unwrap().to_string();
 
     let artist_and_year_collection: Vec<NodeRef<'_, Node>> = root_sample_element.next_sibling().unwrap().next_sibling().unwrap().children().collect();
@@ -165,13 +163,11 @@ fn parse_track (track_details :ElementRef) -> Track {
         debug!("Artist and Year {:?} {:?}", artist, year);
     }
 
-    let track:Track = Track { track_name, artist, year, images: track_images };
-
-    return track;
+    return Track { track_name, artist, year, images: track_images };
 }
 
 fn parse_track_images(track_details: ElementRef) -> Vec<String> {
-    let track_image_parent = track_details.prev_sibling().unwrap().prev_sibling();        
+    let track_image_parent = track_details.prev_sibling().expect("track_details has previous sibling").prev_sibling();        
     match track_image_parent {
         Some(track_image_parent) => extract_img_srcset(track_image_parent),
         None => {
@@ -196,22 +192,11 @@ fn extract_img_srcset(entry: NodeRef<Node>) -> Vec<String> {
 }
 
 fn extract_inner_element_text_for_header(element_ref: ElementRef) -> String {
-    return element_ref
-        .children()
-        .next()
-        .unwrap()
-        .value()
-        .as_text()
-        .unwrap()
-        .to_string();
-}
-
-fn filter_element_ref_non_text_children(element: ElementRef) -> NodeRef<Node> {
-    return element.children().filter(|x| !x.value().is_text()).next().unwrap();
-}
-
-fn filter_node_ref_non_text_children(element: NodeRef<Node>) -> NodeRef<Node> {
-    return element.children().filter(|x| !x.value().is_text()).next().unwrap();
+    let next_child = element_ref.children().next();
+    match next_child {
+        Some(child) => child.value().as_text().unwrap().to_string(),
+        None => "".to_owned()
+    }
 }
 
 fn build_whosampled_client() -> Client {
