@@ -177,18 +177,21 @@ fn parse_track_images(track_details: ElementRef) -> Vec<String> {
     }
 }
 
-// TODO for these extractions we need a definitive check that guarantees the result before calling
 fn extract_img_srcset(entry: NodeRef<Node>) -> Vec<String> {
-    return entry
-        .last_child()
-        .unwrap()
-        .value()
-        .as_element()
-        .unwrap()
-        .attr("srcset")
-        .unwrap()
-        .split(",").map(|image_url_path| format!("{}{}", BASE_URL, image_url_path.trim())) // TODO trim off the 1x/2x at the end of these
-        .collect();
+    let last_child = entry.last_child().unwrap().value().as_element();
+    match last_child {   
+        Some(element) =>map_image_urls(element.attr("srcset").unwrap()),
+        None => {
+            warn!("child slated for image extraction is not an element");
+            return Vec::new();
+        }
+    }
+}
+
+fn map_image_urls(image_srcset: &str) -> Vec<String> {
+    return image_srcset.split(",")
+    .map(|image_url_path| format!("{}{}", BASE_URL, image_url_path.trim())) // TODO trim off the 1x/2x at the end of these
+    .collect();
 }
 
 fn extract_inner_element_text_for_header(element_ref: ElementRef) -> String {
