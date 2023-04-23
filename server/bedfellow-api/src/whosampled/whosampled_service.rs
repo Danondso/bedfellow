@@ -171,15 +171,14 @@ fn parse_track (track_details :ElementRef) -> Track {
 }
 
 fn parse_track_images(track_details: ElementRef) -> Vec<String> {
-    let track_image_parent = track_details.prev_sibling().unwrap().prev_sibling();
-        
-    let mut track_images: Vec<String> = Vec::new();
-    if track_image_parent.is_some() {
-       track_images = extract_img_srcset(track_image_parent.unwrap());  
+    let track_image_parent = track_details.prev_sibling().unwrap().prev_sibling();        
+    match track_image_parent {
+        Some(track_image_parent) => extract_img_srcset(track_image_parent),
+        None => {
+            warn!("Unable to find track details");
+            return Vec::new();
+        }
     }
-
-    debug!("Track images parsed {:?}", track_images);
-    return track_images;
 }
 
 // TODO for these extractions we need a definitive check that guarantees the result before calling
