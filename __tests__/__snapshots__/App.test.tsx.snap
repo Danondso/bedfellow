@@ -112,7 +112,7 @@ exports[`<App /> renders login screen snapshot 1`] = `
                   {
                     "alignItems": "center",
                     "backgroundColor": "#E5C185",
-                    "borderColor": "#343941",
+                    "borderColor": undefined,
                     "borderRadius": 16,
                     "borderWidth": 1,
                     "paddingBottom": 200,
@@ -123,7 +123,7 @@ exports[`<App /> renders login screen snapshot 1`] = `
                 <Text
                   style={
                     {
-                      "color": "#343941",
+                      "color": undefined,
                       "fontSize": 48,
                       "paddingTop": 48,
                     }
@@ -134,7 +134,7 @@ exports[`<App /> renders login screen snapshot 1`] = `
                 <Text
                   style={
                     {
-                      "color": "#343941",
+                      "color": undefined,
                       "fontSize": 16,
                       "textAlign": "center",
                     }
@@ -146,7 +146,7 @@ exports[`<App /> renders login screen snapshot 1`] = `
                   style={
                     {
                       "backgroundColor": "#FEF9E0",
-                      "borderColor": "#343941",
+                      "borderColor": undefined,
                       "borderRadius": 16,
                       "borderWidth": 1,
                       "marginTop": 32,
@@ -194,7 +194,7 @@ exports[`<App /> renders login screen snapshot 1`] = `
                     <Text
                       style={
                         {
-                          "color": "#343941",
+                          "color": undefined,
                           "fontSize": 32,
                           "fontWeight": "400",
                         }

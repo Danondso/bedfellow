@@ -6,7 +6,9 @@ type Style = {
   trackItem: ViewStyle;
   trackImage: ImageStyle;
   trackName: TextStyle;
+  noSamples: TextStyle;
   artistName: TextStyle;
+  skeletonLoader: ViewStyle;
 };
 
 const { defaultPalette, padding, borderRadius, fontSizes } = theme;
@@ -30,11 +32,19 @@ export default StyleSheet.create<Style>({
   trackName: {
     fontSize: fontSizes.MEDIUM,
   },
+  noSamples: {
+    fontSize: fontSizes.MEDIUM,
+  },
   artistName: {
     fontSize: fontSizes.SMALL,
   },
   trackImage: {
     borderColor: defaultPalette.borderColor,
+    borderRadius: borderRadius / 4,
     borderWidth: 1,
+  },
+  skeletonLoader: {
+    flex: 1,
+    height: 275,
   },
 });

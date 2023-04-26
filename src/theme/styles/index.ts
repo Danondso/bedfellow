@@ -5,17 +5,28 @@
  * I don't make design systems so this is a 'I'm feeling my through it' solution.
  */
 
-// shoot for these levels
-// primary, secondary, success, warning, error
-const defaultPalette: Record<string, string> = {
-  secondaryBackground: '#E5C185',
-  primaryBackground: '#FBF2C4',
-  primaryBackground100: '#FEF9E0',
-  success: '#74A892',
-  accent: '#008585',
-  error: '#C7522A',
-  primaryText: '#343941', // #64748B => saving this boi for something later
-  shadow: '#535A63',
+enum ColorPalette {
+  primaryBackground = 'primaryBackground',
+  primaryBackground100 = 'primaryBackground100',
+  secondaryBackground = 'secondaryBackground',
+  success = 'success',
+  accent = 'accent',
+  error = 'error',
+  primaryText = 'primaryTex†',
+  shadow = 'shadow',
+  borderColor = 'borderColor',
+}
+
+const defaultPalette: Record<ColorPalette, string> = {
+  [ColorPalette.primaryBackground]: '#FBF2C4',
+  [ColorPalette.primaryBackground100]: '#FEF9E0',
+  [ColorPalette.secondaryBackground]: '#E5C185',
+  [ColorPalette.success]: '#74A892',
+  [ColorPalette.accent]: '#008585',
+  [ColorPalette.error]: '#C7522A',
+  [ColorPalette.primaryText]: '#343941', // #64748B => saving this boi for something later
+  [ColorPalette.shadow]: '#535A63',
+  [ColorPalette.borderColor]: '#00000',
 };
 
 export default defaultPalette;
