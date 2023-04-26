@@ -15,6 +15,13 @@
       "target": "esnext",
       "types": ["node", "jest"]
     },
+    "paths": {
+      "@screens/*": ["screens/*"],
+      "@components/*": ["components/*"],
+      "@context/*": ["context/*"],
+      "@theme/*": ["theme/*"],
+      "@types/*": ["types/*"],
+    },
     "exclude": [
       "node_modules",
       "babel.config.js",

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
 import axios from 'axios';
-import TrackList from '../../../../src/screens/Details/TrackList';
+import TrackList from '@screens/Details/TrackList';
 import whoSampledPayload from '../../../fixtures/api/whosampled/sample-info.0';
 
 describe('TrackList Test Suite', () => {

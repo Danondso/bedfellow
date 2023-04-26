@@ -18,4 +18,13 @@ module.exports = {
       },
     },
   },
+  overrides: [
+    {
+      files: ['__tests__/**/*.js', '__tests__/**/*.ts'],
+      rules: {
+        // this is here so we can use ts aliases
+        'import/no-unresolved': 'off',
+      },
+    },
+  ],
 };
