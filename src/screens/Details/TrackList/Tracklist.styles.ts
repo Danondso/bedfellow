@@ -7,6 +7,7 @@ type Style = {
   trackImage: ImageStyle;
   trackName: TextStyle;
   artistName: TextStyle;
+  skeletonLoader: ViewStyle;
 };
 
 const { defaultPalette, padding, borderRadius, fontSizes } = theme;
@@ -36,5 +37,9 @@ export default StyleSheet.create<Style>({
   trackImage: {
     borderColor: defaultPalette.borderColor,
     borderWidth: 1,
+  },
+  skeletonLoader: {
+    flex: 1,
+    height: 275,
   },
 });
