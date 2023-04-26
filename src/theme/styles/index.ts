@@ -14,10 +14,9 @@ enum ColorPalette {
   error = 'error',
   primaryText = 'primaryTex†',
   shadow = 'shadow',
+  borderColor = 'borderColor',
 }
 
-// shoot for these levels
-// primary, secondary, success, warning, error
 const defaultPalette: Record<ColorPalette, string> = {
   [ColorPalette.primaryBackground]: '#FBF2C4',
   [ColorPalette.primaryBackground100]: '#FEF9E0',
@@ -27,6 +26,7 @@ const defaultPalette: Record<ColorPalette, string> = {
   [ColorPalette.error]: '#C7522A',
   [ColorPalette.primaryText]: '#343941', // #64748B => saving this boi for something later
   [ColorPalette.shadow]: '#535A63',
+  [ColorPalette.borderColor]: '#00000',
 };
 
 export default defaultPalette;

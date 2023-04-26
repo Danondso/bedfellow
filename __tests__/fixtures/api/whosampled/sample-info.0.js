@@ -177,3 +177,9 @@ export default {
   ],
   covers: [],
 };
+
+export const emptyPayload = {
+  samples: [],
+  sampled_by: [],
+  covers: [],
+};

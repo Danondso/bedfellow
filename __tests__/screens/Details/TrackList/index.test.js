@@ -2,7 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react-native';
 import axios from 'axios';
 import TrackList from '@screens/Details/TrackList';
-import whoSampledPayload from '../../../fixtures/api/whosampled/sample-info.0';
+import whoSampledPayload, {
+  emptyPayload,
+} from '../../../fixtures/api/whosampled/sample-info.0';
 
 describe('TrackList Test Suite', () => {
   const spotifyResponse = {
@@ -25,5 +27,11 @@ describe('TrackList Test Suite', () => {
     axios.get.mockReturnValueOnce(Promise.resolve({ data: whoSampledPayload }));
     await render(<TrackList trackInfo={spotifyResponse} />);
     expect(screen.getByText('Oasis')).toBeDefined();
+  });
+
+  it('renders empty list component when no sample data is present', async () => {
+    axios.get.mockReturnValueOnce(Promise.resolve({ data: emptyPayload }));
+    await render(<TrackList trackInfo={spotifyResponse} />);
+    expect(screen.getByText('No samples.')).toBeDefined();
   });
 });

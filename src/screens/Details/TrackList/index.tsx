@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { Card, Paragraph } from 'react-native-paper';
 import { WhoSampledResponse, WhoSampledData } from '../../../types';
@@ -28,6 +28,10 @@ function WhoSampledSkeleton() {
       </ContentLoader>
     </View>
   );
+}
+
+function EmptyListMessage() {
+  return <Text style={styles.noSamples}>No samples.</Text>;
 }
 
 function TrackItem({ item }: { item: WhoSampledData }) {
@@ -74,13 +78,20 @@ function TrackList({ trackInfo }: TrackListProps) {
         setSampleData(result.data as WhoSampledResponse);
         setLoading(false);
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        setLoading(false);
+        console.log(e);
+      });
   }, [trackInfo]);
 
   return (
     <View style={styles.view}>
       {!loading && (
-        <FlatList data={sampleData?.samples} renderItem={TrackItem} />
+        <FlatList
+          ListEmptyComponent={<EmptyListMessage />}
+          data={sampleData?.samples}
+          renderItem={TrackItem}
+        />
       )}
       {loading && <WhoSampledSkeleton />}
     </View>
