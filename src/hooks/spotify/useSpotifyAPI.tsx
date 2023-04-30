@@ -12,7 +12,17 @@ const buildHeaders = (spotifyAuth: SpotifyAuthentication): Object => ({
   },
 });
 
-function useSpotifyAPI(spotifyAuth: SpotifyAuthentication, url: string) {
+type SpotifyAPIHookResponse = {
+  loadData: () => void;
+  loading: boolean;
+  error: boolean;
+  currentSongInfo?: CurrentPlaybackResponse;
+};
+
+function useSpotifyAPI(
+  spotifyAuth: SpotifyAuthentication,
+  url: string,
+): SpotifyAPIHookResponse {
   const [currentSongInfo, setCurrentSongInfo] =
     useState<CurrentPlaybackResponse>();
   const [loading, setLoading] = useState(false);
@@ -40,7 +50,7 @@ function useSpotifyAPI(spotifyAuth: SpotifyAuthentication, url: string) {
     setLoading(false);
   }
 
-  return { currentSongInfo, loading, error, loadData }; // TODO make a type for this so we can share it
+  return { currentSongInfo, loading, error, loadData };
 }
 
 export default useSpotifyAPI;

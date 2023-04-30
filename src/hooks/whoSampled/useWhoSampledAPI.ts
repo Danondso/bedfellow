@@ -7,7 +7,15 @@ const BASE_URL = 'https://bedfellow-api.tunnelto.dev/sample-info/';
 
 const normalizeString = (string: String) => string?.replace(/\s/g, '-');
 
-function useWhoSampledAPI(trackInfo: TrackObjectFull) {
+type WhoSampledAPIHookResponse = {
+  loading: boolean;
+  error: boolean;
+  sampleData?: WhoSampledResponse;
+};
+
+function useWhoSampledAPI(
+  trackInfo: TrackObjectFull,
+): WhoSampledAPIHookResponse {
   const [sampleData, setSampleData] = useState<WhoSampledResponse>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -41,7 +49,7 @@ function useWhoSampledAPI(trackInfo: TrackObjectFull) {
     loadData();
   }, [url]);
 
-  return { sampleData, loading, error }; // TODO make a type for this so we can share it
+  return { sampleData, loading, error };
 }
 
 export default useWhoSampledAPI;
