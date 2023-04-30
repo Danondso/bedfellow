@@ -12,7 +12,7 @@ enum ColorPalette {
   success = 'success',
   accent = 'accent',
   error = 'error',
-  primaryText = 'primaryTex†',
+  primaryText = 'primaryText',
   shadow = 'shadow',
   borderColor = 'borderColor',
 }
