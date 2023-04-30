@@ -16,20 +16,19 @@ type SpotifyAPIHookResponse = {
   loadData: () => void;
   loading: boolean;
   error: boolean;
-  currentSongInfo?: CurrentPlaybackResponse;
+  response?: unknown;
 };
 
 function useSpotifyAPI(
   spotifyAuth: SpotifyAuthentication,
   url: string,
 ): SpotifyAPIHookResponse {
-  const [currentSongInfo, setCurrentSongInfo] =
-    useState<CurrentPlaybackResponse>();
+  const [response, setResponse] = useState<CurrentPlaybackResponse>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   function resetState() {
-    setCurrentSongInfo(undefined);
+    setResponse(undefined);
     setLoading(true);
     setLoading(false);
   }
@@ -42,7 +41,7 @@ function useSpotifyAPI(
         `${BASE_URL}${url}`,
         buildHeaders(spotifyAuth),
       );
-      setCurrentSongInfo(result.data);
+      setResponse(result.data);
     } catch (e) {
       console.error(e);
       setError(true);
@@ -50,7 +49,7 @@ function useSpotifyAPI(
     setLoading(false);
   }
 
-  return { currentSongInfo, loading, error, loadData };
+  return { response, loading, error, loadData };
 }
 
 export default useSpotifyAPI;

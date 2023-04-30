@@ -3,7 +3,10 @@ import { View, Text } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import { DetailsScreenProps } from '../../types';
 import styles from './Details.styles';
-import { TrackObjectFull } from '../../types/spotify-api';
+import {
+  CurrentPlaybackResponse,
+  TrackObjectFull,
+} from '../../types/spotify-api';
 import TrackList from './TrackList';
 import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
 import {
@@ -56,7 +59,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   const { spotifyAuth } = spotifyAuthContextData as SpotifyAuthContextData;
 
   // TODO add linter plugins to new line destruct
-  const { currentSongInfo, loadData } = useSpotifyAPI(
+  const { response, loadData } = useSpotifyAPI(
     spotifyAuth,
     'v1/me/player/currently-playing',
   );
@@ -70,7 +73,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // TODO the need for this is kinda dumb let's see if we can eliminate it
 
-  const item = currentSongInfo?.item as TrackObjectFull;
+  const item = (response as CurrentPlaybackResponse)?.item as TrackObjectFull;
   return (
     <View style={styles.view}>
       <TrackList
