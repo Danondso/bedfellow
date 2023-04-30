@@ -69,7 +69,6 @@ async fn get_whosampled_page(key: &str, artist: &str, track_name: &str) -> Optio
         .get(format!("{}/{}/{}/{}", BASE_URL, artist, track_name, key))
         .send()
         .await;
-    info!("{:?}", format!("{}/{}/{}/{}", BASE_URL, artist, track_name, key));
 
     if response.is_err() || response.as_ref().unwrap().status() == StatusCode::NOT_FOUND {
         // whosampled returns a 404 if there's not enough data for a page
