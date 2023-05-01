@@ -32,9 +32,7 @@ export default StyleSheet.create<Style>({
     height: 275,
   },
   trackImage: {
-    borderColor: defaultPalette.borderColor,
     borderRadius: borderRadius / 4,
-    borderWidth: 1,
   },
   trackItem: {
     marginVertical: '3%',
@@ -43,8 +41,6 @@ export default StyleSheet.create<Style>({
     flexDirection: 'row',
     padding: padding.base,
     backgroundColor: defaultPalette.secondaryBackground,
-    borderColor: defaultPalette.borderColor,
-    borderWidth: 1,
     borderRadius,
   },
   trackListWrapper: {

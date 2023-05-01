@@ -40,9 +40,14 @@ function EmptyListMessage() {
 
 function TrackItem({ item }: { item: WhoSampledData }) {
   const { track_name, artist, images } = item;
+  if (!artist) {
+    // if the server didn't parse an artist name
+    // we can assume the track is not from a song
+    return null;
+  }
   return (
     <View style={styles.trackListWrapper}>
-      <Card style={styles.trackItem}>
+      <Card mode="elevated" style={styles.trackItem}>
         <Card.Cover
           style={styles.trackImage}
           // TODO fix this so we get a straight url with sizes in the API response see issue #7
