@@ -1,6 +1,11 @@
 module.exports = {
   root: true,
-  extends: ['airbnb', '@react-native-community'],
+  extends: [
+    'airbnb',
+    '@react-native-community',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+  ],
   rules: {
     'react/jsx-filename-extension': 0,
     'import/extensions': 0,
@@ -10,6 +15,7 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+    'react/display-name': 'off',
   },
   settings: {
     'import/resolver': {

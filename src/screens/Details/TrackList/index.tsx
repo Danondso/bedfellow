@@ -1,6 +1,6 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React, { ReactElement } from 'react';
 import { FlatList, View, Text, RefreshControl } from 'react-native';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { Card, Paragraph } from 'react-native-paper';
 import { WhoSampledData } from '../../../types';
