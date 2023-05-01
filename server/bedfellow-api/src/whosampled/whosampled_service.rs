@@ -168,7 +168,7 @@ fn parse_track (track_details :ElementRef) -> Track {
         debug!("Artist and Year {:?} {:?}", artist, year);
     }
 
-    return Track { track_name, artist, year, images: track_images };
+    return Track { track_name: track_name.replace(&artist, "").replacen("'s ", "", 1), artist, year, images: track_images };
 }
 
 fn parse_track_images(track_details: ElementRef) -> Vec<String> {

@@ -1,6 +1,6 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React, { ReactElement } from 'react';
 import { FlatList, View, Text, RefreshControl } from 'react-native';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { Card, Paragraph } from 'react-native-paper';
 import { WhoSampledData } from '../../../types';
@@ -40,9 +40,14 @@ function EmptyListMessage() {
 
 function TrackItem({ item }: { item: WhoSampledData }) {
   const { track_name, artist, images } = item;
+  if (!artist) {
+    // if the server didn't parse an artist name
+    // we can assume the track is not from a song
+    return null;
+  }
   return (
     <View style={styles.trackListWrapper}>
-      <Card style={styles.trackItem}>
+      <Card mode="elevated" style={styles.trackItem}>
         <Card.Cover
           style={styles.trackImage}
           // TODO fix this so we get a straight url with sizes in the API response see issue #7
