@@ -2,25 +2,43 @@ import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import theme from '../../../theme';
 
 type Style = {
-  view: ViewStyle;
-  trackItem: ViewStyle;
-  trackImage: ImageStyle;
-  trackName: TextStyle;
-  noSamples: TextStyle;
   artistName: TextStyle;
+  noSamples: TextStyle;
+  noSamplesWrapper: ViewStyle;
   skeletonLoader: ViewStyle;
+  trackImage: ImageStyle;
+  trackItem: ViewStyle;
+  trackListWrapper: ViewStyle;
+  trackName: TextStyle;
+  view: ViewStyle;
 };
 
 const { defaultPalette, padding, borderRadius, fontSizes } = theme;
 
 export default StyleSheet.create<Style>({
-  view: {
-    width: '80%',
+  artistName: {
+    fontSize: fontSizes.SMALL,
+  },
+  noSamples: {
+    fontSize: fontSizes.MEDIUM,
+  },
+  noSamplesWrapper: {
     marginTop: padding.base,
-    backgroundColor: defaultPalette.primaryBackground,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  skeletonLoader: {
+    flex: 1,
+    height: 275,
+  },
+  trackImage: {
+    borderColor: defaultPalette.borderColor,
+    borderRadius: borderRadius / 4,
+    borderWidth: 1,
   },
   trackItem: {
     marginVertical: '3%',
+    width: '80%',
     flex: 1,
     flexDirection: 'row',
     padding: padding.base,
@@ -29,22 +47,16 @@ export default StyleSheet.create<Style>({
     borderWidth: 1,
     borderRadius,
   },
+  trackListWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   trackName: {
     fontSize: fontSizes.MEDIUM,
   },
-  noSamples: {
-    fontSize: fontSizes.MEDIUM,
-  },
-  artistName: {
-    fontSize: fontSizes.SMALL,
-  },
-  trackImage: {
-    borderColor: defaultPalette.borderColor,
-    borderRadius: borderRadius / 4,
-    borderWidth: 1,
-  },
-  skeletonLoader: {
-    flex: 1,
-    height: 275,
+  view: {
+    width: '100%',
+    marginTop: padding.base,
+    backgroundColor: defaultPalette.primaryBackground,
   },
 });

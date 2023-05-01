@@ -1,12 +1,5 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  RefreshControl,
-} from 'react-native';
-import axios from 'axios';
+import React, { useCallback, useContext, useEffect } from 'react';
+import { View, Text } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import { DetailsScreenProps } from '../../types';
 import styles from './Details.styles';
@@ -15,6 +8,7 @@ import {
   TrackObjectFull,
 } from '../../types/spotify-api';
 import TrackList from './TrackList';
+import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
 import {
   SpotifyAuthContext,
   SpotifyAuthContextData,
@@ -29,49 +23,13 @@ function formatArtistNames(item: TrackObjectFull): string {
   }
   return 'No';
 }
-// TODO once we have cards to click on we'll remove this.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function DetailsScreen({ navigation }: DetailsScreenProps) {
-  const spotifyAuthContextData = useContext<SpotifyAuthContextData | undefined>(
-    SpotifyAuthContext,
-  );
+type CurrentSongProps = {
+  item: TrackObjectFull;
+};
 
-  const spotifyAuth = spotifyAuthContextData?.spotifyAuth;
-  const [currentSongInfo, setCurrentSongInfo] =
-    useState<CurrentPlaybackResponse>();
-  const [refreshing, setRefreshing] = useState<boolean>(false);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    axios
-      .get<CurrentPlaybackResponse>(
-        'https://api.spotify.com/v1/me/player/currently-playing',
-        {
-          // TODO if this fails we refresh, refactor spotify auth stuff into a hook
-          headers: {
-            Authorization: `Bearer ${spotifyAuth?.accessToken}`,
-            'Content-Type': 'application/json',
-          },
-        },
-      )
-      .then(result => {
-        setCurrentSongInfo(result.data);
-        setRefreshing(false);
-      })
-      .catch(() => setRefreshing(false));
-  }, [spotifyAuth?.accessToken]);
-  useEffect(() => {
-    onRefresh();
-  }, [onRefresh]);
-
-  const item = currentSongInfo?.item as TrackObjectFull;
+function CurrentSong({ item }: CurrentSongProps) {
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      style={styles.view}
-    >
+    <View style={styles.view}>
       <View style={styles.currentSongView}>
         {item && 'album' in item ? (
           <Avatar.Image size={90} source={item?.album.images[0]} />
@@ -88,13 +46,42 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
           {item ? item.album.name : 'No Album Info Available'}
         </Text>
       </View>
-      <SafeAreaView style={styles.trackListView}>
-        <Text style={styles.samplesHeading}>Who Sampled?</Text>
-        <View style={styles.trackListWrapper}>
-          <TrackList trackInfo={item} />
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+    </View>
+  );
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function DetailsScreen({ navigation }: DetailsScreenProps) {
+  const spotifyAuthContextData = useContext<SpotifyAuthContextData | undefined>(
+    SpotifyAuthContext,
+  );
+
+  const { spotifyAuth } = spotifyAuthContextData as SpotifyAuthContextData;
+
+  // TODO add linter plugins to new line destruct
+  const { response, loadData } = useSpotifyAPI(
+    spotifyAuth,
+    'v1/me/player/currently-playing',
+  );
+
+  const onRefresh: () => void = useCallback(() => {
+    loadData();
+  }, [loadData]);
+
+  useEffect(() => {
+    loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // TODO the need for this is kinda dumb let's see if we can eliminate it
+
+  const item = (response as CurrentPlaybackResponse)?.item as TrackObjectFull;
+  return (
+    <View style={styles.view}>
+      <TrackList
+        onRefresh={onRefresh}
+        HeaderComponent={<CurrentSong item={item} />}
+        trackInfo={item}
+      />
+    </View>
   );
 }
 

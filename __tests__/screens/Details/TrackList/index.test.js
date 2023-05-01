@@ -32,6 +32,6 @@ describe('TrackList Test Suite', () => {
   it('renders empty list component when no sample data is present', async () => {
     axios.get.mockReturnValueOnce(Promise.resolve({ data: emptyPayload }));
     await render(<TrackList trackInfo={spotifyResponse} />);
-    expect(screen.getByText('No samples.')).toBeDefined();
+    expect(screen.getByText('No data.')).toBeDefined();
   });
 });

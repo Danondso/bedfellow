@@ -218,7 +218,7 @@ fn filter_node_ref_non_text_children(element: NodeRef<Node>) -> NodeRef<Node> {
 fn build_whosampled_client() -> Client {
     let client_builder = reqwest::ClientBuilder::new();
     let client = client_builder
-        .user_agent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36")
+        .user_agent("Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148")
         .cookie_store(true)
         .use_rustls_tls()
         .build()

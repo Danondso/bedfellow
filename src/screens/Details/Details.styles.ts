@@ -4,7 +4,6 @@ import theme from '../../theme';
 type Style = {
   view: ViewStyle;
   currentSongView: ViewStyle;
-  trackListView: ViewStyle;
   artistName: TextStyle;
   trackName: TextStyle;
   albumDescription: TextStyle;
@@ -31,9 +30,6 @@ export default StyleSheet.create<Style>({
     paddingBottom: padding.base,
     borderColor: defaultPalette.primaryText,
     borderWidth: 1,
-  },
-  trackListView: {
-    flex: 2 / 3,
   },
   trackListWrapper: {
     alignItems: 'center',
