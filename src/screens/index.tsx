@@ -21,9 +21,8 @@ const commonOptions: NativeStackNavigationOptions = {
 };
 
 export default function () {
-  const spotifyAuthContext = useContext<SpotifyAuthContextData | undefined>(
-    SpotifyAuthContext,
-  );
+  const spotifyAuthContext =
+    useContext<SpotifyAuthContextData>(SpotifyAuthContext);
 
   const spotifyAuth = spotifyAuthContext?.spotifyAuth as SpotifyAuthentication;
   const currentDate = new Date();

@@ -6,6 +6,7 @@ import React, {
   useMemo,
   ReactNode,
   useEffect,
+  Context,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -32,9 +33,12 @@ export type SpotifyAuthContextData = {
   resetToken: (authData: SpotifyAuthentication) => void;
 };
 
-export const SpotifyAuthContext = createContext<
-  SpotifyAuthContextData | undefined
->(undefined);
+export const SpotifyAuthContext: Context<SpotifyAuthContextData> =
+  createContext<SpotifyAuthContextData>({
+    spotifyAuth: initialState,
+    setSpotifyAuth: () => {},
+    resetToken: () => {},
+  });
 
 async function resetToken(
   authData: SpotifyAuthentication,

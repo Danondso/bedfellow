@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import { DetailsScreenProps } from '../../types';
@@ -9,10 +9,6 @@ import {
 } from '../../types/spotify-api';
 import TrackList from './TrackList';
 import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
-import {
-  SpotifyAuthContext,
-  SpotifyAuthContextData,
-} from '../../context/SpotifyAuthContext';
 
 function formatArtistNames(item: TrackObjectFull): string {
   if (!item) {
@@ -52,15 +48,8 @@ function CurrentSong({ item }: CurrentSongProps) {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function DetailsScreen({ navigation }: DetailsScreenProps) {
-  const spotifyAuthContextData = useContext<SpotifyAuthContextData | undefined>(
-    SpotifyAuthContext,
-  );
-
-  const { spotifyAuth } = spotifyAuthContextData as SpotifyAuthContextData;
-
   // TODO add linter plugins to new line destruct
   const { response, loadData } = useSpotifyAPI(
-    spotifyAuth,
     'v1/me/player/currently-playing',
   );
 

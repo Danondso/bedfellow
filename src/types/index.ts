@@ -17,18 +17,18 @@ export type DetailsScreenProps = NativeStackScreenProps<
 
 export interface WhoSampledData {
   track_name: string;
-  artist: String;
-  year: Number;
-  images: Array<String>;
+  artist: string;
+  year: number;
+  images: Array<string>;
 }
 
 export interface WhoSampledSearchData {
-  id: Number;
-  url: String;
-  artist_name: String;
-  track_name: String;
-  image_url: String;
-  counts: String;
+  id: number;
+  url: string;
+  artist_name: string;
+  track_name: string;
+  image_url: string;
+  counts: string;
 }
 
 export interface WhoSampledResponse {
@@ -42,5 +42,5 @@ export interface WhoSampledSearchResponse {
 }
 
 export interface WhoSampledErrorResponse {
-  error: String;
+  error: string;
 }
