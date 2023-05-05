@@ -119,6 +119,7 @@ function TrackList({ trackInfo, HeaderComponent, onRefresh }: TrackListProps) {
         const matchingTrack = findMatchingTrack(items, selectedTrack);
         if (!matchingTrack) {
           setSnackbarText(`Unable to find ${track_name} in search results`);
+          setShowSnackbar(true);
           return;
         }
 
