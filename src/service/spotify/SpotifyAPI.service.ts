@@ -30,3 +30,19 @@ export const spotifyPOSTData = async (
     buildSpotifyHeaders(spotifyAuth),
   );
 };
+
+export const generateSpotifyTrackAndArtistQueryURL = (
+  trackName: string,
+  artist: string,
+) => {
+  const data: Record<string, string> = {
+    q: `&20track:${trackName.replace(' ', '+')}%20artist:${artist.replace(
+      ' ',
+      '+',
+    )}`,
+    type: 'track',
+    limit: '50', // makes TS happy when passing to URLSearchParams
+  };
+  // we trim the last character off because it's a forward slash which the spotify API doesn't like
+  return new URL(`v1/search?${new URLSearchParams(data)}`).href.slice(0, -1);
+};

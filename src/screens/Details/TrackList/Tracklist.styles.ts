@@ -6,6 +6,7 @@ type Style = {
   noSamples: TextStyle;
   noSamplesWrapper: ViewStyle;
   skeletonLoader: ViewStyle;
+  snackBar: ViewStyle;
   trackImage: ImageStyle;
   trackItem: ViewStyle;
   trackListWrapper: ViewStyle;
@@ -30,6 +31,9 @@ export default StyleSheet.create<Style>({
   skeletonLoader: {
     flex: 1,
     height: 275,
+  },
+  snackBar: {
+    backgroundColor: defaultPalette.success,
   },
   trackImage: {
     borderRadius: borderRadius / 4,

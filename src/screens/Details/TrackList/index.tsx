@@ -1,13 +1,33 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { FlatList, View, Text, RefreshControl } from 'react-native';
-// eslint-disable-next-line import/no-extraneous-dependencies
+
 import ContentLoader, { Rect } from 'react-content-loader/native';
-import { Card, Paragraph } from 'react-native-paper';
+import { Card, Paragraph, Snackbar } from 'react-native-paper';
 import { WhoSampledData } from '../../../types';
 import { TrackObjectFull } from '../../../types/spotify-api';
 import styles from './Tracklist.styles';
 import theme from '../../../theme';
 import useWhoSampledAPI from '../../../hooks/whoSampled/useWhoSampledAPI';
+import {
+  generateSpotifyTrackAndArtistQueryURL,
+  spotifyGETData,
+  spotifyPOSTData,
+} from '../../../service/spotify/SpotifyAPI.service';
+import {
+  SpotifyAuthContext,
+  SpotifyAuthContextData,
+} from '../../../context/SpotifyAuthContext';
+
+const findMatchingTrack = (
+  items: TrackObjectFull[],
+  selectedTrack: WhoSampledData,
+) =>
+  items.find((result: any) => {
+    return (
+      result?.name === selectedTrack?.track_name &&
+      selectedTrack?.artist === result?.artists[0].name
+    );
+  });
 
 function WhoSampledSkeleton() {
   return (
@@ -38,16 +58,27 @@ function EmptyListMessage() {
   );
 }
 
-function TrackItem({ item }: { item: WhoSampledData }) {
+type TrackItemProps = {
+  item: WhoSampledData;
+  index: number;
+  onPress: (index: number) => void;
+};
+
+function TrackItem({ item, index, onPress }: TrackItemProps) {
   const { track_name, artist, images } = item;
+
   if (!artist) {
-    // if the server didn't parse an artist name
-    // we can assume the track is not from a song
+    // if the server didn't parse an artist name we can assume the track is not from a song
     return null;
   }
+
   return (
     <View style={styles.trackListWrapper}>
-      <Card mode="elevated" style={styles.trackItem}>
+      <Card
+        mode="elevated"
+        style={styles.trackItem}
+        onPress={() => onPress(index)}
+      >
         <Card.Cover
           style={styles.trackImage}
           // TODO fix this so we get a straight url with sizes in the API response see issue #7
@@ -69,19 +100,77 @@ type TrackListProps = {
 };
 
 function TrackList({ trackInfo, HeaderComponent, onRefresh }: TrackListProps) {
+  const { spotifyAuth } =
+    useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { sampleData, loading } = useWhoSampledAPI(trackInfo);
+  const [selectedTrackIndex, setSelectedTrackIndex] = useState<number>(-1);
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarText, setSnackbarText] = useState('');
+
+  useEffect(() => {
+    async function findAndQueueTrack(selectedTrack: WhoSampledData) {
+      const { track_name, artist } = selectedTrack;
+      const url = generateSpotifyTrackAndArtistQueryURL(track_name, artist);
+
+      try {
+        const { data } = await spotifyGETData(url, spotifyAuth);
+        const { items } = data.tracks;
+        const matchingTrack = findMatchingTrack(items, selectedTrack);
+        if (!matchingTrack) {
+          setSnackbarText(`Unable to find ${track_name} in search results`);
+          return;
+        }
+
+        const { uri } = matchingTrack;
+        const { status } = await spotifyPOSTData(
+          `v1/me/player/queue?uri=${uri}`,
+          spotifyAuth,
+        );
+        const queueResultText =
+          status === 204
+            ? `Queued ${track_name} by ${artist}`
+            : `Unable to queue track ${track_name}`;
+        setSnackbarText(queueResultText);
+      } catch (err) {
+        setSnackbarText(JSON.stringify(err));
+      }
+      setShowSnackbar(true);
+    }
+
+    if (selectedTrackIndex > -1 && sampleData?.samples[selectedTrackIndex]) {
+      findAndQueueTrack(sampleData.samples[selectedTrackIndex]);
+    }
+  }, [selectedTrackIndex, sampleData?.samples, spotifyAuth]);
+
   return (
-    <FlatList
-      refreshControl={
-        <RefreshControl onRefresh={onRefresh} refreshing={loading} />
-      }
-      ListHeaderComponent={HeaderComponent}
-      ListEmptyComponent={
-        loading ? <WhoSampledSkeleton /> : <EmptyListMessage />
-      }
-      data={sampleData?.samples}
-      renderItem={TrackItem}
-    />
+    <>
+      <FlatList
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={loading} />
+        }
+        ListHeaderComponent={HeaderComponent}
+        ListEmptyComponent={
+          loading ? <WhoSampledSkeleton /> : <EmptyListMessage />
+        }
+        data={sampleData?.samples}
+        renderItem={({ item, index }) => (
+          <TrackItem
+            item={item}
+            index={index}
+            onPress={setSelectedTrackIndex}
+          />
+        )}
+      />
+      <Snackbar
+        duration={1000}
+        visible={showSnackbar}
+        onDismiss={() => setShowSnackbar(false)}
+        style={styles.snackBar}
+      >
+        <Text>{snackbarText}</Text>
+      </Snackbar>
+    </>
   );
 }
 
