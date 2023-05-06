@@ -63,7 +63,7 @@ export interface SearchForItemParameterObject {
    * If `include_external=audio` is specified, the response will include any relevant audio content that is hosted externally.
    * By default external content is filtered out from responses.
    */
-  include_external: string | undefined;
+  include_external?: string;
 }
 
 /**
@@ -80,88 +80,86 @@ export interface SearchForItemParameterObject {
  * @target_ q Optional. Multiple values. For each of the tunable track attributes (below) a target value may be provided. Tracks with the attribute values nearest to the target values will be preferred. For example, you might request target_energy=0.6 and target_danceability=0.8. All target values will be weighed equally in ranking results.
  */
 export interface RecommendationsOptionsObject {
-  limit?: number | undefined;
-  market?: string | undefined;
-  max_acousticness?: number | undefined;
-  max_danceability?: number | undefined;
-  max_duration_ms?: number | undefined;
-  max_energy?: number | undefined;
-  max_instrumentalness?: number | undefined;
-  max_key?: number | undefined;
-  max_liveness?: number | undefined;
-  max_loudness?: number | undefined;
-  max_mode?: number | undefined;
-  max_popularity?: number | undefined;
-  max_speechiness?: number | undefined;
-  max_tempo?: number | undefined;
-  max_time_signature?: number | undefined;
-  max_valence?: number | undefined;
-  min_acousticness?: number | undefined;
-  min_danceability?: number | undefined;
-  min_duration_ms?: number | undefined;
-  min_energy?: number | undefined;
-  min_instrumentalness?: number | undefined;
-  min_key?: number | undefined;
-  min_liveness?: number | undefined;
-  min_loudness?: number | undefined;
-  min_mode?: number | undefined;
-  min_popularity?: number | undefined;
-  min_speechiness?: number | undefined;
-  min_tempo?: number | undefined;
-  min_time_signature?: number | undefined;
-  min_valence?: number | undefined;
-  seed_artists?: string[] | string | undefined; // Array of strings or Comma separated string
-  seed_genres?: string[] | string | undefined; // Array of strings or Comma separated string
-  seed_tracks?: string[] | string | undefined; // Array of strings or Comma separated string
-  target_acousticness?: number | undefined;
-  target_danceability?: number | undefined;
-  target_duration_ms?: number | undefined;
-  target_energy?: number | undefined;
-  target_instrumentalness?: number | undefined;
-  target_key?: number | undefined;
-  target_liveness?: number | undefined;
-  target_loudness?: number | undefined;
-  target_mode?: number | undefined;
-  target_popularity?: number | undefined;
-  target_speechiness?: number | undefined;
-  target_tempo?: number | undefined;
-  target_time_signature?: number | undefined;
-  target_valence?: number | undefined;
+  limit?: number;
+  market?: string;
+  max_acousticness?: number;
+  max_danceability?: number;
+  max_duration_ms?: number;
+  max_energy?: number;
+  max_instrumentalness?: number;
+  max_key?: number;
+  max_liveness?: number;
+  max_loudness?: number;
+  max_mode?: number;
+  max_popularity?: number;
+  max_speechiness?: number;
+  max_tempo?: number;
+  max_time_signature?: number;
+  max_valence?: number;
+  min_acousticness?: number;
+  min_danceability?: number;
+  min_duration_ms?: number;
+  min_energy?: number;
+  min_instrumentalness?: number;
+  min_key?: number;
+  min_liveness?: number;
+  min_loudness?: number;
+  min_mode?: number;
+  min_popularity?: number;
+  min_speechiness?: number;
+  min_tempo?: number;
+  min_time_signature?: number;
+  min_valence?: number;
+  seed_artists?: string[] | string; // Array of strings or Comma separated string
+  seed_genres?: string[] | string; // Array of strings or Comma separated string
+  seed_tracks?: string[] | string; // Array of strings or Comma separated string
+  target_acousticness?: number;
+  target_danceability?: number;
+  target_duration_ms?: number;
+  target_energy?: number;
+  target_instrumentalness?: number;
+  target_key?: number;
+  target_liveness?: number;
+  target_loudness?: number;
+  target_mode?: number;
+  target_popularity?: number;
+  target_speechiness?: number;
+  target_tempo?: number;
+  target_time_signature?: number;
+  target_valence?: number;
 }
 
 export interface RecentlyPlayedParameterObject {
-  limit?: number | undefined;
-  after?: number | undefined;
-  before?: number | undefined;
+  limit?: number;
+  after?: number;
+  before?: number;
 }
 
 export interface TransferPlaybackParameterObject {
-  play?: boolean | undefined;
+  play?: boolean;
 }
 
 export interface TrackRelinkingParameterObject {
-  market?: string | undefined;
+  market?: string;
 }
 
 export interface DeviceSpecificParameterObject {
-  device_id?: string | undefined;
-  context_uri?: string | undefined;
-  position_ms?: number | undefined;
-  uris?: string[] | undefined;
-  offset?: Object | undefined;
+  device_id?: string;
+  context_uri?: string;
+  position_ms?: number;
+  uris?: string[];
+  offset?: Object;
 }
 
 export interface PlayParameterObject {
-  device_id?: string | undefined;
-  context_uri?: string | undefined;
-  uris?: string[] | undefined;
-  offset?:
-    | {
-        position?: number | undefined;
-        uri?: string | undefined;
-      }
-    | undefined;
-  position_ms?: number | undefined;
+  device_id?: string;
+  context_uri?: string;
+  uris?: string[];
+  offset?: {
+    position?: number;
+    uri?: string;
+  };
+  position_ms?: number;
 }
 
 export interface RestrictionsObject {
@@ -296,7 +294,7 @@ export interface MultipleAudioFeaturesResponse {
  * https://developer.spotify.com/web-api/get-list-featured-playlists/
  */
 export interface ListOfFeaturedPlaylistsResponse {
-  message?: string | undefined;
+  message?: string;
   playlists: PagingObject<PlaylistObjectSimplified>;
 }
 
@@ -307,7 +305,7 @@ export interface ListOfFeaturedPlaylistsResponse {
  * https://developer.spotify.com/web-api/get-list-new-releases/
  */
 export interface ListOfNewReleasesResponse {
-  message?: string | undefined;
+  message?: string;
   albums: PagingObject<AlbumObjectSimplified>;
 }
 
@@ -887,7 +885,7 @@ export interface AlbumObjectSimplified extends ContextObject {
    * Possible values are “album”, “single”, “compilation”, “appears_on”.
    * Compare to album_type this field represents relationship between the artist and the album.
    */
-  album_group?: 'album' | 'single' | 'compilation' | 'appears_on' | undefined;
+  album_group?: 'album' | 'single' | 'compilation' | 'appears_on';
   /**
    * The type of the album: one of “album”, “single”, or “compilation”.
    */
@@ -901,7 +899,7 @@ export interface AlbumObjectSimplified extends ContextObject {
    * The markets in which the album is available: [ISO 3166-1 alpha-2 country codes](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
    * Note that an album is considered available in a market when at least 1 of its tracks is available in that market.
    */
-  available_markets?: string[] | undefined;
+  available_markets?: string[];
   /**
    * The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the album.
    */
@@ -929,7 +927,7 @@ export interface AlbumObjectSimplified extends ContextObject {
    * The track response will still contain metadata for the original track,
    * and a restrictions object containing the reason why the track is not available: `"restrictions" : {"reason" : "market"}`
    */
-  restrictions?: RestrictionsObject | undefined;
+  restrictions?: RestrictionsObject;
   type: 'album';
   /**
    * The number of tracks in the album.
@@ -1116,7 +1114,7 @@ export interface CopyrightObject {
  */
 export interface CursorObject {
   after: string;
-  before?: string | undefined;
+  before?: string;
 }
 
 /**
@@ -1142,9 +1140,9 @@ export interface ErrorObject {
  * Note that there might be other types available, it couldn't be found in the docs.
  */
 export interface ExternalIdObject {
-  isrc?: string | undefined;
-  ean?: string | undefined;
-  upc?: string | undefined;
+  isrc?: string;
+  ean?: string;
+  upc?: string;
 }
 
 /**
@@ -1181,7 +1179,7 @@ export interface ImageObject {
   /**
    * The image height in pixels. If unknown: `null` or not returned.
    */
-  height?: number | undefined;
+  height?: number;
   /**
    * The source URL of the image.
    */
@@ -1189,7 +1187,7 @@ export interface ImageObject {
   /**
    * The image width in pixels. If unknown: null or not returned.
    */
-  width?: number | undefined;
+  width?: number;
 }
 
 /**
@@ -1216,7 +1214,7 @@ export interface CursorBasedPagingObject<T> {
   limit: number;
   next: string | null;
   cursors: CursorObject;
-  total?: number | undefined;
+  total?: number;
 }
 
 /**
@@ -1397,7 +1395,7 @@ export interface TrackObjectFull extends TrackObjectSimplified {
   /**
    * Whether or not the track is from a local file.
    */
-  is_local?: boolean | undefined;
+  is_local?: boolean;
 }
 
 /**
@@ -1413,7 +1411,7 @@ interface TrackObjectSimplified {
    * A list of the countries in which the track can be played,
    * identified by their [ISO 3166-1 alpha-2 code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
    */
-  available_markets?: string[] | undefined;
+  available_markets?: string[];
   /**
    * The disc number (usually `1` unless the album consists of more than one disc).
    */
@@ -1442,20 +1440,20 @@ interface TrackObjectSimplified {
    * Part of the response when [Track Relinking](https://developer.spotify.com/documentation/general/guides/track-relinking-guide/) is applied.
    * If `true`, the track is playable in the given market. Otherwise, `false`.
    */
-  is_playable?: boolean | undefined;
+  is_playable?: boolean;
   /**
    * Part of the response when [Track Relinking](https://developer.spotify.com/documentation/general/guides/track-relinking-guide/) is applied,
    * and the requested track has been replaced with different track.
    * The track in the `linked_from` object contains information about the originally requested track.
    */
-  linked_from?: TrackLinkObject | undefined;
+  linked_from?: TrackLinkObject;
   /**
    * Part of the response when [Track Relinking](https://developer.spotify.com/documentation/general/guides/track-relinking-guide/) is applied,
    * the original track is not available in the given market, and Spotify did not have any tracks to relink it with.
    * The track response will still contain metadata for the original track, and a restrictions object containing the reason
    * why the track is not available: `"restrictions" : {"reason" : "market"}`.
    */
-  restrictions?: RestrictionsObject | undefined;
+  restrictions?: RestrictionsObject;
   /**
    * The name of the track.
    */
@@ -1557,7 +1555,7 @@ export interface EpisodeObjectSimplified extends ContextObject {
    * A list of the languages used in the episode, identified by their [ISO 639](https://en.wikipedia.org/wiki/ISO_639) code.
    * Optional because sometimes only the deprecated language field is set and this one isn't set at all.
    */
-  languages?: string[] | undefined;
+  languages?: string[];
   /**
    * The name of the episode.
    */
@@ -1573,7 +1571,7 @@ export interface EpisodeObjectSimplified extends ContextObject {
   /**
    * The user’s most recent position in the episode. Set if the supplied access token is a user token and has the scope user-read-playback-position.
    */
-  resume_point?: ResumePointObject | undefined;
+  resume_point?: ResumePointObject;
   type: 'episode';
 }
 
@@ -1662,7 +1660,7 @@ export interface ShowObjectSimplified extends ContextObject {
   /**
    * Total number of episodes in the show.
    */
-  total_episodes?: number | undefined;
+  total_episodes?: number;
 }
 
 /**
@@ -1681,12 +1679,12 @@ export interface UserObjectPrivate extends UserObjectPublic {
  * [](https://developer.spotify.com/web-api/object-model/#track-object-simplified)
  */
 export interface UserObjectPublic {
-  display_name?: string | undefined;
+  display_name?: string;
   external_urls: ExternalUrlObject;
-  followers?: FollowersObject | undefined;
+  followers?: FollowersObject;
   href: string;
   id: string;
-  images?: ImageObject[] | undefined;
+  images?: ImageObject[];
   type: 'user';
   uri: string;
 }
@@ -1754,14 +1752,14 @@ export interface ActionsObject {
 }
 
 export interface DisallowsObject {
-  interrupting_playback?: boolean | undefined;
-  pausing?: boolean | undefined;
-  resuming?: boolean | undefined;
-  seeking?: boolean | undefined;
-  skipping_next?: boolean | undefined;
-  skipping_prev?: boolean | undefined;
-  toggling_repeat_context?: boolean | undefined;
-  toggling_repeat_track?: boolean | undefined;
-  toggling_shuffle?: boolean | undefined;
-  transferring_playback?: boolean | undefined;
+  interrupting_playback?: boolean;
+  pausing?: boolean;
+  resuming?: boolean;
+  seeking?: boolean;
+  skipping_next?: boolean;
+  skipping_prev?: boolean;
+  toggling_repeat_context?: boolean;
+  toggling_repeat_track?: boolean;
+  toggling_shuffle?: boolean;
+  transferring_playback?: boolean;
 }
