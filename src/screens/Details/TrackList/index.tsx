@@ -1,6 +1,5 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { FlatList, View, Text, RefreshControl } from 'react-native';
-
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { Card, Paragraph, Snackbar } from 'react-native-paper';
 import { WhoSampledData } from '../../../types';
@@ -8,26 +7,13 @@ import { TrackObjectFull } from '../../../types/spotify-api';
 import styles from './Tracklist.styles';
 import theme from '../../../theme';
 import useWhoSampledAPI from '../../../hooks/whoSampled/useWhoSampledAPI';
-import {
-  generateSpotifyTrackAndArtistQueryURL,
-  spotifyGETData,
-  spotifyPOSTData,
-} from '../../../service/spotify/SpotifyAPI.service';
+import { findAndQueueTrack } from '../../../service/spotify/SpotifyAPI.service';
 import {
   SpotifyAuthContext,
   SpotifyAuthContextData,
 } from '../../../context/SpotifyAuthContext';
 
-const findMatchingTrack = (
-  items: TrackObjectFull[],
-  selectedTrack: WhoSampledData,
-) =>
-  items.find((result: any) => {
-    return (
-      result?.name === selectedTrack?.track_name &&
-      selectedTrack?.artist === result?.artists[0].name
-    );
-  });
+const INVALID_TRACK_INDEX = -1;
 
 function WhoSampledSkeleton() {
   return (
@@ -103,44 +89,21 @@ function TrackList({ trackInfo, HeaderComponent, onRefresh }: TrackListProps) {
   const { spotifyAuth } =
     useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { sampleData, loading } = useWhoSampledAPI(trackInfo);
-  const [selectedTrackIndex, setSelectedTrackIndex] = useState<number>(-1);
+  const [selectedTrackIndex, setSelectedTrackIndex] =
+    useState<number>(INVALID_TRACK_INDEX);
 
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
 
   useEffect(() => {
-    async function findAndQueueTrack(selectedTrack: WhoSampledData) {
-      const { track_name, artist } = selectedTrack;
-      const url = generateSpotifyTrackAndArtistQueryURL(track_name, artist);
-
-      try {
-        const { data } = await spotifyGETData(url, spotifyAuth);
-        const { items } = data.tracks;
-        const matchingTrack = findMatchingTrack(items, selectedTrack);
-        if (!matchingTrack) {
-          setSnackbarText(`Unable to find ${track_name} in search results`);
-          setShowSnackbar(true);
-          return;
-        }
-
-        const { uri } = matchingTrack;
-        const { status } = await spotifyPOSTData(
-          `v1/me/player/queue?uri=${uri}`,
-          spotifyAuth,
-        );
-        const queueResultText =
-          status === 204
-            ? `Queued ${track_name} by ${artist}`
-            : `Unable to queue track ${track_name}`;
-        setSnackbarText(queueResultText);
-      } catch (err) {
-        setSnackbarText(JSON.stringify(err));
-      }
+    if (
+      selectedTrackIndex > INVALID_TRACK_INDEX &&
+      sampleData?.samples[selectedTrackIndex]
+    ) {
+      findAndQueueTrack(sampleData.samples[selectedTrackIndex], spotifyAuth)
+        .then(result => setSnackbarText(result))
+        .catch(err => setSnackbarText(err));
       setShowSnackbar(true);
-    }
-
-    if (selectedTrackIndex > -1 && sampleData?.samples[selectedTrackIndex]) {
-      findAndQueueTrack(sampleData.samples[selectedTrackIndex]);
     }
   }, [selectedTrackIndex, sampleData?.samples, spotifyAuth]);
 
@@ -164,9 +127,13 @@ function TrackList({ trackInfo, HeaderComponent, onRefresh }: TrackListProps) {
         )}
       />
       <Snackbar
-        duration={1000}
+        duration={1500}
         visible={showSnackbar}
-        onDismiss={() => setShowSnackbar(false)}
+        onDismiss={() => {
+          setShowSnackbar(false);
+          setSnackbarText('');
+          setSelectedTrackIndex(-1);
+        }}
         style={styles.snackBar}
       >
         <Text>{snackbarText}</Text>

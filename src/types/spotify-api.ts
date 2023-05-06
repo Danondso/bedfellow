@@ -46,24 +46,24 @@ export interface SearchForItemParameterObject {
    * An [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) or the string `from_token`.
    * If a country code is specified, only artists, albums, and tracks with content that is playable in that market is returned.
    */
-  market?: string | undefined;
+  market?: string;
   /**
    * The maximum number of results to return.
    * Default: `20`. Minimum: `1`. Maximum: `50`.
    */
-  limit?: number | undefined;
+  limit?: number;
   /**
    * The index of the first result to return.
    * Default: `0` (first result). Maximum offset (including limit): `2,000`.
    * Use with limit to get the next page of search results.
    */
-  offset?: number | undefined;
+  offset?: number;
   /**
    * Possible values: `audio`.
    * If `include_external=audio` is specified, the response will include any relevant audio content that is hosted externally.
    * By default external content is filtered out from responses.
    */
-  include_external?: string | undefined;
+  include_external: string | undefined;
 }
 
 /**
