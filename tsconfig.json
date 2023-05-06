@@ -17,6 +17,7 @@
     },
     "paths": {
       "@screens/*": ["screens/*"],
+      "@service/*": ["service/*"],
       "@components/*": ["components/*"],
       "@context/*": ["context/*"],
       "@theme/*": ["theme/*"],

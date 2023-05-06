@@ -22,9 +22,8 @@ import { LoginScreenProps } from '../../types';
 import styles from './Login.styles';
 
 function LoginScreen({ navigation }: LoginScreenProps) {
-  const spotifyAuthContext = useContext<SpotifyAuthContextData | undefined>(
-    SpotifyAuthContext,
-  );
+  const spotifyAuthContext =
+    useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { setSpotifyAuth } = spotifyAuthContext as SpotifyAuthContextData;
 
   async function authenticate() {
@@ -40,6 +39,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
         scopes: [
           ApiScope.UserReadCurrentlyPlayingScope,
           ApiScope.UserFollowReadScope,
+          ApiScope.UserModifyPlaybackStateScope,
         ],
       };
 

@@ -1,13 +1,19 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { FlatList, View, Text, RefreshControl } from 'react-native';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import ContentLoader, { Rect } from 'react-content-loader/native';
-import { Card, Paragraph } from 'react-native-paper';
+import { Card, Paragraph, Snackbar } from 'react-native-paper';
 import { WhoSampledData } from '../../../types';
 import { TrackObjectFull } from '../../../types/spotify-api';
 import styles from './Tracklist.styles';
 import theme from '../../../theme';
 import useWhoSampledAPI from '../../../hooks/whoSampled/useWhoSampledAPI';
+import { findAndQueueTrack } from '../../../service/spotify/SpotifyAPI.service';
+import {
+  SpotifyAuthContext,
+  SpotifyAuthContextData,
+} from '../../../context/SpotifyAuthContext';
+
+const INVALID_TRACK_INDEX = -1;
 
 function WhoSampledSkeleton() {
   return (
@@ -38,16 +44,27 @@ function EmptyListMessage() {
   );
 }
 
-function TrackItem({ item }: { item: WhoSampledData }) {
+type TrackItemProps = {
+  item: WhoSampledData;
+  index: number;
+  onPress: (index: number) => void;
+};
+
+function TrackItem({ item, index, onPress }: TrackItemProps) {
   const { track_name, artist, images } = item;
+
   if (!artist) {
-    // if the server didn't parse an artist name
-    // we can assume the track is not from a song
+    // if the server didn't parse an artist name we can assume the track is not from a song
     return null;
   }
+
   return (
     <View style={styles.trackListWrapper}>
-      <Card mode="elevated" style={styles.trackItem}>
+      <Card
+        mode="elevated"
+        style={styles.trackItem}
+        onPress={() => onPress(index)}
+      >
         <Card.Cover
           style={styles.trackImage}
           // TODO fix this so we get a straight url with sizes in the API response see issue #7
@@ -69,19 +86,59 @@ type TrackListProps = {
 };
 
 function TrackList({ trackInfo, HeaderComponent, onRefresh }: TrackListProps) {
+  const { spotifyAuth } =
+    useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { sampleData, loading } = useWhoSampledAPI(trackInfo);
+  const [selectedTrackIndex, setSelectedTrackIndex] =
+    useState<number>(INVALID_TRACK_INDEX);
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarText, setSnackbarText] = useState('');
+
+  useEffect(() => {
+    if (
+      selectedTrackIndex > INVALID_TRACK_INDEX &&
+      sampleData?.samples[selectedTrackIndex]
+    ) {
+      findAndQueueTrack(sampleData.samples[selectedTrackIndex], spotifyAuth)
+        .then(result => setSnackbarText(result))
+        .catch(err => setSnackbarText(err));
+      setShowSnackbar(true);
+    }
+  }, [selectedTrackIndex, sampleData?.samples, spotifyAuth]);
+
   return (
-    <FlatList
-      refreshControl={
-        <RefreshControl onRefresh={onRefresh} refreshing={loading} />
-      }
-      ListHeaderComponent={HeaderComponent}
-      ListEmptyComponent={
-        loading ? <WhoSampledSkeleton /> : <EmptyListMessage />
-      }
-      data={sampleData?.samples}
-      renderItem={TrackItem}
-    />
+    <>
+      <FlatList
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={loading} />
+        }
+        ListHeaderComponent={HeaderComponent}
+        ListEmptyComponent={
+          loading ? <WhoSampledSkeleton /> : <EmptyListMessage />
+        }
+        data={sampleData?.samples}
+        renderItem={({ item, index }) => (
+          <TrackItem
+            item={item}
+            index={index}
+            onPress={setSelectedTrackIndex}
+          />
+        )}
+      />
+      <Snackbar
+        duration={1500}
+        visible={showSnackbar}
+        onDismiss={() => {
+          setShowSnackbar(false);
+          setSnackbarText('');
+          setSelectedTrackIndex(-1);
+        }}
+        style={styles.snackBar}
+      >
+        <Text>{snackbarText}</Text>
+      </Snackbar>
+    </>
   );
 }
 

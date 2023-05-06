@@ -5,7 +5,7 @@ import { TrackObjectFull } from '../../types/spotify-api';
 
 const BASE_URL = 'https://bedfellow-api.tunnelto.dev/sample-info/';
 
-const normalizeString = (string: String) => string?.replace(/\s/g, '-');
+const normalizeString = (string: string) => string?.replace(/\s/g, '-');
 
 type WhoSampledAPIHookResponse = {
   loading: boolean;
