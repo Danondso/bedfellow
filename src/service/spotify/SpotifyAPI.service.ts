@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { SpotifyAuthentication } from '../../context/SpotifyAuthContext';
 import { WhoSampledData } from '../../types';
 import { TrackObjectFull } from '../../types/spotify-api';
@@ -17,7 +17,7 @@ export const buildSpotifyHeaders = (
 export const spotifyGETData = async (
   url: string,
   spotifyAuth: SpotifyAuthentication,
-) => {
+): Promise<AxiosResponse<any, any>> => {
   return axios.get(`${BASE_URL}${url}`, buildSpotifyHeaders(spotifyAuth));
 };
 
@@ -25,7 +25,7 @@ export const spotifyPOSTData = async (
   url: string,
   spotifyAuth: SpotifyAuthentication,
   body: object = {},
-) => {
+): Promise<AxiosResponse<any, any>> => {
   return axios.post(
     `${BASE_URL}${url}`,
     body,
@@ -36,7 +36,7 @@ export const spotifyPOSTData = async (
 export const findAndQueueTrack = async (
   selectedTrack: WhoSampledData,
   spotifyAuth: SpotifyAuthentication,
-) => {
+): Promise<string> => {
   const { track_name, artist } = selectedTrack;
   const url = generateSpotifyTrackAndArtistQueryURL(track_name, artist);
   try {
