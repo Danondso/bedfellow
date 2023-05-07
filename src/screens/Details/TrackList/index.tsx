@@ -50,7 +50,7 @@ function TrackList({ trackInfo, HeaderComponent, onRefresh }: TrackListProps) {
           setError(true);
           setSnackbarText(err);
         })
-        .then(() => setShowSnackbar(true));
+        .finally(() => setShowSnackbar(true));
     }
   }, [selectedTrackIndex, sampleData?.samples, spotifyAuth]);
 
