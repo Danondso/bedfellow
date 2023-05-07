@@ -1,9 +1,13 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import axios, { AxiosResponse } from 'axios';
+import { fuzzy } from 'fast-fuzzy';
 import { SpotifyAuthentication } from '../../context/SpotifyAuthContext';
 import { WhoSampledData } from '../../types';
 import { TrackObjectFull } from '../../types/spotify-api';
 
 export const BASE_URL = 'https://api.spotify.com/';
+const COMPARISON_THRESHOLD = 1.5;
+const EXACT_MATCH = 2;
 
 export const buildSpotifyHeaders = (
   spotifyAuth: SpotifyAuthentication,
@@ -51,7 +55,13 @@ export const findAndQueueTrack = async (
       `v1/me/player/queue?uri=${matchingTrack.uri}`,
       spotifyAuth,
     );
-    return `Queued ${track_name} by ${artist}`;
+
+    const { name, artists } = matchingTrack;
+    const allArtists = artists
+      .map(matchingTrackArtist => matchingTrackArtist.name)
+      .join(',');
+
+    return `Queued ${name} by ${allArtists}`;
   } catch (err: any) {
     const { error } = err;
     return `Unable to queue track, status: ${error.status}, message: ${error.message}`;
@@ -61,13 +71,27 @@ export const findAndQueueTrack = async (
 const findMatchingTrack = (
   items: TrackObjectFull[],
   selectedTrack: WhoSampledData,
-): TrackObjectFull | undefined =>
-  items.find((result: any) => {
-    return (
-      result?.name === selectedTrack?.track_name &&
-      selectedTrack?.artist === result?.artists[0].name
-    );
-  });
+): TrackObjectFull | undefined => {
+  let index = -1;
+  let compositeScore = -1;
+
+  for (let i = 0; i < items.length; i++) {
+    const { name, artists } = items[i];
+    // fuzzy does a 0-1 score
+    const trackMatch = fuzzy(name, selectedTrack.track_name);
+    const artistMatch = fuzzy(artists[0].name, selectedTrack.artist);
+    const tempCompositeScore = trackMatch + artistMatch;
+    if (tempCompositeScore > compositeScore) {
+      index = i;
+      compositeScore = tempCompositeScore;
+    }
+
+    // if we get a 2 then it's a direct match so break;
+    if (compositeScore === EXACT_MATCH) break;
+  }
+  console.log('SCORE:', compositeScore);
+  return compositeScore >= COMPARISON_THRESHOLD ? items[index] : undefined;
+};
 
 const generateSpotifyTrackAndArtistQueryURL = (
   trackName: string,

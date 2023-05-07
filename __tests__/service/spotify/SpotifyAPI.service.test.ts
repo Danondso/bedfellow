@@ -138,15 +138,15 @@ describe('SpotifyAPI Service Tests', () => {
       expect(axios.post).toHaveBeenCalledWith(expectedPOSTURL, {}, mockHeaders);
     });
 
-    it('does not find track and returns early', async () => {
+    it('does not find track and returns undefined', async () => {
       const selectedTrackNotFound: WhoSampledData = {
         track_name: 'Haunted Mansion Man Duder',
-        artist: 'Haunted',
+        artist: 'Bing Crosby',
         year: 0,
         images: [],
       };
       const expectedURL =
-        'https://api.spotify.com/v1/search?q=%2620track%3AHaunted%2BMansion+Man+Duder%2520artist%3AHaunted&type=track&limit=50';
+        'https://api.spotify.com/v1/search?q=%2620track%3AHaunted%2BMansion+Man+Duder%2520artist%3ABing%2BCrosby&type=track&limit=50';
 
       // @ts-ignore
       axios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
