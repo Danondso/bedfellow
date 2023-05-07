@@ -85,11 +85,9 @@ const findMatchingTrack = (
       index = i;
       compositeScore = tempCompositeScore;
     }
-
-    // if we get a 2 then it's a direct match so break;
     if (compositeScore === EXACT_MATCH) break;
   }
-  console.log('SCORE:', compositeScore);
+
   return compositeScore >= COMPARISON_THRESHOLD ? items[index] : undefined;
 };
 
