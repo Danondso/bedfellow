@@ -4,7 +4,6 @@ import { Card, Paragraph } from 'react-native-paper';
 import styles from './TrackItem.styles';
 import { WhoSampledData } from '../../../../types';
 
-// TODO make the signature for onPress more explicit (rename it)
 type TrackItemProps = {
   item: WhoSampledData;
   index: number;

@@ -37,6 +37,7 @@ function TrackList({ trackInfo, HeaderComponent, onRefresh }: TrackListProps) {
 
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     if (
@@ -45,8 +46,11 @@ function TrackList({ trackInfo, HeaderComponent, onRefresh }: TrackListProps) {
     ) {
       findAndQueueTrack(sampleData.samples[selectedTrackIndex], spotifyAuth)
         .then(result => setSnackbarText(result))
-        .catch(err => setSnackbarText(err));
-      setShowSnackbar(true);
+        .catch(err => {
+          setError(true);
+          setSnackbarText(err);
+        })
+        .then(() => setShowSnackbar(true));
     }
   }, [selectedTrackIndex, sampleData?.samples, spotifyAuth]);
 
@@ -74,10 +78,11 @@ function TrackList({ trackInfo, HeaderComponent, onRefresh }: TrackListProps) {
         visible={showSnackbar}
         onDismiss={() => {
           setShowSnackbar(false);
+          setError(false);
           setSnackbarText('');
           setSelectedTrackIndex(-1);
         }}
-        style={styles.snackBar}
+        style={error ? styles.snackBarFail : styles.snackBarSuccess}
       >
         <Text>{snackbarText}</Text>
       </Snackbar>
