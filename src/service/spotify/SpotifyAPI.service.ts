@@ -1,13 +1,9 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import axios, { AxiosResponse } from 'axios';
-import { fuzzy } from 'fast-fuzzy';
 import { SpotifyAuthentication } from '../../context/SpotifyAuthContext';
 import { WhoSampledData } from '../../types';
-import { TrackObjectFull } from '../../types/spotify-api';
+import findMatchingTrack from './utilities/utilities';
 
 export const BASE_URL = 'https://api.spotify.com/';
-const COMPARISON_THRESHOLD = 1.5;
-const EXACT_MATCH = 2;
 
 export const buildSpotifyHeaders = (
   spotifyAuth: SpotifyAuthentication,
@@ -66,29 +62,6 @@ export const findAndQueueTrack = async (
     const { error } = err;
     return `Unable to queue track, status: ${error.status}, message: ${error.message}`;
   }
-};
-
-const findMatchingTrack = (
-  items: TrackObjectFull[],
-  selectedTrack: WhoSampledData,
-): TrackObjectFull | undefined => {
-  let index = -1;
-  let compositeScore = -1;
-
-  for (let i = 0; i < items.length; i++) {
-    const { name, artists } = items[i];
-    // fuzzy does a 0-1 score
-    const trackMatch = fuzzy(name, selectedTrack.track_name);
-    const artistMatch = fuzzy(artists[0].name, selectedTrack.artist);
-    const tempCompositeScore = trackMatch + artistMatch;
-    if (tempCompositeScore > compositeScore) {
-      index = i;
-      compositeScore = tempCompositeScore;
-    }
-    if (compositeScore === EXACT_MATCH) break;
-  }
-
-  return compositeScore >= COMPARISON_THRESHOLD ? items[index] : undefined;
 };
 
 const generateSpotifyTrackAndArtistQueryURL = (

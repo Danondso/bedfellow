@@ -7,6 +7,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
   ],
   rules: {
+    'no-continue': 'off',
     'react/jsx-filename-extension': 0,
     'import/extensions': 0,
     'prettier/prettier': [
