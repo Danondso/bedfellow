@@ -138,15 +138,15 @@ describe('SpotifyAPI Service Tests', () => {
       expect(axios.post).toHaveBeenCalledWith(expectedPOSTURL, {}, mockHeaders);
     });
 
-    it('does not find track and returns undefined', async () => {
+    it('finds track that matches but is skipped due to word count difference in track name', async () => {
       const selectedTrackNotFound: WhoSampledData = {
-        track_name: 'Haunted Mansion Man Duder',
-        artist: 'Bing Crosby',
+        track_name: 'Haunted Mansion Man Duder Hollywood',
+        artist: 'Haunted',
         year: 0,
         images: [],
       };
       const expectedURL =
-        'https://api.spotify.com/v1/search?q=%2620track%3AHaunted%2BMansion+Man+Duder%2520artist%3ABing%2BCrosby&type=track&limit=50';
+        'https://api.spotify.com/v1/search?q=%2620track%3AHaunted%2BMansion+Man+Duder+Hollywood%2520artist%3AHaunted&type=track&limit=50';
 
       // @ts-ignore
       axios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
@@ -156,10 +156,40 @@ describe('SpotifyAPI Service Tests', () => {
         mockSpotifyAuth,
       );
       expect(result).toEqual(
-        'Unable to find Haunted Mansion Man Duder in search results',
+        'Unable to find Haunted Mansion Man Duder Hollywood in search results',
       );
       expect(axios.get).toHaveBeenCalledWith(expectedURL, mockHeaders);
       expect(axios.post).toHaveBeenCalledTimes(0);
+    });
+
+    it('finds track that matches and does not exceed word count of selected track', async () => {
+      const selectedTrackNotFound: WhoSampledData = {
+        track_name: 'Haunted - Acoustic',
+        artist: 'Taylor Swift',
+        year: 0,
+        images: [],
+      };
+      const expectedURL =
+        'https://api.spotify.com/v1/search?q=%2620track%3AHaunted%2B-+Acoustic%2520artist%3ATaylor%2BSwift&type=track&limit=50';
+      const expectedPOSTURLFuzzyMatch =
+        'https://api.spotify.com/v1/me/player/queue?uri=spotify:track:62rlxI6g2PNaWsHoiRryto';
+
+      // @ts-ignore
+      axios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
+
+      const result = await SpotifyServiceModule.findAndQueueTrack(
+        selectedTrackNotFound,
+        mockSpotifyAuth,
+      );
+      expect(result).toEqual(
+        'Queued Haunted - Acoustic Version by Taylor Swift',
+      );
+      expect(axios.get).toHaveBeenCalledWith(expectedURL, mockHeaders);
+      expect(axios.post).toHaveBeenCalledWith(
+        expectedPOSTURLFuzzyMatch,
+        {},
+        mockHeaders,
+      );
     });
   });
 });
