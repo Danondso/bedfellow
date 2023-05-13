@@ -8,7 +8,7 @@ import whoSampledPayload, {
 
 describe('TrackList Test Suite', () => {
   const spotifyResponse = {
-    artists: [{ name: 'Girl Talk' }],
+    artists: [{ name: 'Girl // Talk' }],
     name: 'Once Again',
   };
   beforeEach(() => {
