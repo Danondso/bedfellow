@@ -5,7 +5,11 @@ import { TrackObjectFull } from '../../types/spotify-api';
 
 const BASE_URL = 'https://bedfellow-api.tunnelto.dev/sample-info/';
 
-const normalizeString = (string: string) => string?.replace(/\s/g, '-');
+// tl;dr we strip out forward slashes in the title
+// remove extra spaces so there's only one
+// then replace all spaces with - to fit whosampled's URL scheme
+const normalizeString = (string: string) =>
+  string?.replace(/\//g, '').replace(/  +/g, ' ').replace(/\s/g, '-');
 
 type WhoSampledAPIHookResponse = {
   loading: boolean;
