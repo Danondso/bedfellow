@@ -36,20 +36,18 @@ export default StyleSheet.create<Style>({
   },
   artistName: {
     padding: padding.eighth,
-    fontSize: fontSizes.SMALL,
     fontWeight: '400',
     textAlign: 'center',
     color: defaultPalette.primaryText,
   },
   trackName: {
     padding: padding.base,
-    fontSize: fontSizes.LARGE,
+    fontSize: fontSizes.SMALL,
     fontWeight: '600',
     textAlign: 'center',
     color: defaultPalette.primaryText,
   },
   albumDescription: {
-    fontSize: fontSizes.SMALL,
     color: defaultPalette.primaryText,
     textAlign: 'center',
   },

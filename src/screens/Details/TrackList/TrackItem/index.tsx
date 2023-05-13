@@ -30,9 +30,9 @@ function TrackItem({ item, index, onPress }: TrackItemProps) {
           // TODO fix this so we get a straight url with sizes in the API response see issue #7
           source={{ uri: images[images.length - 1].split(' ')[0] }}
         />
-        <Card.Title titleStyle={styles.trackName} title={track_name} />
+        <Card.Title title={track_name} />
         <Card.Content>
-          <Paragraph style={styles.artistName}>{artist}</Paragraph>
+          <Paragraph>{artist}</Paragraph>
         </Card.Content>
       </Card>
     </View>
