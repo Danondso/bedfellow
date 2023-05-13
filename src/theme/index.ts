@@ -1,6 +1,8 @@
 import defaultPalette from './styles';
 
 enum FONT_SIZES {
+  XX_SMALL = 4,
+  X_SMALL = 8,
   SMALL = 16,
   MEDIUM = 24,
   LARGE = 32,

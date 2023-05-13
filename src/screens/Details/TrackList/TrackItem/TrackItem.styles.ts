@@ -1,20 +1,15 @@
-import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { ImageStyle, StyleSheet, ViewStyle } from 'react-native';
 import theme from '../../../../theme';
 
 type Style = {
-  artistName: TextStyle;
   trackImage: ImageStyle;
   trackItem: ViewStyle;
   trackListWrapper: ViewStyle;
-  trackName: TextStyle;
 };
 
-const { defaultPalette, padding, borderRadius, fontSizes } = theme;
+const { defaultPalette, padding, borderRadius } = theme;
 
 export default StyleSheet.create<Style>({
-  artistName: {
-    fontSize: fontSizes.SMALL,
-  },
   trackImage: {
     borderRadius: borderRadius / 4,
   },
@@ -30,8 +25,5 @@ export default StyleSheet.create<Style>({
   trackListWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  trackName: {
-    fontSize: fontSizes.MEDIUM,
   },
 });
