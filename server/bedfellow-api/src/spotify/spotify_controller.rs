@@ -13,6 +13,12 @@ struct SpotifyLoginApiResponse {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+struct SpotifyApiErrorResponse {
+    error: String,
+    error_description: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
  struct SpotifyLoginApiRequest {
     grant_type: String,
     redirect_uri: String,
@@ -35,7 +41,7 @@ async fn send_request<T: serde::Serialize>(request_body: T) -> Result<reqwest::R
     return result;
 }
 
-#[post("/swap")]
+#[post("/token")]
 pub async fn swap(req_body: String) -> impl Responder {
     let spotify_client_callback: String = env::var("SPOTIFY_CLIENT_CALLBACK").ok().unwrap();
     let _encryption_secret: String = env::var("ENCRYPTION_SECRET").ok().unwrap();
@@ -45,18 +51,27 @@ pub async fn swap(req_body: String) -> impl Responder {
     let request: SpotifyLoginApiRequest = SpotifyLoginApiRequest { 
         grant_type: "authorization_code".into(),
         redirect_uri: spotify_client_callback.into(),
-        code: parsed_req_body[1].into()
+        code: parsed_req_body[1].trim_end_matches("&client_id").into()
     };
 
-    debug!("{:?}", request);
+    debug!("REQUEST::: {:?}", request);
     let result = send_request(request).await;
+
     if result.is_ok() {
-      let payload: SpotifyLoginApiResponse = result.unwrap().json().await.ok().unwrap();
-      debug!("Spotify Token API Result: {:#?}", payload);
-      return HttpResponse::Ok().json(payload);
-    } else {
-        return HttpResponse::BadRequest().json(result.err().unwrap().to_string());
-    }
+        let response = result.unwrap();
+        if response.status().is_success() {
+            let payload: SpotifyLoginApiResponse = response.json().await.ok().unwrap();
+            debug!("Spotify Token API Result: {:#?}", payload);
+            return HttpResponse::Ok().json(payload);
+        } else {
+            let payload: SpotifyApiErrorResponse = response.json().await.ok().unwrap();
+            error!("Spotify Token API Error {:?}", payload);
+            return HttpResponse::BadRequest().json(payload);
+        }
+    } 
+    // TODO augment this or pass back the response from Spotify..
+    return HttpResponse::InternalServerError().into();
+    
 }
 
 #[derive(Serialize, Deserialize, Debug)]
