@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { fuzzy } from 'fast-fuzzy';
 
 import { TrackObjectFull } from '../../../types/spotify-api';

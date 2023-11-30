@@ -43,15 +43,19 @@ async fn send_request<T: serde::Serialize>(request_body: T) -> Result<reqwest::R
 
 #[post("/token")]
 pub async fn swap(req_body: String) -> impl Responder {
-    let spotify_client_callback: String = env::var("SPOTIFY_CLIENT_CALLBACK").ok().unwrap();
-    let _encryption_secret: String = env::var("ENCRYPTION_SECRET").ok().unwrap();
-    let _encryption_method: &str = "aes-256-ctr";
-    let parsed_req_body: Vec<&str> = req_body.split("=").collect();
-
+    let parsed_req_body: Vec<&str> = req_body.split("&").collect();
+    debug!("PARSED REQUEST BODY::: {:?}", parsed_req_body);
+    let client_callback: String;
+    if parsed_req_body[2].contains("com.bedfellow") {
+        client_callback = env::var("SPOTIFY_CLIENT_CALLBACK_ANDROID").ok().unwrap();
+    } else {
+        client_callback = env::var("SPOTIFY_CLIENT_CALLBACK_IOS").ok().unwrap();
+    }
+    debug!("REQUEST BODY::: {:?}", parsed_req_body);
     let request: SpotifyLoginApiRequest = SpotifyLoginApiRequest { 
         grant_type: "authorization_code".into(),
-        redirect_uri: spotify_client_callback.into(),
-        code: parsed_req_body[1].trim_end_matches("&client_id").into()
+        redirect_uri: client_callback.into(),
+        code: parsed_req_body[0].replace("code=", "")
     };
 
     debug!("REQUEST::: {:?}", request);
