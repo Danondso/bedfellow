@@ -6,9 +6,9 @@ import {
   SPOTIFY_REDIRECT_URI_ANDROID,
   SPOTIFY_TOKEN_URL,
   SPOTIFY_AUTHORIZE_URL,
+  // eslint-disable-next-line import/no-unresolved
 } from '@env';
 import { authorize, AuthorizeResult } from 'react-native-app-auth';
-
 import {
   SpotifyAuthContext,
   SpotifyAuthContextData,

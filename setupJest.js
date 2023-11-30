@@ -11,7 +11,7 @@ jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
-jest.mock('react-native-spotify-remote', () => ({
+jest.mock('react-native-app-auth', () => ({
   authorize: jest.fn(),
 }));
 

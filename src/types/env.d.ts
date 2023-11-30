@@ -1,4 +1,4 @@
-declare module 'react-native-dotenv' {
+declare module '@env' {
   export const SPOTIFY_CLIENT_ID: string;
   export const SPOTIFY_REDIRECT_URI: string;
   export const SPOTIFY_REDIRECT_URI_ANDROID: string;
