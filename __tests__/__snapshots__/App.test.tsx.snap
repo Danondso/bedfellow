@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<App /> renders login screen snapshot 1`] = `
-<RNCSafeAreaProvider
-  onInsetsChange={[Function]}
+<View
+  collapsable={false}
+  pointerEvents="box-none"
   style={
     {
       "flex": 1,
@@ -10,221 +11,211 @@ exports[`<App /> renders login screen snapshot 1`] = `
   }
 >
   <View
-    collapsable={false}
-    pointerEvents="box-none"
     style={
-      {
-        "flex": 1,
-      }
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ]
     }
   >
-    <View
+    <RNSScreenStack
       style={
-        [
-          {
-            "flex": 1,
-          },
-          undefined,
-        ]
+        {
+          "flex": 1,
+        }
       }
     >
-      <RNSScreenStack
-        style={
+      <RNSScreen
+        collapsable={false}
+        gestureResponseDistance={
           {
-            "flex": 1,
+            "bottom": -1,
+            "end": -1,
+            "start": -1,
+            "top": -1,
           }
         }
-      >
-        <RNSScreen
-          collapsable={false}
-          gestureResponseDistance={
-            {
-              "bottom": -1,
-              "end": -1,
-              "start": -1,
-              "top": -1,
-            }
+        nativeBackButtonDismissalEnabled={false}
+        onAppear={[Function]}
+        onDisappear={[Function]}
+        onDismissed={[Function]}
+        onGestureCancel={[Function]}
+        onHeaderBackButtonClicked={[Function]}
+        onNativeDismissCancelled={[Function]}
+        onTransitionProgress={[Function]}
+        onWillDisappear={[Function]}
+        replaceAnimation="push"
+        sheetAllowedDetents="large"
+        sheetCornerRadius={-1}
+        sheetExpandsWhenScrolledToEdge={true}
+        sheetGrabberVisible={false}
+        sheetLargestUndimmedDetent="all"
+        stackPresentation="push"
+        style={
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
           }
-          nativeBackButtonDismissalEnabled={false}
-          onAppear={[Function]}
-          onDisappear={[Function]}
-          onDismissed={[Function]}
-          onGestureCancel={[Function]}
-          onHeaderBackButtonClicked={[Function]}
-          onNativeDismissCancelled={[Function]}
-          onTransitionProgress={[Function]}
-          onWillDisappear={[Function]}
-          replaceAnimation="push"
-          sheetAllowedDetents="large"
-          sheetCornerRadius={-1}
-          sheetExpandsWhenScrolledToEdge={true}
-          sheetGrabberVisible={false}
-          sheetLargestUndimmedDetent="all"
-          stackPresentation="push"
+        }
+        swipeDirection="horizontal"
+      >
+        <View
+          accessibilityElementsHidden={false}
+          importantForAccessibility="auto"
           style={
             {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
+              "flex": 1,
+              "flexDirection": "column-reverse",
             }
           }
-          swipeDirection="horizontal"
         >
           <View
-            accessibilityElementsHidden={false}
-            importantForAccessibility="auto"
+            collapsable={false}
             style={
-              {
-                "flex": 1,
-                "flexDirection": "column-reverse",
-              }
+              [
+                {
+                  "flex": 1,
+                },
+                {
+                  "backgroundColor": "rgb(242, 242, 242)",
+                },
+                undefined,
+              ]
             }
           >
             <View
-              collapsable={false}
               style={
-                [
-                  {
-                    "flex": 1,
-                  },
-                  {
-                    "backgroundColor": "rgb(242, 242, 242)",
-                  },
-                  undefined,
-                ]
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#FBF2C4",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
               }
             >
               <View
                 style={
                   {
                     "alignItems": "center",
-                    "backgroundColor": "#FBF2C4",
-                    "flex": 1,
-                    "justifyContent": "center",
+                    "backgroundColor": "#E5C185",
+                    "borderColor": "#343941",
+                    "borderRadius": 16,
+                    "borderWidth": 1,
+                    "paddingBottom": 200,
+                    "width": "80%",
                   }
                 }
               >
-                <View
+                <Text
                   style={
                     {
-                      "alignItems": "center",
-                      "backgroundColor": "#E5C185",
-                      "borderColor": "#343941",
-                      "borderRadius": 16,
-                      "borderWidth": 1,
-                      "paddingBottom": 200,
-                      "width": "80%",
+                      "color": "#343941",
+                      "fontSize": 48,
+                      "paddingTop": 48,
                     }
                   }
                 >
-                  <Text
-                    style={
-                      {
-                        "color": "#343941",
-                        "fontSize": 48,
-                        "paddingTop": 48,
-                      }
+                   Bedfellow 
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#343941",
+                      "fontSize": 16,
+                      "textAlign": "center",
                     }
-                  >
-                     Bedfellow 
-                  </Text>
-                  <Text
-                    style={
-                      {
-                        "color": "#343941",
-                        "fontSize": 16,
-                        "textAlign": "center",
-                      }
+                  }
+                >
+                  a smol bean app
+                </Text>
+                <View
+                  style={
+                    {
+                      "backgroundColor": "#FEF9E0",
+                      "borderColor": "#343941",
+                      "borderRadius": 16,
+                      "borderWidth": 1,
+                      "marginTop": 32,
                     }
-                  >
-                    a smol bean app
-                  </Text>
+                  }
+                >
                   <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    collapsable={false}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       {
-                        "backgroundColor": "#FEF9E0",
-                        "borderColor": "#343941",
+                        "borderColor": "#74A892",
                         "borderRadius": 16,
-                        "borderWidth": 1,
-                        "marginTop": 32,
+                        "opacity": 1,
+                        "padding": 16,
+                        "width": "100%",
                       }
                     }
                   >
-                    <View
-                      accessibilityState={
-                        {
-                          "busy": undefined,
-                          "checked": undefined,
-                          "disabled": undefined,
-                          "expanded": undefined,
-                          "selected": undefined,
-                        }
-                      }
-                      accessibilityValue={
-                        {
-                          "max": undefined,
-                          "min": undefined,
-                          "now": undefined,
-                          "text": undefined,
-                        }
-                      }
-                      accessible={true}
-                      collapsable={false}
-                      focusable={true}
-                      onClick={[Function]}
-                      onResponderGrant={[Function]}
-                      onResponderMove={[Function]}
-                      onResponderRelease={[Function]}
-                      onResponderTerminate={[Function]}
-                      onResponderTerminationRequest={[Function]}
-                      onStartShouldSetResponder={[Function]}
+                    <Text
                       style={
                         {
-                          "borderColor": "#74A892",
-                          "borderRadius": 16,
-                          "opacity": 1,
-                          "padding": 16,
-                          "width": "100%",
+                          "color": "#343941",
+                          "fontSize": 32,
+                          "fontWeight": "400",
                         }
                       }
                     >
-                      <Text
-                        style={
-                          {
-                            "color": "#343941",
-                            "fontSize": 32,
-                            "fontWeight": "400",
-                          }
-                        }
-                      >
-                        Login
-                      </Text>
-                    </View>
+                      Login
+                    </Text>
                   </View>
                 </View>
               </View>
             </View>
           </View>
-          <RNSScreenStackHeaderConfig
-            backButtonInCustomView={false}
-            backTitleVisible={true}
-            backgroundColor="rgb(255, 255, 255)"
-            color="rgb(0, 122, 255)"
-            direction="ltr"
-            disableBackButtonMenu={false}
-            hidden={true}
-            hideBackButton={false}
-            largeTitleHideShadow={false}
-            title="Login"
-            titleColor="rgb(28, 28, 30)"
-            topInsetEnabled={false}
-            translucent={false}
-          />
-        </RNSScreen>
-      </RNSScreenStack>
-    </View>
+        </View>
+        <RNSScreenStackHeaderConfig
+          backButtonInCustomView={false}
+          backTitleVisible={true}
+          backgroundColor="rgb(255, 255, 255)"
+          color="rgb(0, 122, 255)"
+          direction="ltr"
+          disableBackButtonMenu={false}
+          hidden={true}
+          hideBackButton={false}
+          largeTitleHideShadow={false}
+          title="Login"
+          titleColor="rgb(28, 28, 30)"
+          topInsetEnabled={false}
+          translucent={false}
+        />
+      </RNSScreen>
+    </RNSScreenStack>
   </View>
-</RNCSafeAreaProvider>
+</View>
 `;

@@ -33,7 +33,6 @@ const fuzzyFindMatchingTrack = (
     const trackMatch = fuzzy(name, selectedTrack.track_name);
     const artistMatch = fuzzy(artists[0].name, selectedTrack.artist);
     const tempCompositeScore = trackMatch + artistMatch;
-    console.log(trackMatch, artistMatch);
     const trackExceedsSelectedTrackWordCount =
       trackNameExceedsWordCountOfSelected(name, selectedTrack.track_name);
 
