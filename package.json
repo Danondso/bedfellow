@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "prepare": "husky install",
     "tsc": "tsc"
   },
   "dependencies": {
