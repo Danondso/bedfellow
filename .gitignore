@@ -71,3 +71,6 @@ buck-out/
 .metro-health-check*
 
 **/coverage
+
+## Ruby vendor directory
+**/vendor

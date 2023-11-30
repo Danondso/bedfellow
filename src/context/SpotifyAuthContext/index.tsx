@@ -10,27 +10,21 @@ import React, {
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { AuthorizeResult } from 'react-native-app-auth';
 
-export type SpotifyAuthentication = {
-  accessToken: string;
-  expirationDate: string;
-  expired: boolean;
-  refreshToken: string;
-  scope: string;
-};
-
-export const initialState: SpotifyAuthentication = {
+export const initialState: AuthorizeResult = {
   accessToken: '',
-  expirationDate: '',
+  accessTokenExpirationDate: '',
+  // @ts-ignore
   expired: true,
   refreshToken: '',
   scope: '',
 };
 
 export type SpotifyAuthContextData = {
-  spotifyAuth: SpotifyAuthentication;
-  setSpotifyAuth: Dispatch<SetStateAction<SpotifyAuthentication>>;
-  resetToken: (authData: SpotifyAuthentication) => void;
+  spotifyAuth: AuthorizeResult;
+  setSpotifyAuth: Dispatch<SetStateAction<AuthorizeResult>>;
+  resetToken: (authData: AuthorizeResult) => void;
 };
 
 export const SpotifyAuthContext: Context<SpotifyAuthContextData> =
@@ -40,9 +34,7 @@ export const SpotifyAuthContext: Context<SpotifyAuthContextData> =
     resetToken: () => {},
   });
 
-async function resetToken(
-  authData: SpotifyAuthentication,
-): Promise<SpotifyAuthentication> {
+async function resetToken(authData: AuthorizeResult): Promise<AuthorizeResult> {
   const tokenUrl = process.env.SPOTIFY_TOKEN_REFRESH_URL || '';
   const refreshData = await axios.post(tokenUrl, {
     refresh_token: authData.refreshToken,
@@ -50,13 +42,13 @@ async function resetToken(
   return {
     ...authData,
     accessToken: refreshData.data.access_token,
+    // @ts-ignore
     expired: false,
   };
 }
 
 function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
-  const [spotifyAuth, setSpotifyAuth] =
-    useState<SpotifyAuthentication>(initialState);
+  const [spotifyAuth, setSpotifyAuth] = useState<AuthorizeResult>(initialState);
 
   const auth = useMemo<SpotifyAuthContextData>(
     () => ({

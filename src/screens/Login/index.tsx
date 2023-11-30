@@ -1,21 +1,17 @@
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import {
-  auth as SpotifyAuth,
-  ApiScope,
-  ApiConfig,
-} from 'react-native-spotify-remote';
-import {
   SPOTIFY_CLIENT_ID,
   SPOTIFY_REDIRECT_URI,
   SPOTIFY_REDIRECT_URI_ANDROID,
-  SPOTIFY_TOKEN_REFRESH_URL,
-  SPOTIFY_TOKEN_SWAP_URL,
-} from 'react-native-dotenv';
+  SPOTIFY_TOKEN_URL,
+  SPOTIFY_AUTHORIZE_URL,
+  // eslint-disable-next-line import/no-unresolved
+} from '@env';
+import { authorize, AuthorizeResult } from 'react-native-app-auth';
 import {
   SpotifyAuthContext,
   SpotifyAuthContextData,
-  SpotifyAuthentication,
 } from '../../context/SpotifyAuthContext';
 import { DETAILS } from '../constants/Screens';
 import { LoginScreenProps } from '../../types';
@@ -28,25 +24,25 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 
   async function authenticate() {
     try {
-      const spotifyConfig: ApiConfig = {
-        clientID: SPOTIFY_CLIENT_ID,
-        redirectURL:
+      const config = {
+        clientId: SPOTIFY_CLIENT_ID,
+        usePKCE: false,
+        redirectUrl:
           Platform.OS === 'ios'
             ? SPOTIFY_REDIRECT_URI
             : SPOTIFY_REDIRECT_URI_ANDROID,
-        tokenRefreshURL: SPOTIFY_TOKEN_REFRESH_URL,
-        tokenSwapURL: SPOTIFY_TOKEN_SWAP_URL,
         scopes: [
-          ApiScope.UserReadCurrentlyPlayingScope,
-          ApiScope.UserFollowReadScope,
-          ApiScope.UserModifyPlaybackStateScope,
+          'user-modify-playback-state',
+          'user-follow-read',
+          'user-read-currently-playing',
         ],
+        serviceConfiguration: {
+          authorizationEndpoint: SPOTIFY_AUTHORIZE_URL,
+          tokenEndpoint: SPOTIFY_TOKEN_URL,
+        },
       };
 
-      const session: SpotifyAuthentication = await SpotifyAuth.authorize(
-        spotifyConfig,
-      );
-
+      const session: AuthorizeResult = await authorize(config);
       if (setSpotifyAuth && session.refreshToken) {
         setSpotifyAuth(session);
         navigation.navigate(DETAILS);
