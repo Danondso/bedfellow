@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undef, import/no-extraneous-dependencies */
 
@@ -10,6 +11,11 @@ import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/asy
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
+
+jest.mock(
+  'react-native-safe-area-context',
+  () => require('react-native-safe-area-context/jest/mock').default,
+);
 
 jest.mock('react-native-app-auth', () => ({
   authorize: jest.fn(),
