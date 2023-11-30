@@ -14,6 +14,11 @@ module.exports = {
       'error',
       {
         endOfLine: 'auto',
+        arrowParens: 'avoid',
+        bracketSameLine: false,
+        bracketSpacing: true,
+        singleQuote: true,
+        trailingComma: 'all',
       },
     ],
     'react/display-name': 'off',
