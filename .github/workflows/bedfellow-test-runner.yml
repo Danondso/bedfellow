@@ -11,9 +11,10 @@ jobs:
       - run: yarn run lint
       - run: yarn run test
     env:
-      SPOTIFY_CLIENT_ID: 'client_id'
-      SPOTIFY_REDIRECT_URI: 'redirect_uri'
-      SPOTIFY_REDIRECT_URI_ANDROID: 'redirect_uri_android'
-      SPOTIFY_TOKEN_REFRESH_URL: 'http://localhost:8080/refresh'
-      SPOTIFY_TOKEN_SWAP_URL: 'http://localhost:8080/refresh'
+      SPOTIFY_CLIENT_ID: client_id
+      SPOTIFY_AUTHORIZE_URL: http://localhost/authorize
+      SPOTIFY_REDIRECT_URI_ANDROID: com.bedfellow://callback/
+      SPOTIFY_REDIRECT_URI: org.danondso.bedfellow://callback/
+      SPOTIFY_TOKEN_REFRESH_URL: http://localhost/refresh
+      SPOTIFY_TOKEN_URL: http://localhost/token
       
