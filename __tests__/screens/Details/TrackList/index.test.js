@@ -25,7 +25,6 @@ describe('TrackList Test Suite', () => {
         <TrackList trackInfo={spotifyResponse} />
       </SafeAreaProvider>,
     );
-    screen.debug();
     expect(screen.getByTestId('tracklist_loading_skeleton')).toBeDefined();
   });
 
@@ -46,7 +45,6 @@ describe('TrackList Test Suite', () => {
         <TrackList trackInfo={spotifyResponse} />
       </SafeAreaProvider>,
     );
-    screen.debug();
     expect(screen.getByText('No data.')).toBeDefined();
   });
 });
