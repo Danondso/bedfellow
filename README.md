@@ -8,7 +8,7 @@ A small React Native app and Rust web service that displays samples used for a g
 
 ## Mobile - Setting Up
 
-First, create a .env file and add these values to it.
+First, create a .env file in `bedfellow/` and add these values to it.
 
 ``` .env
 SPOTIFY_CLIENT_ID="your app's client id"
