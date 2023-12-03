@@ -1,15 +1,17 @@
 import axios from 'axios';
 import * as SpotifyServiceModule from '../../../src/service/spotify/SpotifyAPI.service';
-import { SpotifyAuthentication } from '../../../src/context/SpotifyAuthContext';
+import {
+  AuthResult,
+  initialState,
+} from '../../../src/context/SpotifyAuthContext';
 import SpotifySearchResult from '../../fixtures/api/spotify/search-result-success.0';
 import { WhoSampledData } from '../../../src/types';
 
-const mockSpotifyAuth: SpotifyAuthentication = {
+const mockSpotifyAuth: AuthResult = {
+  ...initialState,
   accessToken: 'fakeAccessToken',
-  expirationDate: '',
   expired: false,
   refreshToken: 'refreshingToken',
-  scope: 'scope',
 };
 
 const mockHeaders = {
@@ -21,6 +23,8 @@ const mockHeaders = {
 
 const TEST_URL = 'test/url';
 const MOCK_URL_FULL = 'https://api.spotify.com/test/url';
+
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('SpotifyAPI Service Tests', () => {
   beforeEach(() => {
@@ -39,19 +43,21 @@ describe('SpotifyAPI Service Tests', () => {
 
   describe('spotifyPOSTData', () => {
     it('returns OK response', async () => {
-      // @ts-ignore
-      axios.post.mockResolvedValueOnce(okResponse);
+      mockedAxios.post.mockResolvedValueOnce(okResponse);
       const result = await SpotifyServiceModule.spotifyPOSTData(
         'test/url',
         mockSpotifyAuth,
       );
       expect(result.status).toEqual(200);
-      expect(axios.post).toHaveBeenCalledWith(MOCK_URL_FULL, {}, mockHeaders);
+      expect(mockedAxios.post).toHaveBeenCalledWith(
+        MOCK_URL_FULL,
+        {},
+        mockHeaders,
+      );
     });
 
     it('returns NOT OK response', () => {
-      // @ts-ignore
-      axios.post.mockRejectedValueOnce(badResponse);
+      mockedAxios.post.mockRejectedValueOnce(badResponse);
       SpotifyServiceModule.spotifyPOSTData(TEST_URL, mockSpotifyAuth).catch(
         err => {
           expect(err.status).toEqual(500);
@@ -67,23 +73,24 @@ describe('SpotifyAPI Service Tests', () => {
 
   describe('spotifyGETData', () => {
     it('returns OK response', async () => {
-      // @ts-ignore
-      axios.get.mockResolvedValueOnce(okResponse);
+      mockedAxios.get.mockResolvedValueOnce(okResponse);
       const result = await SpotifyServiceModule.spotifyGETData(
         'test/url',
         mockSpotifyAuth,
       );
       expect(result.status).toEqual(200);
-      expect(axios.get).toHaveBeenCalledWith(MOCK_URL_FULL, mockHeaders);
+      expect(mockedAxios.get).toHaveBeenCalledWith(MOCK_URL_FULL, mockHeaders);
     });
 
     it('returns NOT OK response', async () => {
-      // @ts-ignore
-      axios.get.mockResolvedValueOnce(okResponse);
+      mockedAxios.get.mockResolvedValueOnce(okResponse);
       SpotifyServiceModule.spotifyGETData(TEST_URL, mockSpotifyAuth).catch(
         err => {
           expect(err.status).toEqual(500);
-          expect(axios.get).toHaveBeenCalledWith(MOCK_URL_FULL, mockHeaders);
+          expect(mockedAxios.get).toHaveBeenCalledWith(
+            MOCK_URL_FULL,
+            mockHeaders,
+          );
         },
       );
     });
@@ -102,10 +109,8 @@ describe('SpotifyAPI Service Tests', () => {
       'https://api.spotify.com/v1/me/player/queue?uri=spotify:track:09W5eWtrWsCJts8jAodFbP';
 
     it('finds and queues track', async () => {
-      // @ts-ignore
-      axios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
-      // @ts-ignore
-      axios.post.mockResolvedValueOnce({
+      mockedAxios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
+      mockedAxios.post.mockResolvedValueOnce({
         status: 204,
       });
       const result = await SpotifyServiceModule.findAndQueueTrack(
@@ -118,10 +123,8 @@ describe('SpotifyAPI Service Tests', () => {
     });
 
     it('finds track but is unable to post to queue', async () => {
-      // @ts-ignore
-      axios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
-      // @ts-ignore
-      axios.post.mockRejectedValueOnce({
+      mockedAxios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
+      mockedAxios.post.mockRejectedValueOnce({
         error: {
           status: 400,
           message: 'Bad Request',
@@ -134,8 +137,15 @@ describe('SpotifyAPI Service Tests', () => {
       expect(result).toEqual(
         'Unable to queue track, status: 400, message: Bad Request',
       );
-      expect(axios.get).toHaveBeenCalledWith(expectedSearchURL, mockHeaders);
-      expect(axios.post).toHaveBeenCalledWith(expectedPOSTURL, {}, mockHeaders);
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        expectedSearchURL,
+        mockHeaders,
+      );
+      expect(mockedAxios.post).toHaveBeenCalledWith(
+        expectedPOSTURL,
+        {},
+        mockHeaders,
+      );
     });
 
     it('finds track that matches but is skipped due to word count difference in track name', async () => {
@@ -148,8 +158,7 @@ describe('SpotifyAPI Service Tests', () => {
       const expectedURL =
         'https://api.spotify.com/v1/search?q=%2620track%3AHaunted%2BMansion+Man+Duder+Hollywood%2520artist%3AHaunted&type=track&limit=50';
 
-      // @ts-ignore
-      axios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
+      mockedAxios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
 
       const result = await SpotifyServiceModule.findAndQueueTrack(
         selectedTrackNotFound,
@@ -158,8 +167,8 @@ describe('SpotifyAPI Service Tests', () => {
       expect(result).toEqual(
         'Unable to find Haunted Mansion Man Duder Hollywood in search results',
       );
-      expect(axios.get).toHaveBeenCalledWith(expectedURL, mockHeaders);
-      expect(axios.post).toHaveBeenCalledTimes(0);
+      expect(mockedAxios.get).toHaveBeenCalledWith(expectedURL, mockHeaders);
+      expect(mockedAxios.post).toHaveBeenCalledTimes(0);
     });
 
     it('finds track that matches and does not exceed word count of selected track', async () => {
@@ -174,8 +183,7 @@ describe('SpotifyAPI Service Tests', () => {
       const expectedPOSTURLFuzzyMatch =
         'https://api.spotify.com/v1/me/player/queue?uri=spotify:track:62rlxI6g2PNaWsHoiRryto';
 
-      // @ts-ignore
-      axios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
+      mockedAxios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
 
       const result = await SpotifyServiceModule.findAndQueueTrack(
         selectedTrackNotFound,
@@ -184,8 +192,8 @@ describe('SpotifyAPI Service Tests', () => {
       expect(result).toEqual(
         'Queued Haunted - Acoustic Version by Taylor Swift',
       );
-      expect(axios.get).toHaveBeenCalledWith(expectedURL, mockHeaders);
-      expect(axios.post).toHaveBeenCalledWith(
+      expect(mockedAxios.get).toHaveBeenCalledWith(expectedURL, mockHeaders);
+      expect(mockedAxios.post).toHaveBeenCalledWith(
         expectedPOSTURLFuzzyMatch,
         {},
         mockHeaders,

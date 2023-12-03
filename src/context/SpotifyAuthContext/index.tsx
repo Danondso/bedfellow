@@ -12,13 +12,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { AuthorizeResult } from 'react-native-app-auth';
 
-export const initialState: AuthorizeResult = {
+export type AuthResult = AuthorizeResult & { expired: boolean };
+
+export const initialState: AuthResult = {
   accessToken: '',
   accessTokenExpirationDate: '',
-  // @ts-ignore
   expired: true,
+  idToken: '',
   refreshToken: '',
-  scope: '',
+  tokenType: '',
+  scopes: [],
+  authorizationCode: '',
 };
 
 export type SpotifyAuthContextData = {
@@ -34,7 +38,7 @@ export const SpotifyAuthContext: Context<SpotifyAuthContextData> =
     resetToken: () => {},
   });
 
-async function resetToken(authData: AuthorizeResult): Promise<AuthorizeResult> {
+async function resetToken(authData: AuthorizeResult): Promise<AuthResult> {
   const tokenUrl = process.env.SPOTIFY_TOKEN_REFRESH_URL || '';
   const refreshData = await axios.post(tokenUrl, {
     refresh_token: authData.refreshToken,
@@ -42,7 +46,6 @@ async function resetToken(authData: AuthorizeResult): Promise<AuthorizeResult> {
   return {
     ...authData,
     accessToken: refreshData.data.access_token,
-    // @ts-ignore
     expired: false,
   };
 }
