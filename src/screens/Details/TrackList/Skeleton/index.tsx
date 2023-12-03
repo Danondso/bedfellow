@@ -12,7 +12,6 @@ function WhoSampledSkeleton() {
           speed={1}
           backgroundColor={theme.defaultPalette.primaryBackground}
           foregroundColor={theme.defaultPalette.primaryBackground100}
-          // @ts-ignore
           style={styles.skeletonLoader}
         >
           {/* sample pic */}
