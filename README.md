@@ -36,6 +36,7 @@ export SPOTIFY_CLIENT_ID="your app's client id"
 export SPOTIFY_CLIENT_SECRET="your app's client secret"
 export SPOTIFY_CLIENT_CALLBACK_IOS=org.danondso.bedfellow://callback/
 export SPOTIFY_CLIENT_CALLBACK_ANDROID=com.bedfellow://callback/
+# export HOST_IP="" # Optional, used by docker to make service accessible from container. 
 ```
 
 Save those and run `source <your_file_name>`.

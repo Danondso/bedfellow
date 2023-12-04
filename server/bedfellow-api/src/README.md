@@ -19,6 +19,7 @@ export SPOTIFY_CLIENT_SECRET=''
 export SPOTIFY_CLIENT_CALLBACK=''
 export ENCRYPTION_SECRET=''
 export RUST_LOG=info # debug, error, warn, trace
+# export HOST_IP='' # optional, localhost is the default. Used by docker to open up server in container
 ```
 
 2. run `cargo build`
