@@ -74,3 +74,6 @@ buck-out/
 
 ## Ruby vendor directory
 **/vendor
+
+# Ignore generated credentials from google-github-actions/auth
+gha-creds-*.json
