@@ -30,7 +30,7 @@ jobs:
       - name: Build and Push Container
         run: |-
           cd server/bedfellow-api/
-          docker -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:${{ github.sha }} .
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:${{ github.sha }} .
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:${{ github.sha }}
 
       - name: Deploy to Cloud Run
