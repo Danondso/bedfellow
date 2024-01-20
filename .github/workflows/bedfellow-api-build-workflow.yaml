@@ -11,6 +11,7 @@ run-name: ${{ github.actor }} be building the bedfellow-api 🚀
 
 jobs:
   deploy:
+    environment: Production
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
