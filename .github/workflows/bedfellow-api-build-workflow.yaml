@@ -1,0 +1,49 @@
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'bedfellow/server/bedfellow-api/**/*'
+
+name: bedfellow-api Docker Build on
+run-name: ${{ github.actor }} be building the bedfellow-api 🚀
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Google Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with: 
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Authorize Docker Push
+        run: gcloud auth configure-docker
+
+      - name: Build and Push Container
+        run: |-
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:{{ $github.sha }} .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:{{ $github.sha }}
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: 'google-github-actions/deploy-cloudrun@v2' #TODO verify this version number
+        with: 
+          service: bedfellow-api
+          image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:{{ $github.sha }}
+          env_vars: |-
+             SPOTIFY_CLIENT_ID=${{secrets.SPOTIFY_CLIENT_ID}}
+             SPOTIFY_CLIENT_SECRET=${{secrets.SPOTIFY_CLIENT_SECRET}}
+             SPOTIFY_CLIENT_CALLBACK_IOS=${{secrets.SPOTIFY_CLIENT_CALLBACK_IOS}}
+             SPOTIFY_CLIENT_CALLBACK_ANDROID=${{secrets.SPOTIFY_CLIENT_CALLBACK_ANDROID}}
+             RUST_LOG=INFO
+             HOST_IP=0.0.0.0
+
+
+      - name: Show Output
+        run: echo ${{ steps.deploy.output.url }}
