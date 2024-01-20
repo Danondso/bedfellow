@@ -28,15 +28,15 @@ jobs:
 
       - name: Build and Push Container
         run: |-
-          docker build -f ./server/bedfellow-api/ -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:{{ $github.sha }} .
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:{{ $github.sha }}
+          docker build -f ./server/bedfellow-api/ -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:${{ $github.sha }} .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:${{ $github.sha }}
 
       - name: Deploy to Cloud Run
         id: deploy
         uses: 'google-github-actions/deploy-cloudrun@v2' #TODO verify this version number
         with: 
           service: bedfellow-api
-          image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:{{ $github.sha }}
+          image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bedfellow-api:${{ $github.sha }}
           env_vars: |-
              SPOTIFY_CLIENT_ID=${{secrets.SPOTIFY_CLIENT_ID}}
              SPOTIFY_CLIENT_SECRET=${{secrets.SPOTIFY_CLIENT_SECRET}}
