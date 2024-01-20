@@ -5,7 +5,7 @@ on:
     paths:
       - 'bedfellow/server/bedfellow-api/**/*'
 
-name: bedfellow-api Docker Build on
+name: bedfellow-api Docker Build
 run-name: ${{ github.actor }} be building the bedfellow-api 🚀
 
 jobs:
