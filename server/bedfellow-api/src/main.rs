@@ -3,6 +3,8 @@ use actix_web::{App, HttpServer};
 mod spotify;
 mod whosampled;
 
+// comment to test actions
+
 #[macro_use] extern crate log;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
