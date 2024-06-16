@@ -1,0 +1,36 @@
+{
+    "artist_name": "Kanye West",
+    "track_name": "Bound 2",
+    "samples": [
+      {
+        "artist": "Ponderosa Twins Plus One",
+        "year": 1971,
+        "track": "Bound",
+        "image": [
+          1, 
+          2,
+          3
+        ]
+      },
+       {
+        "artist": "Brenda Lee",
+        "year": 1959,
+        "track": "Sweet Nothin's",
+        "image": [
+          1, 
+          2,
+          3
+        ]
+      },
+      {
+         "artist": "Wee",
+        "year": 1977,
+        "track": "Aeroplane (Reprise)",
+        "image": [
+          1, 
+          2,
+          3
+        ]
+      }
+    ]
+  }

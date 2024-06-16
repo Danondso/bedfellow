@@ -1,0 +1,36 @@
+{
+    "artist_name": "Horn Goat",
+    "track_name": "Beat up Shit",
+    "samples": [
+      {
+        "artist": "Thumb Dumb",
+        "year": 1989,
+        "track": "Cross my Stitches",
+        "image": [
+          1, 
+          2,
+          3
+        ]
+      },
+       {
+        "artist": "Sump Pump",
+        "year": 2004,
+        "track": "Gribbonacci's Ladder",
+        "image": [
+          1, 
+          2,
+          3
+        ]
+      },
+      {
+         "artist": "Bimbo Creme Saver's",
+        "year": 1995,
+        "track": "Ool",
+        "image": [
+          1, 
+          2,
+          3
+        ]
+      }
+    ]
+  }

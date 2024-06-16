@@ -1,0 +1,43 @@
+services:
+  bedfellow-db-api:
+    image: bedfellow-db-api
+    command: ./bedfellow-db-api
+    restart: always
+    environment:
+      DATABASE_URL: mysql://xxxxx:xxxxx@host.docker.internal/bedfellow
+      HOST_IP: "0.0.0.0"
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - bedfellow-db
+    ports:
+      - 127.0.0.1:8000:8000
+    expose:
+      - 8000
+  bedfellow-db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: bedfellow
+      MYSQL_ROOT_PASSWORD: xxxxx
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: xxxxx
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - 3306:3306
+    expose:
+      # Opens port 3306 on the container
+      - 3306
+      # Where our data will be persisted
+    volumes:
+      - $PWD/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - bedfellow-db:/var/lib/mysql
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+# Names our volume
+volumes:
+  bedfellow-db:
