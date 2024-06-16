@@ -16,7 +16,6 @@ async fn main() -> std::io::Result<()> {
             .service(whosampled::whosampled_controller::sample_info)
             .service(whosampled::whosampled_controller::search)
     })
-    // by default we'll bind to localhost if HOST_IP isn't specified
     .bind((env::var("HOST_IP").unwrap_or("127.0.0.1".to_string()), 8080))?
     .run()
     .await

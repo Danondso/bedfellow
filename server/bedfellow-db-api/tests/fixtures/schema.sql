@@ -40,7 +40,3 @@ CREATE TABLE IF NOT EXISTS sample(
         sample_track_id
     )
 );
-
-CREATE INDEX track_name_index ON track (track_name);
-
-CREATE INDEX artist_name_index ON artist (artist_name);

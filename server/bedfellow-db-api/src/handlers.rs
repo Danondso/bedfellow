@@ -82,8 +82,6 @@ pub async fn get_samples_handler(
     }
 }
 
-// TODO there's an issue when posting an existing sample, it's doubling up the sample entires
-
 #[post("/samples")]
 async fn create_samples_handler(
     body: web::Json<InsertSamplesRequestSchema>,
