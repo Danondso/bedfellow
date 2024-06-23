@@ -15,9 +15,9 @@ services:
       dockerfile: Dockerfile
     # depends_on:
     ports:
-      - 127.0.0.1:8080:8080
+      - 127.0.0.1:8085:8085
     expose:
-      - 8080
+      - 8085
   bedfellow-db-api:
     image: bedfellow-db-api
     command: ./bedfellow-db-api

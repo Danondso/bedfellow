@@ -1,47 +1,12 @@
-use crate::whosampled::structs::{WhoSampledSearchResponse, WhoSampledErrorResponse, WhoSampledResponse, Track};
+use crate::whosampled::structs::{WhoSampledSearchResponse, WhoSampledErrorResponse, Track};
 use ego_tree::NodeRef;
 use ego_tree::iter::Children;
 use reqwest::{Client, StatusCode};
 use scraper::html::Select;
-use std::collections::HashMap;
 use std::time::{SystemTime, UNIX_EPOCH};
 use scraper::{Html,Selector, ElementRef, Node};
 
 const BASE_URL: &str = "https://www.whosampled.com";
-
-pub async fn get_sample_info(artist: &str, track_name: &str) -> Result<WhoSampledResponse, WhoSampledErrorResponse> {
-    let endpoint_key_config = HashMap::from([
-        ("samples", "Contains samples"),
-        ("sampled_by", "Was sampled"),
-        ("covered", "Was covered"),
-    ]);
-
-    let mut sample_results: WhoSampledResponse = { WhoSampledResponse {
-        samples: Vec::new(),
-        sampled_by: Vec::new(),
-        covers: Vec::new(),
-    } };
-
-    for (key, value) in endpoint_key_config {
-        let page: Option<String> = get_whosampled_page(&key, &artist, &track_name).await;
-        if page.is_some() {
-            let page_value  = page.unwrap();
-            let html:Html = Html::parse_document(&page_value);
-            let result: Vec<Track> = parse_whosampled_page(value, html);
-            info!("Key: {:?} and result {:?}", key, result);
-
-            match key {
-                "samples" => sample_results.samples = result,
-                "sampled_by" => sample_results.sampled_by = result,
-                "covered" => sample_results.covers = result,
-                _ => error!("Unable to map {:?} sample results to final payload", key)
-            }
-        }
-
-    }
-    // TODO we need an error handling setup to better indicate what's happening
-    return Ok(sample_results);
-}
 
 pub async fn get_sample_search_info(artist: String, track_name: String) -> Result<WhoSampledSearchResponse, WhoSampledErrorResponse> {
     let client: Client = build_whosampled_client();
@@ -195,7 +160,7 @@ fn extract_img_srcset(entry: NodeRef<Node>) -> Vec<String> {
 
 fn map_image_urls(image_srcset: &str) -> Vec<String> {
     return image_srcset.split(",")
-    .map(|image_url_path| format!("{}{}", BASE_URL, image_url_path.trim())) // TODO trim off the 1x/2x at the end of these
+    .map(|image_url_path| format!("{}{}", BASE_URL, image_url_path.trim()))
     .collect();
 }
 

@@ -15,9 +15,10 @@ ENV SPOTIFY_CLIENT_ID ""
 ENV SPOTIFY_CLIENT_SECRET ""
 ENV SPOTIFY_CLIENT_CALLBACK_IOS org.danondso.bedfellow://callback/
 ENV SPOTIFY_CLIENT_CALLBACK_ANDROID com.bedfellow://callback/
+ENV BEDFELLOW_DB_API_BASE_URL "mysql://root:password@localhost/bedfellow"
 ENV RUST_LOG INFO
 ENV HOST_IP "0.0.0.0"
 
 CMD ["./bedfellow-api"]
 
-EXPOSE 8080
+EXPOSE 8085
