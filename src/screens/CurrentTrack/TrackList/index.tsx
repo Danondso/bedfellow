@@ -11,7 +11,7 @@ import {
 } from '../../../context/SpotifyAuthContext';
 import SampleCard from './SampleCard';
 import WhoSampledSkeleton from './Skeleton';
-import { BedfellowSample } from '../../../types';
+import { BedfellowTypes } from '../../../types';
 
 function EmptyListMessage() {
   return (
@@ -39,7 +39,7 @@ function SampleList({
   const [snackbarText, setSnackbarText] = useState('');
   const [error, setError] = useState<boolean>(false);
 
-  const onPressHandler = async (item: BedfellowSample) => {
+  const onPressHandler = async (item: BedfellowTypes.BedfellowSample) => {
     try {
       // @ts-ignore
       const result = await findAndQueueTrack(item, spotifyAuth);

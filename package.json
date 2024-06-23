@@ -29,7 +29,8 @@
     "react-native-safe-area-context": "^4.7.4",
     "react-native-screens": "^3.27.0",
     "react-native-skeleton-placeholder": "^5.2.4",
-    "react-native-svg": "^14.0.0"
+    "react-native-svg": "^14.0.0",
+    "x-ray": "^2.3.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
