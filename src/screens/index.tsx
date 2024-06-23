@@ -4,14 +4,14 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
+import { AuthorizeResult } from 'react-native-app-auth';
 import { RootStackParamList } from '../types';
-import DetailsScreen from './Details';
+import DetailsScreen from './CurrentTrack';
 import { DETAILS, LOGIN } from './constants/Screens';
 import LoginScreen from './Login';
 import {
   SpotifyAuthContext,
   SpotifyAuthContextData,
-  SpotifyAuthentication,
 } from '../context/SpotifyAuthContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -24,10 +24,10 @@ export default function () {
   const spotifyAuthContext =
     useContext<SpotifyAuthContextData>(SpotifyAuthContext);
 
-  const spotifyAuth = spotifyAuthContext?.spotifyAuth as SpotifyAuthentication;
+  const spotifyAuth = spotifyAuthContext?.spotifyAuth as AuthorizeResult;
   const currentDate = new Date();
-  const expirationDate = spotifyAuth?.expirationDate
-    ? new Date(spotifyAuth.expirationDate)
+  const expirationDate = spotifyAuth?.accessTokenExpirationDate
+    ? new Date(spotifyAuth.accessTokenExpirationDate)
     : currentDate;
   return (
     <NavigationContainer>

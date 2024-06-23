@@ -1,20 +1,19 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Card, Paragraph } from 'react-native-paper';
-import styles from './TrackItem.styles';
+import styles from './SampleCard.styles';
 import { WhoSampledData } from '../../../../types';
 
-type TrackItemProps = {
+type SampleCardProps = {
   item: WhoSampledData;
   index: number;
   onPress: (index: number) => void;
 };
 
-function TrackItem({ item, index, onPress }: TrackItemProps) {
-  const { track_name, artist, images } = item;
+function SampleCard({ item, index, onPress }: SampleCardProps) {
+  const { track_name, artist, image } = item;
 
   if (!artist) {
-    // if the server didn't parse an artist name we can assume the track is not from a song
     return null;
   }
 
@@ -25,11 +24,7 @@ function TrackItem({ item, index, onPress }: TrackItemProps) {
         style={styles.trackItem}
         onPress={() => onPress(index)}
       >
-        <Card.Cover
-          style={styles.trackImage}
-          // TODO fix this so we get a straight url with sizes in the API response see issue #7
-          source={{ uri: images[images.length - 1].split(' ')[0] }}
-        />
+        <Card.Cover style={styles.trackImage} source={{ uri: image }} />
         <Card.Title title={track_name} />
         <Card.Content>
           <Paragraph>{artist}</Paragraph>
@@ -39,4 +34,4 @@ function TrackItem({ item, index, onPress }: TrackItemProps) {
   );
 }
 
-export default TrackItem;
+export default SampleCard;
