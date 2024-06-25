@@ -13,7 +13,6 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .service(spotify::spotify_controller::swap)
             .service(spotify::spotify_controller::refresh)
-            .service(whosampled::whosampled_controller::search)
     })
     .bind((env::var("HOST_IP").unwrap_or("127.0.0.1".to_string()), 8085))?
     .run()

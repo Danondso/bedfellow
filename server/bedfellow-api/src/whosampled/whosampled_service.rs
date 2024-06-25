@@ -8,25 +8,6 @@ use scraper::{Html,Selector, ElementRef, Node};
 
 const BASE_URL: &str = "https://www.whosampled.com";
 
-pub async fn get_sample_search_info(artist: String, track_name: String) -> Result<WhoSampledSearchResponse, WhoSampledErrorResponse> {
-    let client: Client = build_whosampled_client();
-
-    let timestamp: u128 = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis();
-    let response = client.get(format!("{}/ajax/search/", BASE_URL))
-        .query(
-            &[("q", format!("{} {}", artist, track_name)),
-            ("_", timestamp.to_string())]
-        )
-        .send().await;
-
-    match response {
-        Ok(who_sampled_response) => Ok(who_sampled_response.json().await.unwrap()),
-        Err (error) => Err({ WhoSampledErrorResponse {
-            error: format!("Unable to process search request for '{} {}'. Error {:?}", artist, track_name, error),
-        } })
-    }
-}
-
 async fn get_whosampled_page(key: &str, artist: &str, track_name: &str) -> Option<String> {
     let client = build_whosampled_client();
   
