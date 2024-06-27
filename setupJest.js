@@ -14,7 +14,7 @@ jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 jest.mock(
   'react-native-safe-area-context',
-  () => require('react-native-safe-area-context/jest/mock').default,
+  () => require('react-native-safe-area-context/jest/mock').default
 );
 
 jest.mock('react-native-app-auth', () => ({
