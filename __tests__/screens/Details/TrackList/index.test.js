@@ -22,11 +22,11 @@ describe('TrackList Test Suite', () => {
     render(
       <SafeAreaProvider>
         <TrackList trackInfo={spotifyResponse} />
-      </SafeAreaProvider>,
+      </SafeAreaProvider>
     );
 
     await waitFor(() =>
-      expect(screen.getByTestId('tracklist_loading_skeleton')).toBeDefined(),
+      expect(screen.getByTestId('tracklist_loading_skeleton')).toBeDefined()
     );
 
     await waitFor(() => {
@@ -40,7 +40,7 @@ describe('TrackList Test Suite', () => {
     render(
       <SafeAreaProvider>
         <TrackList trackInfo={spotifyResponse} />
-      </SafeAreaProvider>,
+      </SafeAreaProvider>
     );
 
     await waitFor(() => {

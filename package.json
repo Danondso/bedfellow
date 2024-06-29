@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
+    "test-debug": "jest --detectOpenHandles --forceExit",
     "tsc": "tsc"
   },
   "dependencies": {

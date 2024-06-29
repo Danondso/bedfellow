@@ -9,12 +9,6 @@ export type RootStackParamList = {
   Details: undefined;
 };
 
-export type LoginScreenProps = NativeStackScreenProps<
-  RootStackParamList,
-  'Login'
->;
+export type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
-export type DetailsScreenProps = NativeStackScreenProps<
-  RootStackParamList,
-  'Details'
->;
+export type DetailsScreenProps = NativeStackScreenProps<RootStackParamList, 'Details'>;

@@ -4,12 +4,12 @@ services:
     command: ./bedfellow-api
     restart: always
     environment:
-      SPOTIFY_CLIENT_ID: ""
-      SPOTIFY_CLIENT_SECRET: ""
+      SPOTIFY_CLIENT_ID: ''
+      SPOTIFY_CLIENT_SECRET: ''
       SPOTIFY_CLIENT_CALLBACK_IOS: org.danondso.bedfellow://callback/
       SPOTIFY_CLIENT_CALLBACK_ANDROID: com.bedfellow://callback/
       RUST_LOG: INFO
-      HOST_IP: "0.0.0.0"
+      HOST_IP: '0.0.0.0'
     build:
       context: ./bedfellow-api/
       dockerfile: Dockerfile
@@ -37,7 +37,7 @@ services:
   bedfellow-db:
     image: mysql:latest
     healthcheck:
-      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD']
       interval: 2s
       timeout: 60s
       retries: 20

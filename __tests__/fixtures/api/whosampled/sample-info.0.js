@@ -109,8 +109,7 @@ export default {
       ],
     },
     {
-      track_name:
-        "Slim Thug feat. Pharrell Williams and Bun B's I Ain't Heard of That",
+      track_name: "Slim Thug feat. Pharrell Williams and Bun B's I Ain't Heard of That",
       artist: 'Slim Thug',
       year: 0,
       images: [

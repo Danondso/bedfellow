@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       DATABASE_URL: mysql://xxxxx:xxxxx@host.docker.internal/bedfellow
-      HOST_IP: "0.0.0.0"
+      HOST_IP: '0.0.0.0'
     build:
       context: ./
       dockerfile: Dockerfile
@@ -19,7 +19,7 @@ services:
   bedfellow-db:
     image: mysql:latest
     healthcheck:
-      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD']
       interval: 2s
       timeout: 60s
       retries: 20
