@@ -2,16 +2,15 @@ import React from 'react';
 import { View } from 'react-native';
 import { Card, Paragraph } from 'react-native-paper';
 import styles from './SampleCard.styles';
-import { WhoSampledData } from '../../../../types';
+import { BedfellowSample } from '../../../../types/bedfellow-api';
 
 type SampleCardProps = {
-  item: WhoSampledData;
+  item: BedfellowSample;
   index: number;
   onPress: (index: number) => void;
 };
-
 function SampleCard({ item, index, onPress }: SampleCardProps) {
-  const { track_name, artist, image } = item;
+  const { track, artist, image } = item;
 
   if (!artist) {
     return null;
@@ -25,7 +24,7 @@ function SampleCard({ item, index, onPress }: SampleCardProps) {
         onPress={() => onPress(index)}
       >
         <Card.Cover style={styles.trackImage} source={{ uri: image }} />
-        <Card.Title title={track_name} />
+        <Card.Title title={track} />
         <Card.Content>
           <Paragraph>{artist}</Paragraph>
         </Card.Content>

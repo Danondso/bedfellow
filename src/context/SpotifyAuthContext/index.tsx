@@ -59,10 +59,10 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
       setSpotifyAuth,
       resetToken: () =>
         resetToken(spotifyAuth)
-          .then(result => setSpotifyAuth(result))
+          .then((result) => setSpotifyAuth(result))
           .catch(() => setSpotifyAuth(initialState)),
     }),
-    [spotifyAuth, setSpotifyAuth],
+    [spotifyAuth, setSpotifyAuth]
   );
 
   useEffect(() => {
@@ -78,8 +78,8 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
           setSpotifyAuth(JSON.parse(spotifyAuthData));
         }
       })
-      .catch(error =>
-        console.log('Failed to pull data from AsyncStorage', error),
+      .catch((error) =>
+        console.log('Failed to pull data from AsyncStorage', error)
       );
   }, []);
 

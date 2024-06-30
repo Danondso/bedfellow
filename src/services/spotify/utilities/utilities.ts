@@ -1,7 +1,7 @@
 import { fuzzy } from 'fast-fuzzy';
 
 import { TrackObjectFull } from '../../../types/spotify-api';
-import { WhoSampledData } from '../../../types';
+import { WhoSampledData } from '../../../types/whosampled';
 
 const COMPARISON_THRESHOLD = 1.5;
 const COMPOSITE_EXACT_MATCH = 2;
@@ -9,12 +9,12 @@ const EXACT_MATCH = 1;
 const MAX_WORD_DIFFERENCE = 2;
 const findMatchingTrack = (
   items: TrackObjectFull[],
-  selectedTrack: WhoSampledData,
+  selectedTrack: WhoSampledData
 ): TrackObjectFull | undefined => {
   const matchingTrack = items.find(
-    item =>
+    (item) =>
       item.name === selectedTrack.track_name &&
-      item.artists[0].name === selectedTrack.artist,
+      item.artists[0].name === selectedTrack.artist
   );
   if (matchingTrack) return matchingTrack;
 
@@ -23,7 +23,7 @@ const findMatchingTrack = (
 
 const fuzzyFindMatchingTrack = (
   items: TrackObjectFull[],
-  selectedTrack: WhoSampledData,
+  selectedTrack: WhoSampledData
 ) => {
   let index = -1;
   let compositeScore = -1;

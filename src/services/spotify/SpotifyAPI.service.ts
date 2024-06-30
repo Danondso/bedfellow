@@ -1,12 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import { SpotifyAuthentication } from '../../context/SpotifyAuthContext';
-import { WhoSampledData } from '../../types';
 import findMatchingTrack from './utilities/utilities';
+import { WhoSampledData } from '../../types/whosampled';
 
 export const BASE_URL = 'https://api.spotify.com/';
 
 export const buildSpotifyHeaders = (
-  spotifyAuth: SpotifyAuthentication,
+  spotifyAuth: SpotifyAuthentication
 ): Object => ({
   headers: {
     Authorization: `Bearer ${spotifyAuth.accessToken}`,
@@ -16,7 +16,7 @@ export const buildSpotifyHeaders = (
 
 export const spotifyGETData = async (
   url: string,
-  spotifyAuth: SpotifyAuthentication,
+  spotifyAuth: SpotifyAuthentication
 ): Promise<AxiosResponse<any, any>> => {
   return axios.get(`${BASE_URL}${url}`, buildSpotifyHeaders(spotifyAuth));
 };
@@ -24,18 +24,19 @@ export const spotifyGETData = async (
 export const spotifyPOSTData = async (
   url: string,
   spotifyAuth: SpotifyAuthentication,
-  body: object = {},
+  body: object = {}
 ): Promise<AxiosResponse<any, any>> => {
   return axios.post(
     `${BASE_URL}${url}`,
     body,
-    buildSpotifyHeaders(spotifyAuth),
+    buildSpotifyHeaders(spotifyAuth)
   );
 };
 
+// TODO make this a bedfellow API response
 export const findAndQueueTrack = async (
   selectedTrack: WhoSampledData,
-  spotifyAuth: SpotifyAuthentication,
+  spotifyAuth: SpotifyAuthentication
 ): Promise<string> => {
   const { track_name, artist } = selectedTrack;
   const url = generateSpotifyTrackAndArtistQueryURL(track_name, artist);
@@ -49,12 +50,12 @@ export const findAndQueueTrack = async (
 
     await spotifyPOSTData(
       `v1/me/player/queue?uri=${matchingTrack.uri}`,
-      spotifyAuth,
+      spotifyAuth
     );
 
     const { name, artists } = matchingTrack;
     const allArtists = artists
-      .map(matchingTrackArtist => matchingTrackArtist.name)
+      .map((matchingTrackArtist) => matchingTrackArtist.name)
       .join(',');
 
     return `Queued ${name} by ${allArtists}`;
@@ -66,12 +67,12 @@ export const findAndQueueTrack = async (
 
 const generateSpotifyTrackAndArtistQueryURL = (
   trackName: string,
-  artist: string,
+  artist: string
 ): string => {
   const data: Record<string, string> = {
     q: `&20track:${trackName.replace(' ', '+')}%20artist:${artist.replace(
       ' ',
-      '+',
+      '+'
     )}`,
     type: 'track',
     limit: '50', // makes TS happy when passing to URLSearchParams

@@ -7,7 +7,7 @@ import { CurrentPlaybackResponse } from '../../types/spotify-api';
 import {
   spotifyGETData,
   spotifyPOSTData,
-} from '../../service/spotify/SpotifyAPI.service';
+} from '../../services/spotify/SpotifyAPI.service';
 
 type SpotifyAPIHookResponse = {
   loadData: () => void;
@@ -19,11 +19,11 @@ type SpotifyAPIHookResponse = {
 function useSpotifyAPI(
   url: string,
   httpMethod: string = 'GET',
-  body: object = {},
+  body: object = {}
 ): SpotifyAPIHookResponse {
   const { spotifyAuth } =
     useContext<SpotifyAuthContextData>(SpotifyAuthContext);
-  const [response, setResponse] = useState<CurrentPlaybackResponse>();
+  const [response, setResponse] = useState<CurrentPlaybackResponse | null>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -36,6 +36,8 @@ function useSpotifyAPI(
   async function loadData() {
     resetState();
     setLoading(true);
+    // TODO, handle not founds and maybe implement memoizing the result based on the constructed URL
+    // so we don't spam it
     try {
       if (httpMethod === 'GET') {
         const result = await spotifyGETData(url, spotifyAuth);

@@ -1,14 +1,14 @@
 export interface BedfellowSample {
-  artist: String;
-  id: Number;
-  image: Blob;
-  track: String;
-  year: 1995;
+  artist: string;
+  id: number;
+  image: string;
+  track: string;
+  year: number | null;
 }
 
 export interface BedfellowTrackSamples {
-  artist: String;
+  artist: string;
   samples: Array<BedfellowSample>;
-  status: String;
-  track: String;
+  status: string;
+  track: string;
 }

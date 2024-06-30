@@ -1,4 +1,3 @@
-
 # bedfellow-api
 
 See readme in /bedfellow-api
@@ -29,5 +28,5 @@ You sure can! Normal rust commands work just make sure to export the required en
 
 ## running tests
 
-You'll have to build the app and start a mysql server separately, obviously once you have your env variables entered. You'll likely need a root user for testing since we're using sqlx to create test dbs. 
+You'll have to build the app and start a mysql server separately, obviously once you have your env variables entered. You'll likely need a root user for testing since we're using sqlx to create test dbs.
 Then run `cargo test` and you should be good.
