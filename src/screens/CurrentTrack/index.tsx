@@ -30,15 +30,9 @@ function CurrentSong({ item }: CurrentSongProps) {
           // @ts-ignore artists is inside of album don't believe their lies
           <Avatar.Text size={90} label={item?.album.artists[0].name[0]} />
         )}
-        <Text style={styles.trackName}>
-          {item ? item.name : 'No Track Info Available'}
-        </Text>
-        <Text style={styles.artistName}>
-          {item ? formatArtistNames(item) : 'No Artist Info Available'}
-        </Text>
-        <Text style={styles.albumDescription}>
-          {item ? item.album.name : 'No Album Info Available'}
-        </Text>
+        <Text style={styles.trackName}>{item ? item.name : 'No Track Info Available'}</Text>
+        <Text style={styles.artistName}>{item ? formatArtistNames(item) : 'No Artist Info Available'}</Text>
+        <Text style={styles.albumDescription}>{item ? item.album.name : 'No Album Info Available'}</Text>
       </View>
     </View>
   );
@@ -46,9 +40,7 @@ function CurrentSong({ item }: CurrentSongProps) {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
-  const { response, loadData } = useSpotifyAPI(
-    'v1/me/player/currently-playing'
-  );
+  const { response, loadData } = useSpotifyAPI('v1/me/player/currently-playing');
 
   // @ts-ignore use CurrentPlaybackResponse
   const currentlyPlayingTrack = response?.item as TrackObjectFull;

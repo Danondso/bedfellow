@@ -1,4 +1,6 @@
 export default {
+  artist: 'Blank Man',
+  track: 'Wow',
   samples: [
     {
       track_name: "Eminem's Ass Like That",
@@ -144,41 +146,11 @@ export default {
         'https://www.whosampled.com/static/track_images_200/lr2848_20091125_13414943486.jpg 2x',
       ],
     },
-  ],
-  sampled_by: [
-    {
-      track_name: "FireRed's Wait a Minute",
-      artist: 'FireRed',
-      year: 2016,
-      images: [
-        'https://www.whosampled.com/static/track_images_100/mr181975_2017116_164348479108.jpg 1x',
-        'https://www.whosampled.com/static/track_images_200/lr181975_2017116_164348479108.jpg 2x',
-      ],
-    },
-    {
-      track_name: "FireRed's Break",
-      artist: 'FireRed',
-      year: 2016,
-      images: [
-        'https://www.whosampled.com/static/track_images_100/mr159642_2019615_91517106468.jpg 1x',
-        'https://www.whosampled.com/static/track_images_200/lr159642_2019615_91517106468.jpg 2x',
-      ],
-    },
-    {
-      track_name: "FireRed's Coconut Police",
-      artist: 'FireRed',
-      year: 2016,
-      images: [
-        'https://www.whosampled.com/static/track_images_100/mr159642_2019614_204229940379.jpg 1x',
-        'https://www.whosampled.com/static/track_images_200/lr159642_2019614_204229940379.jpg 2x',
-      ],
-    },
-  ],
-  covers: [],
-};
+  ]
+}
 
 export const emptyPayload = {
+  artist: '',
+  track: '',
   samples: [],
-  sampled_by: [],
-  covers: [],
-};
+}

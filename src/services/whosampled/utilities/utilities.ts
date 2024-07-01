@@ -4,14 +4,7 @@ import { HEADER_TITLES } from '../enums';
 
 const { WHOSAMPLED_BASE_URL } = process.env;
 
-// then replace all spaces with - to fit whosampled's URL scheme
-export const normalizeString = (string: string) =>
-  string?.replace(/\//g, '').replace(/  +/g, ' ').replace(/\s/g, '-');
-
-export const parseWhoSampledPage = (
-  document: string,
-  headerText: HEADER_TITLES
-): Array<WhoSampledData> | null => {
+const parseWhoSampledPage = (document: string, headerText: HEADER_TITLES): Array<WhoSampledData> | null => {
   if (!document) {
     return null;
   }
@@ -28,7 +21,6 @@ export const parseWhoSampledPage = (
   if (!tableElement) {
     return null;
   }
-
   tableElement
     .find('tbody')
     .find('tr')
@@ -36,6 +28,7 @@ export const parseWhoSampledPage = (
       const sampleInfo = $(e)
         .text()
         .split('\n')
+        .map((m) => m.trim())
         .filter((str) => str);
       const track = sampleInfo[0];
       const artist = sampleInfo[1];
@@ -47,10 +40,7 @@ export const parseWhoSampledPage = (
           .find('img')
           .attr('srcset')
           ?.split(',')
-          .map(
-            (urlFragment) =>
-              (WHOSAMPLED_BASE_URL + urlFragment.trim()).split(' ')[0]
-          ) || [];
+          .map((urlFragment) => (WHOSAMPLED_BASE_URL + urlFragment.trim()).split(' ')[0]) || [];
 
       array.push({
         artist,
@@ -59,5 +49,8 @@ export const parseWhoSampledPage = (
         images,
       });
     });
+
   return array;
 };
+
+export default parseWhoSampledPage;

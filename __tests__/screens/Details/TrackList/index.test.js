@@ -2,14 +2,14 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react-native';
 import axios from 'axios';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import TrackList from '../../../../src/screens/Details/TrackList';
-import whoSampledPayload, {
-  emptyPayload,
-} from '../../../fixtures/api/whosampled/sample-info.0';
+import SampleList from '../../../../src/screens/CurrentTrack/TrackList';
+import whoSampledPayload, { emptyPayload } from '../../../fixtures/api/bedfellow-db-api/sample-info.0';
 
 describe('TrackList Test Suite', () => {
   const spotifyResponse = {
-    artists: [{ name: 'Girl // Talk' }],
+    album: {
+      artists: [{ name: 'Girl // Talk' }],
+    },
     name: 'Once Again',
   };
   beforeEach(() => {
@@ -21,13 +21,11 @@ describe('TrackList Test Suite', () => {
 
     render(
       <SafeAreaProvider>
-        <TrackList trackInfo={spotifyResponse} />
+        <SampleList trackInfo={spotifyResponse} />
       </SafeAreaProvider>
     );
 
-    await waitFor(() =>
-      expect(screen.getByTestId('tracklist_loading_skeleton')).toBeDefined()
-    );
+    await waitFor(() => expect(screen.getByTestId('tracklist_loading_skeleton')).toBeDefined());
 
     await waitFor(() => {
       expect(screen.queryByTestId('tracklist_loading_skeleton')).toBeNull();
@@ -39,7 +37,7 @@ describe('TrackList Test Suite', () => {
     axios.get.mockReturnValueOnce(Promise.resolve({ data: emptyPayload }));
     render(
       <SafeAreaProvider>
-        <TrackList trackInfo={spotifyResponse} />
+        <SampleList trackInfo={spotifyResponse} />
       </SafeAreaProvider>
     );
 

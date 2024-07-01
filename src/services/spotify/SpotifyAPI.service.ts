@@ -1,13 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 import { SpotifyAuthentication } from '../../context/SpotifyAuthContext';
 import findMatchingTrack from './utilities/utilities';
-import { WhoSampledData } from '../../types/whosampled';
+import { BedfellowSample } from '../../types/bedfellow-api';
 
 export const BASE_URL = 'https://api.spotify.com/';
 
-export const buildSpotifyHeaders = (
-  spotifyAuth: SpotifyAuthentication
-): Object => ({
+export const buildSpotifyHeaders = (spotifyAuth: SpotifyAuthentication): Object => ({
   headers: {
     Authorization: `Bearer ${spotifyAuth.accessToken}`,
     'Content-Type': 'application/json',
@@ -26,37 +24,28 @@ export const spotifyPOSTData = async (
   spotifyAuth: SpotifyAuthentication,
   body: object = {}
 ): Promise<AxiosResponse<any, any>> => {
-  return axios.post(
-    `${BASE_URL}${url}`,
-    body,
-    buildSpotifyHeaders(spotifyAuth)
-  );
+  return axios.post(`${BASE_URL}${url}`, body, buildSpotifyHeaders(spotifyAuth));
 };
 
-// TODO make this a bedfellow API response
+// TODO make the input a bedfellow api reponse
 export const findAndQueueTrack = async (
-  selectedTrack: WhoSampledData,
+  selectedTrack: BedfellowSample,
   spotifyAuth: SpotifyAuthentication
 ): Promise<string> => {
-  const { track_name, artist } = selectedTrack;
-  const url = generateSpotifyTrackAndArtistQueryURL(track_name, artist);
+  const { track, artist } = selectedTrack;
+  const url = generateSpotifyTrackAndArtistQueryURL(track, artist);
   try {
     const { data } = await spotifyGETData(url, spotifyAuth);
     const { items } = data.tracks;
     const matchingTrack = findMatchingTrack(items, selectedTrack);
     if (!matchingTrack) {
-      return `Unable to find ${track_name} in search results`;
+      return `Unable to find ${track} in search results`;
     }
 
-    await spotifyPOSTData(
-      `v1/me/player/queue?uri=${matchingTrack.uri}`,
-      spotifyAuth
-    );
+    await spotifyPOSTData(`v1/me/player/queue?uri=${matchingTrack.uri}`, spotifyAuth);
 
     const { name, artists } = matchingTrack;
-    const allArtists = artists
-      .map((matchingTrackArtist) => matchingTrackArtist.name)
-      .join(',');
+    const allArtists = artists.map((matchingTrackArtist) => matchingTrackArtist.name).join(',');
 
     return `Queued ${name} by ${allArtists}`;
   } catch (err: any) {
@@ -65,15 +54,9 @@ export const findAndQueueTrack = async (
   }
 };
 
-const generateSpotifyTrackAndArtistQueryURL = (
-  trackName: string,
-  artist: string
-): string => {
+const generateSpotifyTrackAndArtistQueryURL = (trackName: string, artist: string): string => {
   const data: Record<string, string> = {
-    q: `&20track:${trackName.replace(' ', '+')}%20artist:${artist.replace(
-      ' ',
-      '+'
-    )}`,
+    q: `&20track:${trackName.replace(' ', '+')}%20artist:${artist.replace(' ', '+')}`,
     type: 'track',
     limit: '50', // makes TS happy when passing to URLSearchParams
   };

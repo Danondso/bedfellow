@@ -1,40 +1,31 @@
 import { fuzzy } from 'fast-fuzzy';
 
 import { TrackObjectFull } from '../../../types/spotify-api';
-import { WhoSampledData } from '../../../types/whosampled';
+import { BedfellowSample } from '../../../types/bedfellow-api';
 
 const COMPARISON_THRESHOLD = 1.5;
 const COMPOSITE_EXACT_MATCH = 2;
 const EXACT_MATCH = 1;
 const MAX_WORD_DIFFERENCE = 2;
-const findMatchingTrack = (
-  items: TrackObjectFull[],
-  selectedTrack: WhoSampledData
-): TrackObjectFull | undefined => {
+const findMatchingTrack = (items: TrackObjectFull[], selectedTrack: BedfellowSample): TrackObjectFull | undefined => {
   const matchingTrack = items.find(
-    (item) =>
-      item.name === selectedTrack.track_name &&
-      item.artists[0].name === selectedTrack.artist
+    (item) => item.name === selectedTrack.track && item.artists[0].name === selectedTrack.artist
   );
   if (matchingTrack) return matchingTrack;
 
   return fuzzyFindMatchingTrack(items, selectedTrack);
 };
 
-const fuzzyFindMatchingTrack = (
-  items: TrackObjectFull[],
-  selectedTrack: WhoSampledData
-) => {
+const fuzzyFindMatchingTrack = (items: TrackObjectFull[], selectedTrack: BedfellowSample) => {
   let index = -1;
   let compositeScore = -1;
   for (let i = 0; i < items.length; i++) {
     const { name, artists } = items[i];
     // fuzzy does a 0-1 score
-    const trackMatch = fuzzy(name, selectedTrack.track_name);
+    const trackMatch = fuzzy(name, selectedTrack.track);
     const artistMatch = fuzzy(artists[0].name, selectedTrack.artist);
     const tempCompositeScore = trackMatch + artistMatch;
-    const trackExceedsSelectedTrackWordCount =
-      trackNameExceedsWordCountOfSelected(name, selectedTrack.track_name);
+    const trackExceedsSelectedTrackWordCount = trackNameExceedsWordCountOfSelected(name, selectedTrack.track);
 
     // since a string from spotify could contain the full substring of the track name
     // we do a check to make sure that the word count difference between the spotify track name

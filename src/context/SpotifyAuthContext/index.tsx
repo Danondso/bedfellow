@@ -31,12 +31,11 @@ export type SpotifyAuthContextData = {
   resetToken: (authData: AuthorizeResult) => void;
 };
 
-export const SpotifyAuthContext: Context<SpotifyAuthContextData> =
-  createContext<SpotifyAuthContextData>({
-    spotifyAuth: initialState,
-    setSpotifyAuth: () => {},
-    resetToken: () => {},
-  });
+export const SpotifyAuthContext: Context<SpotifyAuthContextData> = createContext<SpotifyAuthContextData>({
+  spotifyAuth: initialState,
+  setSpotifyAuth: () => {},
+  resetToken: () => {},
+});
 
 async function resetToken(authData: AuthorizeResult): Promise<AuthResult> {
   const tokenUrl = process.env.SPOTIFY_TOKEN_REFRESH_URL || '';
@@ -78,16 +77,10 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
           setSpotifyAuth(JSON.parse(spotifyAuthData));
         }
       })
-      .catch((error) =>
-        console.log('Failed to pull data from AsyncStorage', error)
-      );
+      .catch((error) => console.log('Failed to pull data from AsyncStorage', error));
   }, []);
 
-  return (
-    <SpotifyAuthContext.Provider value={auth}>
-      {children}
-    </SpotifyAuthContext.Provider>
-  );
+  return <SpotifyAuthContext.Provider value={auth}>{children}</SpotifyAuthContext.Provider>;
 }
 
 export default SpotifyAuthContextProvider;

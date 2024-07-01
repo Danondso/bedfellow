@@ -1,4 +1,4 @@
-<!doctype html>
+export default `<!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
   <head>
     <meta charset="utf-8" />
@@ -809,4 +809,4 @@
       })();
     </script>
   </body>
-</html>
+</html>`;

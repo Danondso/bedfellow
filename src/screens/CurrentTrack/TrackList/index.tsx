@@ -5,10 +5,7 @@ import { TrackObjectFull } from '../../../types/spotify-api';
 import styles from './SampleList.styles';
 import useBedfellowAPI from '../../../hooks/bedfellow/useBedfellowAPI';
 import { findAndQueueTrack } from '../../../services/spotify/SpotifyAPI.service';
-import {
-  SpotifyAuthContext,
-  SpotifyAuthContextData,
-} from '../../../context/SpotifyAuthContext';
+import { SpotifyAuthContext, SpotifyAuthContextData } from '../../../context/SpotifyAuthContext';
 import SampleCard from './SampleCard';
 import WhoSampledSkeleton from './Skeleton';
 import { BedfellowTypes } from '../../../types';
@@ -29,13 +26,8 @@ type SampleListProps = {
   onRefresh: () => void;
 };
 
-function SampleList({
-  trackInfo,
-  HeaderComponent,
-  onRefresh,
-}: SampleListProps) {
-  const { spotifyAuth } =
-    useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+function SampleList({ trackInfo, HeaderComponent, onRefresh }: SampleListProps) {
+  const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { sampleData = [], loading = false } = useBedfellowAPI(trackInfo);
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [snackbarText, setSnackbarText] = useState('');
@@ -43,9 +35,7 @@ function SampleList({
 
   useEffect(() => {
     const fetchData = async () => {
-      const parseResult = await searchAndRetrieveParsedWhoSampledPage(
-        trackInfo
-      );
+      const parseResult = await searchAndRetrieveParsedWhoSampledPage(trackInfo);
       if (parseResult?.samples) {
         const result = await postToBedfellowDBAPI({
           artist_name: parseResult.artist,
@@ -70,6 +60,7 @@ function SampleList({
     try {
       // @ts-ignore
       const result = await findAndQueueTrack(item, spotifyAuth);
+      console.log(result);
       setSnackbarText('OK');
     } catch (err) {
       setError(true);
@@ -81,13 +72,9 @@ function SampleList({
   return (
     <>
       <FlatList
-        refreshControl={
-          <RefreshControl onRefresh={onRefresh} refreshing={loading} />
-        }
+        refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={loading} />}
         ListHeaderComponent={HeaderComponent}
-        ListEmptyComponent={
-          loading ? <WhoSampledSkeleton /> : <EmptyListMessage />
-        }
+        ListEmptyComponent={loading ? <WhoSampledSkeleton /> : <EmptyListMessage />}
         // @ts-ignore
         data={sampleData.samples}
         renderItem={({ item, index }) => (

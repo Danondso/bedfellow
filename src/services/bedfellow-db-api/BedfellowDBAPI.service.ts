@@ -9,14 +9,9 @@ export interface BedfellowDBAPIPOSTBody {
 
 const { BEDFELLOW_DB_API_BASE_URL } = process.env;
 
-export const postToBedfellowDBAPI = async (
-  requestBody: BedfellowDBAPIPOSTBody
-) => {
+export const postToBedfellowDBAPI = async (requestBody: BedfellowDBAPIPOSTBody) => {
   try {
-    const response = await axios.post(
-      `${BEDFELLOW_DB_API_BASE_URL}/samples`,
-      requestBody
-    );
+    const response = await axios.post(`${BEDFELLOW_DB_API_BASE_URL}/samples`, requestBody);
     return response.status === 204;
   } catch (error) {
     if (error.response.status === 409) {

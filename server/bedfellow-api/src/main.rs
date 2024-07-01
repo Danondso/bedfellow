@@ -1,7 +1,6 @@
 use std::env;
 use actix_web::{App, HttpServer};
 mod spotify;
-mod whosampled;
 
 // comment to test actions
 

@@ -1,28 +1,59 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import RNFS from 'react-native-fs';
-import { parseWhoSampledPage } from '../../../../src/services/whosampled/utilities/utilities';
+import parseWhoSampledPage from '../../../../src/services/whosampled/utilities/utilities';
 import { HEADER_TITLES } from '../../../../src/services/whosampled/enums';
+import singlePage from '../../../fixtures/api/whosampled/sample-single.0';
+import multiPage from '../../../fixtures/api/whosampled/sample-multiple.0';
+import { WhoSampledData } from '../../../../src/types/whosampled';
 
-// TODO write a service test that tests the service AND the utility
 describe('WhoSampled Utilities Test Suite', () => {
   it('parses discrete page for matching variant', async () => {
-    const document: string = await RNFS.readFile(
-      './src/services/whosampled/multiple.0.html'
-    );
-    const result = parseWhoSampledPage(
-      document,
-      HEADER_TITLES.CONTAINS_SAMPLES
-    );
+    const expectedResult: WhoSampledData[] = [
+      {
+        artist: 'Ponderosa Twins Plus One',
+        images: [
+          'https://www.whosampled.com/static/images/media/track_images_100/mr60124_201393_14349154951.jpg',
+          'https://www.whosampled.com/static/images/media/track_images_200/lr60124_201393_14349154951.jpg',
+        ],
+        track: 'Bound',
+        year: 1971,
+      },
+      {
+        artist: 'Brenda Lee',
+        images: [
+          'https://www.whosampled.com/static/images/media/track_images_100/mr9591_2011312_14739796772.jpg',
+          'https://www.whosampled.com/static/images/media/track_images_200/lr9591_2011312_14739796772.jpg',
+        ],
+        track: "Sweet Nothin's",
+        year: 1959,
+      },
+      {
+        artist: 'Wee',
+        images: [
+          'https://www.whosampled.com/static/images/media/track_images_100/mr28714_2012827_101413805613.jpg',
+          'https://www.whosampled.com/static/images/media/track_images_200/lr28714_2012827_101413805613.jpg',
+        ],
+        track: 'Aeroplane (Reprise)',
+        year: 1977,
+      },
+      {
+        artist: 'Martin (TV show)',
+        images: [
+          'https://www.whosampled.com/static/images/media/visualmedia_images/r60124_2017215_112028118784.jpg',
+          'https://www.whosampled.com/static/images/media/visualmedia_images_200/lr60124_2017215_112028118784.jpg',
+        ],
+        track: "Jerome's in the House, Watch Your Mouth",
+        year: 1994,
+      },
+    ];
+    const document: string = multiPage.toString();
+    const result = parseWhoSampledPage(document, HEADER_TITLES.CONTAINS_SAMPLES);
 
-    expect(result?.length).toBe(4);
+    expect(result).toEqual(expectedResult);
   });
 
   it('returns null if header is not matched', async () => {
-    const document: string = await RNFS.readFile(
-      '../../../fixtures/whosampled/sample-single.0.html'
-    );
+    const document: string = singlePage.toString();
     const result = parseWhoSampledPage(document, HEADER_TITLES.SAMPLED_IN);
 
-    expect(result?.length).toBe(4);
+    expect(result).toBe(null);
   });
 });

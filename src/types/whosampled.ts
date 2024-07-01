@@ -1,5 +1,3 @@
-import { WhoSampledTypes } from ".";
-
 export interface WhoSampledData {
   track: string;
   artist: string;

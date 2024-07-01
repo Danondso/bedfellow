@@ -2,11 +2,7 @@ import axios, { AxiosError } from 'axios';
 
 import { parseWhoSampledPage } from './utilities/utilities';
 import { HEADER_TITLES, CONNECTIONS } from './enums';
-import {
-  WhoSampledData,
-  WhoSampledParseData,
-  WhoSampledParseResult,
-} from '../../types/whosampled';
+import { WhoSampledData, WhoSampledParseData, WhoSampledParseResult } from '../../types/whosampled';
 import { TrackObjectFull } from '../../types/spotify-api';
 
 const { WHOSAMPLED_BASE_URL } = process.env;
@@ -22,10 +18,7 @@ export const searchAndRetrieveParsedWhoSampledPage = async (
 
     for (let i = 0; i < artists.length; i++) {
       // eslint-disable-next-line no-await-in-loop
-      const result: WhoSampledSearchResponse | null = await searchWhoSampled(
-        artists[i],
-        trackName
-      );
+      const result: WhoSampledSearchResponse | null = await searchWhoSampled(artists[i], trackName);
       if (result?.tracks[0].url) {
         foundUrl = result.tracks[0].url;
         artistUsed = artists[i];
@@ -48,14 +41,8 @@ export const searchAndRetrieveParsedWhoSampledPage = async (
   }
 };
 
-export const searchWhoSampled = async (
-  artist: string,
-  trackName: string
-): Promise<WhoSampledSearchResponse | null> => {
+export const searchWhoSampled = async (artist: string, trackName: string): Promise<WhoSampledSearchResponse | null> => {
   try {
-    console.log(
-      `INFO:: searchWhoSampled => searchUrl => ${WHOSAMPLED_BASE_URL}/ajax/search/?q=${`${artist} ${trackName}`}&_=${Date.now()}`
-    );
     // @ts-ignore
     const result = await axios.get<WhoSampledSearchResponse>(
       `${WHOSAMPLED_BASE_URL}/ajax/search/?q=${`${artist} ${trackName}`}&_=${Date.now()}`
@@ -66,22 +53,14 @@ export const searchWhoSampled = async (
   }
 };
 
-export const getParsedWhoSampledPage = async (
-  urlFragment: string
-): Promise<WhoSampledParseData[] | null> => {
+export const getParsedWhoSampledPage = async (urlFragment: string): Promise<WhoSampledParseData[] | null> => {
   try {
     console.log('URL FRAGMENT', urlFragment);
-    const document: string | null = await getWhoSampledDocument(
-      urlFragment,
-      CONNECTIONS.SAMPLES
-    );
+    const document: string | null = await getWhoSampledDocument(urlFragment, CONNECTIONS.SAMPLES);
     if (!document) {
       throw new Error('Unable to find');
     }
-    const result: Array<WhoSampledData> | null = parseWhoSampledPage(
-      document,
-      HEADER_TITLES.CONTAINS_SAMPLES
-    );
+    const result: Array<WhoSampledData> | null = parseWhoSampledPage(document, HEADER_TITLES.CONTAINS_SAMPLES);
 
     if (!result) {
       return null;
@@ -90,9 +69,7 @@ export const getParsedWhoSampledPage = async (
 
     for (let i = 0; i < result?.length; i++) {
       // eslint-disable-next-line no-await-in-loop
-      const image: string | null = await getWhoSampledImage(
-        result[i].images.at(-1)
-      );
+      const image: string | null = await getWhoSampledImage(result[i].images.at(-1));
       parsedWhoSampledData.push({
         track: result[i].track,
         artist: result[i].artist,
@@ -100,7 +77,6 @@ export const getParsedWhoSampledPage = async (
         image,
       });
     }
-    console.log('INFO:: parsedResult', parsedWhoSampledData);
     return parsedWhoSampledData;
   } catch (error) {
     console.log('ERROR::', error);
@@ -108,12 +84,8 @@ export const getParsedWhoSampledPage = async (
   return null;
 };
 
-const getWhoSampledDocument = async (
-  urlFragment: string,
-  variant: CONNECTIONS
-): Promise<string | null> => {
+const getWhoSampledDocument = async (urlFragment: string, variant: CONNECTIONS): Promise<string | null> => {
   const url = `${WHOSAMPLED_BASE_URL}${urlFragment}${variant}`;
-  console.log('INFO:: getWhoSampledDocument => ', url);
   try {
     // we first go to the main page for the variant
     const result = await axios.get(url, {
@@ -134,9 +106,7 @@ const getWhoSampledDocument = async (
   return null;
 };
 
-export const getWhoSampledImage = async (
-  url: string | undefined
-): Promise<string | null> => {
+export const getWhoSampledImage = async (url: string | undefined): Promise<string | null> => {
   if (!url) {
     return null;
   }
