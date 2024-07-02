@@ -25,9 +25,15 @@ function useBedfellowAPI(trackInfo: TrackObjectFull): BedfellowAPIResponse {
       resetState();
       setLoading(true);
       try {
-        const url = `/samples?artist_name=${trackInfo.album.artists[0]?.name}&track_name=${trackInfo?.name}`;
-        const result = await axios.get(`${BASE_URL}${url}`);
-        setSampleData(result.data as BedfellowTrackSamples);
+        if (!trackInfo) {
+          setError(true);
+          setLoading(false);
+          setSampleData(undefined);
+        } else {
+          const url = `/samples?artist_name=${trackInfo?.album.artists[0]?.name}&track_name=${trackInfo?.name}`;
+          const result = await axios.get(`${BASE_URL}${url}`);
+          setSampleData(result.data as BedfellowTrackSamples);
+        }
       } catch (e) {
         console.error('ERROR:: useBedfellowAPI', e);
         setError(true);
@@ -35,7 +41,7 @@ function useBedfellowAPI(trackInfo: TrackObjectFull): BedfellowAPIResponse {
       setLoading(false);
     };
     loadData();
-  }, [trackInfo?.album.artists, trackInfo?.name]);
+  }, [trackInfo]);
 
   return { sampleData, loading, error };
 }

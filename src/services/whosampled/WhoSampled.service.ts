@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-import { parseWhoSampledPage } from './utilities/utilities';
+import parseWhoSampledPage from './utilities/utilities';
 import { HEADER_TITLES, CONNECTIONS } from './enums';
 import { WhoSampledData, WhoSampledParseData, WhoSampledParseResult } from '../../types/whosampled';
 import { TrackObjectFull } from '../../types/spotify-api';
@@ -13,18 +13,27 @@ export const searchAndRetrieveParsedWhoSampledPage = async (
   try {
     const trackName = trackInfo.name;
     const artists = trackInfo.artists.map((artist) => artist.name);
-    let foundUrl;
-    let artistUsed = '';
 
-    for (let i = 0; i < artists.length; i++) {
-      // eslint-disable-next-line no-await-in-loop
-      const result: WhoSampledSearchResponse | null = await searchWhoSampled(artists[i], trackName);
-      if (result?.tracks[0].url) {
-        foundUrl = result.tracks[0].url;
-        artistUsed = artists[i];
+    const searchResults = await Promise.all(
+      await artists.map(async (artist) => {
+        const result: WhoSampledSearchResponse | null = await searchWhoSampled(artist, trackName);
+        return {
+          foundUrl: result?.tracks[0]?.url,
+          artistUsed: artist,
+        };
+      })
+    );
+    let foundUrl;
+    let artistUsed;
+
+    for (let i = 0; i < searchResults.length; i++) {
+      if (searchResults?.[i]?.foundUrl) {
+        foundUrl = searchResults[i].foundUrl;
+        artistUsed = searchResults[i].artistUsed;
         break;
       }
     }
+
     if (!foundUrl) {
       return null;
     }
@@ -32,7 +41,7 @@ export const searchAndRetrieveParsedWhoSampledPage = async (
     const samples = await getParsedWhoSampledPage(foundUrl);
 
     return {
-      artist: artistUsed,
+      artist: artistUsed || '',
       track: trackName,
       samples,
     };
@@ -55,7 +64,7 @@ export const searchWhoSampled = async (artist: string, trackName: string): Promi
 
 export const getParsedWhoSampledPage = async (urlFragment: string): Promise<WhoSampledParseData[] | null> => {
   try {
-    console.log('URL FRAGMENT', urlFragment);
+    // console.log('URL FRAGMENT', urlFragment);
     const document: string | null = await getWhoSampledDocument(urlFragment, CONNECTIONS.SAMPLES);
     if (!document) {
       throw new Error('Unable to find');
