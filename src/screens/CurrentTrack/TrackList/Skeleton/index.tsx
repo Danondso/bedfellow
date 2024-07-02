@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import theme from '../../../../theme';
 import styles from './Skeleton.styles';
 
-function WhoSampledSkeleton() {
+function ListSkeleton() {
   return (
     <View style={styles.trackListWrapper}>
       <View style={styles.trackItem} testID="tracklist_loading_skeleton">
@@ -25,4 +25,4 @@ function WhoSampledSkeleton() {
   );
 }
 
-export default WhoSampledSkeleton;
+export default ListSkeleton;

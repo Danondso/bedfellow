@@ -11,7 +11,7 @@ pub struct InsertSampleSchema {
     pub artist: String,
     pub year: Option<u16>,
     pub track: String,
-    pub image: Vec<u8>, // base64Encoded
+    pub image: String, // base64Encoded
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -28,7 +28,7 @@ pub struct SampleSchema {
     pub artist: String,
     pub track: String,
     pub year: Option<u16>,
-    pub image: Vec<u8>,
+    pub image: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

@@ -5,23 +5,14 @@ module.exports = {
     '@react-native-community',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:prettier/recommended',
   ],
   rules: {
     'no-continue': 'off',
     'react/jsx-filename-extension': 0,
     'import/extensions': 0,
-    'prettier/prettier': [
-      'error',
-      {
-        endOfLine: 'auto',
-        arrowParens: 'avoid',
-        bracketSameLine: false,
-        bracketSpacing: true,
-        singleQuote: true,
-        trailingComma: 'all',
-      },
-    ],
     'react/display-name': 'off',
+    'prettier/prettier': ['error', { singleQuote: true }],
   },
   settings: {
     'import/resolver': {

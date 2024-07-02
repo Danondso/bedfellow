@@ -9,17 +9,13 @@ import {
   // eslint-disable-next-line import/no-unresolved
 } from '@env';
 import { authorize, AuthorizeResult } from 'react-native-app-auth';
-import {
-  SpotifyAuthContext,
-  SpotifyAuthContextData,
-} from '../../context/SpotifyAuthContext';
+import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
 import { DETAILS } from '../constants/Screens';
 import { LoginScreenProps } from '../../types';
 import styles from './Login.styles';
 
 function LoginScreen({ navigation }: LoginScreenProps) {
-  const spotifyAuthContext =
-    useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const spotifyAuthContext = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { setSpotifyAuth } = spotifyAuthContext as SpotifyAuthContextData;
 
   async function authenticate() {
@@ -27,15 +23,8 @@ function LoginScreen({ navigation }: LoginScreenProps) {
       const config = {
         clientId: SPOTIFY_CLIENT_ID,
         usePKCE: false,
-        redirectUrl:
-          Platform.OS === 'ios'
-            ? SPOTIFY_REDIRECT_URI
-            : SPOTIFY_REDIRECT_URI_ANDROID,
-        scopes: [
-          'user-modify-playback-state',
-          'user-follow-read',
-          'user-read-currently-playing',
-        ],
+        redirectUrl: Platform.OS === 'ios' ? SPOTIFY_REDIRECT_URI : SPOTIFY_REDIRECT_URI_ANDROID,
+        scopes: ['user-modify-playback-state', 'user-follow-read', 'user-read-currently-playing'],
         serviceConfiguration: {
           authorizationEndpoint: SPOTIFY_AUTHORIZE_URL,
           tokenEndpoint: SPOTIFY_TOKEN_URL,
@@ -59,10 +48,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
         <Text style={styles.header}> Bedfellow </Text>
         <Text style={styles.subHeader}>a smol bean app</Text>
         <View style={styles.loginButtonView}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => authenticate()}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => authenticate()}>
             <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
         </View>
