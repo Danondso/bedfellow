@@ -1,9 +1,8 @@
 {
-  "baseUrl": "./src",
   "extends": "@tsconfig/react-native/tsconfig.json",
-  "include": ["src/**/*"],
   "typeRoots": ["./src/types"],
   "compilerOptions": {
+    "baseUrl": "./src/",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -14,16 +13,17 @@
     "noEmit": true,
     "strict": true,
     "target": "esnext",
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "paths": {
+      "@screens/*": ["screens/*"],
+      "@services/*": ["services/*"],
+      "@components/*": ["components/*"],
+      "@context/*": ["context/*"],
+      "@theme/*": ["theme/*"],
+      "@types/*": ["types/*"]
+    },
   },
-  "paths": {
-    "@screens/*": ["screens/*"],
-    "@services/*": ["services/*"],
-    "@components/*": ["components/*"],
-    "@context/*": ["context/*"],
-    "@theme/*": ["theme/*"],
-    "@types/*": ["types/*"]
-  },
+  "include": ["**/*.js", "**/*.ts", "**/*.tsx", "**/*.jsx"],
   "exclude": [
     "node_modules",
     "babel.config.js",
