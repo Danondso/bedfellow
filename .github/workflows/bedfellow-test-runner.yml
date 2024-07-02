@@ -17,4 +17,5 @@ jobs:
       SPOTIFY_REDIRECT_URI: org.danondso.bedfellow://callback/
       SPOTIFY_TOKEN_REFRESH_URL: http://localhost/refresh
       SPOTIFY_TOKEN_URL: http://localhost/token
+      WHOSAMPLED_BASE_URL: https://www.whosampled.com
       
