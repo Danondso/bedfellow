@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import { DetailsScreenProps } from '../../types';
 import styles from './Details.styles';
-import { TrackObjectFull } from '../../types/spotify-api';
+import { CurrentPlaybackResponse, TrackObjectFull } from '../../types/spotify-api';
 import TrackList from './TrackList';
 import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
 
@@ -42,8 +42,8 @@ function CurrentSong({ item }: CurrentSongProps) {
 function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   const { response, loadData } = useSpotifyAPI('v1/me/player/currently-playing');
 
-  // @ts-ignore use CurrentPlaybackResponse
-  const currentlyPlayingTrack = response?.item as TrackObjectFull;
+  const currentPlaybackResponse = response as CurrentPlaybackResponse;
+  const currentlyPlayingTrack = currentPlaybackResponse?.item as TrackObjectFull;
   return (
     <View style={styles.view}>
       <TrackList

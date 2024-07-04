@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, Alert } from 'react-native';
 import {
   SPOTIFY_CLIENT_ID,
   SPOTIFY_REDIRECT_URI,
@@ -37,8 +37,11 @@ function LoginScreen({ navigation }: LoginScreenProps) {
         navigation.navigate(DETAILS);
       }
     } catch (error) {
-      // TODO error message w/ animation here
-      console.log('Spotify cannot login', error);
+      if (error instanceof Error) {
+        Alert.alert('Failed to Login', error.message);
+      } else {
+        Alert.alert('Failed to login');
+      }
     }
   }
 

@@ -52,7 +52,6 @@ export const searchAndRetrieveParsedWhoSampledPage = async (
 
 export const searchWhoSampled = async (artist: string, trackName: string): Promise<WhoSampledSearchResponse | null> => {
   try {
-    // @ts-ignore
     const result = await axios.get<WhoSampledSearchResponse>(
       `${WHOSAMPLED_BASE_URL}/ajax/search/?q=${`${artist} ${trackName}`}&_=${Date.now()}`
     );
