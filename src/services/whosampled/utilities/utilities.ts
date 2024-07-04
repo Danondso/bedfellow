@@ -1,15 +1,16 @@
 import { load } from 'cheerio';
-import { WhoSampledData } from '../../../types/whosampled';
+import { Sample } from '../../../types/whosampled';
 import { HEADER_TITLES } from '../enums';
+import { getWhoSampledImage } from '../WhoSampled.service';
 
 const { WHOSAMPLED_BASE_URL } = process.env;
 
-const parseWhoSampledPage = (document: string, headerText: HEADER_TITLES): Array<WhoSampledData> | null => {
+const parseWhoSampledPage = async (document: string, headerText: HEADER_TITLES): Promise<Sample[] | null> => {
   if (!document) {
     return null;
   }
   const $ = load(document);
-  const array: Array<WhoSampledData> = [];
+  const array: Array<Sample> = [];
   const sectionHeaderElement = $('.sectionHeader');
 
   if (!sectionHeaderElement.text().includes(headerText)) {
@@ -24,7 +25,7 @@ const parseWhoSampledPage = (document: string, headerText: HEADER_TITLES): Array
   tableElement
     .find('tbody')
     .find('tr')
-    .each((i, e) => {
+    .each((_i, e) => {
       const sampleInfo = $(e)
         .text()
         .split('\n')
@@ -35,7 +36,7 @@ const parseWhoSampledPage = (document: string, headerText: HEADER_TITLES): Array
       const year = sampleInfo[2];
 
       const sampleEntryHtml = $(e).html() || '';
-      const images =
+      const image =
         $(sampleEntryHtml)
           .find('img')
           .attr('srcset')
@@ -46,11 +47,19 @@ const parseWhoSampledPage = (document: string, headerText: HEADER_TITLES): Array
         artist,
         track,
         year: Number.parseInt(year, 10) || null,
-        images,
+        image: image.at(-1) || null,
       });
     });
-
-  return array;
+  const samplesWithImages = await Promise.all(
+    await array.map(async (sample) => {
+      const imageBlob = await getWhoSampledImage(sample.image);
+      return {
+        ...sample,
+        image: imageBlob || sample.image,
+      };
+    })
+  );
+  return samplesWithImages;
 };
 
 export default parseWhoSampledPage;

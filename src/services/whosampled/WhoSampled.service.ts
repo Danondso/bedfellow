@@ -2,21 +2,20 @@ import axios, { AxiosError } from 'axios';
 
 import parseWhoSampledPage from './utilities/utilities';
 import { HEADER_TITLES, CONNECTIONS } from './enums';
-import { WhoSampledData, WhoSampledParseData, WhoSampledParseResult } from '../../types/whosampled';
-import { TrackObjectFull } from '../../types/spotify-api';
+import { Sample, SearchResponse, TrackWithSamples } from '../../types/whosampled';
+import { ArtistObjectSimplified } from '../../types/spotify-api';
 
 const { WHOSAMPLED_BASE_URL } = process.env;
 
 export const searchAndRetrieveParsedWhoSampledPage = async (
-  trackInfo: TrackObjectFull
-): Promise<WhoSampledParseResult | null> => {
+  artists: ArtistObjectSimplified[],
+  name: string
+): Promise<TrackWithSamples | null> => {
   try {
-    const trackName = trackInfo.name;
-    const artists = trackInfo.artists.map((artist) => artist.name);
-
+    const artistNames = artists.map((artist) => artist.name);
     const searchResults = await Promise.all(
-      await artists.map(async (artist) => {
-        const result: WhoSampledSearchResponse | null = await searchWhoSampled(artist, trackName);
+      await artistNames.map(async (artist) => {
+        const result: SearchResponse | null = await searchWhoSampled(artist, name);
         return {
           foundUrl: result?.tracks[0]?.url,
           artistUsed: artist,
@@ -41,8 +40,8 @@ export const searchAndRetrieveParsedWhoSampledPage = async (
     const samples = await getParsedWhoSampledPage(foundUrl);
 
     return {
-      artist: artistUsed || '',
-      track: trackName,
+      artist_name: artistUsed || '',
+      track_name: name,
       samples,
     };
   } catch (err) {
@@ -50,9 +49,9 @@ export const searchAndRetrieveParsedWhoSampledPage = async (
   }
 };
 
-export const searchWhoSampled = async (artist: string, trackName: string): Promise<WhoSampledSearchResponse | null> => {
+export const searchWhoSampled = async (artist: string, trackName: string): Promise<SearchResponse | null> => {
   try {
-    const result = await axios.get<WhoSampledSearchResponse>(
+    const result = await axios.get<SearchResponse>(
       `${WHOSAMPLED_BASE_URL}/ajax/search/?q=${`${artist} ${trackName}`}&_=${Date.now()}`
     );
     return result.status === 200 ? result.data : null;
@@ -61,31 +60,19 @@ export const searchWhoSampled = async (artist: string, trackName: string): Promi
   }
 };
 
-export const getParsedWhoSampledPage = async (urlFragment: string): Promise<WhoSampledParseData[] | null> => {
+export const getParsedWhoSampledPage = async (urlFragment: string): Promise<Sample[] | null> => {
   try {
-    // console.log('URL FRAGMENT', urlFragment);
     const document: string | null = await getWhoSampledDocument(urlFragment, CONNECTIONS.SAMPLES);
     if (!document) {
       throw new Error('Unable to find');
     }
-    const result: Array<WhoSampledData> | null = parseWhoSampledPage(document, HEADER_TITLES.CONTAINS_SAMPLES);
+    const result: Array<Sample> | null = await parseWhoSampledPage(document, HEADER_TITLES.CONTAINS_SAMPLES);
 
     if (!result) {
       return null;
     }
-    const parsedWhoSampledData: WhoSampledParseData[] = [];
 
-    for (let i = 0; i < result?.length; i++) {
-      // eslint-disable-next-line no-await-in-loop
-      const image: string | null = await getWhoSampledImage(result[i].images.at(-1));
-      parsedWhoSampledData.push({
-        track: result[i].track,
-        artist: result[i].artist,
-        year: result[i].year,
-        image,
-      });
-    }
-    return parsedWhoSampledData;
+    return result;
   } catch (error) {
     console.log('ERROR::', error);
   }
@@ -114,7 +101,7 @@ const getWhoSampledDocument = async (urlFragment: string, variant: CONNECTIONS):
   return null;
 };
 
-export const getWhoSampledImage = async (url: string | undefined): Promise<string | null> => {
+export const getWhoSampledImage = async (url: string | null): Promise<string | null> => {
   if (!url) {
     return null;
   }
@@ -125,8 +112,7 @@ export const getWhoSampledImage = async (url: string | undefined): Promise<strin
     });
     return await blobToBase64(result.data);
   } catch (err) {
-    console.log('ERROR:: getWhoSampledImage', err.response);
-    return '';
+    return null;
   }
 };
 
@@ -137,25 +123,3 @@ const blobToBase64 = (blob: Blob): Promise<string> => {
     reader.readAsDataURL(blob);
   });
 };
-
-export interface WhoSampledTrack {
-  trackName: string;
-  artist: string;
-  year: number;
-  imageUrls: Array<string>;
-}
-
-export interface WhoSampledSearchResponse {
-  tracks: Array<WhoSampledSearchTrackResult>;
-}
-
-export interface WhoSampledSearchTrackResult {
-  id: number;
-  url: string;
-  artist_name: string;
-  track_name: string;
-  image_url: string;
-  counts: string;
-}
-
-// TODO edge cases: souvenir by Milo

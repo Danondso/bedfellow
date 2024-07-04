@@ -1,25 +1,21 @@
-export interface WhoSampledData {
+export interface Sample {
   track: string;
   artist: string;
   year: number | null;
-  images: string[];
+  image: string | null; // image blob, downloaded prior to posting to Bedfellow DB API
 }
 
-export interface WhoSampledParseData extends Omit<WhoSampledData, 'images'> {
-  image: string | null;
+export interface TrackWithSamples {
+  artist_name: string;
+  track_name: string;
+  samples: Array<Sample> | null;
 }
 
-export interface WhoSampledParseResult {
-  artist: string;
-  track: string;
-  samples: Array<WhoSampledParseData> | null;
+export interface SearchResponse {
+  tracks: Array<SearchData>;
 }
 
-export interface WhoSampledSearchResponse {
-  tracks: Array<WhoSampledSearchData>;
-}
-
-export interface WhoSampledSearchData {
+export interface SearchData {
   id: number;
   url: string;
   artist_name: string;
