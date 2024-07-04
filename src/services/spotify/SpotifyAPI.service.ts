@@ -27,12 +27,17 @@ export const spotifyPOSTData = async (
   return axios.post(`${BASE_URL}${url}`, body, buildSpotifyHeaders(spotifyAuth));
 };
 
-// TODO make the input a bedfellow api reponse
 export const findAndQueueTrack = async (
   selectedTrack: BedfellowSample,
   spotifyAuth: SpotifyAuthentication
 ): Promise<string> => {
   const { track, artist } = selectedTrack;
+  if (artist.length >= 7 && artist.substring(artist.length - 7) === '(movie)') {
+    return 'Cannot queue movie';
+  } else if (artist.length >= 9 && artist.substring(artist.length - 9).trim() === '(TV show)') {
+    return 'Cannot queue tv show';
+  }
+
   const url = generateSpotifyTrackAndArtistQueryURL(track, artist);
   try {
     const { data } = await spotifyGETData(url, spotifyAuth);

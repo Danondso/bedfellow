@@ -2,44 +2,32 @@ import parseWhoSampledPage from '../../../../src/services/whosampled/utilities/u
 import { HEADER_TITLES } from '../../../../src/services/whosampled/enums';
 import singlePage from '../../../fixtures/api/whosampled/sample-single.0';
 import multiPage from '../../../fixtures/api/whosampled/sample-multiple.0';
-import { WhoSampledData } from '../../../../src/types/whosampled';
+import { Sample, WhoSampledData } from '../../../../src/types/whosampled';
 
 describe('WhoSampled Utilities Test Suite', () => {
   it('parses discrete page for matching variant', async () => {
-    const expectedResult: WhoSampledData[] = [
+    const expectedResult: Array<Sample> = [
       {
         artist: 'Ponderosa Twins Plus One',
-        images: [
-          'https://www.whosampled.com/static/images/media/track_images_100/mr60124_201393_14349154951.jpg',
-          'https://www.whosampled.com/static/images/media/track_images_200/lr60124_201393_14349154951.jpg',
-        ],
+        image: 'https://www.whosampled.com/static/images/media/track_images_100/mr60124_201393_14349154951.jpg',
         track: 'Bound',
         year: 1971,
       },
       {
         artist: 'Brenda Lee',
-        images: [
-          'https://www.whosampled.com/static/images/media/track_images_100/mr9591_2011312_14739796772.jpg',
-          'https://www.whosampled.com/static/images/media/track_images_200/lr9591_2011312_14739796772.jpg',
-        ],
+        image: 'https://www.whosampled.com/static/images/media/track_images_200/lr9591_2011312_14739796772.jpg',
         track: "Sweet Nothin's",
         year: 1959,
       },
       {
         artist: 'Wee',
-        images: [
-          'https://www.whosampled.com/static/images/media/track_images_100/mr28714_2012827_101413805613.jpg',
-          'https://www.whosampled.com/static/images/media/track_images_200/lr28714_2012827_101413805613.jpg',
-        ],
+        image: 'https://www.whosampled.com/static/images/media/track_images_200/lr28714_2012827_101413805613.jpg',
         track: 'Aeroplane (Reprise)',
         year: 1977,
       },
       {
         artist: 'Martin (TV show)',
-        images: [
-          'https://www.whosampled.com/static/images/media/visualmedia_images/r60124_2017215_112028118784.jpg',
-          'https://www.whosampled.com/static/images/media/visualmedia_images_200/lr60124_2017215_112028118784.jpg',
-        ],
+        image: 'https://www.whosampled.com/static/images/media/visualmedia_images_200/lr60124_2017215_112028118784.jpg',
         track: "Jerome's in the House, Watch Your Mouth",
         year: 1994,
       },

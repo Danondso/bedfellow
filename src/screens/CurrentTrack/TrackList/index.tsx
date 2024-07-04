@@ -34,6 +34,7 @@ function SampleList({ isLoading, trackSamples, HeaderComponent, onRefresh }: Sam
     try {
       const result = await findAndQueueTrack(item, spotifyAuth);
       setSnackbarText(result);
+      setShowSnackbar(true);
     } catch (err) {
       setError(true);
       setSnackbarText(err as string);
@@ -53,7 +54,6 @@ function SampleList({ isLoading, trackSamples, HeaderComponent, onRefresh }: Sam
             index={index}
             onPress={() => {
               onPressHandler(item);
-              setShowSnackbar(true);
             }}
           />
         )}
