@@ -10,7 +10,7 @@ A small React Native app and Rust web service that displays samples used for a g
 
 First, create a .env file in `bedfellow/` and add these values to it.
 
-``` .env
+```.env
 SPOTIFY_CLIENT_ID="your app's client id"
 SPOTIFY_AUTHORIZE_URL=https://accounts.spotify.com/authorize
 SPOTIFY_REDIRECT_URI_ANDROID=com.bedfellow://callback/
@@ -36,7 +36,7 @@ export SPOTIFY_CLIENT_ID="your app's client id"
 export SPOTIFY_CLIENT_SECRET="your app's client secret"
 export SPOTIFY_CLIENT_CALLBACK_IOS=org.danondso.bedfellow://callback/
 export SPOTIFY_CLIENT_CALLBACK_ANDROID=com.bedfellow://callback/
-# export HOST_IP="" # Optional, used by docker to make service accessible from container. 
+# export HOST_IP="" # Optional, used by docker to make service accessible from container.
 ```
 
 Save those and run `source <your_file_name>`.

@@ -5,18 +5,24 @@ services:
     restart: always
     environment:
       DATABASE_URL: mysql://xxxxx:xxxxx@host.docker.internal/bedfellow
-      HOST_IP: "0.0.0.0"
+      HOST_IP: '0.0.0.0'
     build:
       context: ./
       dockerfile: Dockerfile
     depends_on:
-      - bedfellow-db
+      bedfellow-db:
+        condition: service_healthy
     ports:
       - 127.0.0.1:8000:8000
     expose:
       - 8000
   bedfellow-db:
     image: mysql:latest
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD']
+      interval: 2s
+      timeout: 60s
+      retries: 20
     restart: always
     environment:
       MYSQL_DATABASE: bedfellow
@@ -33,11 +39,11 @@ services:
     volumes:
       - $PWD/db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - bedfellow-db:/var/lib/mysql
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8002
 # Names our volume
 volumes:
   bedfellow-db:

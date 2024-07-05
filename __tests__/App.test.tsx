@@ -4,7 +4,7 @@ import App from '../App';
 
 describe('<App />', () => {
   it('renders login screen snapshot', async () => {
-    const component = render(<App />);
+    const component = await render(<App />);
 
     const loginText = await screen.findByText('a smol bean app');
     const loginButton = await screen.findAllByText(/Login/);

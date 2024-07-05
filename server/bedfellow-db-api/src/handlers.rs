@@ -29,7 +29,7 @@ pub async fn get_samples_handler(
             "message": "artist not found"
         })); 
     }
-
+    println!("INFO:: artist_id: {:?} and track_name: {:?}", artist_id.0, track);
     let samples = sqlx::query_as(
         "SELECT
         SAMPLE.sample_id as id,
@@ -134,7 +134,7 @@ async fn create_samples_handler(
             sample_track_artist_id = create_artist(&sample_track.artist, &data).await;
         }
         if sample_track_id.0 == 0 {
-            sample_track_id = create_track(sample_track_artist_id.0, &sample_track.track, sample_track.year.unwrap_or(0), &sample_track.image, &data).await;
+            sample_track_id = create_track(sample_track_artist_id.0, &sample_track.track, sample_track.year.unwrap_or(0), &sample_track.image.as_bytes().to_vec(), &data).await;
         }
 
         if sample_track_artist_id.0 == 0 && sample_track_id.0 == 0 {
@@ -160,6 +160,7 @@ async fn create_samples_handler(
 }
 
 async fn get_artist(artist_name: &String, data: &web::Data<AppState>) -> (u64, ) {
+    println!("INFO:: artist_name: {:?}", artist_name);
     return sqlx::query_as("SELECT artist_id from artist WHERE artist_name = ?")
     .bind(artist_name)
     .fetch_one(&data.db).await.unwrap_or((0,));
@@ -249,12 +250,24 @@ async fn create_sample(track_name: &String, track_artist: u64, track_year: u16, 
 }
 
 fn filter_db_record(sample: &SampleModel) -> SampleSchema {
+
+    let mut image_as_str: String = "".to_owned();
+    let track_str = String::from_utf8(sample.track_image.to_owned());
+    match track_str {
+        Ok(t) => {
+            image_as_str = t.to_owned();
+        }
+        Err(err) => {
+            println!("WARN:: filter_db_record -> failed to parse blob for sample: {:?}, error: {:?}",sample.track, err);
+        }
+    }
+    
     SampleSchema {
         id: sample.id.to_owned(),
         artist: sample.artist.to_owned(),
         track: sample.track.to_owned(),
         year: Some(sample.track_year.unwrap_or(0)),
-        image: sample.track_image.to_owned(),
+        image: image_as_str,
     }
 }
 
