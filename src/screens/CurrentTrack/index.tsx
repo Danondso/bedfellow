@@ -81,7 +81,7 @@ const useBedfellowService = () => {
   return { isLoading, trackSamples, loadBedfellowData, refreshTrackSamples };
 };
 
-function CurrentSong({ item }: CurrentSongProps) {
+export function CurrentSong({ item }: CurrentSongProps) {
   return (
     <View style={styles.view}>
       <View style={styles.currentSongView}>
@@ -89,7 +89,7 @@ function CurrentSong({ item }: CurrentSongProps) {
           <Avatar.Image size={90} source={item?.album.images[0]} />
         ) : (
           // @ts-ignore artists is inside of album don't believe their lies
-          <Avatar.Text size={90} label={item?.album.artists[0].name[0]} />
+          <Avatar.Text size={90} label={item?.artists[0].name} />
         )}
         <Text style={styles.trackName}>{item ? item.name : 'No Track Info Available'}</Text>
         <Text style={styles.artistName}>{item ? formatArtistNames(item) : 'No Artist Info Available'}</Text>

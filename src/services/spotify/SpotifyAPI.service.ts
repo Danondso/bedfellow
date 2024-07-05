@@ -32,9 +32,9 @@ export const findAndQueueTrack = async (
   spotifyAuth: SpotifyAuthentication
 ): Promise<string> => {
   const { track, artist } = selectedTrack;
-  if (artist.length >= 7 && artist.substring(artist.length - 7) === '(movie)') {
+  if (artist.length >= 7 && artist.slice(-7) === '(movie)') {
     return 'Cannot queue movie';
-  } else if (artist.length >= 9 && artist.substring(artist.length - 9).trim() === '(TV show)') {
+  } else if (artist.length >= 9 && artist.slice(-9).trim() === '(TV show)') {
     return 'Cannot queue tv show';
   }
 

@@ -1,10 +1,11 @@
-import { ImageStyle, StyleSheet, ViewStyle } from 'react-native';
+import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import theme from '../../../../theme';
 
 type Style = {
   trackImage: ImageStyle;
   trackItem: ViewStyle;
   trackListWrapper: ViewStyle;
+  trackListTitle: TextStyle;
 };
 
 const { defaultPalette, padding, borderRadius } = theme;
@@ -25,5 +26,9 @@ export default StyleSheet.create<Style>({
   trackListWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  trackListTitle: {
+    width: '100%',
+    alignItems: 'center',
   },
 });

@@ -2,14 +2,16 @@ import parseWhoSampledPage from '../../../../src/services/whosampled/utilities/u
 import { HEADER_TITLES } from '../../../../src/services/whosampled/enums';
 import singlePage from '../../../fixtures/api/whosampled/sample-single.0';
 import multiPage from '../../../fixtures/api/whosampled/sample-multiple.0';
-import { Sample, WhoSampledData } from '../../../../src/types/whosampled';
+import { Sample } from '../../../../src/types/whosampled';
+
+jest.mock('axios');
 
 describe('WhoSampled Utilities Test Suite', () => {
   it('parses discrete page for matching variant', async () => {
     const expectedResult: Array<Sample> = [
       {
         artist: 'Ponderosa Twins Plus One',
-        image: 'https://www.whosampled.com/static/images/media/track_images_100/mr60124_201393_14349154951.jpg',
+        image: 'https://www.whosampled.com/static/images/media/track_images_200/lr60124_201393_14349154951.jpg',
         track: 'Bound',
         year: 1971,
       },
@@ -33,14 +35,14 @@ describe('WhoSampled Utilities Test Suite', () => {
       },
     ];
     const document: string = multiPage.toString();
-    const result = parseWhoSampledPage(document, HEADER_TITLES.CONTAINS_SAMPLES);
+    const result = await parseWhoSampledPage(document, HEADER_TITLES.CONTAINS_SAMPLES);
 
     expect(result).toEqual(expectedResult);
   });
 
   it('returns null if header is not matched', async () => {
     const document: string = singlePage.toString();
-    const result = parseWhoSampledPage(document, HEADER_TITLES.SAMPLED_IN);
+    const result = await parseWhoSampledPage(document, HEADER_TITLES.SAMPLED_IN);
 
     expect(result).toBe(null);
   });

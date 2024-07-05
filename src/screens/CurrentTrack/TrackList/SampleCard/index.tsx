@@ -20,7 +20,7 @@ function SampleCard({ item, index, onPress }: SampleCardProps) {
     <View style={styles.trackListWrapper}>
       <Card mode="elevated" style={styles.trackItem} onPress={() => onPress(index)}>
         <Card.Cover style={styles.trackImage} source={{ uri: image }} />
-        <Card.Title title={track} />
+        <Card.Title style={styles.trackListTitle} title={track} />
         <Card.Content>
           <Paragraph>{artist}</Paragraph>
         </Card.Content>
