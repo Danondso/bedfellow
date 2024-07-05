@@ -1,6 +1,6 @@
 export default {
-  artist: 'Blank Man',
-  track: 'Wow',
+  artist_name: 'Kanye West',
+  track_name: 'Bound 2',
   samples: [
     {
       artist: 'Ponderosa Twins Plus One',

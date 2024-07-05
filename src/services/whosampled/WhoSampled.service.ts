@@ -61,6 +61,9 @@ export const searchWhoSampled = async (artist: string, trackName: string): Promi
 };
 
 export const getParsedWhoSampledPage = async (urlFragment: string): Promise<Sample[] | null> => {
+  if (!urlFragment) {
+    return null;
+  }
   try {
     const document: string | null = await getWhoSampledDocument(urlFragment, CONNECTIONS.SAMPLES);
     if (!document) {
