@@ -5,7 +5,7 @@ import { searchAndRetrieveParsedWhoSampledPage } from '../../services/whosampled
 import { getBedfellowDBData, postToBedfellowDB } from '../../services/bedfellow-db-api/BedfellowDBAPI.service';
 import { BedfellowTrackSamples } from '../../types/bedfellow-api';
 import { DetailsScreenProps } from '../../types';
-import styles from './Details.styles';
+import styles from './CurrentTrack.styles';
 import { ArtistObjectSimplified, CurrentPlaybackResponse, TrackObjectFull } from '../../types/spotify-api';
 import SampleList from './TrackList';
 import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
