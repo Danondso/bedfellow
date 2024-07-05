@@ -1,8 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { SearchResponse } from '../../../src/types/whosampled';
+import { SearchResponse, TrackWithSamples } from '../../../src/types/whosampled';
 import * as WhoSampledService from '../../../src/services/whosampled/WhoSampled.service';
 import { ArtistObjectSimplified } from '../../../src/types/spotify-api';
 import sampleMultiple0 from '../../fixtures/api/whosampled/sample-multiple.0';
+import sampleSingle0 from '../../fixtures/api/whosampled/sample-single.0';
+
 import sampleResults from '../../fixtures/api/bedfellow-db-api/sample-info.0';
 
 Date.now = () => 1720182766616;
@@ -15,8 +17,73 @@ describe('WhoSampled.service Test Suite', () => {
   });
 
   describe('searchAndRetrieveParsedWhoSampledPage', () => {
-    // TODO do a search and retrieve on the single result
-    // that'll let us test the logic where we try /samples then just the track page itself
+    it('searches, fails, finds correct page and parses correctly', async () => {
+      const singleSampleResult: TrackWithSamples = {
+        artist_name: 'Kanye West',
+        track_name: 'Bound 2',
+        samples: [
+          {
+            artist: 'Hubert Laws',
+            image: 'https://www.whosampled.com/static/images/media/track_images_200/lr2825_20101222_62421395633.jpg',
+            track: 'The Rite of Spring',
+            year: 1972,
+          },
+        ],
+      };
+      const artists: ArtistObjectSimplified[] = [
+        {
+          name: 'Kanye West',
+          id: '234635737',
+          type: 'artist',
+          href: '',
+          external_urls: {
+            spotify: '',
+          },
+          uri: '',
+        },
+      ];
+      const name: string = 'Bound 2';
+      // we start by searching
+      mockedAxios.get.mockResolvedValueOnce({
+        data: {
+          tracks: [
+            {
+              id: 124124,
+              url: '/Kanye-West/Bound-2',
+              artist_name: 'Kanye West',
+              track_name: 'Bound 2',
+              image_url: 'https://localhost/ba',
+              counts: 'Like a bunch',
+            },
+          ],
+        },
+        status: 200,
+      });
+
+      // first we fail to get the doc because /samples isn't found (ie not enough for WhoSampled to have its own page for that tracks samples)
+      mockedAxios.get.mockRejectedValueOnce({
+        data: null,
+        response: {
+          status: 404,
+        },
+      });
+
+      // then we get the document correctly using the url sans '/samples'
+      mockedAxios.get.mockResolvedValueOnce({
+        data: sampleSingle0,
+        status: 200,
+      });
+
+      // then finally, we fail to download images for coverage reasons
+      mockedAxios.get.mockRejectedValueOnce({
+        status: 404,
+      });
+
+      const result = await WhoSampledService.searchAndRetrieveParsedWhoSampledPage(artists, name);
+      expect(result).toEqual(singleSampleResult);
+      expect(mockedAxios.get).toHaveBeenCalledTimes(4);
+    });
+
     it('searches and parses correctly', async () => {
       const artists: ArtistObjectSimplified[] = [
         {
@@ -61,6 +128,34 @@ describe('WhoSampled.service Test Suite', () => {
 
       const result = await WhoSampledService.searchAndRetrieveParsedWhoSampledPage(artists, name);
       expect(result).toEqual(sampleResults);
+      expect(mockedAxios.get).toHaveBeenCalledTimes(6);
+    });
+
+    it('returns null early if search results come up with nothing', async () => {
+      const artists: ArtistObjectSimplified[] = [
+        {
+          name: 'Kanye East',
+          id: '234635737',
+          type: 'artist',
+          href: '',
+          external_urls: {
+            spotify: '',
+          },
+          uri: '',
+        },
+      ];
+      const name: string = 'Bound';
+
+      mockedAxios.get.mockResolvedValueOnce({
+        data: {
+          tracks: [],
+        },
+        status: 200,
+      });
+
+      const result = await WhoSampledService.searchAndRetrieveParsedWhoSampledPage(artists, name);
+      expect(result).toEqual(null);
+      expect(mockedAxios.get).toHaveBeenCalledTimes(1);
     });
   });
   describe('searchWhoSampled', () => {
@@ -149,6 +244,12 @@ describe('WhoSampled.service Test Suite', () => {
   });
 
   describe('getParsedWhoSampledPage', () => {
+    it('returns null when http call succeeds but fails to parse', async () => {
+      mockedAxios.get.mockResolvedValueOnce({ status: 200, data: 'this is not html' });
+      mockedAxios.get.mockResolvedValueOnce(null);
+      const result = await WhoSampledService.getParsedWhoSampledPage('/Dryjacket/Bill-Gates-Ringtone');
+      expect(result).toEqual(null);
+    });
     it('returns null when http call gets a 404 is falsey', async () => {
       mockedAxios.get.mockRejectedValueOnce({
         status: 404,
