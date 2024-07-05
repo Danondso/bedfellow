@@ -7,9 +7,9 @@
     "ios": "react-native run-ios",
     "pods": "cd ios && pod install && cd ../",
     "lint": "eslint .",
-    "start": "react-native start",
+    "start": "NODE_ENV=dev react-native start",
     "server-start": "cd server/ && docker-compose up && cd ../",
-    "test": "jest",
+    "test": "NODE_ENV=jest jest",
     "test-debug": "jest --detectOpenHandles --forceExit",
     "tsc": "tsc"
   },

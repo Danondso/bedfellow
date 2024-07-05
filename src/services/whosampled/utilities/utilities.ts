@@ -3,7 +3,7 @@ import { Sample } from '../../../types/whosampled';
 import { HEADER_TITLES } from '../enums';
 import { getWhoSampledImage } from '../WhoSampled.service';
 
-const { WHOSAMPLED_BASE_URL } = process.env;
+const WHOSAMPLED_BASE_URL = 'https://www.whosampled.com';
 
 const parseWhoSampledPage = async (document: string, headerText: HEADER_TITLES): Promise<Sample[] | null> => {
   if (!document) {

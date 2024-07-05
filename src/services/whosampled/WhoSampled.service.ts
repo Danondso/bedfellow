@@ -5,7 +5,7 @@ import { HEADER_TITLES, CONNECTIONS } from './enums';
 import { Sample, SearchResponse, TrackWithSamples } from '../../types/whosampled';
 import { ArtistObjectSimplified } from '../../types/spotify-api';
 
-const { WHOSAMPLED_BASE_URL } = process.env;
+const WHOSAMPLED_BASE_URL = 'https://www.whosampled.com';
 
 export const searchAndRetrieveParsedWhoSampledPage = async (
   artists: ArtistObjectSimplified[],

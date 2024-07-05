@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, Platform, Alert } from 'react-native';
 import {
+  BEDFELLOW_API_BASE_URL,
   SPOTIFY_CLIENT_ID,
   SPOTIFY_REDIRECT_URI,
   SPOTIFY_REDIRECT_URI_ANDROID,
-  SPOTIFY_TOKEN_URL,
-  SPOTIFY_AUTHORIZE_URL,
   // eslint-disable-next-line import/no-unresolved
 } from '@env';
 import { authorize, AuthorizeResult } from 'react-native-app-auth';
@@ -26,8 +25,8 @@ function LoginScreen({ navigation }: LoginScreenProps) {
         redirectUrl: Platform.OS === 'ios' ? SPOTIFY_REDIRECT_URI : SPOTIFY_REDIRECT_URI_ANDROID,
         scopes: ['user-modify-playback-state', 'user-follow-read', 'user-read-currently-playing'],
         serviceConfiguration: {
-          authorizationEndpoint: SPOTIFY_AUTHORIZE_URL,
-          tokenEndpoint: SPOTIFY_TOKEN_URL,
+          authorizationEndpoint: 'https://accounts.spotify.com/authorize',
+          tokenEndpoint: `${BEDFELLOW_API_BASE_URL}/token`,
         },
       };
 

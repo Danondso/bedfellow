@@ -12,18 +12,13 @@ First, create a .env file in `bedfellow/` and add these values to it.
 
 ```.env
 SPOTIFY_CLIENT_ID="your app's client id"
-SPOTIFY_AUTHORIZE_URL=https://accounts.spotify.com/authorize
 SPOTIFY_REDIRECT_URI_ANDROID=com.bedfellow://callback/
 SPOTIFY_REDIRECT_URI=org.danondso.bedfellow://callback/
-SPOTIFY_TOKEN_REFRESH_URL="<your_server_url>/refresh"
-SPOTIFY_TOKEN_URL="<your_server_url>/token"
 ```
 
 You need to make a [spotify developer account](https://developer.spotify.com) and create an app. This will get you the CLIENT_ID. For the redirectUri's, use the REDIRECT_URI values above.
 
-To get SPOTIFY_TOKEN_URL and SPOTIFY_TOKEN_REFRESH_URL, you'll need to setup the bedfellow-api server and make that externally available to your application (**server setup is mandatory**). Once you have the external url for your server, plug that into the token refresh and token urls.
-
-Once your .env is all filled out. Run `yarn start` to run metro and you're set!
+You'll need to setup the bedfellow-api server and make that externally available to your application (**server setup is mandatory**) for handling application auth. Once your .env is all filled out. Run `yarn start` to run metro and you're set!
 
 ## Server - Setting Up
 
