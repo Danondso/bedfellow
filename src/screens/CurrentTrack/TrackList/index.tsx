@@ -48,10 +48,9 @@ function SampleList({ isLoading, trackSamples, HeaderComponent, onRefresh }: Sam
         ListHeaderComponent={HeaderComponent}
         ListEmptyComponent={isLoading ? <WhoSampledSkeleton /> : <EmptyListMessage />}
         data={trackSamples?.samples || []}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <SampleCard
             item={item}
-            index={index}
             onPress={() => {
               onPressHandler(item);
             }}

@@ -10,7 +10,6 @@ export const postToBedfellowDB = async (requestBody: TrackWithSamples) => {
     return response.status === 204;
   } catch (error) {
     const err = error as AxiosError;
-    // TODO handle this
     if (err.response?.status === 409) {
       throw new Error('Sample already exists!');
     }
