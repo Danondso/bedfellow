@@ -26,11 +26,11 @@ export default {
       track: "Jerome's in the House, Watch Your Mouth",
       year: 1994,
     },
-  ]
-}
+  ],
+};
 
 export const emptyPayload = {
   artist: '',
   track: '',
   samples: [],
-}
+};
