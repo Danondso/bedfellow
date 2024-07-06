@@ -67,19 +67,14 @@ export const getParsedWhoSampledPage = async (urlFragment: string): Promise<Samp
   try {
     const document: string | null = await getWhoSampledDocument(urlFragment, CONNECTIONS.SAMPLES);
     if (!document) {
-      throw new Error('Unable to find');
+      return null;
     }
     const result: Array<Sample> | null = await parseWhoSampledPage(document, HEADER_TITLES.CONTAINS_SAMPLES);
 
-    if (!result) {
-      return null;
-    }
-
     return result;
   } catch (error) {
-    console.log('ERROR::', error);
+    return null;
   }
-  return null;
 };
 
 const getWhoSampledDocument = async (urlFragment: string, variant: CONNECTIONS): Promise<string | null> => {

@@ -18,6 +18,32 @@ describe('WhoSampled.service Test Suite', () => {
   });
 
   describe('searchAndRetrieveParsedWhoSampledPage', () => {
+    const artists: ArtistObjectSimplified[] = [
+      {
+        name: 'Kanye West',
+        id: '234635737',
+        type: 'artist',
+        href: '',
+        external_urls: {
+          spotify: '',
+        },
+        uri: '',
+      },
+    ];
+
+    const searchResult: SearchResponse = {
+      tracks: [
+        {
+          id: 124124,
+          url: '/Kanye-West/Bound-2',
+          artist_name: 'Kanye West',
+          track_name: 'Bound 2',
+          image_url: 'https://localhost/ba',
+          counts: 'Like a bunch',
+        },
+      ],
+    };
+
     it('searches, fails, finds correct page and parses correctly', async () => {
       const singleSampleResult: TrackWithSamples = {
         artist_name: 'Kanye West',
@@ -31,37 +57,16 @@ describe('WhoSampled.service Test Suite', () => {
           },
         ],
       };
-      const artists: ArtistObjectSimplified[] = [
-        {
-          name: 'Kanye West',
-          id: '234635737',
-          type: 'artist',
-          href: '',
-          external_urls: {
-            spotify: '',
-          },
-          uri: '',
-        },
-      ];
+
       const name: string = 'Bound 2';
       // we start by searching
       mockedAxios.get.mockResolvedValueOnce({
-        data: {
-          tracks: [
-            {
-              id: 124124,
-              url: '/Kanye-West/Bound-2',
-              artist_name: 'Kanye West',
-              track_name: 'Bound 2',
-              image_url: 'https://localhost/ba',
-              counts: 'Like a bunch',
-            },
-          ],
-        },
+        data: searchResult,
         status: 200,
       });
 
-      // first we fail to get the doc because /samples isn't found (ie not enough for WhoSampled to have its own page for that tracks samples)
+      // first we fail to get the doc because /samples isn't found
+      // (ie not enough for WhoSampled to have its own page for that tracks samples)
       mockedAxios.get.mockRejectedValueOnce({
         data: null,
         response: {
@@ -86,18 +91,6 @@ describe('WhoSampled.service Test Suite', () => {
     });
 
     it('searches and parses correctly', async () => {
-      const artists: ArtistObjectSimplified[] = [
-        {
-          name: 'Kanye West',
-          id: '234635737',
-          type: 'artist',
-          href: '',
-          external_urls: {
-            spotify: '',
-          },
-          uri: '',
-        },
-      ];
       const name: string = 'Bound 2';
       // we start by searching
       mockedAxios.get.mockResolvedValueOnce({
@@ -131,16 +124,10 @@ describe('WhoSampled.service Test Suite', () => {
     });
 
     it('returns null early if search results come up with nothing', async () => {
-      const artists: ArtistObjectSimplified[] = [
+      const artistWithoutSamples: ArtistObjectSimplified[] = [
         {
+          ...artists[0],
           name: 'Kanye East',
-          id: '234635737',
-          type: 'artist',
-          href: '',
-          external_urls: {
-            spotify: '',
-          },
-          uri: '',
         },
       ];
       const name: string = 'Bound';
@@ -152,7 +139,7 @@ describe('WhoSampled.service Test Suite', () => {
         status: 200,
       });
 
-      const result = await WhoSampledService.searchAndRetrieveParsedWhoSampledPage(artists, name);
+      const result = await WhoSampledService.searchAndRetrieveParsedWhoSampledPage(artistWithoutSamples, name);
       expect(result).toEqual(null);
       expect(mockedAxios.get).toHaveBeenCalledTimes(1);
     });
