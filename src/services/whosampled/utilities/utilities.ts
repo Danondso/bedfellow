@@ -19,9 +19,6 @@ const parseWhoSampledPage = async (document: string, headerText: HEADER_TITLES):
 
   const tableElement = sectionHeaderElement.nextUntil('.table .tdata');
 
-  if (!tableElement) {
-    return null;
-  }
   tableElement
     .find('tbody')
     .find('tr')

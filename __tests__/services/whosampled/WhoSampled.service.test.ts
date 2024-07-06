@@ -2,11 +2,13 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { SearchResponse, TrackWithSamples } from '../../../src/types/whosampled';
 import * as WhoSampledService from '../../../src/services/whosampled/WhoSampled.service';
 import { ArtistObjectSimplified } from '../../../src/types/spotify-api';
-import sampleMultiple0 from '../../fixtures/api/whosampled/sample-multiple.0';
-import sampleSingle0 from '../../fixtures/api/whosampled/sample-single.0';
+import sampleMultiple0 from '../../fixtures/api/whosampled/html/sample-multiple-page.0';
+import sampleSingle0 from '../../fixtures/api/whosampled/html/sample-single-page.0';
 
 import sampleResults from '../../fixtures/api/bedfellow-db-api/sample-info.0';
-import imageSuccess0 from '../../fixtures/api/whosampled/image-success.0';
+import imageSuccess0 from '../../fixtures/api/whosampled/images/image-success.0';
+import searchResult0 from '../../fixtures/api/whosampled/search/search-result.0';
+import searchResult1 from '../../fixtures/api/whosampled/search/search-result.1';
 
 Date.now = () => 1720182766616;
 
@@ -31,19 +33,6 @@ describe('WhoSampled.service Test Suite', () => {
       },
     ];
 
-    const searchResult: SearchResponse = {
-      tracks: [
-        {
-          id: 124124,
-          url: '/Kanye-West/Bound-2',
-          artist_name: 'Kanye West',
-          track_name: 'Bound 2',
-          image_url: 'https://localhost/ba',
-          counts: 'Like a bunch',
-        },
-      ],
-    };
-
     it('searches, fails, finds correct page and parses correctly', async () => {
       const singleSampleResult: TrackWithSamples = {
         artist_name: 'Kanye West',
@@ -61,7 +50,7 @@ describe('WhoSampled.service Test Suite', () => {
       const name: string = 'Bound 2';
       // we start by searching
       mockedAxios.get.mockResolvedValueOnce({
-        data: searchResult,
+        data: searchResult0,
         status: 200,
       });
 
@@ -94,18 +83,7 @@ describe('WhoSampled.service Test Suite', () => {
       const name: string = 'Bound 2';
       // we start by searching
       mockedAxios.get.mockResolvedValueOnce({
-        data: {
-          tracks: [
-            {
-              id: 124124,
-              url: '/Kanye-West/Bound-2',
-              artist_name: 'Kanye West',
-              track_name: 'Bound 2',
-              image_url: 'https://localhost/ba',
-              counts: 'Like a bunch',
-            },
-          ],
-        },
+        data: searchResult0,
         status: 200,
       });
 
@@ -147,18 +125,7 @@ describe('WhoSampled.service Test Suite', () => {
   describe('searchWhoSampled', () => {
     it('retrieves search results successfully', async () => {
       const searchResultsResponse: AxiosResponse<SearchResponse> = {
-        data: {
-          tracks: [
-            {
-              id: 123,
-              url: '/Milo/souvenir',
-              artist_name: 'Milo',
-              track_name: 'souvenir',
-              image_url: 'https://image.url',
-              counts: '300 samples',
-            },
-          ],
-        },
+        data: searchResult1,
         status: 200,
         statusText: 'OK',
         headers: {},
@@ -236,7 +203,7 @@ describe('WhoSampled.service Test Suite', () => {
       const result = await WhoSampledService.getParsedWhoSampledPage('/Dryjacket/Bill-Gates-Ringtone');
       expect(result).toEqual(null);
     });
-    it('returns null when http call gets a 404 is falsey', async () => {
+    it('returns null when http call gets a 404 is falsy', async () => {
       mockedAxios.get.mockRejectedValueOnce({
         status: 404,
         data: null,
@@ -244,7 +211,7 @@ describe('WhoSampled.service Test Suite', () => {
       const result = await WhoSampledService.getParsedWhoSampledPage('/Dryjacket/Bill-Gates-Ringtone');
       expect(result).toEqual(null);
     });
-    it('returns null when urlFragment is falsey', async () => {
+    it('returns null when urlFragment is falsy', async () => {
       mockedAxios.get.mockRejectedValueOnce({
         status: 404,
         data: null,
@@ -256,7 +223,7 @@ describe('WhoSampled.service Test Suite', () => {
 
   describe('getWhoSampledImage', () => {
     beforeEach(() => jest.resetAllMocks());
-    it('returns null when url is falsey', async () => {
+    it('returns null when url is falsy', async () => {
       expect(await WhoSampledService.getWhoSampledImage(null)).toEqual(null);
     });
   });
