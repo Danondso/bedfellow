@@ -5,7 +5,7 @@ import { ArtistObjectSimplified } from '../../../src/types/spotify-api';
 import sampleMultiple0 from '../../fixtures/api/whosampled/html/sample-multiple-page.0';
 import sampleSingle0 from '../../fixtures/api/whosampled/html/sample-single-page.0';
 
-import sampleResults from '../../fixtures/api/bedfellow-db-api/sample-info.0';
+import sampleResults from '../../fixtures/api/whosampled/parseResults/parse-result.0';
 import imageSuccess0 from '../../fixtures/api/whosampled/images/image-success.0';
 import searchResult0 from '../../fixtures/api/whosampled/search/search-result.0';
 import searchResult1 from '../../fixtures/api/whosampled/search/search-result.1';

@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
 import { CurrentPlaybackResponse } from '../../types/spotify-api';
-import { spotifyGETData, spotifyPOSTData } from '../../services/spotify/SpotifyAPI.service';
+import { spotifyGETData } from '../../services/spotify/SpotifyAPI.service';
 
 type SpotifyAPIHookResponse = {
   loadData: () => void;
@@ -10,7 +10,7 @@ type SpotifyAPIHookResponse = {
   response?: unknown;
 };
 
-function useSpotifyAPI(url: string, httpMethod: string = 'GET', body: object = {}): SpotifyAPIHookResponse {
+function useSpotifyAPI(url: string, httpMethod: string = 'GET'): SpotifyAPIHookResponse {
   const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const [response, setResponse] = useState<CurrentPlaybackResponse | null>();
   const [loading, setLoading] = useState(false);
@@ -30,9 +30,6 @@ function useSpotifyAPI(url: string, httpMethod: string = 'GET', body: object = {
     try {
       if (httpMethod === 'GET') {
         const result = await spotifyGETData(url, spotifyAuth);
-        setResponse(result.data);
-      } else if (httpMethod === 'POST') {
-        const result = await spotifyPOSTData(url, spotifyAuth, body);
         setResponse(result.data);
       }
     } catch (e) {

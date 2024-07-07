@@ -37,7 +37,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
       }
     } catch (error) {
       if (error instanceof Error) {
-        Alert.alert('Failed to Login', error.message);
+        Alert.alert('Failed to login', error.message);
       } else {
         Alert.alert('Failed to login');
       }
