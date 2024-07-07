@@ -9,6 +9,7 @@ import sampledInfo0 from './fixtures/api/bedfellow-db-api/sample-info.0';
 import searchResult0 from './fixtures/api/whosampled/search/search-result.0';
 import sampleMulti0 from './fixtures/api/whosampled/html/sample-multiple-page.0';
 import imageSuccess0 from './fixtures/api/whosampled/images/image-success.0';
+import searchResultSuccess1 from './fixtures/api/spotify/search-result-success.1';
 
 jest.mock('react-native-app-auth', () => ({
   authorize: jest.fn(),
@@ -42,52 +43,65 @@ describe('App Test Suite', () => {
     expect(screen.getByText('Login')).toBeTruthy();
   });
 
-  it('logs in, loads current track from spotify, retrieves samples from bedfellow-db-api, and queues samples', async () => {
-    Platform.OS = 'android';
-
-    mockedAxios.get.mockResolvedValueOnce({
-      data: currentTrack0,
-      status: 200,
+  describe('logs in, loads current track from spotify, retrieves samples from bedfellow-db-api', () => {
+    beforeEach(() => {
+      mockedAxios.get
+        .mockResolvedValueOnce({
+          data: currentTrack0,
+          status: 200,
+        })
+        .mockResolvedValueOnce({
+          data: sampledInfo0,
+          status: 200,
+        });
     });
-    mockedAxios.get.mockResolvedValueOnce({
-      data: sampledInfo0,
-      status: 200,
+    it('queues samples', async () => {
+      Platform.OS = 'android';
+
+      mockedAxios.get.mockResolvedValue({
+        status: 200,
+        data: searchResultSuccess1,
+      });
+
+      mockedAxios.post.mockResolvedValue({
+        data: null,
+        status: 204,
+      });
+
+      waitFor(async () => fireEvent.press(await screen.findByText('Login')));
+
+      waitFor(async () => fireEvent.press(await screen.findByText('Ponderosa Twins Plus One')));
+
+      await waitFor(() => {
+        expect(screen.findByText('Ponderosa Twins Plus One')).toBeDefined();
+        expect(screen.getByText('Queued Bound by Ponderosa Twins Plus One')).toBeDefined();
+
+        expect(authorize).toHaveBeenCalledTimes(1);
+        expect(mockedAxios.get).toHaveBeenCalledTimes(3);
+        expect(mockedAxios.post).toHaveBeenCalledTimes(1);
+      });
     });
 
-    mockedAxios.get.mockResolvedValue({
-      status: 200,
-      data: {
-        tracks: {
-          items: [
-            {
-              name: 'Bound',
-              artists: [
-                {
-                  name: 'Ponderosa Twins Plus One',
-                },
-              ],
-            },
-          ],
-        },
-      },
-    });
+    it('fails to queue sample sourced from a TV show', async () => {
+      Platform.OS = 'android';
 
-    mockedAxios.post.mockResolvedValue({
-      data: null,
-      status: 204,
-    });
+      mockedAxios.post.mockResolvedValue({
+        data: null,
+        status: 204,
+      });
 
-    waitFor(async () => fireEvent.press(await screen.findByText('Login')));
+      waitFor(async () => fireEvent.press(await screen.findByText('Login')));
 
-    waitFor(async () => fireEvent.press(await screen.findByText('Ponderosa Twins Plus One')));
+      waitFor(async () => fireEvent.press(await screen.findByText('Martin (TV show)')));
 
-    await waitFor(() => {
-      expect(screen.findByText('Ponderosa Twins Plus One')).toBeDefined();
-      expect(screen.getByText('Queued Bound by Ponderosa Twins Plus One')).toBeDefined();
+      await waitFor(() => {
+        expect(screen.findByText('Martin (TV show)')).toBeDefined();
+        expect(screen.getByText('Cannot queue tv show')).toBeDefined();
 
-      expect(authorize).toHaveBeenCalledTimes(1);
-      expect(mockedAxios.get).toHaveBeenCalledTimes(3);
-      expect(mockedAxios.post).toHaveBeenCalledTimes(1);
+        expect(authorize).toHaveBeenCalledTimes(1);
+        expect(mockedAxios.get).toHaveBeenCalledTimes(2);
+        expect(mockedAxios.post).toHaveBeenCalledTimes(0);
+      });
     });
   });
 
