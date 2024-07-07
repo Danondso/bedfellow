@@ -9,6 +9,7 @@ const EXACT_MATCH = 1;
 const MAX_WORD_DIFFERENCE = 2;
 const findMatchingTrack = (items: TrackObjectFull[], selectedTrack: BedfellowSample): TrackObjectFull | undefined => {
   const matchingTrack = items.find(
+    // todo we should go through all artists here instead
     (item) => item.name === selectedTrack.track && item.artists[0].name === selectedTrack.artist
   );
   if (matchingTrack) return matchingTrack;

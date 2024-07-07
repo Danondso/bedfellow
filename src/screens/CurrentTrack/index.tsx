@@ -58,6 +58,7 @@ const useBedfellowService = () => {
         if (filteredTrackSampleResults.length) {
           setTrackSamples(filteredTrackSampleResults[0]);
           setIsLoading(true);
+          return;
         }
       }
       const result = await parseAndPostWhoSampledData(artists, track);

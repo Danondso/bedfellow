@@ -28,10 +28,10 @@ export const spotifyPOSTData = async (
 };
 
 export const findAndQueueTrack = async (
-  selectedTrack: BedfellowSample,
+  trackToQueue: BedfellowSample,
   spotifyAuth: SpotifyAuthentication
 ): Promise<string> => {
-  const { track, artist } = selectedTrack;
+  const { track, artist } = trackToQueue;
   if (artist.length >= 7 && artist.slice(-7) === '(movie)') {
     return 'Cannot queue movie';
   } else if (artist.length >= 9 && artist.slice(-9).trim() === '(TV show)') {
@@ -42,7 +42,7 @@ export const findAndQueueTrack = async (
   try {
     const { data } = await spotifyGETData(url, spotifyAuth);
     const { items } = data.tracks;
-    const matchingTrack = findMatchingTrack(items, selectedTrack);
+    const matchingTrack = findMatchingTrack(items, trackToQueue);
     if (!matchingTrack) {
       return `Unable to find ${track} in search results`;
     }
