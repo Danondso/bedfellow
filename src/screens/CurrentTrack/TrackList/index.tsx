@@ -12,7 +12,7 @@ import { BedfellowTypes } from '../../../types';
 function EmptyListMessage() {
   return (
     <View style={styles.noSamplesWrapper}>
-      <Text style={styles.noSamples}>No data.</Text>
+      <Text style={styles.noSamples}>No samples found.</Text>
     </View>
   );
 }

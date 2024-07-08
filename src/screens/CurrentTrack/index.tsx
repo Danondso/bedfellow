@@ -92,9 +92,9 @@ export function CurrentSong({ item }: CurrentSongProps) {
           // @ts-ignore artists is inside of album don't believe their lies
           <Avatar.Text size={90} label={item?.artists[0].name} />
         )}
-        <Text style={styles.trackName}>{item ? item.name : 'No Track Info Available'}</Text>
-        <Text style={styles.artistName}>{item ? formatArtistNames(item) : 'No Artist Info Available'}</Text>
-        <Text style={styles.albumDescription}>{item ? item.album.name : 'No Album Info Available'}</Text>
+        <Text style={styles.trackName}>{item ? item.name : 'Nothing playing currently.'}</Text>
+        <Text style={styles.artistName}>{item ? formatArtistNames(item) : ''}</Text>
+        <Text style={styles.albumDescription}>{item ? item.album.name : ''}</Text>
       </View>
     </View>
   );
@@ -106,7 +106,6 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   const currentPlaybackResponse = response as CurrentPlaybackResponse;
   const currentlyPlayingTrack = currentPlaybackResponse?.item as TrackObjectFull;
   const { isLoading, trackSamples, loadBedfellowData, refreshTrackSamples } = useBedfellowService();
-
   useEffect(() => {
     refreshTrackSamples();
     if (currentlyPlayingTrack?.artists && currentlyPlayingTrack?.name) {
