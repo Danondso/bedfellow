@@ -17,7 +17,7 @@ type ApiError = {
 };
 
 function useSpotifyAPI(url: string): SpotifyAPIHookResponse {
-  const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { spotifyAuth, resetToken } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const [response, setResponse] = useState<CurrentPlaybackResponse | null>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
@@ -39,6 +39,11 @@ function useSpotifyAPI(url: string): SpotifyAPIHookResponse {
       setError(null);
     } catch (e) {
       const apiError = e as AxiosError;
+      if (error?.status === 401) {
+        await resetToken(spotifyAuth);
+        await loadData();
+        return;
+      }
       setError({
         message: apiError.message,
         status: apiError.response?.status || 0,
