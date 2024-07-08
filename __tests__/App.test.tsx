@@ -174,7 +174,8 @@ describe('App Test Suite', () => {
     await waitFor(async () => fireEvent.press(await screen.findByText('Login')));
     // TODO check redirectUri
     expect(authorize).toHaveBeenCalledTimes(1);
-    expect(screen.getByText('No data.')).toBeDefined();
+    expect(screen.getByText('Nothing playing currently.')).toBeDefined();
+    expect(screen.getByText('No samples found.')).toBeDefined();
     expect(mockedAxios.get).toHaveBeenCalledTimes(1);
   });
 
