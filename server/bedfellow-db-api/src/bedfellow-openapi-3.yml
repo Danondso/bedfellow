@@ -1,0 +1,172 @@
+openapi: '3.0.3'
+info:
+  title: Bedfellow DB API
+  version: '1.0.0'
+servers:
+  - url: http://localhost:8000
+paths:
+  /api/samples:
+    get:
+      parameters:
+      - in: query
+        name: artist_name
+        schema:
+          type: string
+        description: The name of the artist
+      - in: query
+        name: track_name
+        schema:
+          type: string
+        description: The name of the track whose samples you're looking for
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/SampleResponseSchema'
+        '404':
+          description: Sample data not found
+          content:
+            application/json:
+              schema:
+                description: Will return an error response of status:\ failure and message:\ artist not found (or track not found)
+                $ref: '#/components/schemas/ErrorResponseSchema'
+        '500':
+          description: After fetching the data from the db, the match applied to the result matched an error
+          content:
+            application/json:
+              schema:
+                description: Will return an error response of status:\ failure and message:\ stringified error if fetching samples returns an error
+                $ref: '#/components/schemas/ErrorResponseSchema'
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertSamplesRequestSchema'
+      responses:
+        '204':
+          description: Samples posted to db.
+        '207':
+          description: Partial success, returns response with a message indicating how many samples were created out of the sent payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartialSuccessSchema'
+        '409':
+          description: Sample entry already exists.
+        '500':
+          description: Returns if artist can't be created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+
+components:
+  schemas:
+    InsertSamplesRequestSchema:
+      type: object
+      properties:
+        track_name: 
+          type: string
+        artist_name:
+          type: string
+        samples: 
+          type: array
+          items:
+            $ref: '#/components/schemas/InsertSampleSchema'
+      required:
+        - track_name
+        - artist_name
+        - samples
+    InsertSampleSchema:
+      type: object
+      properties:   
+        artist:
+          type: string
+        track:
+          type: string
+        year:
+          type: integer
+          minimum: 0
+        image: 
+          description: Base64 encoded blob or url of image
+          type: string
+          format: byte
+      required:
+        - artist
+        - track
+        - image
+    SampleResponseSchema:
+      type: object
+      properties:     
+        status:
+          type: string
+        artist:
+          type: string
+        track:
+          type: string
+        samples:
+          type: array
+          items:
+            $ref: '#/components/schemas/SampleSchema'
+      required:
+        - status
+        - artist
+        - track
+        - samples
+    SampleSchema:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        artist:
+          type: string
+        track:
+          type: string
+        year:
+          type: integer
+          minimum: 0
+        image:
+          type: string
+          format: byte
+      required:
+        - artist
+        - track
+        - year
+        - image
+    PartialSuccessSchema:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      required:
+        - status
+        - message
+    HealthCheckSchema:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      required:
+        - status
+        - message
+    ErrorResponseSchema:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      required:
+        - status
+        - message
+
+    

@@ -21,6 +21,13 @@ pub struct InsertSamplesRequestSchema {
     pub samples: Vec<InsertSampleSchema>,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct SamplesResponseSchema {
+    pub status: String,
+    pub track: String,
+    pub artist: String,
+    pub samples: Vec<SampleSchema>
+}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SampleSchema {
@@ -38,20 +45,10 @@ pub struct HealthCheckSchema {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct SamplesResponseSchema {
-    pub status: String,
-    pub track: String,
-    pub artist: String,
-    pub samples: Vec<SampleSchema>
-}
-
-
-#[derive(Serialize, Deserialize, Debug)]
 pub struct ErrorResponseSchema {
     pub status: String,
-    pub track: String,
-    pub artist: String,
-    pub samples: Vec<SampleSchema>
+    pub message: String,
 }
+
 
 // TODO create structs for the other error type responses
