@@ -8,7 +8,7 @@ type Style = {
   trackListTitle: TextStyle;
 };
 
-const { defaultPalette, padding, borderRadius } = theme;
+const { padding, borderRadius } = theme;
 
 export default StyleSheet.create<Style>({
   trackImage: {
@@ -20,7 +20,6 @@ export default StyleSheet.create<Style>({
     flex: 1,
     flexDirection: 'row',
     padding: padding.base,
-    backgroundColor: defaultPalette.secondaryBackground,
     borderRadius,
   },
   trackListWrapper: {

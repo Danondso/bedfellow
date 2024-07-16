@@ -44,7 +44,7 @@ function SampleList({ isLoading, trackSamples, HeaderComponent, onRefresh }: Sam
   return (
     <>
       <FlatList
-        refreshControl={<RefreshControl onRefresh={() => onRefresh()} refreshing={isLoading} />}
+        refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={isLoading} />}
         ListHeaderComponent={HeaderComponent}
         ListEmptyComponent={isLoading ? <WhoSampledSkeleton /> : <EmptyListMessage />}
         data={trackSamples?.samples || []}

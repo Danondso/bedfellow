@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ViewStyle, TextStyle } from 'react-native';
 import { Avatar } from 'react-native-paper';
+import { AndroidImageColors, IOSImageColors } from 'react-native-image-colors';
+import defaultPalette from '../../theme/styles';
+import useImagePalette from '../../hooks/useImagePalette/useImagePalette';
 import { searchAndRetrieveParsedWhoSampledPage } from '../../services/whosampled/WhoSampled.service';
 import { getBedfellowDBData, postToBedfellowDB } from '../../services/bedfellow-db-api/BedfellowDBAPI.service';
 import { BedfellowTrackSamples } from '../../types/bedfellow-api';
@@ -35,66 +38,52 @@ const parseAndPostWhoSampledData = async (artists: ArtistObjectSimplified[], nam
     return false;
   }
 };
-
-const useBedfellowService = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [trackSamples, setTrackSamples] = useState<BedfellowTrackSamples | null>(null);
-  const [refresh, setRefresh] = useState<boolean>(false);
-
-  const loadBedfellowData = async (artists: ArtistObjectSimplified[], track: string) => {
-    setIsLoading(true);
-
-    try {
-      if ((artists[0].name, track)) {
-        const trackSamplesResults = await Promise.all(
-          await artists.map(async (artist) => {
-            const result: BedfellowTrackSamples | null = await getBedfellowDBData(artist?.name, track);
-            return result;
-          })
-        );
-        // This could lead to a situation where we make a bunch of calls then only use the first result
-        // let's try to make this smarter later
-        const filteredTrackSampleResults = trackSamplesResults.filter((trackSample) => trackSample);
-        if (filteredTrackSampleResults.length) {
-          setTrackSamples(filteredTrackSampleResults[0]);
-          setIsLoading(true);
-          return;
-        }
+const loadBedfellowData = async (artists: ArtistObjectSimplified[] = [], track: string = '') => {
+  try {
+    if ((artists[0].name, track)) {
+      const trackSamplesResults = await Promise.all(
+        await artists.map(async (artist) => {
+          const result: BedfellowTrackSamples | null = await getBedfellowDBData(artist?.name, track);
+          return result;
+        })
+      );
+      // This could lead to a situation where we make a bunch of calls then only use the first result
+      // let's try to make this smarter later
+      const filteredTrackSampleResults = trackSamplesResults.filter((trackSample) => trackSample);
+      if (filteredTrackSampleResults.length) {
+        return filteredTrackSampleResults[0];
       }
-      const result = await parseAndPostWhoSampledData(artists, track);
-      if (result) {
-        const sampleData = await getBedfellowDBData(artists[0].name, track);
-        setTrackSamples(sampleData);
-      }
-
-      setIsLoading(false);
-    } catch (error) {
-      console.log('ERROR::', error);
-      setIsLoading(false);
     }
-  };
-
-  const refreshTrackSamples = () => {
-    setRefresh(!refresh);
-    setTrackSamples(null);
-  };
-
-  return { isLoading, trackSamples, loadBedfellowData, refreshTrackSamples };
+    const result = await parseAndPostWhoSampledData(artists, track);
+    if (result) {
+      return await getBedfellowDBData(artists[0].name, track);
+    }
+  } catch (error) {
+    console.log('loadBedfellowData error::', error);
+    return null;
+  }
 };
 
 export function CurrentSong({ item }: CurrentSongProps) {
+  const colors: IOSImageColors | AndroidImageColors | null = useImagePalette(item?.album?.images?.[0].url || '');
+  const backgroundStyle: ViewStyle = {
+    backgroundColor: colors?.secondary || defaultPalette.primaryBackground,
+  };
+  const albumFontColor: TextStyle = {
+    color: colors?.background || defaultPalette.primaryText,
+  };
   return (
     <View style={styles.view}>
-      <View style={styles.currentSongView}>
+      <View style={[backgroundStyle, styles.currentSongView]}>
         {item && 'album' in item ? (
           <Avatar.Image size={90} source={item?.album.images[0]} />
         ) : (
-          // @ts-ignore artists is inside of album don't believe their lies
+          // @ts-ignore artists is inside of album don't believe the typescript warning
           <Avatar.Text size={90} label={item?.artists[0].name} />
         )}
-        <Text style={styles.trackName}>{item ? item.name : 'Nothing playing currently.'}</Text>
-        <Text style={styles.artistName}>{item ? formatArtistNames(item) : ''}</Text>
-        <Text style={styles.albumDescription}>{item ? item.album.name : ''}</Text>
+        <Text style={[albumFontColor, styles.trackName]}>{item ? item.name : 'Nothing playing currently.'}</Text>
+        <Text style={[albumFontColor, styles.artistName]}>{item ? formatArtistNames(item) : ''}</Text>
+        <Text style={[albumFontColor, styles.albumDescription]}>{item ? item.album.name : ''}</Text>
       </View>
     </View>
   );
@@ -103,30 +92,42 @@ export function CurrentSong({ item }: CurrentSongProps) {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   const { response, loadData } = useSpotifyAPI('v1/me/player/currently-playing');
+  const [samples, setSamples] = useState<BedfellowTrackSamples | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const currentPlaybackResponse = response as CurrentPlaybackResponse;
   const currentlyPlayingTrack = currentPlaybackResponse?.item as TrackObjectFull;
-  const { isLoading, trackSamples, loadBedfellowData, refreshTrackSamples } = useBedfellowService();
-  useEffect(() => {
-    refreshTrackSamples();
-    if (currentlyPlayingTrack?.artists && currentlyPlayingTrack?.name) {
-      loadBedfellowData(currentlyPlayingTrack.artists, currentlyPlayingTrack.name);
-    } else {
-      loadData();
-    }
-  }, [currentlyPlayingTrack?.artists, currentlyPlayingTrack?.name]);
 
   const refreshControl = () => {
-    refreshTrackSamples();
+    setIsLoading(true);
     loadData();
   };
 
+  useEffect(() => {
+    setIsLoading(true);
+    if (currentlyPlayingTrack) {
+      const { artists, name } = currentlyPlayingTrack;
+      loadBedfellowData(artists, name).then((result) => {
+        if (result) {
+          setSamples(result);
+        }
+        setIsLoading(false);
+      });
+    } else {
+      setSamples(null);
+      setIsLoading(false);
+      loadData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentlyPlayingTrack?.artists, currentlyPlayingTrack?.name]);
+
   return (
-    <View style={styles.view}>
+    <View style={[styles.view]}>
       <SampleList
         onRefresh={refreshControl}
         isLoading={isLoading}
         HeaderComponent={<CurrentSong item={currentlyPlayingTrack} />}
-        trackSamples={trackSamples}
+        trackSamples={samples}
       />
     </View>
   );

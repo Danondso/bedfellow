@@ -445,6 +445,8 @@ PODS:
     - React-Core
   - RNFS (2.20.0):
     - React-Core
+  - RNImageColors (1.2.2):
+    - React
   - RNScreens (3.27.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -501,6 +503,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNFS (from `../node_modules/react-native-fs`)
+  - RNImageColors (from `../node_modules/react-native-image-colors`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -604,6 +607,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNFS:
     :path: "../node_modules/react-native-fs"
+  RNImageColors:
+    :path: "../node_modules/react-native-image-colors"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -660,6 +665,7 @@ SPEC CHECKSUMS:
   ReactCommon: 5f704096ccf7733b390f59043b6fa9cc180ee4f6
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
+  RNImageColors: d94dbee7b2306488f0afa2953770a48590beabab
   RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
   RNSVG: 255767813dac22db1ec2062c8b7e7b856d4e5ae6
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
