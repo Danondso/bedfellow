@@ -197,10 +197,11 @@ describe('WhoSampled.service Test Suite', () => {
   });
 
   describe('getParsedWhoSampledPage', () => {
+    const url = '/Dryjacket/Bill-Gates-Ringtone/';
     it('returns null when http call succeeds but fails to parse', async () => {
       mockedAxios.get.mockResolvedValueOnce({ status: 200, data: 'this is not html' });
       mockedAxios.get.mockResolvedValueOnce(null);
-      const result = await WhoSampledService.getParsedWhoSampledPage('/Dryjacket/Bill-Gates-Ringtone');
+      const result = await WhoSampledService.getParsedWhoSampledPage(url);
       expect(result).toEqual(null);
     });
     it('returns null when http call gets a 404 is falsy', async () => {
@@ -208,7 +209,7 @@ describe('WhoSampled.service Test Suite', () => {
         status: 404,
         data: null,
       });
-      const result = await WhoSampledService.getParsedWhoSampledPage('/Dryjacket/Bill-Gates-Ringtone');
+      const result = await WhoSampledService.getParsedWhoSampledPage(url);
       expect(result).toEqual(null);
     });
     it('returns null when urlFragment is falsy', async () => {

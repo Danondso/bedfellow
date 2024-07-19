@@ -36,7 +36,11 @@ export default {
         },
       ],
       id: '',
-      images: [],
+      images: [
+        {
+          url: 'https://localhost/image/url',
+        },
+      ],
       name: 'Yeezus',
       release_date: '',
       release_date_precision: 'year',
