@@ -8,22 +8,22 @@ paths:
   /api/samples:
     get:
       parameters:
-      - in: query
-        name: artist_name
-        schema:
-          type: string
-        description: The name of the artist
-      - in: query
-        name: track_name
-        schema:
-          type: string
-        description: The name of the track whose samples you're looking for
+        - in: query
+          name: artist_name
+          schema:
+            type: string
+          description: The name of the artist
+        - in: query
+          name: track_name
+          schema:
+            type: string
+          description: The name of the track whose samples you're looking for
       responses:
         '200':
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/SampleResponseSchema'
         '404':
           description: Sample data not found
@@ -69,11 +69,11 @@ components:
     InsertSamplesRequestSchema:
       type: object
       properties:
-        track_name: 
+        track_name:
           type: string
         artist_name:
           type: string
-        samples: 
+        samples:
           type: array
           items:
             $ref: '#/components/schemas/InsertSampleSchema'
@@ -83,7 +83,7 @@ components:
         - samples
     InsertSampleSchema:
       type: object
-      properties:   
+      properties:
         artist:
           type: string
         track:
@@ -91,7 +91,7 @@ components:
         year:
           type: integer
           minimum: 0
-        image: 
+        image:
           description: Base64 encoded blob or url of image
           type: string
           format: byte
@@ -101,7 +101,7 @@ components:
         - image
     SampleResponseSchema:
       type: object
-      properties:     
+      properties:
         status:
           type: string
         artist:
@@ -168,5 +168,3 @@ components:
       required:
         - status
         - message
-
-    

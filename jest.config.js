@@ -18,7 +18,7 @@ module.exports = {
     '^@theme/(.*)': '<rootDir>/src/theme/$1',
     '^@types/(.*)': '<rootDir>/src/types/$1',
   },
-  modulePathIgnorePatterns: ['__tests__/fixtures'],
+  modulePathIgnorePatterns: ['__tests__/fixtures', '__tests__/helpers'],
   setupFilesAfterEnv: ['./setupJest.js'],
   coveragePathIgnorePatterns: ['/node_modules/'],
   coverageThreshold: {

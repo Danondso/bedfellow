@@ -22,6 +22,10 @@ jest.mock('react-native-lottie-splash-screen', () => ({
   hide: jest.fn(),
 }));
 
+jest.mock('react-native-image-colors', () => ({
+  getColors: jest.fn(),
+}));
+
 jest.mock('axios');
 
 jest.mock('react-content-loader/native', () => ({

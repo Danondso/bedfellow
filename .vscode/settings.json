@@ -1,8 +1,5 @@
 {
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.compile.nullAnalysis.mode": "automatic",
-  "cSpell.words": [
-    "Reactotron",
-    "WHOSAMPLED"
-  ]
+  "cSpell.words": ["Reactotron", "WHOSAMPLED"]
 }

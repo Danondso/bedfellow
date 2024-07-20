@@ -25,7 +25,6 @@ export default StyleSheet.create<Style>({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: defaultPalette.success,
     paddingTop: padding.double,
     paddingBottom: padding.base,
     borderColor: defaultPalette.primaryText,
@@ -38,17 +37,14 @@ export default StyleSheet.create<Style>({
     padding: padding.eighth,
     fontWeight: '400',
     textAlign: 'center',
-    color: defaultPalette.primaryText,
   },
   trackName: {
     padding: padding.base,
     fontSize: fontSizes.SMALL,
     fontWeight: '600',
     textAlign: 'center',
-    color: defaultPalette.primaryText,
   },
   albumDescription: {
-    color: defaultPalette.primaryText,
     textAlign: 'center',
   },
   button: {
