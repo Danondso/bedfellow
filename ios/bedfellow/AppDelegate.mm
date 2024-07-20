@@ -65,6 +65,11 @@ continueUserActivity: (nonnull NSUserActivity *)userActivity
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
+  return [self getBundleURL];
+}
+ 
+- (NSURL *)getBundleURL
+{
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else

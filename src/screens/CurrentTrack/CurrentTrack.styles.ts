@@ -25,7 +25,7 @@ export default StyleSheet.create<Style>({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: padding.double,
+    paddingTop: padding.quadruple,
     paddingBottom: padding.base,
     borderColor: defaultPalette.primaryText,
     borderWidth: 1,
