@@ -5,14 +5,9 @@ import { Alert, Platform } from 'react-native';
 import axios from 'axios';
 import ImageColors, { AndroidImageColors, IOSImageColors } from 'react-native-image-colors';
 import RootNavigation from '../src/screens';
-import currentTrack0 from './fixtures/api/spotify/current-track.0';
-import sampledInfo0 from './fixtures/api/bedfellow-db-api/sample-info.0';
-import searchResult0 from './fixtures/api/whosampled/search/search-result.0';
-import sampleMulti0 from './fixtures/api/whosampled/html/sample-multiple-page.0';
-import imageSuccess0 from './fixtures/api/whosampled/images/image-success.0';
-import searchResultSuccess1 from './fixtures/api/spotify/search-result-success.1';
 import defaultPalette from '../src/theme/styles';
-import ErrorBoundary from './components/helpers/ErrorBoundary';
+import ErrorBoundary from './helpers/components/ErrorBoundary';
+import { happyPathApiHandler, whoSampledParsingApiHandler } from './helpers';
 
 jest.mock('react-native-app-auth', () => ({
   authorize: jest.fn(),
@@ -44,39 +39,6 @@ const iosColors: IOSImageColors = {
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const mockedImageColors = ImageColors as jest.Mocked<typeof ImageColors>;
 
-const apiHandler = (url: string) => {
-  if (url.includes('v1/me/player/currently-playing')) {
-    return Promise.resolve({
-      data: currentTrack0,
-      status: 200,
-    });
-  } else if (url.includes('samples?artist_name=Kanye West&track_name=Bound 2')) {
-    return Promise.resolve({
-      data: sampledInfo0,
-      status: 200,
-    });
-  } else if (
-    url.includes('/v1/search?q=%2620track%3ABound%2520artist%3APonderosa%2BTwins+Plus+One&type=track&limit=50')
-  ) {
-    return Promise.resolve({
-      data: searchResultSuccess1,
-      status: 200,
-    });
-  } else if (url.includes('/Kanye-West/Bound-2/samples')) {
-    return Promise.resolve({
-      data: searchResult0,
-      status: 200,
-    });
-  } else if (url.includes('')) {
-    return Promise.resolve({
-      data: imageSuccess0,
-      status: 200,
-    });
-  } else {
-    throw new Error(`MISSING IMPLEMENTATION FOR URL:: ${url}`);
-  }
-};
-
 describe('App Test Suite', () => {
   const authResult: AuthorizeResult = {
     accessToken: 'accessToken',
@@ -91,7 +53,7 @@ describe('App Test Suite', () => {
     jest.resetAllMocks();
     // @ts-ignore
     authorize.mockResolvedValueOnce(authResult);
-    mockedAxios.get.mockImplementation((url) => apiHandler(url));
+    mockedAxios.get.mockImplementation((url) => happyPathApiHandler(url));
     await render(
       <ErrorBoundary>
         <RootNavigation />
@@ -177,50 +139,9 @@ describe('App Test Suite', () => {
   it('logs in, loads current track from spotify, loads and parses whosampled page for track, and retrieves samples from bedfellow-db-api', async () => {
     Platform.OS = 'android';
 
-    // // get currently playing track
-    mockedAxios.get
-      .mockResolvedValueOnce({
-        data: currentTrack0,
-      })
-      // try to get from bedfellow-db-api, no samples exist
-      .mockRejectedValueOnce({
-        response: {
-          status: 404,
-        },
-      })
-      // search who sampled
-      .mockResolvedValueOnce({
-        data: searchResult0,
-        status: 200,
-      })
-      // get who sampled doc
-      .mockResolvedValueOnce({
-        data: sampleMulti0,
-        status: 200,
-      })
-      // download images (four samples -> four calls to get blobs)
-      .mockResolvedValueOnce({
-        data: imageSuccess0,
-        status: 200,
-      })
-      .mockResolvedValueOnce({
-        data: imageSuccess0,
-        status: 200,
-      })
-      .mockResolvedValueOnce({
-        data: imageSuccess0,
-        status: 200,
-      })
-      .mockResolvedValueOnce({
-        data: imageSuccess0,
-        status: 200,
-      }) // get sample Info (after post)
-      .mockResolvedValueOnce({
-        data: sampledInfo0,
-        status: 200,
-      });
+    mockedAxios.get.mockImplementation((url) => whoSampledParsingApiHandler(url));
 
-    // // post to bedfellow-db-api
+    // post to bedfellow-db-api
     mockedAxios.post.mockResolvedValueOnce({
       status: 204,
     });
