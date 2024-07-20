@@ -20,6 +20,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+**/.xcode.env.local
 
 # Android/IntelliJ
 #
@@ -60,7 +61,7 @@ buck-out/
 *.jsbundle
 
 # CocoaPods
-/ios/Pods/
+**/Pods/
 
 **/.env
 
@@ -78,4 +79,10 @@ buck-out/
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json
 
-/.yarn/cache/**
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
