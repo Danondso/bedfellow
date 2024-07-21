@@ -1,21 +1,32 @@
 import React, { createContext, Dispatch, SetStateAction, useState, useMemo, ReactNode, Context } from 'react';
-import { AuthorizeResult } from 'react-native-app-auth';
-import { AndroidImageColors, IOSImageColors } from 'react-native-image-colors';
+import defaultPalette from '../../theme/styles';
 
-export type AuthResult = AuthorizeResult & { expired: boolean };
+export type ImagePalette = {
+  background: string;
+  primary: string;
+  secondary: string;
+  detail: string;
+};
 
 export type ImagePaletteContextData = {
-  imagePalette: AndroidImageColors | IOSImageColors | null;
-  setImagePalette: Dispatch<SetStateAction<AndroidImageColors | IOSImageColors | null>>;
+  imagePalette: ImagePalette;
+  setImagePalette: Dispatch<SetStateAction<ImagePalette>>;
+};
+
+const initialState: ImagePalette = {
+  background: defaultPalette.primaryBackground,
+  detail: defaultPalette.accent,
+  primary: defaultPalette.primaryText,
+  secondary: defaultPalette.secondaryBackground,
 };
 
 export const ImagePaletteContext: Context<ImagePaletteContextData> = createContext<ImagePaletteContextData>({
-  imagePalette: null,
+  imagePalette: initialState,
   setImagePalette: () => {},
 });
 
 function ImagePaletteContextProvider({ children }: { children: ReactNode }) {
-  const [imagePalette, setImagePalette] = useState<AndroidImageColors | IOSImageColors | null>(null);
+  const [imagePalette, setImagePalette] = useState<ImagePalette>(initialState);
 
   const providerData = useMemo<ImagePaletteContextData>(
     () => ({
