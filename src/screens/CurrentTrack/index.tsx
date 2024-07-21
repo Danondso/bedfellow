@@ -73,7 +73,7 @@ export function CurrentSong({ item }: CurrentSongProps) {
       <View
         style={[
           {
-            backgroundColor: imagePalette?.secondary,
+            backgroundColor: imagePalette.secondary,
           },
           styles.currentSongView,
         ]}
