@@ -7,10 +7,13 @@ jobs:
       - uses: actions/checkout@v3
         with:
           node-version: '18'
-      - run: npm i -g yarn
-      - run: yarn install
-      - run: yarn run lint
-      - run: yarn run test
+
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
+      - run: yarn lint
+      - run: yarn test
     env:
       SPOTIFY_CLIENT_ID: client_id
       SPOTIFY_REDIRECT_URI_ANDROID: com.bedfellow://callback/
