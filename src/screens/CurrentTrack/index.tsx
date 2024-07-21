@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, ViewStyle, TextStyle } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, TextStyle } from 'react-native';
 import { Avatar } from 'react-native-paper';
-import { AndroidImageColors, IOSImageColors } from 'react-native-image-colors';
-import defaultPalette from '../../theme/styles';
 import useImagePalette from '../../hooks/useImagePalette/useImagePalette';
 import { searchAndRetrieveParsedWhoSampledPage } from '../../services/whosampled/WhoSampled.service';
 import { getBedfellowDBData, postToBedfellowDB } from '../../services/bedfellow-db-api/BedfellowDBAPI.service';
@@ -12,6 +10,7 @@ import styles from './CurrentTrack.styles';
 import { ArtistObjectSimplified, CurrentPlaybackResponse, TrackObjectFull } from '../../types/spotify-api';
 import SampleList from './TrackList';
 import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
+import { ImagePaletteContext, ImagePaletteContextData } from '../../context/ImagePaletteContext';
 
 function formatArtistNames(item: TrackObjectFull): string {
   if (!item) {
@@ -65,16 +64,20 @@ const loadBedfellowData = async (artists: ArtistObjectSimplified[] = [], track: 
 };
 
 export function CurrentSong({ item }: CurrentSongProps) {
-  const colors: IOSImageColors | AndroidImageColors | null = useImagePalette(item?.album?.images?.[0].url || '');
-  const backgroundStyle: ViewStyle = {
-    backgroundColor: colors?.secondary || defaultPalette.primaryBackground,
-  };
+  const { imagePalette } = useContext<ImagePaletteContextData>(ImagePaletteContext);
   const albumFontColor: TextStyle = {
-    color: colors?.background || defaultPalette.primaryText,
+    color: imagePalette.background,
   };
   return (
     <View style={styles.view}>
-      <View style={[backgroundStyle, styles.currentSongView]}>
+      <View
+        style={[
+          {
+            backgroundColor: imagePalette?.secondary,
+          },
+          styles.currentSongView,
+        ]}
+      >
         {item && 'album' in item ? (
           <Avatar.Image size={90} source={item?.album.images[0]} />
         ) : (
@@ -97,6 +100,9 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
 
   const currentPlaybackResponse = response as CurrentPlaybackResponse;
   const currentlyPlayingTrack = currentPlaybackResponse?.item as TrackObjectFull;
+  const albumArtURL = currentlyPlayingTrack?.album?.images?.[0].url || '';
+  // using this here populates the context so any child components that need it can use that
+  useImagePalette(albumArtURL);
 
   const refreshControl = () => {
     setIsLoading(true);

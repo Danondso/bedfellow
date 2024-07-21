@@ -4,7 +4,6 @@ import { Card } from 'react-native-paper';
 import { ImagePaletteContext, ImagePaletteContextData } from '../../../../context/ImagePaletteContext';
 import styles from './SampleCard.styles';
 import { BedfellowSample } from '../../../../types/bedfellow-api';
-import defaultPalette from '../../../../theme';
 
 type SampleCardProps = {
   item: BedfellowSample;
@@ -20,11 +19,11 @@ function SampleCard({ item, onPress }: SampleCardProps) {
   }
 
   const trackItemBackground: ViewStyle = {
-    backgroundColor: imagePalette?.background || defaultPalette.secondaryBackground,
+    backgroundColor: imagePalette.background,
   };
 
   const trackFontColor: TextStyle = {
-    color: imagePalette?.secondary || defaultPalette.primaryText,
+    color: imagePalette.secondary,
   };
 
   return (
