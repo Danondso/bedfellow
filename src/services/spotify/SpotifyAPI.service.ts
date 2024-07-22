@@ -1,36 +1,30 @@
 import axios, { AxiosResponse } from 'axios';
-import { SpotifyAuthentication } from '../../context/SpotifyAuthContext';
+import { AuthResult } from '../../context/SpotifyAuthContext';
 import findMatchingTrack from './utilities/utilities';
 import { BedfellowSample } from '../../types/bedfellow-api';
 
 export const BASE_URL = 'https://api.spotify.com/';
 
-export const buildSpotifyHeaders = (spotifyAuth: SpotifyAuthentication): Object => ({
+export const buildSpotifyHeaders = (spotifyAuth: AuthResult): Object => ({
   headers: {
     Authorization: `Bearer ${spotifyAuth.accessToken}`,
     'Content-Type': 'application/json',
   },
 });
 
-export const spotifyGETData = async (
-  url: string,
-  spotifyAuth: SpotifyAuthentication
-): Promise<AxiosResponse<any, any>> => {
+export const spotifyGETData = async (url: string, spotifyAuth: AuthResult): Promise<AxiosResponse<any, any>> => {
   return axios.get(`${BASE_URL}${url}`, buildSpotifyHeaders(spotifyAuth));
 };
 
 export const spotifyPOSTData = async (
   url: string,
-  spotifyAuth: SpotifyAuthentication,
+  spotifyAuth: AuthResult,
   body: object = {}
 ): Promise<AxiosResponse<any, any>> => {
   return axios.post(`${BASE_URL}${url}`, body, buildSpotifyHeaders(spotifyAuth));
 };
 
-export const findAndQueueTrack = async (
-  trackToQueue: BedfellowSample,
-  spotifyAuth: SpotifyAuthentication
-): Promise<string> => {
+export const findAndQueueTrack = async (trackToQueue: BedfellowSample, spotifyAuth: AuthResult): Promise<string> => {
   const { track, artist } = trackToQueue;
   if (artist.length >= 7 && artist.slice(-7) === '(movie)') {
     return 'Cannot queue movie';

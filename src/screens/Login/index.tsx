@@ -32,7 +32,10 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 
       const session: AuthorizeResult = await authorize(config);
       if (setSpotifyAuth && session.refreshToken) {
-        setSpotifyAuth(session);
+        setSpotifyAuth({
+          ...session,
+          expired: false,
+        });
         navigation.navigate(DETAILS);
       }
     } catch (error) {

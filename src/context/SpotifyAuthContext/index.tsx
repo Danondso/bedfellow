@@ -28,8 +28,8 @@ export const initialState: AuthResult = {
 };
 
 export type SpotifyAuthContextData = {
-  spotifyAuth: AuthorizeResult;
-  setSpotifyAuth: Dispatch<SetStateAction<AuthorizeResult>>;
+  spotifyAuth: AuthResult;
+  setSpotifyAuth: Dispatch<SetStateAction<AuthResult>>;
   resetToken: (authData: AuthorizeResult) => void;
 };
 
@@ -39,7 +39,7 @@ export const SpotifyAuthContext: Context<SpotifyAuthContextData> = createContext
   resetToken: () => {},
 });
 
-async function resetToken(authData: AuthorizeResult): Promise<AuthResult> {
+async function resetToken(authData: AuthResult): Promise<AuthResult> {
   const tokenUrl = `${BEDFELLOW_API_BASE_URL}/refresh`;
   const refreshData = await axios.post(tokenUrl, {
     refresh_token: authData.refreshToken,
@@ -52,7 +52,7 @@ async function resetToken(authData: AuthorizeResult): Promise<AuthResult> {
 }
 
 function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
-  const [spotifyAuth, setSpotifyAuth] = useState<AuthorizeResult>(initialState);
+  const [spotifyAuth, setSpotifyAuth] = useState<AuthResult>(initialState);
 
   const auth = useMemo<SpotifyAuthContextData>(
     () => ({

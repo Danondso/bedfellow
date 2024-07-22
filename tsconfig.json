@@ -1,6 +1,6 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
-  "typeRoots": ["./src/types"],
+  "moduleResolution": "NodeNext",
   "compilerOptions": {
     "baseUrl": "./src/",
     "allowJs": true,
@@ -9,7 +9,6 @@
     "isolatedModules": true,
     "jsx": "react-native",
     "lib": ["es2017"],
-    "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
     "target": "esnext",
