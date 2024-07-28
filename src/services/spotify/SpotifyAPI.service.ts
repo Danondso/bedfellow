@@ -24,6 +24,14 @@ export const spotifyPOSTData = async (
   return axios.post(`${BASE_URL}${url}`, body, buildSpotifyHeaders(spotifyAuth));
 };
 
+export const spotifyPUTData = async (
+  url: string,
+  spotifyAuth: AuthResult,
+  body: object = {}
+): Promise<AxiosResponse<any, any>> => {
+  return axios.put(`${BASE_URL}${url}`, body, buildSpotifyHeaders(spotifyAuth));
+};
+
 export const findAndQueueTrack = async (trackToQueue: BedfellowSample, spotifyAuth: AuthResult): Promise<string> => {
   const { track, artist } = trackToQueue;
   if (artist.length >= 7 && artist.slice(-7) === '(movie)') {

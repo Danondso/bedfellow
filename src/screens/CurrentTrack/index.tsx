@@ -11,6 +11,7 @@ import { ArtistObjectSimplified, CurrentPlaybackResponse, TrackObjectFull } from
 import SampleList from './TrackList';
 import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
 import { ImagePaletteContext, ImagePaletteContextData } from '../../context/ImagePaletteContext';
+import PlaybackFooter from './PlaybackFooter';
 
 function formatArtistNames(item: TrackObjectFull): string {
   if (!item) {
@@ -135,6 +136,7 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
         HeaderComponent={<CurrentSong item={currentlyPlayingTrack} />}
         trackSamples={samples}
       />
+      <PlaybackFooter refreshCurrentlyPlayingTrack={loadData} isCurrentlyPlaying={!!currentPlaybackResponse} />
     </View>
   );
 }

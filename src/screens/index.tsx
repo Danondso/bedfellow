@@ -17,7 +17,7 @@ const commonOptions: NativeStackNavigationOptions = {
 export default function () {
   const spotifyAuthContext = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
 
-  const spotifyAuth = spotifyAuthContext?.spotifyAuth as AuthorizeResult;
+  const spotifyAuth: AuthorizeResult = spotifyAuthContext?.spotifyAuth;
   const currentDate = new Date();
   const expirationDate = spotifyAuth?.accessTokenExpirationDate
     ? new Date(spotifyAuth.accessTokenExpirationDate)

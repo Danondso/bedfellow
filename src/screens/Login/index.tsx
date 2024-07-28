@@ -23,7 +23,12 @@ function LoginScreen({ navigation }: LoginScreenProps) {
         clientId: SPOTIFY_CLIENT_ID,
         usePKCE: false,
         redirectUrl: Platform.OS === 'ios' ? SPOTIFY_REDIRECT_URI : SPOTIFY_REDIRECT_URI_ANDROID,
-        scopes: ['user-modify-playback-state', 'user-follow-read', 'user-read-currently-playing'],
+        scopes: [
+          'user-read-playback-state',
+          'user-modify-playback-state',
+          'user-follow-read',
+          'user-read-currently-playing',
+        ],
         serviceConfiguration: {
           authorizationEndpoint: 'https://accounts.spotify.com/authorize',
           tokenEndpoint: `${BEDFELLOW_API_BASE_URL}/token`,

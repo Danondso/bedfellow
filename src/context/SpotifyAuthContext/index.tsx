@@ -67,14 +67,14 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
-    if (spotifyAuth.accessToken !== '') {
+    if (spotifyAuth?.accessToken !== '') {
       AsyncStorage.setItem('SPOTIFY_AUTH_DATA', JSON.stringify(spotifyAuth));
     }
   }, [spotifyAuth]);
 
   useEffect(() => {
     AsyncStorage.getItem('SPOTIFY_AUTH_DATA')
-      .then((spotifyAuthData: string | null) => {
+      .then((spotifyAuthData: string | null | undefined) => {
         if (spotifyAuthData) {
           setSpotifyAuth(JSON.parse(spotifyAuthData));
         }
