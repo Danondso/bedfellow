@@ -8,7 +8,7 @@ type Style = {
   buttonWrapper: ViewStyle;
 };
 
-const { defaultPalette, padding, borderRadius, fontSizes } = theme;
+const { defaultPalette, padding } = theme;
 
 export default StyleSheet.create<Style>({
   view: {
