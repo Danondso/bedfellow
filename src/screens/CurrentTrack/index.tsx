@@ -136,7 +136,9 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
         HeaderComponent={<CurrentSong item={currentlyPlayingTrack} />}
         trackSamples={samples}
       />
-      <PlaybackFooter refreshCurrentlyPlayingTrack={loadData} isCurrentlyPlaying={!!currentPlaybackResponse} />
+      <View style={styles.footerWrapper}>
+        <PlaybackFooter refreshCurrentlyPlayingTrack={loadData} isCurrentlyPlaying={!!currentPlaybackResponse} />
+      </View>
     </View>
   );
 }

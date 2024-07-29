@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react';
-import { View } from 'react-native';
+import React, { useContext } from 'react';
+import { View, ViewStyle } from 'react-native';
 import { Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { UserDevicesResponse } from '@types/spotify-api';
 import { AxiosResponse } from 'axios';
-import defaultPalette from '../../../theme/styles';
+import { ImagePaletteContext, ImagePaletteContextData } from '../../../context/ImagePaletteContext';
+import { UserDevicesResponse } from '../../../types/spotify-api';
 import styles from './PlaybackFooter.styles';
 import { spotifyPOSTData, spotifyGETData, spotifyPUTData } from '../../../services/spotify/SpotifyAPI.service';
 import { AuthResult, SpotifyAuthContext, SpotifyAuthContextData } from '../../../context/SpotifyAuthContext';
@@ -17,18 +17,14 @@ interface PlayerButtonProps {
 const PLAYER_URL_FRAGMENT = 'v1/me/player';
 
 const performPlaybackAction = async (buttonName: string, spotifyAuth: AuthResult) => {
-  // todo own function
-
   let deviceID;
   try {
-    console.log(`${PLAYER_URL_FRAGMENT}/devices`, spotifyAuth);
     const deviceResponse: AxiosResponse<UserDevicesResponse> = await spotifyGETData(
       `${PLAYER_URL_FRAGMENT}/devices`,
       spotifyAuth
     );
     console.log(deviceResponse.data);
     const { id } = deviceResponse.data.devices?.[0] || '';
-    console.log('THIS ID', id);
     if (!id) {
       return;
     }
@@ -45,6 +41,8 @@ const performPlaybackAction = async (buttonName: string, spotifyAuth: AuthResult
       await spotifyPOSTData(`${PLAYER_URL_FRAGMENT}/previous?device_id=${deviceID}`, spotifyAuth);
       break;
     case 'pause':
+      await spotifyPUTData(`${PLAYER_URL_FRAGMENT}/pause?device_id=${deviceID}`, spotifyAuth);
+      break;
     case 'play':
       await spotifyPUTData(`${PLAYER_URL_FRAGMENT}/play?device_id=${deviceID}`, spotifyAuth);
       break;
@@ -54,10 +52,15 @@ const performPlaybackAction = async (buttonName: string, spotifyAuth: AuthResult
 };
 
 function PlayerButton({ buttonName, onPress }: PlayerButtonProps) {
+  const { imagePalette } = useContext<ImagePaletteContextData>(ImagePaletteContext);
+  const buttonThemeStyle: ViewStyle = {
+    backgroundColor: imagePalette.background,
+    borderColor: imagePalette.secondary,
+  };
   return (
     <View style={styles.buttonWrapper}>
-      <Button style={styles.button} onPress={onPress}>
-        <Icon name={buttonName} size={20} color={defaultPalette.primaryBackground100} />
+      <Button style={[buttonThemeStyle, styles.button]} onPress={onPress}>
+        <Icon name={buttonName} size={20} color={imagePalette.detail} />
       </Button>
     </View>
   );
@@ -70,8 +73,7 @@ interface PlaybackFooterProps {
 
 function PlaybackFooter({ refreshCurrentlyPlayingTrack, isCurrentlyPlaying }: PlaybackFooterProps) {
   const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
-  const [isPlaying, setIsPlaying] = useState<boolean>(isCurrentlyPlaying);
-  const playButtonIconName = isPlaying ? 'pause' : 'play';
+  const playButtonIconName = isCurrentlyPlaying ? 'pause' : 'play';
   return (
     <View style={styles.view}>
       <PlayerButton
@@ -82,10 +84,9 @@ function PlaybackFooter({ refreshCurrentlyPlayingTrack, isCurrentlyPlaying }: Pl
         }}
       />
       <PlayerButton
-        buttonName="play"
+        buttonName={playButtonIconName}
         onPress={() => {
           performPlaybackAction(playButtonIconName, spotifyAuth);
-          setIsPlaying(!isPlaying);
         }}
       />
       <PlayerButton

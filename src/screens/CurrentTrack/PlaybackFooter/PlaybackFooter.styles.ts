@@ -12,12 +12,13 @@ const { defaultPalette, padding } = theme;
 
 export default StyleSheet.create<Style>({
   view: {
-    flex: 0.5,
+    flex: 1,
+    height: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
   },
   button: {
-    backgroundColor: defaultPalette.accent,
+    borderWidth: 1,
   },
   buttonText: {
     color: defaultPalette.primaryBackground100,

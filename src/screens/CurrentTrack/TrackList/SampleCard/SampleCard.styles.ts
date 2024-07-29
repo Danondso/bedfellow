@@ -6,6 +6,7 @@ type Style = {
   trackItem: ViewStyle;
   trackListWrapper: ViewStyle;
   trackListTitle: TextStyle;
+  trackListText: TextStyle;
 };
 
 const { padding, borderRadius } = theme;
@@ -25,6 +26,9 @@ export default StyleSheet.create<Style>({
   trackListWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  trackListText: {
+    fontWeight: 'bold',
   },
   trackListTitle: {
     width: '100%',
