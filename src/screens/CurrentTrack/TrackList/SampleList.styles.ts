@@ -5,6 +5,7 @@ type Style = {
   artistName: TextStyle;
   noSamples: TextStyle;
   noSamplesWrapper: ViewStyle;
+  snackBar: ViewStyle;
   snackBarSuccess: ViewStyle;
   snackBarFail: ViewStyle;
   view: ViewStyle;
@@ -25,10 +26,14 @@ export default StyleSheet.create<Style>({
     justifyContent: 'center',
   },
   snackBarFail: {
-    backgroundColor: defaultPalette.success,
+    backgroundColor: defaultPalette.error,
   },
   snackBarSuccess: {
     backgroundColor: defaultPalette.success,
+  },
+  snackBar: {
+    zIndex: 999,
+    marginBottom: padding.nonuple,
   },
   view: {
     width: '100%',

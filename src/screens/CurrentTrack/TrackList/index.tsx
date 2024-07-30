@@ -58,13 +58,14 @@ function SampleList({ isLoading, trackSamples, HeaderComponent, onRefresh }: Sam
         )}
       />
       <Snackbar
-        duration={1500}
+        duration={1000}
         visible={showSnackbar}
         onDismiss={() => {
           setShowSnackbar(false);
           setError(false);
           setSnackbarText('');
         }}
+        wrapperStyle={styles.snackBar}
         style={error ? styles.snackBarFail : styles.snackBarSuccess}
       >
         <Text>{snackbarText}</Text>
