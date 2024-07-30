@@ -19,11 +19,11 @@ function SampleCard({ item, onPress }: SampleCardProps) {
   }
 
   const trackItemBackground: ViewStyle = {
-    backgroundColor: imagePalette.background,
+    backgroundColor: imagePalette.primary,
   };
 
   const trackFontColor: TextStyle = {
-    color: imagePalette.secondary,
+    color: imagePalette.background,
   };
 
   return (

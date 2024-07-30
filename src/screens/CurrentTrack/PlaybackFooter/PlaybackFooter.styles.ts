@@ -18,12 +18,14 @@ export default StyleSheet.create<Style>({
     justifyContent: 'center',
   },
   button: {
-    borderWidth: 1,
+    borderWidth: padding.quarter,
+    borderRadius: padding.double,
   },
   buttonText: {
     color: defaultPalette.primaryBackground100,
   },
   buttonWrapper: {
+    flex: 1,
     padding: padding.base,
   },
 });
