@@ -2,6 +2,7 @@ import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import theme from '../../theme';
 
 type Style = {
+  footerWrapper: ViewStyle;
   view: ViewStyle;
   currentSongView: ViewStyle;
   artistName: TextStyle;
@@ -15,6 +16,13 @@ type Style = {
 const { defaultPalette, padding, borderRadius, fontSizes } = theme;
 
 export default StyleSheet.create<Style>({
+  footerWrapper: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '15%',
+  },
   view: {
     flex: 1,
     backgroundColor: defaultPalette.primaryBackground,

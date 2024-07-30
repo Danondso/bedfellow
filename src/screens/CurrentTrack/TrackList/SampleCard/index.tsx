@@ -19,18 +19,18 @@ function SampleCard({ item, onPress }: SampleCardProps) {
   }
 
   const trackItemBackground: ViewStyle = {
-    backgroundColor: imagePalette.background,
+    backgroundColor: imagePalette.primary,
   };
 
   const trackFontColor: TextStyle = {
-    color: imagePalette.secondary,
+    color: imagePalette.background,
   };
 
   return (
     <View style={styles.trackListWrapper}>
       <Card mode="elevated" style={[styles.trackItem, trackItemBackground]} onPress={onPress}>
         <Card.Cover style={styles.trackImage} source={{ uri: image }} />
-        <Card.Title titleStyle={trackFontColor} style={styles.trackListTitle} title={track} />
+        <Card.Title titleStyle={[trackFontColor, styles.trackListText]} style={styles.trackListTitle} title={track} />
         <Card.Content>
           <Text style={trackFontColor}>{artist}</Text>
         </Card.Content>
