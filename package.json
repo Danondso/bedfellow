@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "ios-build-dev": "NODE_ENV=dev yarn ios --mode Release",
     "ios": "react-native run-ios",
     "pods": "cd ios && pod install && cd ../",
     "lint": "eslint .",
@@ -26,6 +27,7 @@
     "react-content-loader": "^7.0.2",
     "react-native": "0.73.9",
     "react-native-app-auth": "^7.1.0",
+    "react-native-config": "1.5.1",
     "react-native-fs": "^2.20.0",
     "react-native-image-colors": "1.2.2",
     "react-native-linear-gradient": "^2.8.3",

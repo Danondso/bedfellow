@@ -5062,6 +5062,7 @@ __metadata:
     react-content-loader: ^7.0.2
     react-native: 0.73.9
     react-native-app-auth: ^7.1.0
+    react-native-config: 1.5.1
     react-native-dotenv: ^3.4.9
     react-native-fs: ^2.20.0
     react-native-image-colors: 1.2.2
@@ -11089,6 +11090,18 @@ __metadata:
   version: 0.0.2
   resolution: "react-native-base64@npm:0.0.2"
   checksum: 696f6cad0e3ce26437275bcd791becaf597300d351a3ab2d7084fd42a177731bb9ab1e490534397ed35de4cd2a5a4385ee8d49bf5846069101b5ada98f132d23
+  languageName: node
+  linkType: hard
+
+"react-native-config@npm:1.5.1":
+  version: 1.5.1
+  resolution: "react-native-config@npm:1.5.1"
+  peerDependencies:
+    react-native-windows: ">=0.61"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: ae17b750e445310573ce33798db67c9b8c50e55cb2ba136e9a9ef8372dd3f7669ce236bb18bf1fa8a426fd1aa9e6b516fb2f593767bd24688242f6847cd37712
   languageName: node
   linkType: hard
 
