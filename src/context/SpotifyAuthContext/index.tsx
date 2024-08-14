@@ -11,8 +11,7 @@ import React, {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { AuthorizeResult } from 'react-native-app-auth';
-// eslint-disable-next-line import/no-unresolved
-import { BEDFELLOW_API_BASE_URL } from '@env';
+import Config from 'react-native-config';
 
 export type AuthResult = AuthorizeResult & { expired: boolean };
 
@@ -40,7 +39,7 @@ export const SpotifyAuthContext: Context<SpotifyAuthContextData> = createContext
 });
 
 async function resetToken(authData: AuthResult): Promise<AuthResult> {
-  const tokenUrl = `${BEDFELLOW_API_BASE_URL}/refresh`;
+  const tokenUrl = `${Config.BEDFELLOW_API_BASE_URL}/refresh`;
   const refreshData = await axios.post(tokenUrl, {
     refresh_token: authData.refreshToken,
   });

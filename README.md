@@ -11,6 +11,9 @@ A small React Native app and Rust web service that displays samples used for a g
 First, create a .env file in `bedfellow/` and add these values to it.
 
 ```.env
+# CHANGE BASE_URL's IF BUILDING BINARY
+BEDFELLOW_API_BASE_URL='http://localhost:8085' 
+BEDFELLOW_DB_API_BASE_URL='http://localhost:8000/api'
 SPOTIFY_CLIENT_ID="your app's client id"
 SPOTIFY_REDIRECT_URI_ANDROID=com.bedfellow://callback/
 SPOTIFY_REDIRECT_URI=org.danondso.bedfellow://callback/
@@ -20,7 +23,14 @@ You need to make a [spotify developer account](https://developer.spotify.com) an
 
 You'll need to setup the bedfellow-api server and make that externally available to your application (**server setup is mandatory**) for handling application auth. Once your .env is all filled out. Run `yarn start` to run metro and you're set!
 
-## Server - Setting Up
+## Server - Running back-end
+
+1. Install Docker
+2. Check out the docker-compose file in server/ and fill out the env variables and your MySQL root password
+3. run `yarn server-start`
+4. The bedfellow API and the DB API should start up, if you don't see a server started successfully message then something is up
+
+## Server - Setting Up for Dev
 
 You will need to install [rust](https://www.rust-lang.org/tools/install) for this.
 
