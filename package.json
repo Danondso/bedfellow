@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android-test": "NODE_ENV=dev ENVFILE=.env.dev react-native run-android",
     "ios-build-dev": "NODE_ENV=dev ENVFILE=.env.dev yarn ios --mode Release --scheme 'bedfellow - dev - Release'",
     "ios-dev": "NODE_ENV=dev ENVFILE=.env.dev react-native run-ios --scheme 'bedfellow - dev - development'",
     "pods": "cd ios && pod install && cd ../",
@@ -75,5 +75,8 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@3.6.4",
+  "resolutions": {
+    "react-native-image-colors@1.2.2": "patch:react-native-image-colors@npm%3A1.2.2#./.yarn/patches/react-native-image-colors-npm-1.2.2-dec6f9506d.patch"
+  }
 }

@@ -1,4 +1,4 @@
-import parseWhoSampledPage from '../../../../src/services/whosampled/utilities/utilities';
+import parseWhoSampledPage, { getWhoSampledImage } from '../../../../src/services/whosampled/utilities/utilities';
 import { HEADER_TITLES } from '../../../../src/services/whosampled/enums';
 import singlePage from '../../../fixtures/api/whosampled/html/sample-single-page.0';
 import singlePageNoYearOrImage from '../../../fixtures/api/whosampled/html/sample-no-year-image.0';
@@ -36,5 +36,12 @@ describe('WhoSampled Utilities Test Suite', () => {
 
   it('returns null if table data is not found in document', async () => {
     expect(await parseWhoSampledPage(pageWithoutSamples.toString(), HEADER_TITLES.SAMPLED_IN)).toBeNull();
+  });
+
+  describe('getWhoSampledImage', () => {
+    beforeEach(() => jest.resetAllMocks());
+    it('returns null when url is falsy', async () => {
+      expect(await getWhoSampledImage(null)).toEqual(null);
+    });
   });
 });
