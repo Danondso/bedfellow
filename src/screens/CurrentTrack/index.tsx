@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TextStyle } from 'react-native';
+import { View, Text, TextStyle, Platform } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import useImagePalette from '../../hooks/useImagePalette/useImagePalette';
 import { searchAndRetrieveParsedWhoSampledPage } from '../../services/whosampled/WhoSampled.service';
@@ -69,6 +69,7 @@ export function CurrentSong({ item }: CurrentSongProps) {
   const albumFontColor: TextStyle = {
     color: imagePalette.background,
   };
+
   return (
     <View style={styles.view}>
       <View
@@ -80,7 +81,10 @@ export function CurrentSong({ item }: CurrentSongProps) {
         ]}
       >
         {item && 'album' in item ? (
-          <Avatar.Image size={90} source={item?.album.images[0]} />
+          <Avatar.Image
+            size={90}
+            source={Platform.OS === 'android' ? { uri: item?.album.images[0].url } : item?.album.images[0]}
+          />
         ) : (
           // @ts-ignore artists is inside of album don't believe the typescript warning
           <Avatar.Text size={90} label={item?.artists[0].name} />
