@@ -93,7 +93,6 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-        // THESE need to be defined 
         release {
             if (project.hasProperty('BEDFELLOW_UPLOAD_STORE_FILE')) {
                 storeFile file(BEDFELLOW_UPLOAD_STORE_FILE)
