@@ -91,20 +91,16 @@ describe('SpotifyAPI Service Tests', () => {
       });
       const result = await SpotifyServiceModule.findAndQueueTrack(selectedTrack, mockSpotifyAuth);
       expect(result).toEqual('Queued Haunted by Haunted');
-      expect(axios.get).toHaveBeenCalledWith(expectedSearchURL, mockHeaders);
-      expect(axios.post).toHaveBeenCalledWith(expectedPOSTURL, {}, mockHeaders);
+      expect(mockedAxios.get).toHaveBeenCalledWith(expectedSearchURL, mockHeaders);
+      expect(mockedAxios.post).toHaveBeenCalledWith(expectedPOSTURL, {}, mockHeaders);
     });
 
     it('finds track but is unable to post to queue', async () => {
       mockedAxios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
-      mockedAxios.post.mockRejectedValueOnce({
-        error: {
-          status: 400,
-          message: 'Bad Request',
-        },
-      });
+      mockedAxios.post.mockRejectedValueOnce(new Error('This died'));
+
       const result = await SpotifyServiceModule.findAndQueueTrack(selectedTrack, mockSpotifyAuth);
-      expect(result).toEqual('Unable to queue track, status: 400, message: Bad Request');
+      expect(result).toEqual('Unable to queue track:: Error: This died');
       expect(mockedAxios.get).toHaveBeenCalledWith(expectedSearchURL, mockHeaders);
       expect(mockedAxios.post).toHaveBeenCalledWith(expectedPOSTURL, {}, mockHeaders);
     });
@@ -123,9 +119,11 @@ describe('SpotifyAPI Service Tests', () => {
       mockedAxios.get.mockResolvedValueOnce({ data: SpotifySearchResult });
 
       const result = await SpotifyServiceModule.findAndQueueTrack(selectedTrackNotFound, mockSpotifyAuth);
-      expect(result).toEqual('Unable to find Haunted Mansion Man Duder Hollywood in search results');
-      expect(mockedAxios.get).toHaveBeenCalledWith(expectedURL, mockHeaders);
-      expect(mockedAxios.post).toHaveBeenCalledTimes(0);
+      await expect(result).toEqual(
+        'Unable to queue track:: Error: Unable to find matching track for Haunted Mansion Man Duder Hollywood'
+      );
+      await expect(mockedAxios.get).toHaveBeenCalledWith(expectedURL, mockHeaders);
+      await expect(mockedAxios.post).toHaveBeenCalledTimes(0);
     });
 
     it('finds track that matches and does not exceed word count of selected track', async () => {
