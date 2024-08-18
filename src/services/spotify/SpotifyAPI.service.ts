@@ -48,7 +48,7 @@ export const findAndQueueTrack = async (trackToQueue: BedfellowSample, spotifyAu
     const { items } = data.tracks;
     const matchingTrack = findMatchingTrack(items, trackToQueue);
     if (!matchingTrack) {
-      return `Unable to find ${track} in search results`;
+      throw new Error(`Unable to find ${track} in search results`);
     }
 
     await spotifyPOSTData(`v1/me/player/queue?uri=${matchingTrack.uri}`, spotifyAuth);

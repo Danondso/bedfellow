@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "android-test": "NODE_ENV=dev ENVFILE=.env.dev react-native run-android",
+    "android-dev": "NODE_ENV=dev ENVFILE=.env.dev react-native run-android",
+    "android-build-dev": "NODE_ENV=dev ENVFILE=.env.dev react-native run-android",
     "ios-build-dev": "NODE_ENV=dev ENVFILE=.env.dev yarn ios --mode Release --scheme 'bedfellow - dev - Release'",
     "ios-dev": "NODE_ENV=dev ENVFILE=.env.dev react-native run-ios --scheme 'bedfellow - dev - development'",
     "pods": "cd ios && pod install && cd ../",
