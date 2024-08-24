@@ -5,8 +5,8 @@
   "scripts": {
     "android-dev": "NODE_ENV=dev ENVFILE=.env.dev react-native run-android",
     "android-build-prod": "NODE_ENV=prod ENVFILE=.env.prod react-native build-android --mode=release",
-    "ios-build-prod": "NODE_ENV=prod ENVFILE=.env.prod yarn ios --mode Release --scheme 'release'",
-    "ios-dev": "NODE_ENV=dev ENVFILE=.env.dev react-native run-ios --scheme 'development'",
+    "ios-build-prod": "NODE_ENV=prod ENVFILE=.env.prod yarn ios --mode Release --scheme release",
+    "ios-dev": "NODE_ENV=dev ENVFILE=.env.dev react-native run-ios --scheme development",
     "pods": "cd ios && pod install && cd ../",
     "lint": "eslint .",
     "start": "NODE_ENV=dev ENVFILE=.env.dev react-native start ",

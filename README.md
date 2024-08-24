@@ -23,6 +23,14 @@ You need to make a [spotify developer account](https://developer.spotify.com) an
 
 You'll need to setup the bedfellow-api server and make that externally available to your application (**server setup is mandatory**) for handling application auth. Once your .env is all filled out. Run `yarn start` to run metro and you're set!
 
+### Android
+
+Android requires https endpoints, you'll need to either have the server deployed or use a service like tunnelto.dev to get an https connection.
+
+### iOS
+
+It's recommended to run the build through XCode right now, there's currently CLI errors when trying to run from the dev script.
+
 ## Server - Running back-end
 
 1. Install Docker
