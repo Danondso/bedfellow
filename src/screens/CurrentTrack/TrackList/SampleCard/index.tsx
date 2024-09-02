@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Platform, Text, TextStyle, View, ViewStyle } from 'react-native';
 import { Card } from 'react-native-paper';
 import { ImagePaletteContext, ImagePaletteContextData } from '../../../../context/ImagePaletteContext';
 import styles from './SampleCard.styles';
@@ -23,7 +23,7 @@ function SampleCard({ item, onPress }: SampleCardProps) {
   };
 
   const trackFontColor: TextStyle = {
-    color: imagePalette.background,
+    color: Platform.OS === 'android' ? imagePalette.secondary : imagePalette.background,
   };
 
   return (

@@ -48,7 +48,7 @@ export const findAndQueueTrack = async (trackToQueue: BedfellowSample, spotifyAu
     const { items } = data.tracks;
     const matchingTrack = findMatchingTrack(items, trackToQueue);
     if (!matchingTrack) {
-      return `Unable to find ${track} in search results`;
+      throw new Error(`Unable to find matching track for ${track}`);
     }
 
     await spotifyPOSTData(`v1/me/player/queue?uri=${matchingTrack.uri}`, spotifyAuth);
@@ -57,9 +57,11 @@ export const findAndQueueTrack = async (trackToQueue: BedfellowSample, spotifyAu
     const allArtists = artists.map((matchingTrackArtist) => matchingTrackArtist.name).join(',');
 
     return `Queued ${name} by ${allArtists}`;
-  } catch (err: any) {
-    const { error } = err;
-    return `Unable to queue track, status: ${error.status}, message: ${error.message}`;
+  } catch (error: any) {
+    if (error.response) {
+      return `Unable to queue track, status: ${error.response.status}, message: ${error.response.statusText}`;
+    }
+    return `Unable to queue track:: ${error}`;
   }
 };
 

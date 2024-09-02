@@ -12,7 +12,7 @@ First, create a .env file in `bedfellow/` and add these values to it.
 
 ```.env
 # CHANGE BASE_URL's IF BUILDING BINARY
-BEDFELLOW_API_BASE_URL='http://localhost:8085' 
+BEDFELLOW_API_BASE_URL='http://localhost:8085'
 BEDFELLOW_DB_API_BASE_URL='http://localhost:8000/api'
 SPOTIFY_CLIENT_ID="your app's client id"
 SPOTIFY_REDIRECT_URI_ANDROID=com.bedfellow://callback/
@@ -22,6 +22,14 @@ SPOTIFY_REDIRECT_URI=org.danondso.bedfellow://callback/
 You need to make a [spotify developer account](https://developer.spotify.com) and create an app. This will get you the CLIENT_ID. For the redirectUri's, use the REDIRECT_URI values above.
 
 You'll need to setup the bedfellow-api server and make that externally available to your application (**server setup is mandatory**) for handling application auth. Once your .env is all filled out. Run `yarn start` to run metro and you're set!
+
+### Android
+
+Android requires https endpoints, you'll need to either have the server deployed or use a service like tunnelto.dev to get an https connection.
+
+### iOS
+
+It's recommended to run the build through XCode right now, there's currently CLI errors when trying to run from the dev script.
 
 ## Server - Running back-end
 

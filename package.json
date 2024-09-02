@@ -1,17 +1,20 @@
 {
   "name": "bedfellow",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios-build-dev": "NODE_ENV=dev ENVFILE=.env.dev yarn ios --mode Release --scheme 'bedfellow - dev - Release'",
-    "ios-dev": "NODE_ENV=dev ENVFILE=.env.dev react-native run-ios --scheme 'bedfellow - dev - development'",
+    "android-dev": "NODE_ENV=dev ENVFILE=.env.dev react-native run-android",
+    "android-build-prod": "NODE_ENV=prod ENVFILE=.env.prod react-native build-android --mode=release",
+    "ios-build-prod": "NODE_ENV=prod ENVFILE=.env.prod yarn ios --mode Release --scheme release",
+    "ios-dev": "NODE_ENV=dev ENVFILE=.env.dev react-native run-ios --scheme development",
     "pods": "cd ios && pod install && cd ../",
     "lint": "eslint .",
     "start": "NODE_ENV=dev ENVFILE=.env.dev react-native start ",
     "server-start": "cd server/ && docker compose up && cd ../",
     "test": "NODE_ENV=jest jest",
     "test-debug": "jest --detectOpenHandles --forceExit",
+    "ignore-file-changes": "git update-index --assume-unchanged .env.prod && git update-index --assume-unchanged .env.dev && git update-index --assume-unchanged server/docker-compose.yml && git update-index --assume-unchanged android/gradle.properties",
+    "notice-file-changes": "git update-index --no-assume-unchanged .env.prod && git update-index --no-assume-unchanged .env.dev && git update-index --no-assume-unchanged server/docker-compose.yml && git update-index --no-assume-unchanged android/gradle.properties",
     "tsc": "tsc"
   },
   "dependencies": {
@@ -75,5 +78,8 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@3.6.4",
+  "resolutions": {
+    "react-native-image-colors@1.2.2": "patch:react-native-image-colors@npm%3A1.2.2#./.yarn/patches/react-native-image-colors-npm-1.2.2-dec6f9506d.patch"
+  }
 }

@@ -22,13 +22,17 @@ const useImagePalette = (imageSrc: string) => {
           }
         );
 
+        // We get different colors based on the platform, android's is a
+        // little spottier when getting a palette with
+        // contrast so we only use the dark / light colors here
         const resultPalette: ImagePalette =
           result.platform === 'android'
             ? {
-                background: result.dominant ?? defaultPalette.primaryBackground,
-                detail: result.lightMuted ?? defaultPalette.accent,
-                primary: result.vibrant ?? defaultPalette.primaryText,
-                secondary: result.lightVibrant ?? defaultPalette.secondaryBackground,
+                // ts warns androids props may be undefined so we default any to the defaultPalette
+                background: result.lightMuted ?? defaultPalette.primaryBackground,
+                detail: result.darkMuted ?? defaultPalette.accent,
+                primary: result.lightVibrant ?? defaultPalette.primaryText,
+                secondary: result.darkVibrant ?? defaultPalette.secondaryBackground,
               }
             : {
                 background: result.background,

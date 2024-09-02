@@ -221,11 +221,4 @@ describe('WhoSampled.service Test Suite', () => {
       expect(result).toEqual(null);
     });
   });
-
-  describe('getWhoSampledImage', () => {
-    beforeEach(() => jest.resetAllMocks());
-    it('returns null when url is falsy', async () => {
-      expect(await WhoSampledService.getWhoSampledImage(null)).toEqual(null);
-    });
-  });
 });
