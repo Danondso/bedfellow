@@ -4,8 +4,9 @@ import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react
 import { AuthorizeResult } from 'react-native-app-auth';
 import { RootStackParamList } from '../types';
 import DetailsScreen from './CurrentTrack';
-import { DETAILS, LOGIN } from './constants/Screens';
+import { DETAILS, LOGIN, SETTINGS } from './constants/Screens';
 import LoginScreen from './Login';
+import SettingsScreen from './Settings';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../context/SpotifyAuthContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -29,9 +30,13 @@ export default function () {
           <>
             <Stack.Screen options={commonOptions} name={LOGIN} component={LoginScreen} />
             <Stack.Screen options={commonOptions} name={DETAILS} component={DetailsScreen} />
+            <Stack.Screen options={commonOptions} name={SETTINGS} component={SettingsScreen} />
           </>
         ) : (
-          <Stack.Screen options={commonOptions} name={DETAILS} component={DetailsScreen} />
+          <>
+            <Stack.Screen options={commonOptions} name={DETAILS} component={DetailsScreen} />
+            <Stack.Screen options={commonOptions} name={SETTINGS} component={SettingsScreen} />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

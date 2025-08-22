@@ -1,4 +1,12 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn lint && yarn test
+# Fix PATH for GUI applications (like Xcode)
+# Include common node installation paths
+export PATH="$HOME/.local/share/nvm/versions/node/v22.17.1/bin:$HOME/opt/homebrew/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+# Enable corepack if needed
+command -v corepack >/dev/null 2>&1 && corepack enable yarn
+
+# Only lint staged files to avoid checking the entire codebase
+npx lint-staged

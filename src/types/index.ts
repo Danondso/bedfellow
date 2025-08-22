@@ -7,8 +7,11 @@ export * as WhoSampledTypes from './whosampled';
 export type RootStackParamList = {
   Login: undefined;
   Details: undefined;
+  Settings: undefined;
 };
 
 export type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 export type DetailsScreenProps = NativeStackScreenProps<RootStackParamList, 'Details'>;
+
+export type SettingsScreenProps = NativeStackScreenProps<RootStackParamList, 'Settings'>;

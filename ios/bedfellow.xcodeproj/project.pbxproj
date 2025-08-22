@@ -15,7 +15,6 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-bedfellow-bedfellowTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-bedfellow-bedfellowTests.a */; };
 		A2553CB92B179055001E0FE8 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2553CB82B179055001E0FE8 /* Dynamic.swift */; };
-		A2553CBB2B17912E001E0FE8 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = A2553CBA2B17912E001E0FE8 /* loading.json */; };
 		A28DC7472C567291008333C8 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7342C567291008333C8 /* Feather.ttf */; };
 		A28DC7482C567291008333C8 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7352C567291008333C8 /* FontAwesome5_Brands.ttf */; };
 		A28DC7492C567291008333C8 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7362C567291008333C8 /* FontAwesome6_Brands.ttf */; };
@@ -64,7 +63,6 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-bedfellow.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bedfellow.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-bedfellow-bedfellowTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow-bedfellowTests.release.xcconfig"; path = "Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests.release.xcconfig"; sourceTree = "<group>"; };
 		A2553CB82B179055001E0FE8 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
-		A2553CBA2B17912E001E0FE8 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = loading.json; path = ../../../Downloads/loading.json; sourceTree = "<group>"; };
 		A28DC7342C567291008333C8 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = Fonts/Feather.ttf; sourceTree = "<group>"; };
 		A28DC7352C567291008333C8 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Brands.ttf; path = Fonts/FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
 		A28DC7362C567291008333C8 /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Brands.ttf; path = Fonts/FontAwesome6_Brands.ttf; sourceTree = "<group>"; };
@@ -133,7 +131,6 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				A2553CBA2B17912E001E0FE8 /* loading.json */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				A2F440D92B14CDC60037B18E /* bedfellow-Bridging-Header.h */,
@@ -326,7 +323,6 @@
 				A28DC7532C567291008333C8 /* AntDesign.ttf in Resources */,
 				A28DC7552C567291008333C8 /* EvilIcons.ttf in Resources */,
 				A28DC74B2C567291008333C8 /* FontAwesome6_Solid.ttf in Resources */,
-				A2553CBB2B17912E001E0FE8 /* loading.json in Resources */,
 				A28DC74F2C567291008333C8 /* Fontisto.ttf in Resources */,
 				A28DC7572C567291008333C8 /* MaterialIcons.ttf in Resources */,
 				A28DC7592C567291008333C8 /* FontAwesome5_Regular.ttf in Resources */,
@@ -367,9 +363,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -428,9 +428,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -445,9 +449,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -462,9 +470,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

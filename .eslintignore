@@ -1,2 +1,49 @@
-**/fixtures/**
-**/coverage/**
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+build/
+dist/
+out/
+coverage/
+*.tsbuildinfo
+
+# Generated files
+ios/Pods/
+android/app/build/
+android/build/
+*.pbxuser
+*.xcuserstate
+
+# Test fixtures and mocks
+__tests__/fixtures/
+__mocks__/
+
+# Server code (has its own linting)
+server/
+
+# Config and metadata
+metro.config.js
+babel.config.js
+jest.config.js
+.eslintrc.js
+ReactotronConfig.js
+setupJest.js
+assetsTransformer.js
+
+# Third party and examples
+App.theme.example.tsx
+
+# Yarn
+.yarn/
+.pnp.*
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# JSON files in android/ios
+ios/**/*.json
+android/**/*.json
