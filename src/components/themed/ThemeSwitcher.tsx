@@ -9,8 +9,9 @@ import ThemedView from './ThemedView';
 const THEME_MODES = [
   { value: ThemeMode.LIGHT, label: 'Light', icon: '☀️' },
   { value: ThemeMode.DARK, label: 'Dark', icon: '🌙' },
+  { value: ThemeMode.BRAND, label: 'Brand', icon: '🎨' },
   { value: ThemeMode.AUTO, label: 'System', icon: '⚙️' },
-  { value: ThemeMode.DYNAMIC, label: 'Dynamic', icon: '🎨' },
+  { value: ThemeMode.DYNAMIC, label: 'Dynamic', icon: '🎵' },
 ];
 
 interface ThemeSwitcherProps {
@@ -98,7 +99,7 @@ const SegmentedSwitcher: React.FC<{
   handleThemeChange: (mode: ThemeMode) => void;
   style?: ViewStyle;
 }> = ({ theme, themeMode, handleThemeChange, style }) => {
-  const modes = THEME_MODES.filter((mode) => mode.value !== ThemeMode.DYNAMIC);
+  const modes = THEME_MODES.filter((mode) => mode.value !== ThemeMode.DYNAMIC && mode.value !== ThemeMode.AUTO);
 
   return (
     <View
@@ -126,7 +127,11 @@ const SegmentedSwitcher: React.FC<{
           ]}
           onPress={() => handleThemeChange(mode.value)}
         >
-          <ThemedText variant="button" color={themeMode === mode.value ? 'inverse' : 'text'}>
+          <ThemedText
+            variant="body"
+            color={themeMode === mode.value ? 'inverse' : 'text'}
+            style={{ fontSize: 14, fontWeight: '600' }}
+          >
             {mode.label}
           </ThemedText>
         </TouchableOpacity>
@@ -291,8 +296,9 @@ const styles = StyleSheet.create({
   segmentedButton: {
     flex: 1,
     paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   listItem: {
     flexDirection: 'row',

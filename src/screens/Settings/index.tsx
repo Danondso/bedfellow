@@ -1,7 +1,8 @@
 import React from 'react';
-import { ScrollView, View, Alert } from 'react-native';
+import { ScrollView, View, Alert, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../../context/ThemeContext';
 import ThemedView from '../../components/themed/ThemedView';
 import ThemedText from '../../components/themed/ThemedText';
@@ -58,7 +59,14 @@ const SettingsScreen: React.FC = () => {
           >
             {/* Header */}
             <View style={styles.header}>
-              <ThemedText variant="title" style={styles.headerTitle}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={styles.backButtonContainer}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Icon name="chevron-back" size={28} color={theme.colors.text[900]} />
+              </TouchableOpacity>
+              <ThemedText variant="h1" style={styles.headerTitle}>
                 Settings
               </ThemedText>
               <ThemedText variant="body" color="muted" style={styles.headerSubtitle}>
@@ -68,7 +76,7 @@ const SettingsScreen: React.FC = () => {
 
             {/* Theme Section */}
             <View style={styles.section}>
-              <ThemedText variant="subtitle" style={styles.sectionTitle}>
+              <ThemedText variant="h3" style={styles.sectionTitle}>
                 Theme
               </ThemedText>
 
@@ -123,7 +131,7 @@ const SettingsScreen: React.FC = () => {
 
             {/* Advanced Theme Options */}
             <View style={styles.section}>
-              <ThemedText variant="subtitle" style={styles.sectionTitle}>
+              <ThemedText variant="h3" style={styles.sectionTitle}>
                 Advanced
               </ThemedText>
 
@@ -147,12 +155,7 @@ const SettingsScreen: React.FC = () => {
                   Clear Color Cache
                 </ThemedButton>
 
-                <ThemedButton
-                  variant="outline"
-                  size="medium"
-                  onPress={handleResetTheme}
-                  style={[styles.actionButton, styles.resetButton]}
-                >
+                <ThemedButton variant="outline" size="medium" onPress={handleResetTheme} style={styles.actionButton}>
                   Reset to Defaults
                 </ThemedButton>
               </View>
@@ -160,7 +163,7 @@ const SettingsScreen: React.FC = () => {
 
             {/* App Info */}
             <View style={styles.section}>
-              <ThemedText variant="subtitle" style={styles.sectionTitle}>
+              <ThemedText variant="h3" style={styles.sectionTitle}>
                 About
               </ThemedText>
 
@@ -181,18 +184,6 @@ const SettingsScreen: React.FC = () => {
                   WCAG AA Compliant
                 </ThemedText>
               </View>
-            </View>
-
-            {/* Back Button */}
-            <View style={styles.footer}>
-              <ThemedButton
-                variant="primary"
-                size="large"
-                onPress={() => navigation.goBack()}
-                style={styles.backButton}
-              >
-                Back to App
-              </ThemedButton>
             </View>
           </ScrollView>
         </SafeAreaView>

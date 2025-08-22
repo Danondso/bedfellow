@@ -1,6 +1,7 @@
 import ImageColors from 'react-native-image-colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DynamicPalette } from '../../theme/types';
+import { BRAND_COLORS, brandColorScales } from '../../theme/colors/brandColors';
 
 // Cache configuration
 const PALETTE_CACHE_KEY = '@bedfellow_palette_cache';
@@ -34,6 +35,8 @@ export interface ColorExtractionOptions {
   enhanceContrast?: boolean;
   saturate?: number; // -100 to 100
   brighten?: number; // -100 to 100
+  blendWithBrand?: boolean; // Blend with brand colors
+  brandInfluence?: number; // 0-100% brand influence strength
 }
 
 // Palette cache entry
@@ -454,6 +457,149 @@ class PaletteCache {
   }
 }
 
+// Brand color blending configuration
+export interface BrandBlendOptions {
+  preserveTeal?: boolean; // Preserve primary teal
+  preserveSage?: boolean; // Preserve secondary sage
+  blendStrength?: number; // 0-1, how much brand influence (default 0.3)
+  ensureContrast?: boolean; // Ensure brand colors remain visible
+}
+
+// Brand color blending utilities
+class BrandColorBlender {
+  // Default brand palette
+  private static readonly BRAND_PALETTE: DynamicPalette = {
+    background: BRAND_COLORS.SAND_50,
+    primary: BRAND_COLORS.TEAL_600,
+    secondary: BRAND_COLORS.SAGE_500,
+    detail: BRAND_COLORS.RUST_600,
+  };
+
+  // Blend extracted palette with brand colors
+  static blendWithBrandColors(extractedPalette: DynamicPalette, options: BrandBlendOptions = {}): DynamicPalette {
+    const { preserveTeal = true, preserveSage = true, blendStrength = 0.3, ensureContrast = true } = options;
+
+    // Start with extracted palette
+    let blendedPalette = { ...extractedPalette };
+
+    // Blend background with sand tones
+    blendedPalette.background = ColorUtils.mixColors(
+      extractedPalette.background,
+      BRAND_COLORS.SAND_50,
+      1 - blendStrength * 0.5 // Subtle blend for background
+    );
+
+    // Handle primary color (teal)
+    if (preserveTeal) {
+      // Mix extracted primary with brand teal, keeping teal dominant
+      blendedPalette.primary = ColorUtils.mixColors(
+        extractedPalette.primary,
+        BRAND_COLORS.TEAL_600,
+        1 - blendStrength * 1.5 // Strong brand influence
+      );
+    } else {
+      // Subtle teal influence
+      blendedPalette.primary = ColorUtils.mixColors(
+        extractedPalette.primary,
+        BRAND_COLORS.TEAL_600,
+        1 - blendStrength * 0.3
+      );
+    }
+
+    // Handle secondary color (sage)
+    if (preserveSage) {
+      // Mix extracted secondary with brand sage, keeping sage visible
+      blendedPalette.secondary = ColorUtils.mixColors(
+        extractedPalette.secondary,
+        BRAND_COLORS.SAGE_500,
+        1 - blendStrength * 1.2 // Moderate brand influence
+      );
+    } else {
+      // Subtle sage influence
+      blendedPalette.secondary = ColorUtils.mixColors(
+        extractedPalette.secondary,
+        BRAND_COLORS.SAGE_500,
+        1 - blendStrength * 0.3
+      );
+    }
+
+    // Blend detail with rust accent
+    blendedPalette.detail = ColorUtils.mixColors(
+      extractedPalette.detail,
+      BRAND_COLORS.RUST_600,
+      1 - blendStrength * 0.4 // Subtle rust influence
+    );
+
+    // Ensure brand color visibility if requested
+    if (ensureContrast) {
+      blendedPalette = this.ensureBrandColorContrast(blendedPalette);
+    }
+
+    return blendedPalette;
+  }
+
+  // Ensure brand colors remain visible against background
+  private static ensureBrandColorContrast(palette: DynamicPalette): DynamicPalette {
+    const adjustedPalette = { ...palette };
+
+    // Check teal visibility
+    const tealContrast = ColorUtils.getContrastRatio(BRAND_COLORS.TEAL_600, palette.background);
+    if (tealContrast < 3.0) {
+      // Adjust primary to ensure teal is visible
+      adjustedPalette.primary = ContrastEnhancer.enhanceContrast(adjustedPalette.primary, palette.background, 3.0);
+    }
+
+    // Check sage visibility
+    const sageContrast = ColorUtils.getContrastRatio(BRAND_COLORS.SAGE_500, palette.background);
+    if (sageContrast < 3.0) {
+      // Adjust secondary to ensure sage is visible
+      adjustedPalette.secondary = ContrastEnhancer.enhanceContrast(adjustedPalette.secondary, palette.background, 3.0);
+    }
+
+    return adjustedPalette;
+  }
+
+  // Create brand-aware fallback palette
+  static createBrandFallback(): DynamicPalette {
+    return {
+      background: BRAND_COLORS.SAND_50,
+      primary: BRAND_COLORS.TEAL_600,
+      secondary: BRAND_COLORS.SAGE_500,
+      detail: BRAND_COLORS.SLATE_600,
+    };
+  }
+
+  // Get brand influence strength based on extracted colors
+  static calculateBrandInfluence(extractedPalette: DynamicPalette): number {
+    // Calculate how different the extracted colors are from brand colors
+    const primaryDiff = this.getColorDifference(extractedPalette.primary, BRAND_COLORS.TEAL_600);
+    const secondaryDiff = this.getColorDifference(extractedPalette.secondary, BRAND_COLORS.SAGE_500);
+
+    // If extracted colors are very different, use stronger brand influence
+    const avgDiff = (primaryDiff + secondaryDiff) / 2;
+
+    // Map difference to influence (0-1)
+    // High difference = high brand influence
+    return Math.min(1, avgDiff / 180); // Max 180 degree hue difference
+  }
+
+  // Calculate color difference based on HSL
+  private static getColorDifference(color1: string, color2: string): number {
+    const hsl1 = ColorUtils.hexToHsl(color1);
+    const hsl2 = ColorUtils.hexToHsl(color2);
+
+    // Calculate hue difference (most important)
+    const hueDiff = Math.abs(hsl1.h - hsl2.h);
+    const minHueDiff = Math.min(hueDiff, 360 - hueDiff);
+
+    // Calculate saturation and lightness differences
+    const satDiff = Math.abs(hsl1.s - hsl2.s) * 0.5; // Less weight
+    const lightDiff = Math.abs(hsl1.l - hsl2.l) * 0.3; // Least weight
+
+    return minHueDiff + satDiff + lightDiff;
+  }
+}
+
 // Main color extraction service
 export class ColorExtractionService {
   // Extract colors from image
@@ -469,8 +615,8 @@ export class ColorExtractionService {
 
       // Validate URL
       if (!imageUrl || !imageUrl.startsWith('http')) {
-        console.warn('Invalid image URL for color extraction:', imageUrl);
-        return null;
+        console.warn('Invalid image URL for color extraction, using brand fallback:', imageUrl);
+        return BrandColorBlender.createBrandFallback();
       }
 
       // Extract colors using react-native-image-colors
@@ -530,6 +676,21 @@ export class ColorExtractionService {
         palette = ContrastEnhancer.enhancePalette(palette);
       }
 
+      // Blend with brand colors if requested
+      if (options.blendWithBrand !== false) {
+        const brandInfluence =
+          options.brandInfluence !== undefined
+            ? options.brandInfluence / 100 // Convert to 0-1 range
+            : BrandColorBlender.calculateBrandInfluence(palette);
+
+        palette = BrandColorBlender.blendWithBrandColors(palette, {
+          blendStrength: brandInfluence,
+          preserveTeal: true,
+          preserveSage: true,
+          ensureContrast: options.enhanceContrast !== false,
+        });
+      }
+
       // Validate palette
       const validation = ContrastEnhancer.validatePalette(palette);
       if (!validation.valid) {
@@ -576,6 +737,6 @@ export class ColorExtractionService {
 }
 
 // Export utilities for direct use
-export { ColorUtils, ColorHarmonyGenerator, ContrastEnhancer };
+export { ColorUtils, ColorHarmonyGenerator, ContrastEnhancer, BrandColorBlender };
 
 export default ColorExtractionService;

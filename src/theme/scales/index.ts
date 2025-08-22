@@ -40,7 +40,7 @@ export const borderRadiusScale: BorderRadiusScale = {
   full: 9999, // For circular elements
 };
 
-// Shadow scale - Platform specific shadows
+// Shadow scale - Platform specific shadows with brand colors
 const createShadow = (
   elevation: number,
   shadowOpacity: number,
@@ -49,7 +49,7 @@ const createShadow = (
 ) => {
   if (Platform.OS === 'ios') {
     return {
-      shadowColor: '#000',
+      shadowColor: '#343941', // Brand slate color
       shadowOffset,
       shadowOpacity,
       shadowRadius,
@@ -58,19 +58,34 @@ const createShadow = (
     // Android
     return {
       elevation,
+      shadowColor: '#343941', // Android 28+ supports shadowColor
     };
   }
 };
 
 export const shadowScale: ShadowScale = {
   none: {},
-  sm: createShadow(2, 0.08, 2, { width: 0, height: 1 }),
-  base: createShadow(4, 0.1, 4, { width: 0, height: 2 }),
-  md: createShadow(6, 0.12, 6, { width: 0, height: 3 }),
-  lg: createShadow(8, 0.14, 8, { width: 0, height: 4 }),
-  xl: createShadow(12, 0.16, 12, { width: 0, height: 6 }),
-  '2xl': createShadow(16, 0.2, 16, { width: 0, height: 8 }),
+  sm: createShadow(2, 0.12, 2, { width: 0, height: 1 }), // 12% opacity
+  base: createShadow(4, 0.14, 4, { width: 0, height: 2 }), // 14% opacity (card shadow)
+  md: createShadow(6, 0.16, 6, { width: 0, height: 3 }), // 16% opacity
+  lg: createShadow(8, 0.18, 8, { width: 0, height: 4 }), // 18% opacity
+  xl: createShadow(12, 0.2, 12, { width: 0, height: 6 }), // 20% opacity
+  '2xl': createShadow(16, 0.2, 16, { width: 0, height: 8 }), // 20% opacity max
 };
+
+// Special card shadow that matches the PRD spec
+export const cardShadow = Platform.select({
+  ios: {
+    shadowColor: '#343941',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.14,
+    shadowRadius: 14,
+  },
+  android: {
+    elevation: 4,
+    shadowColor: '#343941',
+  },
+});
 
 // Extended spacing helpers for common patterns
 export const spacing = {

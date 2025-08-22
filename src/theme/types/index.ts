@@ -1,6 +1,7 @@
 export enum ThemeMode {
   LIGHT = 'light',
   DARK = 'dark',
+  BRAND = 'brand',
   AUTO = 'auto',
   DYNAMIC = 'dynamic',
 }
@@ -88,6 +89,11 @@ export interface ThemeColors {
   // Special
   shadow: string;
   overlay: string;
+
+  // Stroke utilities
+  softStroke?: string;
+  mediumStroke?: string;
+  strongStroke?: string;
 }
 
 export interface Theme {
@@ -97,6 +103,14 @@ export interface Theme {
   typography: TypographyScale;
   borderRadius: BorderRadiusScale;
   shadows: ShadowScale;
+  gradients?: {
+    brand: string;
+    button?: string;
+    header?: string;
+    accent?: string;
+    overlay?: string;
+    [key: string]: string | undefined;
+  };
 }
 
 // Utility types for components

@@ -7,6 +7,7 @@ type Style = {
   scrollView: ViewStyle;
   scrollContent: ViewStyle;
   header: ViewStyle;
+  backButtonContainer: ViewStyle;
   headerTitle: TextStyle;
   headerSubtitle: TextStyle;
   section: ViewStyle;
@@ -32,7 +33,7 @@ export const createStyles = (theme: Theme) =>
   StyleSheet.create<Style>({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background[500],
+      backgroundColor: theme.colors.background[50],
     },
     safeArea: {
       flex: 1,
@@ -45,8 +46,15 @@ export const createStyles = (theme: Theme) =>
     },
     header: {
       paddingHorizontal: 20,
-      paddingTop: 20,
+      paddingTop: 10,
       paddingBottom: 10,
+    },
+    backButtonContainer: {
+      marginBottom: 10,
+      width: 40,
+      height: 40,
+      justifyContent: 'center',
+      alignItems: 'flex-start',
     },
     headerTitle: {
       fontSize: 32,
@@ -72,7 +80,9 @@ export const createStyles = (theme: Theme) =>
       padding: 15,
       borderRadius: 12,
       marginBottom: 20,
-      backgroundColor: theme.colors.surface[400],
+      backgroundColor: theme.colors.surface[100],
+      borderWidth: 1,
+      borderColor: theme.colors.border[200],
     },
     previewRow: {
       flexDirection: 'row',

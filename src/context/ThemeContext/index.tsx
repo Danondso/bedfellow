@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSystemTheme } from './systemTheme';
 import { themeEventManager } from './ThemeEventManager';
 import { Theme, ThemeMode, ThemePreference, DynamicPalette } from '../../theme/types';
-import { lightTheme, darkTheme } from '../../theme/themes';
+import { lightTheme, darkTheme, brandTheme } from '../../theme/themes';
 import { createDynamicTheme, getBaseThemeForDynamic } from '../../theme/themes/default';
 
 // Storage key for theme preferences
@@ -136,6 +136,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         return lightTheme;
       case ThemeMode.DARK:
         return darkTheme;
+      case ThemeMode.BRAND:
+        return brandTheme;
       case ThemeMode.AUTO:
         return systemTheme === 'dark' ? darkTheme : lightTheme;
       default:

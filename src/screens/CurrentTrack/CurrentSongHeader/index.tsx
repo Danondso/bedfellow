@@ -10,6 +10,7 @@ import CurrentSongHeaderSkeleton from './Skeleton';
 
 type CurrentSongHeaderProps = {
   item: TrackObjectFull;
+  isLoading?: boolean;
 };
 
 function formatArtistNames(item: TrackObjectFull): string {
@@ -19,11 +20,15 @@ function formatArtistNames(item: TrackObjectFull): string {
   return 'No Artist Name Available';
 }
 
-export default function CurrentSongHeader({ item }: CurrentSongHeaderProps) {
+export default function CurrentSongHeader({ item, isLoading }: CurrentSongHeaderProps) {
   const { theme, dynamicPalette } = useTheme();
   const styles = createStyles(theme);
 
-  if (!item) return <CurrentSongHeaderSkeleton />;
+  // Only show skeleton when actually loading, not when there's no track
+  if (isLoading) return <CurrentSongHeaderSkeleton />;
+
+  // If not loading but no item, show nothing or a message
+  if (!item) return null;
 
   return (
     <ThemedView style={styles.view}>

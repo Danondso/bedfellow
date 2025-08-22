@@ -91,7 +91,9 @@ export const ThemedText: React.FC<ThemedTextProps> = ({
       case 'muted':
         return theme.colors.text[300];
       case 'inverse':
-        return theme.mode === 'dark' ? theme.colors.text[100] : theme.colors.text[900];
+        // For inverse text on primary colored backgrounds
+        // Use white/light text since our primary colors (teal) are dark
+        return '#FFFFFF';
       case 'text':
       default:
         return theme.colors.text[shade];

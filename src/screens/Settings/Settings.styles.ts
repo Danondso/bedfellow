@@ -5,7 +5,7 @@ export const createStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background[500],
+      backgroundColor: theme.colors.background[50],
     },
     safeArea: {
       flex: 1,
@@ -44,7 +44,7 @@ export const createStyles = (theme: Theme) =>
     themePreview: {
       padding: theme.spacing.md,
       borderRadius: theme.borderRadius.lg,
-      backgroundColor: theme.colors.surface[400],
+      backgroundColor: theme.colors.surface[100],
       marginBottom: theme.spacing.lg,
       ...theme.shadows.md,
     },
@@ -70,7 +70,7 @@ export const createStyles = (theme: Theme) =>
       alignItems: 'center',
       paddingVertical: theme.spacing.sm,
       borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: theme.colors.surface[300],
+      borderBottomColor: theme.colors.border[200],
     },
     settingInfo: {
       flex: 1,
@@ -93,7 +93,7 @@ export const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.md,
       marginRight: theme.spacing.sm,
       marginBottom: theme.spacing.sm,
-      backgroundColor: theme.colors.surface[300],
+      backgroundColor: theme.colors.surface[200],
     },
     harmonyOptionSelected: {
       backgroundColor: theme.colors.primary[500],
@@ -133,7 +133,7 @@ export const createStyles = (theme: Theme) =>
 
     // Theme preview components
     previewContainer: {
-      backgroundColor: theme.colors.surface[500],
+      backgroundColor: theme.colors.surface[100],
       borderRadius: theme.borderRadius.lg,
       padding: theme.spacing.md,
       marginVertical: theme.spacing.sm,
@@ -195,7 +195,7 @@ export const createStyles = (theme: Theme) =>
       marginTop: theme.spacing.sm,
       paddingTop: theme.spacing.sm,
       borderTopWidth: StyleSheet.hairlineWidth,
-      borderTopColor: theme.colors.surface[300],
+      borderTopColor: theme.colors.border[200],
     },
 
     // Slider styles

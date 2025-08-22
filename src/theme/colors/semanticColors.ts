@@ -1,5 +1,8 @@
 import { ColorScale } from '../types';
 
+// Import brand colors and scales
+import { brandColorScales, BRAND_COLORS, SEMANTIC_BRAND_COLORS, SHADOW_COLORS } from './brandColors';
+
 // Helper function to create a color scale
 export const createColorScale = (baseColor: string, variations: Partial<ColorScale> = {}): ColorScale => {
   return {
@@ -358,8 +361,179 @@ export const darkSemanticColors = {
   },
 };
 
-// Special colors (same for both themes)
+// Dark theme with brand palette
+export const darkSemanticBrandColors = {
+  // Backgrounds - Using sand scale for warm, natural surfaces
+  background: {
+    50: brandColorScales.sand[300], // Darkest sand for dark mode
+    100: brandColorScales.sand[200],
+    200: brandColorScales.sand[100],
+    300: brandColorScales.sand[50], // Lightest sand
+    400: brandColorScales.slate[50], // Transition to slate
+    500: brandColorScales.slate[100], // Base dark background
+    600: brandColorScales.slate[200],
+    700: brandColorScales.slate[300],
+    800: brandColorScales.slate[400],
+    900: brandColorScales.slate[500],
+  },
+
+  // Surface colors - Elevated surfaces using sand tones
+  surface: {
+    50: brandColorScales.sand[200], // Darker sand for surfaces
+    100: brandColorScales.sand[100], // Mid sand
+    200: brandColorScales.sand[50], // Light sand
+    300: brandColorScales.slate[100],
+    400: brandColorScales.slate[200],
+    500: brandColorScales.slate[300], // Base surface
+    600: brandColorScales.slate[400],
+    700: brandColorScales.slate[500],
+    800: brandColorScales.slate[600],
+    900: brandColorScales.slate[700],
+  },
+
+  // Text colors - Using slate scale
+  text: {
+    50: brandColorScales.slate[300], // Lightest text (muted)
+    100: brandColorScales.slate[400],
+    200: brandColorScales.slate[500],
+    300: brandColorScales.slate[600], // Muted text
+    400: brandColorScales.slate[700],
+    500: brandColorScales.slate[800], // Base text
+    600: brandColorScales.slate[900], // Primary text
+    700: BRAND_COLORS.SLATE_900, // Strong text
+    800: '#1A1A1A', // Very strong text
+    900: BRAND_COLORS.OBSIDIAN, // Black text
+  },
+
+  // Primary colors - Teal scale
+  primary: {
+    50: brandColorScales.teal[50],
+    100: brandColorScales.teal[100],
+    200: brandColorScales.teal[200],
+    300: brandColorScales.teal[300],
+    400: brandColorScales.teal[400],
+    500: brandColorScales.teal[500],
+    600: brandColorScales.teal[600], // Base - Brand teal
+    700: brandColorScales.teal[700],
+    800: brandColorScales.teal[800],
+    900: brandColorScales.teal[900],
+  },
+
+  // Secondary colors - Sage scale
+  secondary: {
+    50: brandColorScales.sage[50],
+    100: brandColorScales.sage[100],
+    200: brandColorScales.sage[200],
+    300: brandColorScales.sage[300],
+    400: brandColorScales.sage[400],
+    500: brandColorScales.sage[500], // Base - Brand sage
+    600: brandColorScales.sage[600],
+    700: brandColorScales.sage[700],
+    800: brandColorScales.sage[800],
+    900: brandColorScales.sage[900],
+  },
+
+  // Accent colors - Rust scale
+  accent: {
+    50: brandColorScales.rust[50],
+    100: brandColorScales.rust[100],
+    200: brandColorScales.rust[200],
+    300: brandColorScales.rust[300],
+    400: brandColorScales.rust[400],
+    500: brandColorScales.rust[500],
+    600: brandColorScales.rust[600], // Base - Brand rust
+    700: brandColorScales.rust[700],
+    800: brandColorScales.rust[800],
+    900: brandColorScales.rust[900],
+  },
+
+  // Semantic colors mapped to brand colors
+  success: {
+    50: brandColorScales.sage[50],
+    100: brandColorScales.sage[100],
+    200: brandColorScales.sage[200],
+    300: brandColorScales.sage[300],
+    400: brandColorScales.sage[400],
+    500: brandColorScales.sage[500], // Base - Success uses sage
+    600: brandColorScales.sage[600],
+    700: brandColorScales.sage[700],
+    800: brandColorScales.sage[800],
+    900: brandColorScales.sage[900],
+  },
+
+  warning: {
+    50: brandColorScales.sand[50],
+    100: brandColorScales.sand[100],
+    200: brandColorScales.sand[200],
+    300: brandColorScales.sand[300], // Base - Warning uses warm sand
+    400: brandColorScales.sand[400],
+    500: brandColorScales.sand[500],
+    600: brandColorScales.sand[600],
+    700: brandColorScales.sand[700],
+    800: brandColorScales.sand[800],
+    900: brandColorScales.sand[900],
+  },
+
+  info: {
+    50: brandColorScales.info[50],
+    100: brandColorScales.info[100],
+    200: brandColorScales.info[200],
+    300: brandColorScales.info[300],
+    400: brandColorScales.info[400],
+    500: brandColorScales.info[500],
+    600: brandColorScales.info[600], // Base - Info blue/gray
+    700: brandColorScales.info[700],
+    800: brandColorScales.info[800],
+    900: brandColorScales.info[900],
+  },
+
+  error: {
+    50: brandColorScales.rust[50],
+    100: brandColorScales.rust[100],
+    200: brandColorScales.rust[200],
+    300: brandColorScales.rust[300],
+    400: brandColorScales.rust[400],
+    500: brandColorScales.rust[500],
+    600: brandColorScales.rust[600], // Base - Danger/error uses rust
+    700: brandColorScales.rust[700],
+    800: brandColorScales.rust[800],
+    900: brandColorScales.rust[900],
+  },
+
+  // Border colors - Using slate with opacity
+  border: {
+    50: `${brandColorScales.slate[200]}1A`, // 10% opacity
+    100: `${brandColorScales.slate[300]}26`, // 15% opacity
+    200: `${brandColorScales.slate[400]}33`, // 20% opacity
+    300: `${brandColorScales.slate[500]}4D`, // 30% opacity
+    400: `${brandColorScales.slate[600]}66`, // 40% opacity
+    500: `${brandColorScales.slate[600]}80`, // 50% opacity - Base
+    600: `${brandColorScales.slate[700]}99`, // 60% opacity
+    700: `${brandColorScales.slate[800]}B3`, // 70% opacity
+    800: `${brandColorScales.slate[900]}CC`, // 80% opacity
+    900: brandColorScales.slate[900], // 100% opacity
+  },
+
+  // Divider colors - Lighter slate values
+  divider: {
+    50: `${brandColorScales.slate[200]}0D`, // 5% opacity
+    100: `${brandColorScales.slate[300]}1A`, // 10% opacity
+    200: `${brandColorScales.slate[400]}26`, // 15% opacity
+    300: `${brandColorScales.slate[500]}33`, // 20% opacity - Base
+    400: `${brandColorScales.slate[600]}40`, // 25% opacity
+    500: `${brandColorScales.slate[600]}4D`, // 30% opacity
+    600: `${brandColorScales.slate[700]}5A`, // 35% opacity
+    700: `${brandColorScales.slate[800]}66`, // 40% opacity
+    800: `${brandColorScales.slate[900]}73`, // 45% opacity
+    900: `${brandColorScales.slate[900]}80`, // 50% opacity
+  },
+};
+
+// Special colors using brand shadow colors
 export const specialColors = {
-  shadow: 'rgba(0, 0, 0, 0.25)',
-  overlay: 'rgba(0, 0, 0, 0.5)',
+  shadow: SHADOW_COLORS.cardShadow, // rgba(52, 57, 65, 0.14)
+  overlay: 'rgba(52, 57, 65, 0.5)', // Brand slate with 50% opacity
+  softStroke: SHADOW_COLORS.softStroke, // rgba(52, 57, 65, 0.12)
+  mediumStroke: SHADOW_COLORS.mediumStroke, // rgba(52, 57, 65, 0.16)
+  strongStroke: SHADOW_COLORS.strongStroke, // rgba(52, 57, 65, 0.20)
 };

@@ -58,6 +58,7 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   const { response, loadData } = useSpotifyAPI('v1/me/player/currently-playing');
   const [samples, setSamples] = useState<BedfellowTrackSamples | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
@@ -70,11 +71,28 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
 
   const refreshControl = () => {
     setIsLoading(true);
+    setShowSkeleton(true);
+
+    // Set a timeout to hide skeleton after 3 seconds
+    const skeletonTimeout = setTimeout(() => {
+      setShowSkeleton(false);
+    }, 3000);
+
     loadData();
+
+    // Clean up timeout if component unmounts
+    return () => clearTimeout(skeletonTimeout);
   };
 
   useEffect(() => {
     setIsLoading(true);
+    setShowSkeleton(true);
+
+    // Set a timeout to hide skeleton after 3 seconds
+    const skeletonTimeout = setTimeout(() => {
+      setShowSkeleton(false);
+    }, 3000);
+
     if (currentlyPlayingTrack) {
       const { artists, name } = currentlyPlayingTrack;
       loadBedfellowData(artists, name).then((result) => {
@@ -82,12 +100,17 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
           setSamples(result);
         }
         setIsLoading(false);
+        setShowSkeleton(false);
       });
     } else {
       setSamples(null);
       setIsLoading(false);
+      setShowSkeleton(false);
       loadData();
     }
+
+    // Clean up timeout
+    return () => clearTimeout(skeletonTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentlyPlayingTrack?.artists, currentlyPlayingTrack?.name]);
 
@@ -102,7 +125,8 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
         <SampleList
           onRefresh={refreshControl}
           isLoading={isLoading}
-          HeaderComponent={<CurrentSongHeader item={currentlyPlayingTrack} isLoading={isLoading} />}
+          showSkeleton={showSkeleton}
+          HeaderComponent={<CurrentSongHeader item={currentlyPlayingTrack} isLoading={showSkeleton} />}
           trackSamples={samples}
         />
         <View style={styles.footerWrapper}>

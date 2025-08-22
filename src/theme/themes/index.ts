@@ -1,11 +1,13 @@
 import { Theme, ThemeMode } from '../types';
 import lightTheme from './light';
 import darkTheme from './dark';
+import brandTheme from './brand';
 
 // Theme registry for easy lookup
 const themes: Record<string, Theme> = {
   [ThemeMode.LIGHT]: lightTheme,
   [ThemeMode.DARK]: darkTheme,
+  [ThemeMode.BRAND]: brandTheme,
 };
 
 // Get theme by mode
@@ -17,6 +19,9 @@ export const getThemeByMode = (mode: ThemeMode): Theme => {
   }
   if (mode === ThemeMode.DARK) {
     return darkTheme;
+  }
+  if (mode === ThemeMode.BRAND) {
+    return brandTheme;
   }
 
   // Default to light theme for auto/dynamic modes
@@ -35,7 +40,7 @@ export const isValidThemeMode = (mode: string): mode is ThemeMode => {
 };
 
 // Export individual themes
-export { lightTheme, darkTheme };
+export { lightTheme, darkTheme, brandTheme };
 
 // Export all themes
 export default themes;
