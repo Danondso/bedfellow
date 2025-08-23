@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Platform, Text, TextStyle, View, ViewStyle } from 'react-native';
 import { Card } from 'react-native-paper';
-import { ImagePaletteContext, ImagePaletteContextData } from '../../../../context/ImagePaletteContext';
+import { useTheme } from '../../../../context/ThemeContext';
 import styles from './SampleCard.styles';
 import { BedfellowSample } from '../../../../types/bedfellow-api';
 
@@ -10,7 +10,7 @@ type SampleCardProps = {
   onPress: () => void;
 };
 function SampleCard({ item, onPress }: SampleCardProps) {
-  const { imagePalette } = useContext<ImagePaletteContextData>(ImagePaletteContext);
+  const { theme } = useTheme();
 
   const { track, artist, image } = item;
 
@@ -19,11 +19,11 @@ function SampleCard({ item, onPress }: SampleCardProps) {
   }
 
   const trackItemBackground: ViewStyle = {
-    backgroundColor: imagePalette.primary,
+    backgroundColor: theme.colors.primary[600],
   };
 
   const trackFontColor: TextStyle = {
-    color: Platform.OS === 'android' ? imagePalette.secondary : imagePalette.background,
+    color: Platform.OS === 'android' ? theme.colors.background[300] : theme.colors.background[100],
   };
 
   return (
