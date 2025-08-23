@@ -12,7 +12,7 @@
     "noEmit": true,
     "strict": true,
     "target": "esnext",
-    "types": ["node", "jest"],
+    "types": ["node", "jest", "spotify-api"],
     "paths": {
       "@screens/*": ["screens/*"],
       "@services/*": ["services/*"],

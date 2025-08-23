@@ -124,14 +124,12 @@ class ThemeEventManager {
       try {
         listener(event);
       } catch (error) {
-        console.error('Error in theme change listener:', error);
+        // Error occurred: 'Error in theme change listener:', error
       }
     });
   }
 
-  private logThemeChange(event: ThemeChangeEvent) {
-    console.log(`Theme changed: ${event.from} -> ${event.to} (${event.type})`);
-  }
+  private logThemeChange(_event: ThemeChangeEvent) {}
 
   public addEventListener(listener: ThemeChangeListener): () => void {
     this.listeners.add(listener);

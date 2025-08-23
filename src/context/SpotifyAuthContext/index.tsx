@@ -78,7 +78,10 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
           setSpotifyAuth(JSON.parse(spotifyAuthData));
         }
       })
-      .catch((error) => console.log('Failed to pull data from AsyncStorage', error));
+      .catch((error) => {
+        // Error occurred: Failed to load Spotify auth data from storage
+        console.error('Failed to load Spotify auth data:', error);
+      });
   }, []);
 
   return <SpotifyAuthContext.Provider value={auth}>{children}</SpotifyAuthContext.Provider>;

@@ -61,7 +61,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         setIsDynamicEnabled(preferences.dynamicEnabled);
       }
     } catch (error) {
-      console.error('Failed to load theme preferences:', error);
+      // Error occurred: 'Failed to load theme preferences:', error
     } finally {
       setIsLoading(false);
     }
@@ -72,7 +72,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     try {
       await AsyncStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(preferences));
     } catch (error) {
-      console.error('Failed to save theme preferences:', error);
+      // Error occurred: 'Failed to save theme preferences:', error
     }
   };
 

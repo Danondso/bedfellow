@@ -1,7 +1,7 @@
 import React from 'react';
+// Types from @types/spotify-api are available globally via SpotifyApi namespace
 import { View, Platform } from 'react-native';
 import { Avatar } from 'react-native-paper';
-import { TrackObjectFull } from '../../../types/spotify-api';
 import { createStyles } from './CurrentSongHeader.themed.styles';
 import { useTheme } from '../../../context/ThemeContext';
 import ThemedView from '../../../components/themed/ThemedView';
@@ -9,11 +9,11 @@ import ThemedText from '../../../components/themed/ThemedText';
 import CurrentSongHeaderSkeleton from './Skeleton';
 
 type CurrentSongHeaderProps = {
-  item: TrackObjectFull;
+  item: SpotifyApi.TrackObjectFull;
   isLoading?: boolean;
 };
 
-function formatArtistNames(item: TrackObjectFull): string {
+function formatArtistNames(item: SpotifyApi.TrackObjectFull): string {
   if ('artists' in item) {
     return item.artists.map((artist) => artist.name).join(',');
   }

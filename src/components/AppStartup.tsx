@@ -33,8 +33,7 @@ export const AppStartup: React.FC<AppStartupProps> = ({
     }
   }, [isThemeLoaded, showSplash, onReady]);
 
-  const handleThemeLoaded = (preferences: ThemePreference | null) => {
-    console.log('Theme loaded with preferences:', preferences);
+  const handleThemeLoaded = (_preferences: ThemePreference | null) => {
     setIsThemeLoaded(true);
 
     if (showSplash) {

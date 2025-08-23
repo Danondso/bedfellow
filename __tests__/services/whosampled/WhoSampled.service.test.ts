@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+// Types from @types/spotify-api are available globally via SpotifyApi namespace
 import { SearchResponse, TrackWithSamples } from '../../../src/types/whosampled';
 import * as WhoSampledService from '../../../src/services/whosampled/WhoSampled.service';
-import { ArtistObjectSimplified } from '../../../src/types/spotify-api';
 import sampleMultiple0 from '../../fixtures/api/whosampled/html/sample-multiple-page.0';
 import sampleSingle0 from '../../fixtures/api/whosampled/html/sample-single-page.0';
 
@@ -20,7 +20,7 @@ describe('WhoSampled.service Test Suite', () => {
   });
 
   describe('searchAndRetrieveParsedWhoSampledPage', () => {
-    const artists: ArtistObjectSimplified[] = [
+    const artists: SpotifyApi.ArtistObjectSimplified[] = [
       {
         name: 'Kanye West',
         id: '234635737',
@@ -102,7 +102,7 @@ describe('WhoSampled.service Test Suite', () => {
     });
 
     it('returns null early if search results come up with nothing', async () => {
-      const artistWithoutSamples: ArtistObjectSimplified[] = [
+      const artistWithoutSamples: SpotifyApi.ArtistObjectSimplified[] = [
         {
           ...artists[0],
           name: 'Kanye East',

@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
+// Types from @types/spotify-api are available globally via SpotifyApi namespace
 import { View, ViewStyle } from 'react-native';
 import { Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import useSpotifyAPI from '../../../hooks/spotify/useSpotifyAPI';
 import { ImagePaletteContext, ImagePaletteContextData } from '../../../context/ImagePaletteContext';
-import { CurrentPlaybackResponse } from '../../../types/spotify-api';
 import styles from './PlaybackFooter.styles';
 import { performPlaybackAction } from '../../../services/spotify/SpotifyAPI.service';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../../context/SpotifyAuthContext';
@@ -36,7 +36,7 @@ interface PlaybackFooterProps {
 function PlaybackFooter({ refreshCurrentlyPlayingTrack }: PlaybackFooterProps) {
   const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { response, loadData } = useSpotifyAPI('v1/me/player');
-  const playButtonIconName = (response as CurrentPlaybackResponse)?.is_playing ? 'pause' : 'play';
+  const playButtonIconName = (response as SpotifyApi.CurrentPlaybackResponse)?.is_playing ? 'pause' : 'play';
 
   return (
     <View style={styles.view}>

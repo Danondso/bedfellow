@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+// Types from @types/spotify-api are available globally via SpotifyApi namespace
 import { View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTheme } from '../../context/ThemeContext';
@@ -10,13 +11,12 @@ import { getBedfellowDBData, postToBedfellowDB } from '../../services/bedfellow-
 import { BedfellowTrackSamples } from '../../types/bedfellow-api';
 import { DetailsScreenProps } from '../../types';
 import { createStyles } from './CurrentTrack.themed.styles';
-import { ArtistObjectSimplified, CurrentPlaybackResponse, TrackObjectFull } from '../../types/spotify-api';
 import SampleList from './TrackList';
 import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
 import PlaybackFooter from './PlaybackFooter';
 import CurrentSongHeader from './CurrentSongHeader';
 
-const parseAndPostWhoSampledData = async (artists: ArtistObjectSimplified[], name: string) => {
+const parseAndPostWhoSampledData = async (artists: SpotifyApi.ArtistObjectSimplified[], name: string) => {
   try {
     const parseResult = await searchAndRetrieveParsedWhoSampledPage(artists, name);
     if (!parseResult) {
@@ -28,7 +28,7 @@ const parseAndPostWhoSampledData = async (artists: ArtistObjectSimplified[], nam
     return false;
   }
 };
-const loadBedfellowData = async (artists: ArtistObjectSimplified[] = [], track: string = '') => {
+const loadBedfellowData = async (artists: SpotifyApi.ArtistObjectSimplified[] = [], track: string = '') => {
   try {
     if ((artists[0].name, track)) {
       const trackSamplesResults = await Promise.all(
@@ -49,7 +49,6 @@ const loadBedfellowData = async (artists: ArtistObjectSimplified[] = [], track: 
       return await getBedfellowDBData(artists[0].name, track);
     }
   } catch (error) {
-    console.log('loadBedfellowData error::', error);
     return null;
   }
 };
@@ -62,8 +61,8 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const currentPlaybackResponse = response as CurrentPlaybackResponse;
-  const currentlyPlayingTrack = currentPlaybackResponse?.item as TrackObjectFull;
+  const currentPlaybackResponse = response as SpotifyApi.CurrentPlaybackResponse;
+  const currentlyPlayingTrack = currentPlaybackResponse?.item as SpotifyApi.TrackObjectFull;
   const albumArtURL = currentlyPlayingTrack?.album?.images?.[0].url || '';
 
   // Use the new dynamic theme system

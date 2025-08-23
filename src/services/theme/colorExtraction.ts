@@ -386,7 +386,7 @@ class PaletteCache {
 
       this.isInitialized = true;
     } catch (error) {
-      console.error('Failed to initialize palette cache:', error);
+      // Error occurred: 'Failed to initialize palette cache:', error
     }
   }
 
@@ -449,7 +449,7 @@ class PaletteCache {
       const entries = Array.from(this.cache.values());
       await AsyncStorage.setItem(PALETTE_CACHE_KEY, JSON.stringify(entries));
     } catch (error) {
-      console.error('Failed to persist palette cache:', error);
+      // Error occurred: 'Failed to persist palette cache:', error
     }
   }
 
@@ -705,7 +705,6 @@ export class ColorExtractionService {
       // Validate palette
       const validation = ContrastEnhancer.validatePalette(palette);
       if (!validation.valid) {
-        console.warn('Palette accessibility issues:', validation.issues);
       }
 
       // Cache the result
@@ -715,7 +714,7 @@ export class ColorExtractionService {
 
       return palette;
     } catch (error) {
-      console.error('Failed to extract colors:', error);
+      // Error occurred: 'Failed to extract colors:', error
       return null;
     }
   }

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { UserDevicesResponse } from '../../types/spotify-api';
+// Types from @types/spotify-api are available globally via SpotifyApi namespace
 import { AuthResult } from '../../context/SpotifyAuthContext';
 import findMatchingTrack from './utilities/utilities';
 import { BedfellowSample } from '../../types/bedfellow-api';
@@ -76,7 +76,7 @@ const generateSpotifyTrackAndArtistQueryURL = (trackName: string, artist: string
 
 const getSpotifyDevices = async (spotifyAuth: AuthResult): Promise<string | null> => {
   try {
-    const deviceResponse: AxiosResponse<UserDevicesResponse> = await spotifyGETData(
+    const deviceResponse: AxiosResponse<SpotifyApi.UserDevicesResponse> = await spotifyGETData(
       `${PLAYER_URL_FRAGMENT}/devices`,
       spotifyAuth
     );
@@ -106,7 +106,5 @@ export const performPlaybackAction = async (buttonName: string, spotifyAuth: Aut
       default:
         break;
     }
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };
