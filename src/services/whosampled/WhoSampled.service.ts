@@ -1,14 +1,14 @@
 import axios, { AxiosError } from 'axios';
+// Types from @types/spotify-api are available globally via SpotifyApi namespace
 
 import parseWhoSampledPage from './utilities/utilities';
 import { HEADER_TITLES, CONNECTIONS } from './enums';
 import { Sample, SearchResponse, TrackWithSamples } from '../../types/whosampled';
-import { ArtistObjectSimplified } from '../../types/spotify-api';
 
 const WHOSAMPLED_BASE_URL = 'https://www.whosampled.com';
 
 export const searchAndRetrieveParsedWhoSampledPage = async (
-  artists: ArtistObjectSimplified[],
+  artists: SpotifyApi.ArtistObjectSimplified[],
   name: string
 ): Promise<TrackWithSamples | null> => {
   try {

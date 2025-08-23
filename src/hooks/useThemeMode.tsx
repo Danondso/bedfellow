@@ -149,7 +149,7 @@ export const useThemePreference = () => {
         setPreference(prefs.mode);
       }
     } catch (error) {
-      console.error('Failed to load theme preference:', error);
+      // Error occurred: 'Failed to load theme preference:', error
     } finally {
       setIsLoading(false);
     }
@@ -163,7 +163,7 @@ export const useThemePreference = () => {
         await setThemeMode(mode);
         setPreference(mode);
       } catch (error) {
-        console.error('Failed to save theme preference:', error);
+        // Error occurred: 'Failed to save theme preference:', error
       } finally {
         setIsLoading(false);
       }

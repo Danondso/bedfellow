@@ -62,7 +62,7 @@ export const ThemeInitializer: React.FC<ThemeInitializerProps> = ({
       onThemeLoaded?.(finalPreferences);
       setIsInitialized(true);
     } catch (err) {
-      console.error('Failed to initialize theme:', err);
+      // Error occurred: 'Failed to initialize theme:', err
 
       // Fall back to default theme on error
       const fallbackPreferences: ThemePreference = {
@@ -82,11 +82,9 @@ export const ThemeInitializer: React.FC<ThemeInitializerProps> = ({
       const cacheData = await AsyncStorage.getItem('@bedfellow_dynamic_palette_cache');
       if (cacheData) {
         // Cache is already loaded into ThemeService memory
-        console.log('Palette cache preloaded');
       }
     } catch (err) {
       // Non-critical error, just log it
-      console.warn('Failed to preload palette cache:', err);
     }
   };
 

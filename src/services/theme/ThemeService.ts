@@ -47,7 +47,7 @@ class ThemeService {
       // Also save to history
       await this.addToThemeHistory(preferences.mode);
     } catch (error) {
-      console.error('Failed to save theme preferences:', error);
+      // Error occurred: 'Failed to save theme preferences:', error
       throw error;
     }
   }
@@ -60,7 +60,7 @@ class ThemeService {
       }
       return null;
     } catch (error) {
-      console.error('Failed to load theme preferences:', error);
+      // Error occurred: 'Failed to load theme preferences:', error
       return null;
     }
   }
@@ -69,7 +69,7 @@ class ThemeService {
     try {
       await AsyncStorage.removeItem(STORAGE_KEYS.THEME_PREFERENCES);
     } catch (error) {
-      console.error('Failed to clear theme preferences:', error);
+      // Error occurred: 'Failed to clear theme preferences:', error
       throw error;
     }
   }
@@ -97,7 +97,7 @@ class ThemeService {
       const cacheArray = Array.from(cache.entries());
       await AsyncStorage.setItem(STORAGE_KEYS.DYNAMIC_PALETTE_CACHE, JSON.stringify(cacheArray));
     } catch (error) {
-      console.error('Failed to save palette to cache:', error);
+      // Error occurred: 'Failed to save palette to cache:', error
     }
   }
 
@@ -121,7 +121,7 @@ class ThemeService {
 
       return null;
     } catch (error) {
-      console.error('Failed to get palette from cache:', error);
+      // Error occurred: 'Failed to get palette from cache:', error
       return null;
     }
   }
@@ -139,7 +139,7 @@ class ThemeService {
       }
       return new Map();
     } catch (error) {
-      console.error('Failed to load palette cache:', error);
+      // Error occurred: 'Failed to load palette cache:', error
       return new Map();
     }
   }
@@ -175,7 +175,7 @@ class ThemeService {
       this.paletteCache.clear();
       await AsyncStorage.removeItem(STORAGE_KEYS.DYNAMIC_PALETTE_CACHE);
     } catch (error) {
-      console.error('Failed to clear palette cache:', error);
+      // Error occurred: 'Failed to clear palette cache:', error
       throw error;
     }
   }
@@ -194,7 +194,7 @@ class ThemeService {
 
       await AsyncStorage.setItem(STORAGE_KEYS.THEME_HISTORY, JSON.stringify(recentHistory));
     } catch (error) {
-      console.error('Failed to add to theme history:', error);
+      // Error occurred: 'Failed to add to theme history:', error
     }
   }
 
@@ -206,7 +206,7 @@ class ThemeService {
       }
       return [];
     } catch (error) {
-      console.error('Failed to get theme history:', error);
+      // Error occurred: 'Failed to get theme history:', error
       return [];
     }
   }
@@ -238,7 +238,7 @@ class ThemeService {
 
       return mostUsed;
     } catch (error) {
-      console.error('Failed to get most used theme:', error);
+      // Error occurred: 'Failed to get most used theme:', error
       return null;
     }
   }
@@ -258,7 +258,7 @@ class ThemeService {
         }
       }
     } catch (error) {
-      console.error('Failed to migrate old storage:', error);
+      // Error occurred: 'Failed to migrate old storage:', error
     }
   }
 
@@ -271,7 +271,7 @@ class ThemeService {
         AsyncStorage.removeItem(STORAGE_KEYS.THEME_HISTORY),
       ]);
     } catch (error) {
-      console.error('Failed to clear all theme data:', error);
+      // Error occurred: 'Failed to clear all theme data:', error
       throw error;
     }
   }
@@ -293,7 +293,7 @@ class ThemeService {
 
       return JSON.stringify(exportData);
     } catch (error) {
-      console.error('Failed to export theme settings:', error);
+      // Error occurred: 'Failed to export theme settings:', error
       throw error;
     }
   }
@@ -322,7 +322,7 @@ class ThemeService {
         await AsyncStorage.setItem(STORAGE_KEYS.DYNAMIC_PALETTE_CACHE, JSON.stringify(data.paletteCache));
       }
     } catch (error) {
-      console.error('Failed to import theme settings:', error);
+      // Error occurred: 'Failed to import theme settings:', error
       throw error;
     }
   }

@@ -2875,6 +2875,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/spotify-api@npm:^0.0.25":
+  version: 0.0.25
+  resolution: "@types/spotify-api@npm:0.0.25"
+  checksum: 6b94bf1364fa59f1f0606a508259a4d9304a2b6d0c9f8e6301902e216257a1de4a6a6ea23576b652d4d41deb63ecbd34783fda0aaae25265a67c614e861fa891
+  languageName: node
+  linkType: hard
+
 "@types/stack-utils@npm:^2.0.0":
   version: 2.0.3
   resolution: "@types/stack-utils@npm:2.0.3"
@@ -3671,6 +3678,7 @@ __metadata:
     "@types/react-native-dotenv": ^0.2.2
     "@types/react-native-vector-icons": ^6.4.18
     "@types/react-test-renderer": ^19.1.0
+    "@types/spotify-api": ^0.0.25
     "@types/ws": ^8.18.1
     assert: ^2.1.0
     axios: ^1.7.4

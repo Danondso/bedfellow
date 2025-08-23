@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { AxiosError } from 'axios';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
-import { CurrentPlaybackResponse } from '../../types/spotify-api';
+// Types from @types/spotify-api are available globally via SpotifyApi namespace
 import { spotifyGETData } from '../../services/spotify/SpotifyAPI.service';
 
 type SpotifyAPIHookResponse = {
@@ -18,7 +18,7 @@ type ApiError = {
 
 function useSpotifyAPI(url: string): SpotifyAPIHookResponse {
   const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
-  const [response, setResponse] = useState<CurrentPlaybackResponse | null>();
+  const [response, setResponse] = useState<SpotifyApi.CurrentPlaybackResponse | null>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
 

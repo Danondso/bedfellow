@@ -1,13 +1,16 @@
 import { fuzzy } from 'fast-fuzzy';
+// Types from @types/spotify-api are available globally via SpotifyApi namespace
 
-import { TrackObjectFull } from '../../../types/spotify-api';
 import { BedfellowSample } from '../../../types/bedfellow-api';
 
 const COMPARISON_THRESHOLD = 1.5;
 const COMPOSITE_EXACT_MATCH = 2;
 const EXACT_MATCH = 1;
 const MAX_WORD_DIFFERENCE = 2;
-const findMatchingTrack = (items: TrackObjectFull[], selectedTrack: BedfellowSample): TrackObjectFull | undefined => {
+const findMatchingTrack = (
+  items: SpotifyApi.TrackObjectFull[],
+  selectedTrack: BedfellowSample
+): SpotifyApi.TrackObjectFull | undefined => {
   const matchingTrack = items.find(
     // todo we should go through all artists here instead
     (item) => item.name === selectedTrack.track && item.artists[0].name === selectedTrack.artist
@@ -17,7 +20,7 @@ const findMatchingTrack = (items: TrackObjectFull[], selectedTrack: BedfellowSam
   return fuzzyFindMatchingTrack(items, selectedTrack);
 };
 
-const fuzzyFindMatchingTrack = (items: TrackObjectFull[], selectedTrack: BedfellowSample) => {
+const fuzzyFindMatchingTrack = (items: SpotifyApi.TrackObjectFull[], selectedTrack: BedfellowSample) => {
   let index = -1;
   let compositeScore = -1;
   for (let i = 0; i < items.length; i++) {
