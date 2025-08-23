@@ -21,7 +21,7 @@ export default StyleSheet.create<Style>({
     fontSize: fontSizes.MEDIUM,
   },
   noSamplesWrapper: {
-    marginTop: padding.base,
+    marginTop: 100, // Push down below Dynamic Island and settings button
     alignItems: 'center',
     justifyContent: 'center',
   },

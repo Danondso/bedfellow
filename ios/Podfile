@@ -5,7 +5,7 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-platform :ios, min_ios_version_supported
+platform :ios, '15.1'
 prepare_react_native_project!
 
 linkage = ENV['USE_FRAMEWORKS']
@@ -17,10 +17,16 @@ end
 target 'bedfellow' do
   config = use_native_modules!
 
+  # Add AppAuth with modular headers for react-native-app-auth v8
+  pod 'AppAuth', :modular_headers => true
+
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
+    :app_path => "#{Pod::Config.instance.installation_root}/..",
+    # Explicitly disable New Architecture for RN 0.81
+    :fabric_enabled => false,
+    :hermes_enabled => true
   )
 
   target 'bedfellowTests' do
@@ -33,8 +39,61 @@ target 'bedfellow' do
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
+      :mac_catalyst_enabled => false
     )
+    
+    # Consolidated pod configuration for RN 0.81
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        # Set minimum deployment target for RN 0.81
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.1'
+        
+        # Fix C++ runtime linking issues
+        config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
+        config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++20'
+        
+        # Ensure proper linking
+        config.build_settings['OTHER_LDFLAGS'] ||= ['$(inherited)']
+        unless config.build_settings['OTHER_LDFLAGS'].include?('-lc++')
+          config.build_settings['OTHER_LDFLAGS'] << '-lc++'
+        end
+        
+        # Disable bitcode (deprecated in Xcode 14+)
+        config.build_settings['ENABLE_BITCODE'] = 'NO'
+        
+        # Silence deprecation warnings for dependencies
+        config.build_settings['GCC_WARN_INHIBIT_ALL_WARNINGS'] = 'YES' if target.name.include?('Pods-')
+        
+        # RN 0.81 specific: Disable coroutines in Folly
+        if target.name == 'RCT-Folly'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_CFG_NO_COROUTINES=1'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_HAVE_COROUTINES=0'
+          
+          config.build_settings['OTHER_CPLUSPLUSFLAGS'] ||= ['$(inherited)']
+          config.build_settings['OTHER_CPLUSPLUSFLAGS'] << '-DFOLLY_CFG_NO_COROUTINES=1'
+          config.build_settings['OTHER_CPLUSPLUSFLAGS'] << '-DFOLLY_HAVE_COROUTINES=0'
+        end
+      end
+    end
+    
+    # Fix Folly headers for RN 0.81 compatibility using system commands
+    expected_h_path = "#{installer.sandbox.root}/RCT-Folly/folly/Expected.h"
+    if File.exist?(expected_h_path)
+      system("sed -i '' 's/#if FOLLY_HAS_COROUTINES/#if 0 \\/\\/ Disabled coroutines/' '#{expected_h_path}'")
+      system("sed -i '' 's/#include <folly\\/coro\\/Coroutine.h>/\\/\\/ #include <folly\\/coro\\/Coroutine.h>/' '#{expected_h_path}'")
+    end
+    
+    optional_h_path = "#{installer.sandbox.root}/RCT-Folly/folly/Optional.h"
+    if File.exist?(optional_h_path)
+      system("sed -i '' 's/#if FOLLY_HAS_COROUTINES/#if 0 \\/\\/ Disabled coroutines/' '#{optional_h_path}'")
+      system("sed -i '' 's/#include <folly\\/coro\\/Coroutine.h>/\\/\\/ #include <folly\\/coro\\/Coroutine.h>/' '#{optional_h_path}'")
+    end
+    
+    # Fix Time.h typedef redefinition
+    time_h_path = "#{installer.sandbox.root}/RCT-Folly/folly/portability/Time.h"
+    if File.exist?(time_h_path)
+      system("sed -i '' 's/typedef uint8_t clockid_t;/\\/\\/ typedef uint8_t clockid_t;/' '#{time_h_path}'")
+    end
   end
 end

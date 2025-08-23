@@ -8,33 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* bedfellowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* bedfellowTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-bedfellow.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-bedfellow.a */; };
 		12457C9661513A53C47F609D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F0FACD2915106A424D7EF32A /* PrivacyInfo.xcprivacy */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7699B88040F8A987B510C191 /* libPods-bedfellow-bedfellowTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-bedfellow-bedfellowTests.a */; };
+		7D8F5F2E9398027EF79412D3 /* libPods-bedfellow-bedfellowTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 89F9373D197DE4623935E808 /* libPods-bedfellow-bedfellowTests.a */; };
 		A2553CB92B179055001E0FE8 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2553CB82B179055001E0FE8 /* Dynamic.swift */; };
-		A2553CBB2B17912E001E0FE8 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = A2553CBA2B17912E001E0FE8 /* loading.json */; };
-		A28DC7472C567291008333C8 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7342C567291008333C8 /* Feather.ttf */; };
-		A28DC7482C567291008333C8 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7352C567291008333C8 /* FontAwesome5_Brands.ttf */; };
-		A28DC7492C567291008333C8 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7362C567291008333C8 /* FontAwesome6_Brands.ttf */; };
-		A28DC74A2C567291008333C8 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7372C567291008333C8 /* Entypo.ttf */; };
-		A28DC74B2C567291008333C8 /* FontAwesome6_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7382C567291008333C8 /* FontAwesome6_Solid.ttf */; };
-		A28DC74C2C567291008333C8 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7392C567291008333C8 /* MaterialCommunityIcons.ttf */; };
-		A28DC74D2C567291008333C8 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC73A2C567291008333C8 /* Zocial.ttf */; };
-		A28DC74E2C567291008333C8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC73B2C567291008333C8 /* FontAwesome.ttf */; };
-		A28DC74F2C567291008333C8 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC73C2C567291008333C8 /* Fontisto.ttf */; };
-		A28DC7502C567291008333C8 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC73D2C567291008333C8 /* Octicons.ttf */; };
-		A28DC7512C567291008333C8 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC73E2C567291008333C8 /* Foundation.ttf */; };
-		A28DC7522C567291008333C8 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC73F2C567291008333C8 /* FontAwesome5_Solid.ttf */; };
-		A28DC7532C567291008333C8 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7402C567291008333C8 /* AntDesign.ttf */; };
-		A28DC7542C567291008333C8 /* FontAwesome6_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7412C567291008333C8 /* FontAwesome6_Regular.ttf */; };
-		A28DC7552C567291008333C8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7422C567291008333C8 /* EvilIcons.ttf */; };
-		A28DC7562C567291008333C8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7432C567291008333C8 /* Ionicons.ttf */; };
-		A28DC7572C567291008333C8 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7442C567291008333C8 /* MaterialIcons.ttf */; };
-		A28DC7582C567291008333C8 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7452C567291008333C8 /* SimpleLineIcons.ttf */; };
-		A28DC7592C567291008333C8 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A28DC7462C567291008333C8 /* FontAwesome5_Regular.ttf */; };
+		F2BA0F338F84C5B8E27BFF44 /* libPods-bedfellow.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D47AFECE57688C32E130E9D3 /* libPods-bedfellow.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,14 +37,12 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = bedfellow/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = bedfellow/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = bedfellow/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-bedfellow-bedfellowTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bedfellow-bedfellowTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-bedfellow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow.debug.xcconfig"; path = "Target Support Files/Pods-bedfellow/Pods-bedfellow.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-bedfellow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow.release.xcconfig"; path = "Target Support Files/Pods-bedfellow/Pods-bedfellow.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-bedfellow-bedfellowTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow-bedfellowTests.debug.xcconfig"; path = "Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-bedfellow.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bedfellow.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-bedfellow-bedfellowTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow-bedfellowTests.release.xcconfig"; path = "Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests.release.xcconfig"; sourceTree = "<group>"; };
+		2A5671B728C9A3121C52BA04 /* Pods-bedfellow-bedfellowTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow-bedfellowTests.release.xcconfig"; path = "Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests.release.xcconfig"; sourceTree = "<group>"; };
+		487E22A700701BC5CE98BFF7 /* Pods-bedfellow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow.debug.xcconfig"; path = "Target Support Files/Pods-bedfellow/Pods-bedfellow.debug.xcconfig"; sourceTree = "<group>"; };
+		52B974A0AF59922573CD9370 /* Pods-bedfellow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow.release.xcconfig"; path = "Target Support Files/Pods-bedfellow/Pods-bedfellow.release.xcconfig"; sourceTree = "<group>"; };
+		89F9373D197DE4623935E808 /* libPods-bedfellow-bedfellowTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bedfellow-bedfellowTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		98FA975912963D65866F1248 /* Pods-bedfellow-bedfellowTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bedfellow-bedfellowTests.debug.xcconfig"; path = "Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A2553CB82B179055001E0FE8 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
-		A2553CBA2B17912E001E0FE8 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = loading.json; path = ../../../Downloads/loading.json; sourceTree = "<group>"; };
 		A28DC7342C567291008333C8 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = Fonts/Feather.ttf; sourceTree = "<group>"; };
 		A28DC7352C567291008333C8 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Brands.ttf; path = Fonts/FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
 		A28DC7362C567291008333C8 /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Brands.ttf; path = Fonts/FontAwesome6_Brands.ttf; sourceTree = "<group>"; };
@@ -85,6 +63,7 @@
 		A28DC7452C567291008333C8 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = Fonts/SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		A28DC7462C567291008333C8 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Regular.ttf; path = Fonts/FontAwesome5_Regular.ttf; sourceTree = "<group>"; };
 		A2F440D92B14CDC60037B18E /* bedfellow-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "bedfellow-Bridging-Header.h"; sourceTree = "<group>"; };
+		D47AFECE57688C32E130E9D3 /* libPods-bedfellow.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bedfellow.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F0FACD2915106A424D7EF32A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = bedfellow/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,7 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-bedfellow-bedfellowTests.a in Frameworks */,
+				7D8F5F2E9398027EF79412D3 /* libPods-bedfellow-bedfellowTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,7 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-bedfellow.a in Frameworks */,
+				F2BA0F338F84C5B8E27BFF44 /* libPods-bedfellow.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,7 +112,6 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				A2553CBA2B17912E001E0FE8 /* loading.json */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				A2F440D92B14CDC60037B18E /* bedfellow-Bridging-Header.h */,
@@ -147,8 +125,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-bedfellow.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-bedfellow-bedfellowTests.a */,
+				D47AFECE57688C32E130E9D3 /* libPods-bedfellow.a */,
+				89F9373D197DE4623935E808 /* libPods-bedfellow-bedfellowTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -213,10 +191,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-bedfellow.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-bedfellow.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-bedfellow-bedfellowTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-bedfellow-bedfellowTests.release.xcconfig */,
+				487E22A700701BC5CE98BFF7 /* Pods-bedfellow.debug.xcconfig */,
+				52B974A0AF59922573CD9370 /* Pods-bedfellow.release.xcconfig */,
+				98FA975912963D65866F1248 /* Pods-bedfellow-bedfellowTests.debug.xcconfig */,
+				2A5671B728C9A3121C52BA04 /* Pods-bedfellow-bedfellowTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -228,12 +206,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "bedfellowTests" */;
 			buildPhases = (
-				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				676ADEE9E5489C49A91FA5F1 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
-				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+				CDB394E7788548D5E7ED80CC /* [CP] Embed Pods Frameworks */,
+				9B882E9DAD8F862CB98BECE5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -249,14 +227,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "bedfellow" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				82FB88B8C4AE47E6A41C112D /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				BDE9D0C4E2AEAE073E75D968 /* [CP] Embed Pods Frameworks */,
+				7D13BA36F8B2708B3833156C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -315,28 +293,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A28DC7522C567291008333C8 /* FontAwesome5_Solid.ttf in Resources */,
-				A28DC7562C567291008333C8 /* Ionicons.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				A28DC7512C567291008333C8 /* Foundation.ttf in Resources */,
-				A28DC74E2C567291008333C8 /* FontAwesome.ttf in Resources */,
-				A28DC7582C567291008333C8 /* SimpleLineIcons.ttf in Resources */,
-				A28DC74A2C567291008333C8 /* Entypo.ttf in Resources */,
-				A28DC74D2C567291008333C8 /* Zocial.ttf in Resources */,
-				A28DC7532C567291008333C8 /* AntDesign.ttf in Resources */,
-				A28DC7552C567291008333C8 /* EvilIcons.ttf in Resources */,
-				A28DC74B2C567291008333C8 /* FontAwesome6_Solid.ttf in Resources */,
-				A2553CBB2B17912E001E0FE8 /* loading.json in Resources */,
-				A28DC74F2C567291008333C8 /* Fontisto.ttf in Resources */,
-				A28DC7572C567291008333C8 /* MaterialIcons.ttf in Resources */,
-				A28DC7592C567291008333C8 /* FontAwesome5_Regular.ttf in Resources */,
-				A28DC7472C567291008333C8 /* Feather.ttf in Resources */,
 				12457C9661513A53C47F609D /* PrivacyInfo.xcprivacy in Resources */,
-				A28DC7492C567291008333C8 /* FontAwesome6_Brands.ttf in Resources */,
-				A28DC7502C567291008333C8 /* Octicons.ttf in Resources */,
-				A28DC74C2C567291008333C8 /* MaterialCommunityIcons.ttf in Resources */,
-				A28DC7482C567291008333C8 /* FontAwesome5_Brands.ttf in Resources */,
-				A28DC7542C567291008333C8 /* FontAwesome6_Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,24 +317,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
+		676ADEE9E5489C49A91FA5F1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -398,7 +339,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+		7D13BA36F8B2708B3833156C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		82FB88B8C4AE47E6A41C112D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -420,41 +378,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
+		9B882E9DAD8F862CB98BECE5 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -469,6 +393,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BDE9D0C4E2AEAE073E75D968 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bedfellow/Pods-bedfellow-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CDB394E7788548D5E7ED80CC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bedfellow-bedfellowTests/Pods-bedfellow-bedfellowTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -524,7 +482,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-bedfellow-bedfellowTests.debug.xcconfig */;
+			baseConfigurationReference = 98FA975912963D65866F1248 /* Pods-bedfellow-bedfellowTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -533,7 +491,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = bedfellowTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -552,13 +510,13 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-bedfellow-bedfellowTests.release.xcconfig */;
+			baseConfigurationReference = 2A5671B728C9A3121C52BA04 /* Pods-bedfellow-bedfellowTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = bedfellowTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -577,7 +535,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-bedfellow.debug.xcconfig */;
+			baseConfigurationReference = 487E22A700701BC5CE98BFF7 /* Pods-bedfellow.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -586,7 +544,7 @@
 				DEVELOPMENT_TEAM = V3YSBMM8W7;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = bedfellow/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -608,7 +566,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-bedfellow.release.xcconfig */;
+			baseConfigurationReference = 52B974A0AF59922573CD9370 /* Pods-bedfellow.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -616,7 +574,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = V3YSBMM8W7;
 				INFOPLIST_FILE = bedfellow/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -687,7 +645,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD = "";
 				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -711,6 +669,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				USE_HERMES = true;
 			};
 			name = Debug;
@@ -763,7 +722,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD = "";
 				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (

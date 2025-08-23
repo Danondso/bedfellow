@@ -1,30 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TextStyle, Platform } from 'react-native';
-import { Avatar } from 'react-native-paper';
-import useImagePalette from '../../hooks/useImagePalette/useImagePalette';
+import React, { useEffect, useState } from 'react';
+import { View, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { useTheme } from '../../context/ThemeContext';
+import { useDynamicTheme } from '../../context/ThemeContext/dynamicTheme';
+import ThemedView from '../../components/themed/ThemedView';
+import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
 import { searchAndRetrieveParsedWhoSampledPage } from '../../services/whosampled/WhoSampled.service';
 import { getBedfellowDBData, postToBedfellowDB } from '../../services/bedfellow-db-api/BedfellowDBAPI.service';
 import { BedfellowTrackSamples } from '../../types/bedfellow-api';
 import { DetailsScreenProps } from '../../types';
-import styles from './CurrentTrack.styles';
+import { createStyles } from './CurrentTrack.themed.styles';
 import { ArtistObjectSimplified, CurrentPlaybackResponse, TrackObjectFull } from '../../types/spotify-api';
 import SampleList from './TrackList';
 import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
-import { ImagePaletteContext, ImagePaletteContextData } from '../../context/ImagePaletteContext';
 import PlaybackFooter from './PlaybackFooter';
-
-function formatArtistNames(item: TrackObjectFull): string {
-  if (!item) {
-    return 'No Artist Name Available';
-  }
-  if ('artists' in item) {
-    return item.artists.map((artist) => artist.name).join(',');
-  }
-  return 'No';
-}
-type CurrentSongProps = {
-  item: TrackObjectFull;
-};
+import CurrentSongHeader from './CurrentSongHeader';
 
 const parseAndPostWhoSampledData = async (artists: ArtistObjectSimplified[], name: string) => {
   try {
@@ -64,58 +54,45 @@ const loadBedfellowData = async (artists: ArtistObjectSimplified[] = [], track: 
   }
 };
 
-export function CurrentSong({ item }: CurrentSongProps) {
-  const { imagePalette } = useContext<ImagePaletteContextData>(ImagePaletteContext);
-  const albumFontColor: TextStyle = {
-    color: imagePalette.background,
-  };
-
-  return (
-    <View style={styles.view}>
-      <View
-        style={[
-          {
-            backgroundColor: imagePalette.secondary,
-          },
-          styles.currentSongView,
-        ]}
-      >
-        {item && 'album' in item ? (
-          <Avatar.Image
-            size={90}
-            source={Platform.OS === 'android' ? { uri: item?.album.images[0].url } : item?.album.images[0]}
-          />
-        ) : (
-          // @ts-ignore artists is inside of album don't believe the typescript warning
-          <Avatar.Text size={90} label={item?.artists[0].name} />
-        )}
-        <Text style={[albumFontColor, styles.trackName]}>{item ? item.name : 'Nothing playing currently.'}</Text>
-        <Text style={[albumFontColor, styles.artistName]}>{item ? formatArtistNames(item) : ''}</Text>
-        <Text style={[albumFontColor, styles.albumDescription]}>{item ? item.album.name : ''}</Text>
-      </View>
-    </View>
-  );
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   const { response, loadData } = useSpotifyAPI('v1/me/player/currently-playing');
   const [samples, setSamples] = useState<BedfellowTrackSamples | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
 
   const currentPlaybackResponse = response as CurrentPlaybackResponse;
   const currentlyPlayingTrack = currentPlaybackResponse?.item as TrackObjectFull;
   const albumArtURL = currentlyPlayingTrack?.album?.images?.[0].url || '';
-  // using this here populates the context so any child components that need it can use that
-  useImagePalette(albumArtURL);
+
+  // Use the new dynamic theme system
+  useDynamicTheme(albumArtURL);
 
   const refreshControl = () => {
     setIsLoading(true);
+    setShowSkeleton(true);
+
+    // Set a timeout to hide skeleton after 3 seconds
+    const skeletonTimeout = setTimeout(() => {
+      setShowSkeleton(false);
+    }, 3000);
+
     loadData();
+
+    // Clean up timeout if component unmounts
+    return () => clearTimeout(skeletonTimeout);
   };
 
   useEffect(() => {
     setIsLoading(true);
+    setShowSkeleton(true);
+
+    // Set a timeout to hide skeleton after 3 seconds
+    const skeletonTimeout = setTimeout(() => {
+      setShowSkeleton(false);
+    }, 3000);
+
     if (currentlyPlayingTrack) {
       const { artists, name } = currentlyPlayingTrack;
       loadBedfellowData(artists, name).then((result) => {
@@ -123,27 +100,40 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
           setSamples(result);
         }
         setIsLoading(false);
+        setShowSkeleton(false);
       });
     } else {
       setSamples(null);
       setIsLoading(false);
+      setShowSkeleton(false);
       loadData();
     }
+
+    // Clean up timeout
+    return () => clearTimeout(skeletonTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentlyPlayingTrack?.artists, currentlyPlayingTrack?.name]);
 
   return (
-    <View style={[styles.view]}>
-      <SampleList
-        onRefresh={refreshControl}
-        isLoading={isLoading}
-        HeaderComponent={<CurrentSong item={currentlyPlayingTrack} />}
-        trackSamples={samples}
-      />
-      <View style={styles.footerWrapper}>
-        <PlaybackFooter refreshCurrentlyPlayingTrack={loadData} />
-      </View>
-    </View>
+    <ThemeTransition type="fade" duration={300}>
+      <ThemedView style={styles.view}>
+        {/* Settings Button */}
+        <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate('Settings' as any)}>
+          <Icon name="cog" size={24} color={theme.colors.primary[400]} />
+        </TouchableOpacity>
+
+        <SampleList
+          onRefresh={refreshControl}
+          isLoading={isLoading}
+          showSkeleton={showSkeleton}
+          HeaderComponent={<CurrentSongHeader item={currentlyPlayingTrack} isLoading={showSkeleton} />}
+          trackSamples={samples}
+        />
+        <View style={styles.footerWrapper}>
+          <PlaybackFooter refreshCurrentlyPlayingTrack={loadData} />
+        </View>
+      </ThemedView>
+    </ThemeTransition>
   );
 }
 

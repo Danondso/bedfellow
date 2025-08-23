@@ -1,22 +1,27 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, Platform, Alert } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import Config from 'react-native-config';
-
 import { authorize, AuthorizeResult } from 'react-native-app-auth';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
+import { useTheme } from '../../context/ThemeContext';
+import ThemedView from '../../components/themed/ThemedView';
+import ThemedText from '../../components/themed/ThemedText';
+import ThemedButton from '../../components/themed/ThemedButton';
+import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
 import { DETAILS } from '../constants/Screens';
 import { LoginScreenProps } from '../../types';
-import styles from './Login.styles';
+import { createStyles } from './Login.themed.styles';
 
 function LoginScreen({ navigation }: LoginScreenProps) {
   const spotifyAuthContext = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { setSpotifyAuth } = spotifyAuthContext as SpotifyAuthContextData;
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
 
   async function authenticate() {
     try {
-      const config = {
+      const config: any = {
         clientId: Config.SPOTIFY_CLIENT_ID,
-        usePKCE: false,
         redirectUrl: Platform.OS === 'ios' ? Config.SPOTIFY_REDIRECT_URI : Config.SPOTIFY_REDIRECT_URI_ANDROID,
         scopes: [
           'user-read-playback-state',
@@ -48,17 +53,17 @@ function LoginScreen({ navigation }: LoginScreenProps) {
   }
 
   return (
-    <View style={styles.view}>
-      <View style={styles.loginView}>
-        <Text style={styles.header}> Bedfellow </Text>
-        <Text style={styles.subHeader}>a smol bean app</Text>
-        <View style={styles.loginButtonView}>
-          <TouchableOpacity style={styles.button} onPress={() => authenticate()}>
-            <Text style={styles.loginButtonText}>Login</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
+    <ThemeTransition type="scale" duration={400}>
+      <ThemedView style={styles.view}>
+        <ThemedView style={styles.loginView}>
+          <ThemedText style={styles.header}>Bedfellow</ThemedText>
+          <ThemedText style={styles.subHeader}>a smol bean app</ThemedText>
+          <ThemedButton variant="primary" size="large" onPress={authenticate} style={{ marginTop: theme.spacing.xl }}>
+            Login with Spotify
+          </ThemedButton>
+        </ThemedView>
+      </ThemedView>
+    </ThemeTransition>
   );
 }
 

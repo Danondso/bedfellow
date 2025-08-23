@@ -2,6 +2,7 @@ use actix_web::{post, Responder, HttpResponse};
 use serde::{Serialize, Deserialize};
 use::std::env;
 use base64;
+use urlencoding;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct SpotifyLoginApiResponse {
@@ -22,7 +23,8 @@ struct SpotifyApiErrorResponse {
  struct SpotifyLoginApiRequest {
     grant_type: String,
     redirect_uri: String,
-    code: String
+    code: String,
+    code_verifier: Option<String>
 }
 
 fn create_auth_header() -> String {
@@ -45,17 +47,38 @@ async fn send_request<T: serde::Serialize>(request_body: T) -> Result<reqwest::R
 pub async fn swap(req_body: String) -> impl Responder {
     let parsed_req_body: Vec<&str> = req_body.split("&").collect();
     debug!("PARSED REQUEST BODY::: {:?}", parsed_req_body);
+    
+    // Parse the form data to extract fields
+    let mut code = String::new();
+    let mut code_verifier: Option<String> = None;
+    let mut redirect_uri = String::new();
+    
+    for param in &parsed_req_body {
+        if param.starts_with("code=") {
+            code = param.replace("code=", "");
+        } else if param.starts_with("code_verifier=") {
+            code_verifier = Some(param.replace("code_verifier=", ""));
+        } else if param.starts_with("redirect_uri=") {
+            redirect_uri = urlencoding::decode(param.replace("redirect_uri=", "").as_str())
+                .unwrap_or_default()
+                .to_string();
+        }
+    }
+    
+    // Determine the callback URL based on the redirect_uri
     let client_callback: String;
-    if parsed_req_body[2].contains("com.bedfellow") {
+    if redirect_uri.contains("com.bedfellow") {
         client_callback = env::var("SPOTIFY_CLIENT_CALLBACK_ANDROID").ok().unwrap();
     } else {
         client_callback = env::var("SPOTIFY_CLIENT_CALLBACK_IOS").ok().unwrap();
     }
+    
     debug!("REQUEST BODY::: {:?}", parsed_req_body);
     let request: SpotifyLoginApiRequest = SpotifyLoginApiRequest { 
         grant_type: "authorization_code".into(),
         redirect_uri: client_callback.into(),
-        code: parsed_req_body[0].replace("code=", "")
+        code: code,
+        code_verifier: code_verifier
     };
 
     debug!("REQUEST::: {:?}", request);

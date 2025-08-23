@@ -75,7 +75,7 @@ describe('App Test Suite', () => {
   });
 
   it('renders login button text', () => {
-    expect(screen.getByText('Login')).toBeTruthy();
+    expect(screen.getByText('Login with Spotify')).toBeTruthy();
   });
 
   describe('logs in, loads current track from spotify, retrieves samples from bedfellow-db-api', () => {
@@ -90,7 +90,7 @@ describe('App Test Suite', () => {
 
         mockedImageColors.getColors.mockResolvedValue(androidColors);
 
-        await waitFor(async () => fireEvent.press(await screen.findByText('Login')));
+        await waitFor(async () => fireEvent.press(await screen.findByText('Login with Spotify')));
         await waitFor(async () => fireEvent.press(await screen.findByText('Ponderosa Twins Plus One')));
 
         await waitFor(() => {
@@ -127,7 +127,7 @@ describe('App Test Suite', () => {
 
         mockedImageColors.getColors.mockResolvedValue(androidColors);
 
-        await waitFor(async () => fireEvent.press(await screen.findByText('Login')));
+        await waitFor(async () => fireEvent.press(await screen.findByText('Login with Spotify')));
         await waitFor(async () => fireEvent.press(await screen.findByText('Martin (TV show)')));
 
         await waitFor(() => {
@@ -160,7 +160,7 @@ describe('App Test Suite', () => {
 
         mockedImageColors.getColors.mockResolvedValue(iosColors);
 
-        await waitFor(async () => fireEvent.press(await screen.findByText('Login')));
+        await waitFor(async () => fireEvent.press(await screen.findByText('Login with Spotify')));
         await waitFor(async () => fireEvent.press(await screen.findByText('Ponderosa Twins Plus One')));
 
         await waitFor(() => {
@@ -202,7 +202,7 @@ describe('App Test Suite', () => {
 
     mockedImageColors.getColors.mockResolvedValue(androidColors);
 
-    await waitFor(async () => fireEvent.press(await screen.getByText('Login')));
+    await waitFor(async () => fireEvent.press(await screen.getByText('Login with Spotify')));
     expect(authorize).toHaveBeenCalledWith(authorizeRequest);
     expect(mockedAxios.get).toHaveBeenCalledTimes(9);
     expect(mockedAxios.get).toHaveBeenNthCalledWith(1, 'https://api.spotify.com/v1/me/player/currently-playing', {
@@ -256,13 +256,13 @@ describe('App Test Suite', () => {
         status: 500,
       },
     });
-    await waitFor(async () => fireEvent.press(await screen.findByText('Login')));
+    await waitFor(async () => fireEvent.press(await screen.findByText('Login with Spotify')));
     expect(authorize).toHaveBeenCalledWith({
       ...authorizeRequest,
       redirectUrl: 'org.danondso.bedfellow://callback/',
     });
     expect(screen.getByText('Nothing playing currently.')).toBeDefined();
-    expect(screen.getByText('No samples found.')).toBeDefined();
+    expect(screen.getByText('Play Something.')).toBeDefined();
     expect(mockedImageColors.getColors).toHaveBeenCalledTimes(0);
     expect(mockedAxios.get).toHaveBeenCalledTimes(1);
     expect(mockedAxios.get).toHaveBeenLastCalledWith('https://api.spotify.com/v1/me/player/currently-playing', {
@@ -277,13 +277,13 @@ describe('App Test Suite', () => {
     it('shows login failure alert', async () => {
       // @ts-ignore
       authorize.mockRejectedValueOnce('Failed to login');
-      await waitFor(async () => fireEvent.press(await screen.findByText('Login')));
+      await waitFor(async () => fireEvent.press(await screen.findByText('Login with Spotify')));
       expect(Alert.alert).toHaveBeenCalledWith('Failed to login');
     });
     it('shows login failure alert with error text', async () => {
       // @ts-ignore
       authorize.mockRejectedValueOnce(new Error('Oops'));
-      await waitFor(async () => fireEvent.press(await screen.findByText('Login')));
+      await waitFor(async () => fireEvent.press(await screen.findByText('Login with Spotify')));
       expect(Alert.alert).toHaveBeenCalledWith('Failed to login', 'Oops');
     });
   });

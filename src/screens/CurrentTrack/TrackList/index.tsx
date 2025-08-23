@@ -14,7 +14,7 @@ import { BedfellowTypes } from '../../../types';
 function EmptyListMessage() {
   return (
     <View style={styles.noSamplesWrapper}>
-      <Text style={styles.noSamples}>No samples found.</Text>
+      <Text style={styles.noSamples}>Play Something.</Text>
     </View>
   );
 }
@@ -22,11 +22,12 @@ function EmptyListMessage() {
 type SampleListProps = {
   trackSamples: BedfellowTrackSamples | null;
   isLoading: boolean;
+  showSkeleton?: boolean;
   HeaderComponent: ReactElement;
   onRefresh: () => void;
 };
 
-function SampleList({ isLoading, trackSamples, HeaderComponent, onRefresh }: SampleListProps) {
+function SampleList({ isLoading, showSkeleton, trackSamples, HeaderComponent, onRefresh }: SampleListProps) {
   const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { imagePalette } = useContext<ImagePaletteContextData>(ImagePaletteContext);
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
@@ -50,7 +51,7 @@ function SampleList({ isLoading, trackSamples, HeaderComponent, onRefresh }: Sam
       <FlatList
         refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={isLoading} />}
         ListHeaderComponent={HeaderComponent}
-        ListEmptyComponent={isLoading ? <WhoSampledSkeleton /> : <EmptyListMessage />}
+        ListEmptyComponent={(showSkeleton ?? isLoading) ? <WhoSampledSkeleton /> : <EmptyListMessage />}
         data={trackSamples?.samples || []}
         renderItem={({ item }) => (
           <SampleCard
