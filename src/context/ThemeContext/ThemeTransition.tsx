@@ -232,7 +232,7 @@ export const ThemedAnimatedView: React.FC<ThemedAnimatedViewProps> = ({
   if (lightStyle.opacity !== undefined && darkStyle.opacity !== undefined) {
     animatedStyle.opacity = animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [lightStyle.opacity, darkStyle.opacity],
+      outputRange: [lightStyle.opacity as number, darkStyle.opacity as number],
     });
   }
 

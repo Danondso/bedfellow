@@ -246,7 +246,7 @@ export function generateColorScale(
   scalePositions.forEach((position) => {
     // Use provided keyPoint if available
     if (finalKeyPoints[position]) {
-      scale[position] = finalKeyPoints[position].toUpperCase();
+      scale[position] = finalKeyPoints[position]!.toUpperCase();
       return;
     }
 

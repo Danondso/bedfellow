@@ -22,13 +22,13 @@ export const createStyles = (theme: Theme) =>
       paddingBottom: theme.spacing.md,
     },
     headerTitle: {
-      fontSize: theme.typography.title.fontSize,
-      fontWeight: theme.typography.title.fontWeight as any,
+      fontSize: theme.typography['4xl'],
+      fontWeight: '700' as any,
       color: theme.colors.text[900],
       marginBottom: theme.spacing.xs,
     },
     headerSubtitle: {
-      fontSize: theme.typography.body.fontSize,
+      fontSize: theme.typography.base,
       color: theme.colors.text[600],
     },
     section: {
@@ -36,8 +36,8 @@ export const createStyles = (theme: Theme) =>
       paddingVertical: theme.spacing.md,
     },
     sectionTitle: {
-      fontSize: theme.typography.subtitle.fontSize,
-      fontWeight: theme.typography.subtitle.fontWeight as any,
+      fontSize: theme.typography['2xl'],
+      fontWeight: '600' as any,
       color: theme.colors.text[800],
       marginBottom: theme.spacing.md,
     },
@@ -77,7 +77,7 @@ export const createStyles = (theme: Theme) =>
       marginRight: theme.spacing.md,
     },
     settingLabel: {
-      fontSize: theme.typography.body.fontSize,
+      fontSize: theme.typography.base,
       color: theme.colors.text[900],
     },
     themeSwitcher: {
@@ -99,14 +99,14 @@ export const createStyles = (theme: Theme) =>
       backgroundColor: theme.colors.primary[500],
     },
     harmonyOptionText: {
-      fontSize: theme.typography.caption.fontSize,
+      fontSize: theme.typography.xs,
       color: theme.colors.text[800],
     },
     harmonyOptionTextSelected: {
       color: theme.colors.text[100],
     },
     harmonyInfo: {
-      marginTop: theme.spacing.xxs,
+      marginTop: theme.spacing.xs / 2,
       color: theme.colors.text[600],
     },
     actionButtons: {
@@ -140,7 +140,7 @@ export const createStyles = (theme: Theme) =>
       ...theme.shadows.md,
     },
     previewTitle: {
-      fontSize: theme.typography.caption.fontSize,
+      fontSize: theme.typography.xs,
       color: theme.colors.text[600],
       marginBottom: theme.spacing.xs,
     },
@@ -163,7 +163,7 @@ export const createStyles = (theme: Theme) =>
     },
     toggleLabel: {
       marginRight: theme.spacing.sm,
-      fontSize: theme.typography.body.fontSize,
+      fontSize: theme.typography.base,
       color: theme.colors.text[800],
     },
 
@@ -177,7 +177,7 @@ export const createStyles = (theme: Theme) =>
       backgroundColor: theme.colors.success[100],
     },
     accessibilityBadgeText: {
-      fontSize: theme.typography.caption.fontSize,
+      fontSize: theme.typography.xs,
       color: theme.colors.success[800],
       marginLeft: theme.spacing.xs,
     },
@@ -203,12 +203,12 @@ export const createStyles = (theme: Theme) =>
       marginVertical: theme.spacing.sm,
     },
     sliderLabel: {
-      fontSize: theme.typography.caption.fontSize,
+      fontSize: theme.typography.xs,
       color: theme.colors.text[700],
       marginBottom: theme.spacing.xs,
     },
     sliderValue: {
-      fontSize: theme.typography.caption.fontSize,
+      fontSize: theme.typography.xs,
       color: theme.colors.primary[600],
       fontWeight: '600',
     },

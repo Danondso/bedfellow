@@ -96,7 +96,7 @@ export const ThemeInitializer: React.FC<ThemeInitializerProps> = ({
 
   if (!isInitialized) {
     if (showLoadingScreen) {
-      return loadingComponent || <DefaultLoadingScreen />;
+      return <>{loadingComponent || <DefaultLoadingScreen />}</>;
     }
 
     // If not showing loading screen, render with default theme immediately
