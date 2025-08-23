@@ -62,8 +62,10 @@ class ColorUtils {
   }
 
   // Convert RGB to hex
-  static rgbToHex(r: number, g: number, b: number): string {
-    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+    const cr = Math.max(0, Math.min(255, r));
+    const cg = Math.max(0, Math.min(255, g));
+    const cb = Math.max(0, Math.min(255, b));
+    return `#${((1 << 24) + (cr << 16) + (cg << 8) + cb).toString(16).slice(1)}`;
   }
 
   // Convert hex to HSL
