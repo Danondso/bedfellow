@@ -273,9 +273,8 @@ export const useNavigationBarStyle = () => {
     if (Platform.OS === 'android') {
       // This would require a native module to actually change the navigation bar
       // For now, this is a placeholder for the logic
-      const backgroundColor = theme.colors.background[500];
-      const isLight = theme.mode === 'light';
-
+      // const backgroundColor = theme.colors.background[500];
+      // const isLight = theme.mode === 'light';
       // Would call native module here
       // NativeModules.NavigationBar.setBackgroundColor(backgroundColor);
       // NativeModules.NavigationBar.setLightMode(isLight);

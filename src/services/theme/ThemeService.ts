@@ -145,7 +145,6 @@ class ThemeService {
   }
 
   private cleanPaletteCache(cache: Map<string, PaletteCacheEntry>): void {
-    const now = Date.now();
     const entriesToDelete: string[] = [];
 
     cache.forEach((entry, key) => {

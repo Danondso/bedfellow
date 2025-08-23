@@ -51,7 +51,7 @@ function SampleList({ isLoading, showSkeleton, trackSamples, HeaderComponent, on
       <FlatList
         refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={isLoading} />}
         ListHeaderComponent={HeaderComponent}
-        ListEmptyComponent={showSkeleton ?? isLoading ? <WhoSampledSkeleton /> : <EmptyListMessage />}
+        ListEmptyComponent={(showSkeleton ?? isLoading) ? <WhoSampledSkeleton /> : <EmptyListMessage />}
         data={trackSamples?.samples || []}
         renderItem={({ item }) => (
           <SampleCard

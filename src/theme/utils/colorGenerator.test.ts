@@ -12,7 +12,7 @@ import {
   generateColorScale,
   generateBrandColorScale,
 } from './colorGenerator';
-import { ColorScale } from '../types';
+// import { ColorScale } from '../types';
 
 describe('Color Generator Utilities', () => {
   describe('hexToRgb', () => {
@@ -280,9 +280,9 @@ describe('Color Generator Utilities', () => {
         saturationCurve: 'ease',
       });
 
-      const scaleDramatic = generateBrandColorScale('#64748B', {
-        saturationCurve: 'dramatic',
-      });
+      // const scaleDramatic = generateBrandColorScale('#64748B', {
+      //   saturationCurve: 'dramatic',
+      // });
 
       const rgbEase500 = hexToRgb(scaleEase[500]!);
       const rgbEase50 = hexToRgb(scaleEase[50]!);

@@ -27,8 +27,6 @@ export const ThemeInitializer: React.FC<ThemeInitializerProps> = ({
   loadingComponent,
 }) => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const [initialPreferences, setInitialPreferences] = useState<ThemePreference | null>(null);
-  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     initializeTheme();
@@ -37,7 +35,7 @@ export const ThemeInitializer: React.FC<ThemeInitializerProps> = ({
   const initializeTheme = async () => {
     try {
       // Start initialization tasks in parallel for better performance
-      const [preferences, migrationResult] = await Promise.all([
+      const [preferences] = await Promise.all([
         ThemeService.loadThemePreferences(),
         ThemeService.migrateFromOldStorage(),
       ]);
@@ -61,12 +59,10 @@ export const ThemeInitializer: React.FC<ThemeInitializerProps> = ({
       // This is done in background to not block initialization
       preloadCachedPalettes();
 
-      setInitialPreferences(finalPreferences);
       onThemeLoaded?.(finalPreferences);
       setIsInitialized(true);
     } catch (err) {
       console.error('Failed to initialize theme:', err);
-      setError(err as Error);
 
       // Fall back to default theme on error
       const fallbackPreferences: ThemePreference = {
@@ -74,7 +70,7 @@ export const ThemeInitializer: React.FC<ThemeInitializerProps> = ({
         dynamicEnabled: true,
       };
 
-      setInitialPreferences(fallbackPreferences);
+      onThemeLoaded?.(fallbackPreferences);
       setIsInitialized(true);
     }
   };
@@ -88,9 +84,9 @@ export const ThemeInitializer: React.FC<ThemeInitializerProps> = ({
         // Cache is already loaded into ThemeService memory
         console.log('Palette cache preloaded');
       }
-    } catch (error) {
+    } catch (err) {
       // Non-critical error, just log it
-      console.warn('Failed to preload palette cache:', error);
+      console.warn('Failed to preload palette cache:', err);
     }
   };
 

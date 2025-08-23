@@ -47,7 +47,7 @@ export const useDynamicTheme = (imageUrl: string | null | undefined, options: Pa
 // Hook for album artwork theme (compatible with existing useImagePalette)
 export const useAlbumTheme = (albumArtUrl: string | null | undefined, harmony?: ColorHarmony) => {
   const { theme, dynamicPalette } = useContext(ThemeContext);
-  const { updatePalette } = useDynamicTheme(albumArtUrl, { harmony });
+  useDynamicTheme(albumArtUrl, { harmony });
 
   // Return palette in format compatible with existing ImagePalette
   return (
@@ -70,7 +70,7 @@ export const useAdvancedDynamicTheme = (
     quality?: ExtractionQuality;
   } = {}
 ) => {
-  const { theme, dynamicPalette, setDynamicPalette, isDynamicEnabled } = useContext(ThemeContext);
+  const { dynamicPalette, setDynamicPalette, isDynamicEnabled } = useContext(ThemeContext);
 
   const extractAndApply = useCallback(async () => {
     if (!isDynamicEnabled || !imageUrl) {

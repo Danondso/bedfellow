@@ -1,8 +1,7 @@
 module.exports = {
   root: true,
   extends: [
-    'airbnb',
-    '@react-native-community',
+    '@react-native/eslint-config',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:prettier/recommended',
@@ -23,7 +22,7 @@ module.exports = {
     'no-param-reassign': ['error', { props: false }],
     'no-restricted-syntax': 'off',
     'no-await-in-loop': 'off',
-    'max-classes-per-file': ['error', 5],
+    'max-classes-per-file': ['error', 6],
     'no-bitwise': 'off',
     'no-multi-assign': 'off',
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],

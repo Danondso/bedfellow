@@ -1,7 +1,7 @@
 import ImageColors from 'react-native-image-colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DynamicPalette } from '../../theme/types';
-import { BRAND_COLORS, brandColorScales } from '../../theme/colors/brandColors';
+import { BRAND_COLORS } from '../../theme/colors/brandColors';
 
 // Cache configuration
 const PALETTE_CACHE_KEY = '@bedfellow_palette_cache';
@@ -62,6 +62,7 @@ class ColorUtils {
   }
 
   // Convert RGB to hex
+  static rgbToHex(r: number, g: number, b: number): string {
     const cr = Math.max(0, Math.min(255, r));
     const cg = Math.max(0, Math.min(255, g));
     const cb = Math.max(0, Math.min(255, b));

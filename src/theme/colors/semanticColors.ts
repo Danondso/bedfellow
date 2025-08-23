@@ -1,7 +1,7 @@
 import { ColorScale } from '../types';
 
 // Import brand colors and scales
-import { brandColorScales, BRAND_COLORS, SEMANTIC_BRAND_COLORS, SHADOW_COLORS } from './brandColors';
+import { brandColorScales, BRAND_COLORS, SHADOW_COLORS } from './brandColors';
 
 // Helper function to create a color scale
 export const createColorScale = (baseColor: string, variations: Partial<ColorScale> = {}): ColorScale => {

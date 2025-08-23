@@ -7,7 +7,7 @@ import darkTheme from './dark';
 import lightTheme from './light';
 import { ThemeMode } from '../types';
 import { BRAND_COLORS, brandColorScales } from '../colors/brandColors';
-import { darkSemanticBrandColors } from '../colors/semanticColors';
+// import { darkSemanticBrandColors } from '../colors/semanticColors';
 
 describe('Dark Theme with Brand Palette', () => {
   describe('Theme Structure', () => {
@@ -217,9 +217,9 @@ describe('Dark Theme with Brand Palette', () => {
       const startTime = performance.now();
 
       // Simulate theme switch by accessing all properties
-      const allColors = Object.values(darkTheme.colors);
-      const allSpacing = Object.values(darkTheme.spacing);
-      const allTypography = Object.values(darkTheme.typography);
+      Object.values(darkTheme.colors);
+      Object.values(darkTheme.spacing);
+      Object.values(darkTheme.typography);
 
       const endTime = performance.now();
       const duration = endTime - startTime;
