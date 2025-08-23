@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(yarn lint:*)"
+      "Bash(yarn lint:*)",
+      "Bash(pod install:*)",
+      "Bash(yarn install)"
     ],
     "deny": [],
     "ask": []

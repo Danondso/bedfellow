@@ -1726,8 +1726,8 @@ PODS:
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
     - SocketRocket
-  - react-native-app-auth (7.2.0):
-    - AppAuth (>= 1.7.3)
+  - react-native-app-auth (8.0.3):
+    - AppAuth (>= 1.7.6)
     - React-Core
   - react-native-config (1.5.1):
     - react-native-config/App (= 1.5.1)
@@ -2356,67 +2356,36 @@ PODS:
     - Yoga
   - RNFS (2.20.0):
     - React-Core
+  - RNGestureHandler (2.28.0):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - RNImageColors (1.5.2):
     - React-Core
-  - RNScreens (4.4.0):
-    - boost
-    - DoubleConversion
-    - fast_float
-    - fmt
-    - glog
-    - hermes-engine
-    - RCT-Folly
-    - RCT-Folly/Fabric
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-RCTImage
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - RNScreens/common (= 4.4.0)
-    - SocketRocket
-    - Yoga
-  - RNScreens/common (4.4.0):
-    - boost
-    - DoubleConversion
-    - fast_float
-    - fmt
-    - glog
-    - hermes-engine
-    - RCT-Folly
-    - RCT-Folly/Fabric
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-RCTImage
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - SocketRocket
-    - Yoga
   - RNSVG (15.12.1):
     - boost
     - DoubleConversion
@@ -2474,10 +2443,41 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - RNVectorIcons (10.3.0):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - SocketRocket (0.7.1)
+  - TcpSockets (4.0.0):
+    - React
   - Yoga (0.0.0)
 
 DEPENDENCIES:
+  - AppAuth
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
@@ -2556,10 +2556,12 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNFS (from `../node_modules/react-native-fs`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageColors (from `../node_modules/react-native-image-colors`)
-  - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - SocketRocket (~> 0.7.1)
+  - TcpSockets (from `../node_modules/react-native-tcp`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2723,12 +2725,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNFS:
     :path: "../node_modules/react-native-fs"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   RNImageColors:
     :path: "../node_modules/react-native-image-colors"
-  RNScreens:
-    :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
+  TcpSockets:
+    :path: "../node_modules/react-native-tcp"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -2775,7 +2781,7 @@ SPEC CHECKSUMS:
   React-logger: 839abfd18a3fbdf88132824de584b226d0c5cbce
   React-Mapbuffer: bd5b1120c9bbaac6203eb288735e239f04e03009
   React-microtasksnativemodule: 10892b00e612d79436022a11e5bc8bdf468a284f
-  react-native-app-auth: 63fa4e58c5bd29aeb974d3a06a23c5858322d533
+  react-native-app-auth: 149f01d2c824758453c9e7815217ded451974683
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-lottie-splash-screen: 4e1b1fd9d6633f9cd2106d6877eb5ba0147f3e2b
   react-native-safe-area-context: 6d8a7b750e496e37bda47c938320bf2c734d441f
@@ -2811,12 +2817,14 @@ SPEC CHECKSUMS:
   ReactCommon: c235ebd26d63fde9a2dfa72cee9f8294b910fee1
   RNCAsyncStorage: c17c382a58c7db2582aba8f0874e1aa346e6af15
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
+  RNGestureHandler: 4f7cc97a71d4fe0fcba38c94acdd969f5f17c91c
   RNImageColors: 9ac05083b52d5c350e6972650ae3ba0e556466c1
-  RNScreens: 56161fa90bf189ebd03e16d39d7ada9e967864bc
   RNSVG: 8d87cff016edf1b6ca409ed39804101836d75e90
+  RNVectorIcons: 6acc19c833be864e9c70894e101a587fe491150a
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
+  TcpSockets: 4ef55305239923b343ed0a378b1fac188b1373b0
   Yoga: 00013dd9cde63a2d98e8002fcc4f5ddb66c10782
 
-PODFILE CHECKSUM: 97fb905921d1389568948222c1701bb718504ef0
+PODFILE CHECKSUM: 9e263b38c83e55b509fac6d96ba07a2ce124ed7c
 
 COCOAPODS: 1.16.2

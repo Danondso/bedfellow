@@ -8,7 +8,27 @@ This is the CRUD-like (no PATCH / DELETE) service for bedfellow's db. Whenever w
 
 ## setting up
 
-The docker-compose file is meant to be a quickstart and can be run to create the database and external volume. Perform a repo search and replace all the 'xxxxx' instances with their user and password equivalents for the database. Additionally you'll need to have values for SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET if you want to run the bedfellow-api.
+The docker-compose file is meant to be a quickstart and can be run to create the database and external volume.
+
+### Required Configuration
+
+Before running the services, you MUST configure the following in `docker-compose.yml`:
+
+1. **Spotify API Credentials** (required for authentication):
+   - `SPOTIFY_CLIENT_ID`: Your Spotify app's Client ID from the Spotify Developer Dashboard
+   - `SPOTIFY_CLIENT_SECRET`: Your Spotify app's Client Secret from the Spotify Developer Dashboard
+2. **Database Credentials** (replace all 'xxxxx' placeholders):
+   - `MYSQL_ROOT_PASSWORD`: Root password for MySQL
+   - `MYSQL_PASSWORD`: Password for the application user
+   - `DATABASE_URL`: Update the password in the connection string to match `MYSQL_PASSWORD`
+
+### Important Notes
+
+- The authentication will fail with "INVALID_CLIENT" error if the Spotify credentials are not configured
+- The backend services will crash if credentials are empty or invalid
+- Make sure your Spotify app has the correct redirect URIs configured:
+  - iOS: `org.danondso.bedfellow://callback/`
+  - Android: `com.bedfellow://callback/`
 
 After that just run `docker-compose up` from appropriate docker-compose file (/server/docker-compose.yml runs the app api AND the db api).
 

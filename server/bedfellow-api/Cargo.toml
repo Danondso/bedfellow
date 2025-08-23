@@ -16,4 +16,5 @@ serde_json = "1.0.83"
 scraper = "0.16.0"
 selectors = "0.22.0"
 ego-tree = "0.6.2"
+urlencoding = "2.1"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
