@@ -11,10 +11,6 @@ import { SpotifyAuthContext, SpotifyAuthContextData } from '../context/SpotifyAu
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const commonOptions: NativeStackNavigationOptions = {
-  headerShown: false,
-};
-
 export default function () {
   const spotifyAuthContext = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
 
@@ -25,17 +21,17 @@ export default function () {
     : currentDate;
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {expirationDate.getTime() <= currentDate.getTime() ? (
           <>
-            <Stack.Screen options={commonOptions} name={LOGIN} component={LoginScreen} />
-            <Stack.Screen options={commonOptions} name={DETAILS} component={DetailsScreen} />
-            <Stack.Screen options={commonOptions} name={SETTINGS} component={SettingsScreen} />
+            <Stack.Screen name={LOGIN} component={LoginScreen} />
+            <Stack.Screen name={DETAILS} component={DetailsScreen} />
+            <Stack.Screen name={SETTINGS} component={SettingsScreen} />
           </>
         ) : (
           <>
-            <Stack.Screen options={commonOptions} name={DETAILS} component={DetailsScreen} />
-            <Stack.Screen options={commonOptions} name={SETTINGS} component={SettingsScreen} />
+            <Stack.Screen name={DETAILS} component={DetailsScreen} />
+            <Stack.Screen name={SETTINGS} component={SettingsScreen} />
           </>
         )}
       </Stack.Navigator>

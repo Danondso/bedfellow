@@ -2,18 +2,24 @@
 import Reactotron from 'reactotron-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-Reactotron.setAsyncStorageHandler(AsyncStorage)
+const reactotron = Reactotron.setAsyncStorageHandler(AsyncStorage)
   .configure({
     name: 'Bedfellow',
   })
   .useReactNative({
-    asyncStorage: true, // there are more options to the async storage.
+    asyncStorage: false,
     networking: {
-      // optionally, you can turn it off with false.
       ignoreUrls: /symbolicate/,
     },
-    editor: false, // there are more options to editor
-    errors: { veto: (stackFrame) => false }, // or turn it off with false
-    overlay: false, // just turning off overlay
+    editor: false,
+    errors: false,
+    overlay: false,
   })
   .connect();
+
+// Attach to console for debugging in dev
+if (__DEV__) {
+  console.tron = reactotron;
+}
+
+export default reactotron;

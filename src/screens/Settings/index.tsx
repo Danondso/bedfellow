@@ -66,7 +66,7 @@ const SettingsScreen: React.FC = () => {
               >
                 <Icon name="chevron-back" size={28} color={theme.colors.text[900]} />
               </TouchableOpacity>
-              <ThemedText variant="h1" style={styles.headerTitle}>
+              <ThemedText variant="title" style={styles.headerTitle}>
                 Settings
               </ThemedText>
               <ThemedText variant="body" color="muted" style={styles.headerSubtitle}>
@@ -76,7 +76,7 @@ const SettingsScreen: React.FC = () => {
 
             {/* Theme Section */}
             <View style={styles.section}>
-              <ThemedText variant="h3" style={styles.sectionTitle}>
+              <ThemedText variant="subtitle" style={styles.sectionTitle}>
                 Theme
               </ThemedText>
 
@@ -131,7 +131,7 @@ const SettingsScreen: React.FC = () => {
 
             {/* Advanced Theme Options */}
             <View style={styles.section}>
-              <ThemedText variant="h3" style={styles.sectionTitle}>
+              <ThemedText variant="subtitle" style={styles.sectionTitle}>
                 Advanced
               </ThemedText>
 
@@ -155,7 +155,12 @@ const SettingsScreen: React.FC = () => {
                   Clear Color Cache
                 </ThemedButton>
 
-                <ThemedButton variant="outline" size="medium" onPress={handleResetTheme} style={styles.actionButton}>
+                <ThemedButton
+                  variant="outline"
+                  size="medium"
+                  onPress={handleResetTheme}
+                  style={[styles.actionButton, styles.resetButton]}
+                >
                   Reset to Defaults
                 </ThemedButton>
               </View>
@@ -163,7 +168,7 @@ const SettingsScreen: React.FC = () => {
 
             {/* App Info */}
             <View style={styles.section}>
-              <ThemedText variant="h3" style={styles.sectionTitle}>
+              <ThemedText variant="subtitle" style={styles.sectionTitle}>
                 About
               </ThemedText>
 

@@ -7,8 +7,7 @@ import React from 'react';
 import '@testing-library/jest-native/extend-expect';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
-// Silence the warning: Animated: `useNativeDriver` is not supported because the native animated module is missing
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
+// Note: In React Native 0.81+, deep imports are deprecated and NativeAnimatedHelper mock is no longer needed
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 

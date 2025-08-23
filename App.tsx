@@ -16,9 +16,10 @@ import ImagePaletteContextProvider from './src/context/ImagePaletteContext';
 import RootNavigation from './src/screens';
 import SpotifyAuthContextProvider from './src/context';
 
-if (__DEV__) {
-  require('./ReactotronConfig');
-}
+// Temporarily disabled - Reactotron needs update for RN 0.81
+// if (__DEV__) {
+//   require('./ReactotronConfig');
+// }
 
 const safeAreaStyle: ViewStyle = {
   flex: 1,
