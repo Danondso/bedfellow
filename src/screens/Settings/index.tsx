@@ -50,8 +50,11 @@ const SettingsScreen: React.FC = () => {
 
   return (
     <ThemeTransition type="fade" duration={300}>
-      <ThemedView style={styles.container}>
-        <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.colors.background[50] }]}
+        edges={['top', 'left', 'right']}
+      >
+        <ThemedView style={styles.safeArea}>
           <ScrollView
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
@@ -64,9 +67,9 @@ const SettingsScreen: React.FC = () => {
                 style={styles.backButtonContainer}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
-                <Icon name="chevron-back" size={28} color={theme.colors.text[900]} />
+                <Icon name="chevron-back-outline" size={28} color={theme.colors.text[900]} />
               </TouchableOpacity>
-              <ThemedText variant="title" style={styles.headerTitle}>
+              <ThemedText variant="h3" style={styles.headerTitle}>
                 Settings
               </ThemedText>
               <ThemedText variant="body" color="muted" style={styles.headerSubtitle}>
@@ -76,7 +79,7 @@ const SettingsScreen: React.FC = () => {
 
             {/* Theme Section */}
             <View style={styles.section}>
-              <ThemedText variant="subtitle" style={styles.sectionTitle}>
+              <ThemedText variant="h4" style={styles.sectionTitle}>
                 Theme
               </ThemedText>
 
@@ -131,7 +134,7 @@ const SettingsScreen: React.FC = () => {
 
             {/* Advanced Theme Options */}
             <View style={styles.section}>
-              <ThemedText variant="subtitle" style={styles.sectionTitle}>
+              <ThemedText variant="h4" style={styles.sectionTitle}>
                 Advanced
               </ThemedText>
 
@@ -159,7 +162,7 @@ const SettingsScreen: React.FC = () => {
                   variant="outline"
                   size="medium"
                   onPress={handleResetTheme}
-                  style={[styles.actionButton, styles.resetButton]}
+                  style={{ ...styles.actionButton, ...styles.resetButton }}
                 >
                   Reset to Defaults
                 </ThemedButton>
@@ -168,7 +171,7 @@ const SettingsScreen: React.FC = () => {
 
             {/* App Info */}
             <View style={styles.section}>
-              <ThemedText variant="subtitle" style={styles.sectionTitle}>
+              <ThemedText variant="h4" style={styles.sectionTitle}>
                 About
               </ThemedText>
 
@@ -191,8 +194,8 @@ const SettingsScreen: React.FC = () => {
               </View>
             </View>
           </ScrollView>
-        </SafeAreaView>
-      </ThemedView>
+        </ThemedView>
+      </SafeAreaView>
     </ThemeTransition>
   );
 };

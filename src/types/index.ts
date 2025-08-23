@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackScreenProps } from '@react-navigation/stack';
 
 export * as BedfellowTypes from './bedfellow-api';
 export * as WhoSampledTypes from './whosampled';
@@ -10,8 +10,8 @@ export type RootStackParamList = {
   Settings: undefined;
 };
 
-export type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
+export type LoginScreenProps = StackScreenProps<RootStackParamList, 'Login'>;
 
-export type DetailsScreenProps = NativeStackScreenProps<RootStackParamList, 'Details'>;
+export type DetailsScreenProps = StackScreenProps<RootStackParamList, 'Details'>;
 
-export type SettingsScreenProps = NativeStackScreenProps<RootStackParamList, 'Settings'>;
+export type SettingsScreenProps = StackScreenProps<RootStackParamList, 'Settings'>;

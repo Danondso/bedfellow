@@ -306,7 +306,7 @@ export const ThemedIconButton: React.FC<ThemedIconButtonProps> = ({
   };
 
   return (
-    <ThemedButton variant={variant} size={size} rounded style={[getIconButtonSize(), style]} {...props}>
+    <ThemedButton variant={variant} size={size} rounded style={{ ...getIconButtonSize(), ...style }} {...props}>
       {icon}
     </ThemedButton>
   );

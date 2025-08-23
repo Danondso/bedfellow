@@ -20,9 +20,8 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 
   async function authenticate() {
     try {
-      const config = {
+      const config: any = {
         clientId: Config.SPOTIFY_CLIENT_ID,
-        usePKCE: false,
         redirectUrl: Platform.OS === 'ios' ? Config.SPOTIFY_REDIRECT_URI : Config.SPOTIFY_REDIRECT_URI_ANDROID,
         scopes: [
           'user-read-playback-state',

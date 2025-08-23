@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { AuthorizeResult } from 'react-native-app-auth';
 import { RootStackParamList } from '../types';
 import DetailsScreen from './CurrentTrack';
@@ -9,7 +9,7 @@ import LoginScreen from './Login';
 import SettingsScreen from './Settings';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../context/SpotifyAuthContext';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function () {
   const spotifyAuthContext = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
@@ -19,9 +19,13 @@ export default function () {
   const expirationDate = spotifyAuth?.accessTokenExpirationDate
     ? new Date(spotifyAuth.accessTokenExpirationDate)
     : currentDate;
+  const screenOptions: StackNavigationOptions = {
+    headerShown: false,
+  };
+
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={screenOptions}>
         {expirationDate.getTime() <= currentDate.getTime() ? (
           <>
             <Stack.Screen name={LOGIN} component={LoginScreen} />

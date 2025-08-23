@@ -54,8 +54,8 @@ export const ThemedCard: React.FC<ThemedCardProps> = ({
     borderRadius: theme.borderRadius[rounded],
     overflow: 'hidden',
     ...getVariantStyle(),
-    ...(padding !== 'none' ? { padding: theme.spacing[padding] } : {}),
-    ...(margin ? { margin: theme.spacing[margin] } : {}),
+    ...(padding !== 'none' ? { padding: theme.spacing[padding as keyof Theme['spacing']] } : {}),
+    ...(margin && margin !== 'none' ? { margin: theme.spacing[margin as keyof Theme['spacing']] } : {}),
     ...(disabled ? { opacity: 0.6 } : {}),
     ...style,
   };

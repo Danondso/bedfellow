@@ -637,12 +637,20 @@ export class ColorExtractionService {
           secondary: result.darkVibrant || result.darkMuted || '#666666',
           detail: result.lightVibrant || result.lightMuted || '#999999',
         };
-      } else {
+      } else if (result.platform === 'ios') {
         palette = {
           background: result.background || '#FFFFFF',
           primary: result.primary || '#000000',
           secondary: result.secondary || '#666666',
           detail: result.detail || '#999999',
+        };
+      } else {
+        // Web platform - use similar to android
+        palette = {
+          background: result.dominant || '#FFFFFF',
+          primary: result.vibrant || result.muted || '#000000',
+          secondary: result.darkVibrant || result.darkMuted || '#666666',
+          detail: result.lightVibrant || result.lightMuted || '#999999',
         };
       }
 
