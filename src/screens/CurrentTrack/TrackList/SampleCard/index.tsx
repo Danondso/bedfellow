@@ -1,9 +1,35 @@
-import React, { useContext } from 'react';
-import { Platform, Text, TextStyle, View, ViewStyle } from 'react-native';
+import React from 'react';
+import { Platform, Text, TextStyle, View, ViewStyle, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
 import { useTheme } from '../../../../context/ThemeContext';
-import styles from './SampleCard.styles';
 import { BedfellowSample } from '../../../../types/bedfellow-api';
+
+const styles = StyleSheet.create({
+  trackListWrapper: {
+    width: '90%',
+    marginVertical: 8,
+  },
+  trackItem: {
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  trackImage: {
+    width: '100%',
+    height: 200,
+  },
+  trackDetails: {
+    padding: 12,
+  },
+  trackText: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  artistText: {
+    fontSize: 14,
+    opacity: 0.8,
+  },
+});
 
 type SampleCardProps = {
   item: BedfellowSample;
@@ -30,7 +56,7 @@ function SampleCard({ item, onPress }: SampleCardProps) {
     <View style={styles.trackListWrapper}>
       <Card mode="elevated" style={[styles.trackItem, trackItemBackground]} onPress={onPress}>
         <Card.Cover style={styles.trackImage} source={{ uri: image }} />
-        <Card.Title titleStyle={[trackFontColor, styles.trackListText]} style={styles.trackListTitle} title={track} />
+        <Card.Title titleStyle={[trackFontColor, styles.trackText]} title={track} />
         <Card.Content>
           <Text style={trackFontColor}>{artist}</Text>
         </Card.Content>

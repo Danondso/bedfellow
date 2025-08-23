@@ -13,7 +13,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ViewStyle } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ThemeProvider from './src/context/ThemeContext';
-import ImagePaletteContextProvider from './src/context/ImagePaletteContext';
 import RootNavigation from './src/screens';
 import SpotifyAuthContextProvider from './src/context';
 
@@ -32,13 +31,11 @@ function App() {
     <GestureHandlerRootView style={safeAreaStyle}>
       <ThemeProvider>
         <SafeAreaView style={safeAreaStyle}>
-          <ImagePaletteContextProvider>
-            <SpotifyAuthContextProvider>
-              <PaperProvider>
-                <RootNavigation />
-              </PaperProvider>
-            </SpotifyAuthContextProvider>
-          </ImagePaletteContextProvider>
+          <SpotifyAuthContextProvider>
+            <PaperProvider>
+              <RootNavigation />
+            </PaperProvider>
+          </SpotifyAuthContextProvider>
         </SafeAreaView>
       </ThemeProvider>
     </GestureHandlerRootView>
