@@ -1,16 +1,42 @@
-import React, { useContext } from 'react';
-import { Platform, Text, TextStyle, View, ViewStyle } from 'react-native';
+import React from 'react';
+import { Platform, Text, TextStyle, View, ViewStyle, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
-import { ImagePaletteContext, ImagePaletteContextData } from '../../../../context/ImagePaletteContext';
-import styles from './SampleCard.styles';
+import { useTheme } from '../../../../context/ThemeContext';
 import { BedfellowSample } from '../../../../types/bedfellow-api';
+
+const styles = StyleSheet.create({
+  trackListWrapper: {
+    width: '90%',
+    marginVertical: 8,
+  },
+  trackItem: {
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  trackImage: {
+    width: '100%',
+    height: 200,
+  },
+  trackDetails: {
+    padding: 12,
+  },
+  trackText: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  artistText: {
+    fontSize: 14,
+    opacity: 0.8,
+  },
+});
 
 type SampleCardProps = {
   item: BedfellowSample;
   onPress: () => void;
 };
 function SampleCard({ item, onPress }: SampleCardProps) {
-  const { imagePalette } = useContext<ImagePaletteContextData>(ImagePaletteContext);
+  const { theme } = useTheme();
 
   const { track, artist, image } = item;
 
@@ -19,18 +45,18 @@ function SampleCard({ item, onPress }: SampleCardProps) {
   }
 
   const trackItemBackground: ViewStyle = {
-    backgroundColor: imagePalette.primary,
+    backgroundColor: theme.colors.primary[600],
   };
 
   const trackFontColor: TextStyle = {
-    color: Platform.OS === 'android' ? imagePalette.secondary : imagePalette.background,
+    color: Platform.OS === 'android' ? theme.colors.background[300] : theme.colors.background[100],
   };
 
   return (
     <View style={styles.trackListWrapper}>
       <Card mode="elevated" style={[styles.trackItem, trackItemBackground]} onPress={onPress}>
         <Card.Cover style={styles.trackImage} source={{ uri: image }} />
-        <Card.Title titleStyle={[trackFontColor, styles.trackListText]} style={styles.trackListTitle} title={track} />
+        <Card.Title titleStyle={[trackFontColor, styles.trackText]} title={track} />
         <Card.Content>
           <Text style={trackFontColor}>{artist}</Text>
         </Card.Content>

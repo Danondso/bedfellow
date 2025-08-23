@@ -1,13 +1,31 @@
 import React, { useContext } from 'react';
 // Types from @types/spotify-api are available globally via SpotifyApi namespace
-import { View, ViewStyle } from 'react-native';
+import { View, ViewStyle, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import useSpotifyAPI from '../../../hooks/spotify/useSpotifyAPI';
-import { ImagePaletteContext, ImagePaletteContextData } from '../../../context/ImagePaletteContext';
-import styles from './PlaybackFooter.styles';
+import { useTheme } from '../../../context/ThemeContext';
 import { performPlaybackAction } from '../../../services/spotify/SpotifyAPI.service';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../../context/SpotifyAuthContext';
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  buttonWrapper: {
+    flex: 1,
+    marginHorizontal: 8,
+  },
+  button: {
+    borderWidth: 2,
+    borderRadius: 8,
+  },
+});
 
 interface PlayerButtonProps {
   buttonName: string;
@@ -15,15 +33,15 @@ interface PlayerButtonProps {
 }
 
 function PlayerButton({ buttonName, onPress }: PlayerButtonProps) {
-  const { imagePalette } = useContext<ImagePaletteContextData>(ImagePaletteContext);
+  const { theme } = useTheme();
   const buttonThemeStyle: ViewStyle = {
-    backgroundColor: imagePalette.background,
-    borderColor: imagePalette.detail,
+    backgroundColor: theme.colors.surface[700],
+    borderColor: theme.colors.primary[500],
   };
   return (
     <View style={styles.buttonWrapper}>
       <Button style={[buttonThemeStyle, styles.button]} onPress={onPress}>
-        <Icon name={buttonName} size={20} color={imagePalette.detail} />
+        <Icon name={buttonName} size={20} color={theme.colors.primary[500]} />
       </Button>
     </View>
   );
@@ -39,7 +57,7 @@ function PlaybackFooter({ refreshCurrentlyPlayingTrack }: PlaybackFooterProps) {
   const playButtonIconName = (response as SpotifyApi.CurrentPlaybackResponse)?.is_playing ? 'pause' : 'play';
 
   return (
-    <View style={styles.view}>
+    <View style={styles.container}>
       <PlayerButton
         buttonName="backward"
         onPress={async () => {

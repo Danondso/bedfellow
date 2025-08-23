@@ -1,15 +1,31 @@
 import React, { ReactElement, useContext, useState } from 'react';
-import { FlatList, View, Text, RefreshControl } from 'react-native';
+import { FlatList, View, Text, RefreshControl, StyleSheet } from 'react-native';
 import { Snackbar } from 'react-native-paper';
-import defaultPalette from '../../../theme/styles/index';
-import { ImagePaletteContext, ImagePaletteContextData } from '../../../context/ImagePaletteContext';
+import { useTheme } from '../../../context/ThemeContext';
 import { BedfellowTrackSamples } from '../../../types/bedfellow-api';
-import styles from './SampleList.styles';
+
 import { findAndQueueTrack } from '../../../services/spotify/SpotifyAPI.service';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../../context/SpotifyAuthContext';
 import SampleCard from './SampleCard';
 import WhoSampledSkeleton from './Skeleton';
 import { BedfellowTypes } from '../../../types';
+
+const styles = StyleSheet.create({
+  noSamplesWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 100,
+  },
+  noSamples: {
+    fontSize: 24,
+    fontWeight: '300',
+    opacity: 0.5,
+  },
+  snackBar: {
+    bottom: 100,
+  },
+});
 
 function EmptyListMessage() {
   return (
@@ -29,7 +45,7 @@ type SampleListProps = {
 
 function SampleList({ isLoading, showSkeleton, trackSamples, HeaderComponent, onRefresh }: SampleListProps) {
   const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
-  const { imagePalette } = useContext<ImagePaletteContextData>(ImagePaletteContext);
+  const { theme } = useTheme();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [error, setError] = useState<boolean>(false);
@@ -72,12 +88,12 @@ function SampleList({ isLoading, showSkeleton, trackSamples, HeaderComponent, on
         }}
         wrapperStyle={styles.snackBar}
         style={{
-          backgroundColor: error ? defaultPalette.error : imagePalette.background,
+          backgroundColor: error ? theme.colors.error[500] : theme.colors.surface[700],
         }}
       >
         <Text
           style={{
-            color: error ? defaultPalette.primaryBackground : imagePalette.primary,
+            color: error ? theme.colors.background[100] : theme.colors.text[900],
           }}
         >
           {snackbarText}

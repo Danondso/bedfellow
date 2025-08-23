@@ -1,8 +1,22 @@
 import React from 'react';
 import ContentLoader, { Rect } from 'react-content-loader/native';
-import { View } from 'react-native';
-import theme from '../../../../theme';
-import styles from './Skeleton.styles';
+import { View, StyleSheet } from 'react-native';
+import { lightTheme } from '../../../../theme/themes';
+
+const styles = StyleSheet.create({
+  trackListWrapper: {
+    alignItems: 'center',
+    paddingHorizontal: lightTheme.spacing.md,
+  },
+  trackItem: {
+    width: '100%',
+    marginVertical: lightTheme.spacing.sm,
+  },
+  skeletonLoader: {
+    width: '100%',
+    height: 280,
+  },
+});
 
 function ListSkeleton() {
   return (
@@ -10,8 +24,8 @@ function ListSkeleton() {
       <View style={styles.trackItem} testID="tracklist_loading_skeleton">
         <ContentLoader
           speed={1}
-          backgroundColor={theme.defaultPalette.primaryBackground}
-          foregroundColor={theme.defaultPalette.primaryBackground100}
+          backgroundColor={lightTheme.colors.background[200]}
+          foregroundColor={lightTheme.colors.background[100]}
           style={styles.skeletonLoader}
         >
           {/* sample pic */}
