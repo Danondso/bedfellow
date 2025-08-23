@@ -72,11 +72,16 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
   }, [spotifyAuth]);
 
   useEffect(() => {
-    AsyncStorage.getItem('SPOTIFY_AUTH_DATA').then((spotifyAuthData: string | null | undefined) => {
-      if (spotifyAuthData) {
-        setSpotifyAuth(JSON.parse(spotifyAuthData));
-      }
-    });
+    AsyncStorage.getItem('SPOTIFY_AUTH_DATA')
+      .then((spotifyAuthData: string | null | undefined) => {
+        if (spotifyAuthData) {
+          setSpotifyAuth(JSON.parse(spotifyAuthData));
+        }
+      })
+      .catch((error) => {
+        // Error occurred: Failed to load Spotify auth data from storage
+        console.error('Failed to load Spotify auth data:', error);
+      });
   }, []);
 
   return <SpotifyAuthContext.Provider value={auth}>{children}</SpotifyAuthContext.Provider>;
