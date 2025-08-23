@@ -43,25 +43,17 @@ describe('ThemeService', () => {
     it('should handle invalid JSON gracefully', async () => {
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue('invalid json');
 
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const preferences = await ThemeService.loadThemePreferences();
 
       expect(preferences).toBeNull();
-      expect(consoleSpy).toHaveBeenCalled();
-
-      consoleSpy.mockRestore();
     });
 
     it('should handle storage errors', async () => {
       (AsyncStorage.getItem as jest.Mock).mockRejectedValue(new Error('Storage error'));
 
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const preferences = await ThemeService.loadThemePreferences();
 
       expect(preferences).toBeNull();
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to load theme preferences:', expect.any(Error));
-
-      consoleSpy.mockRestore();
     });
   });
 

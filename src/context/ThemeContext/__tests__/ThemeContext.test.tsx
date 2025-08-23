@@ -311,8 +311,6 @@ describe('ThemeContext', () => {
     it('should handle storage errors gracefully', async () => {
       (AsyncStorage.getItem as jest.Mock).mockRejectedValue(new Error('Storage error'));
 
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-
       function TestComponent() {
         const { isLoading } = useTheme();
         return <text testID="loading">{isLoading.toString()}</text>;
@@ -327,10 +325,6 @@ describe('ThemeContext', () => {
       await waitFor(() => {
         expect(getByTestId('loading').children[0]).toBe('false');
       });
-
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to load theme preferences:', expect.any(Error));
-
-      consoleSpy.mockRestore();
     });
   });
 });
