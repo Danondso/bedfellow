@@ -14,7 +14,7 @@ import ThemedText from './ThemedText';
 import { useComponentState, getButtonSizeStyles, getIconButtonSizeStyles, addAlpha, ComponentStates } from './shared';
 
 interface ThemedButtonProps extends Omit<TouchableOpacityProps, 'style'> {
-  variant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'outline' | 'danger' | 'success';
+  variant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'outline' | 'sage-outline' | 'danger' | 'success';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
   rounded?: boolean;
@@ -32,7 +32,6 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
   variant = 'primary',
   size = 'medium',
   fullWidth = false,
-  rounded = false,
   loading = false,
   disabled = false,
   icon,
@@ -55,8 +54,10 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
     handlers.onPressIn();
     if (ripple && !isDisabled) {
       Animated.spring(scaleAnim, {
-        toValue: 0.95,
+        toValue: 0.98, // More subtle scale for warm aesthetic
         useNativeDriver: true,
+        friction: 4, // Softer spring
+        tension: 350, // Gentler animation
       }).start();
     }
     onPressIn?.(event);
@@ -68,6 +69,8 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
       Animated.spring(scaleAnim, {
         toValue: 1,
         useNativeDriver: true,
+        friction: 4, // Match press in animation
+        tension: 350,
       }).start();
     }
     onPressOut?.(event);
@@ -132,7 +135,7 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
             backgroundColor: states.isPressed ? addAlpha(theme.colors.primary[500], 0.1) : 'transparent',
           },
           text: {
-            color: states.isDisabled ? theme.colors.text[400] : theme.colors.primary[500],
+            color: states.isDisabled ? theme.colors.text[500] : theme.colors.primary[500], // Darker disabled text
           },
         };
 
@@ -144,7 +147,19 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
             borderColor: states.isDisabled ? theme.colors.border[300] : theme.colors.primary[500],
           },
           text: {
-            color: states.isDisabled ? theme.colors.text[400] : theme.colors.primary[500],
+            color: states.isDisabled ? theme.colors.text[500] : theme.colors.primary[500], // Darker disabled text
+          },
+        };
+
+      case 'sage-outline':
+        return {
+          button: {
+            backgroundColor: states.isPressed ? addAlpha(theme.colors.secondary[500], 0.05) : 'transparent',
+            borderWidth: 1,
+            borderColor: states.isDisabled ? theme.colors.border[300] : theme.colors.secondary[500],
+          },
+          text: {
+            color: states.isDisabled ? theme.colors.text[500] : theme.colors.secondary[600], // Darker disabled text
           },
         };
 
@@ -190,7 +205,7 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: rounded ? 999 : theme.borderRadius.md,
+    borderRadius: theme.borderRadius.full, // Always use full border radius for warm aesthetic
     ...buttonSizeStyles,
     ...variantStyles.button,
     ...(fullWidth ? { width: '100%' } : {}),

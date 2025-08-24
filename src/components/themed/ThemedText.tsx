@@ -89,7 +89,7 @@ export const ThemedText: React.FC<ThemedTextProps> = ({
       case 'info':
         return theme.colors.info[shade];
       case 'muted':
-        return theme.colors.text[300];
+        return theme.colors.text[600]; // Darker slate for better readability
       case 'inverse':
         // For inverse text on primary colored backgrounds
         // Use white/light text since our primary colors (teal) are dark
@@ -237,7 +237,7 @@ export const ThemedCode: React.FC<ThemedTextProps> = (props) => {
             android: 'monospace',
             default: 'monospace',
           }),
-          backgroundColor: theme.colors.surface[300],
+          backgroundColor: theme.colors.surface[100], // Light sand for code blocks
           paddingHorizontal: theme.spacing.xs,
           paddingVertical: theme.spacing.xs / 2,
           borderRadius: theme.borderRadius.sm,

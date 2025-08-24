@@ -15,7 +15,7 @@ export const createStyles = (theme: Theme) =>
   StyleSheet.create<Style>({
     view: {
       flex: 1,
-      backgroundColor: theme.colors.background[500],
+      backgroundColor: theme.colors.background[50], // Light sand background
     },
     currentSongView: {
       position: 'relative',
@@ -25,7 +25,7 @@ export const createStyles = (theme: Theme) =>
       justifyContent: 'center',
       paddingTop: theme.spacing.xxl,
       paddingBottom: theme.spacing.md,
-      borderColor: theme.colors.surface[400],
+      borderColor: theme.colors.border[200], // Soft border for warm aesthetic
       borderWidth: 1,
       borderRadius: theme.borderRadius.lg,
       marginBottom: theme.spacing.md,

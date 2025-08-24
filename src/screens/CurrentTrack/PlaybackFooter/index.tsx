@@ -28,25 +28,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  buttonWrapper: {
-    flex: 1,
-    marginHorizontal: 8,
-  },
-  button: {
-    borderWidth: 2,
-    borderRadius: 8,
-  },
-});
-
 interface PlayerButtonProps {
   buttonName: string;
   onPress: () => void;
@@ -55,7 +36,7 @@ interface PlayerButtonProps {
 function PlayerButton({ buttonName, onPress }: PlayerButtonProps) {
   const { theme } = useTheme();
   const buttonThemeStyle: ViewStyle = {
-    backgroundColor: theme.colors.surface[700],
+    backgroundColor: theme.colors.surface[100], // Warm sand surface for buttons
     borderColor: theme.colors.primary[500],
   };
   return (

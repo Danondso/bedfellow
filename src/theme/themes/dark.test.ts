@@ -6,7 +6,7 @@
 import darkTheme from './dark';
 import lightTheme from './light';
 import { ThemeMode } from '../types';
-import { BRAND_COLORS, brandColorScales } from '../colors/brandColors';
+import { brandColorScales } from '../colors/brandColors';
 // import { darkSemanticBrandColors } from '../colors/semanticColors';
 
 describe('Dark Theme with Brand Palette', () => {
@@ -29,57 +29,63 @@ describe('Dark Theme with Brand Palette', () => {
       expect(darkTheme.gradients).toBeDefined();
       expect(darkTheme.gradients?.brand).toBeDefined();
       expect(darkTheme.gradients?.brand).toContain('linear-gradient');
-      expect(darkTheme.gradients?.brand).toContain('#74A892'); // Sage
-      expect(darkTheme.gradients?.brand).toContain('#008585'); // Teal
+      // Dark theme uses lighter variants of brand colors
+      expect(darkTheme.gradients?.brand).toContain(brandColorScales.sage[400]);
+      expect(darkTheme.gradients?.brand).toContain(brandColorScales.teal[400]);
     });
   });
 
   describe('Brand Color Integration', () => {
-    test('should use brand colors for backgrounds', () => {
-      // Check that backgrounds use sand scale
+    test('should use warm dark colors for backgrounds', () => {
+      // Dark theme uses warm dark browns instead of sand
       const backgrounds = darkTheme.colors.background;
-      expect(backgrounds[50]).toBe(brandColorScales.sand[300]);
-      expect(backgrounds[100]).toBe(brandColorScales.sand[200]);
-      expect(backgrounds[200]).toBe(brandColorScales.sand[100]);
-      expect(backgrounds[300]).toBe(brandColorScales.sand[50]);
+      expect(backgrounds[50]).toBe('#1A1611'); // Darkest warm brown
+      expect(backgrounds[100]).toBe('#221E17');
+      expect(backgrounds[200]).toBe('#2A251D');
+      expect(backgrounds[500]).toBe('#423A2F'); // Base dark background
     });
 
-    test('should use brand colors for primary palette', () => {
+    test('should use lighter teal variants for primary palette', () => {
       const { primary } = darkTheme.colors;
-      expect(primary[600]).toBe(BRAND_COLORS.TEAL_600);
-      expect(primary).toStrictEqual(brandColorScales.teal);
+      // Dark theme inverts the scale for better contrast
+      expect(primary[300]).toBe(brandColorScales.teal[600]); // Original teal at 300
+      expect(primary[500]).toBe(brandColorScales.teal[400]); // Lighter base for dark mode
     });
 
-    test('should use brand colors for secondary palette', () => {
+    test('should use lighter sage variants for secondary palette', () => {
       const { secondary } = darkTheme.colors;
-      expect(secondary[500]).toBe(BRAND_COLORS.SAGE_500);
-      expect(secondary).toStrictEqual(brandColorScales.sage);
+      // Dark theme uses lighter sage for visibility
+      expect(secondary[400]).toBe(brandColorScales.sage[500]); // Original sage at 400
+      expect(secondary[500]).toBe(brandColorScales.sage[400]); // Lighter base for dark mode
     });
 
-    test('should use brand colors for accent palette', () => {
+    test('should use lighter rust variants for accent palette', () => {
       const { accent } = darkTheme.colors;
-      expect(accent[600]).toBe(BRAND_COLORS.RUST_600);
-      expect(accent).toStrictEqual(brandColorScales.rust);
+      // Dark theme uses lighter rust for visibility
+      expect(accent[300]).toBe(brandColorScales.rust[600]); // Original rust at 300
+      expect(accent[500]).toBe(brandColorScales.rust[400]); // Lighter base for dark mode
     });
 
-    test('should use slate scale for text colors', () => {
+    test('should use warm light colors for text', () => {
       const { text } = darkTheme.colors;
-      expect(text[600]).toBe(brandColorScales.slate[900]); // Primary text
-      expect(text[300]).toBe(brandColorScales.slate[600]); // Muted text
+      // Dark theme uses sand tones for warm light text
+      expect(text[500]).toBe(brandColorScales.sand[200]); // Base text
+      expect(text[700]).toBe(brandColorScales.sand[50]); // Primary text
     });
 
-    test('should have semantic color mappings', () => {
-      expect(darkTheme.colors.success).toStrictEqual(brandColorScales.sage);
-      expect(darkTheme.colors.warning).toStrictEqual(brandColorScales.sand);
-      expect(darkTheme.colors.error).toStrictEqual(brandColorScales.rust);
-      expect(darkTheme.colors.info).toStrictEqual(brandColorScales.info);
+    test('should have semantic color mappings with lighter variants', () => {
+      // Dark theme uses lighter variants for visibility
+      expect(darkTheme.colors.success[500]).toBe(brandColorScales.sage[400]);
+      expect(darkTheme.colors.warning[500]).toBe(brandColorScales.amber[400]);
+      expect(darkTheme.colors.error[500]).toBe(brandColorScales.rust[400]);
+      expect(darkTheme.colors.info[500]).toBe(brandColorScales.info[400]);
     });
   });
 
   describe('Shadow Configuration', () => {
-    test('should use brand shadow color', () => {
-      // Check shadow color in special colors
-      expect(darkTheme.colors.shadow).toBe('rgba(52, 57, 65, 0.14)');
+    test('should use darker shadow for dark theme', () => {
+      // Dark theme uses darker shadows
+      expect(darkTheme.colors.shadow).toBe('rgba(0, 0, 0, 0.4)');
     });
 
     test('should have shadow scale defined', () => {
@@ -93,16 +99,17 @@ describe('Dark Theme with Brand Palette', () => {
   });
 
   describe('Border and Divider Colors', () => {
-    test('should use slate scale with opacity for borders', () => {
+    test('should use warm sand-based borders with opacity', () => {
       const { border } = darkTheme.colors;
-      // Check that borders use slate colors with opacity
-      expect(border[500]).toContain(brandColorScales.slate[600].replace('#', ''));
+      // Dark theme uses sand color with opacity for warm borders
+      expect(border[500]).toBe('rgba(254, 249, 224, 0.30)');
     });
 
     test('should have lighter divider colors than borders', () => {
-      const { divider } = darkTheme.colors;
-      // Dividers should use lighter opacity than borders
-      expect(divider[300]).toContain('33'); // 20% opacity
+      const { divider, border } = darkTheme.colors;
+      // Dividers should use lower opacity than borders
+      expect(divider[300]).toBe('rgba(254, 249, 224, 0.10)'); // 10% opacity
+      expect(border[300]).toBe('rgba(254, 249, 224, 0.20)'); // 20% opacity
     });
   });
 

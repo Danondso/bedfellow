@@ -18,12 +18,12 @@ export const createStyles = (theme: Theme) =>
       left: 0,
       right: 0,
       height: '15%',
-      backgroundColor: theme.colors.surface[600],
+      backgroundColor: theme.colors.surface[200], // Warm sand elevation
       ...theme.shadows.lg,
     },
     view: {
       flex: 1,
-      backgroundColor: theme.colors.background[500],
+      backgroundColor: theme.colors.background[50], // Light sand background
     },
     trackListWrapper: {
       alignItems: 'center',
@@ -48,7 +48,7 @@ export const createStyles = (theme: Theme) =>
       right: 20,
       zIndex: 100,
       padding: theme.spacing.sm,
-      backgroundColor: `${theme.colors.surface[800]}CC`, // More opaque background
+      backgroundColor: `${theme.colors.surface[100]}E6`, // Warm sand with opacity
       borderRadius: theme.borderRadius.full,
       borderWidth: 1,
       borderColor: theme.colors.border[400],

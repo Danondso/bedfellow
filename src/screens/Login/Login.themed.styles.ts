@@ -3,7 +3,6 @@ import { Theme } from '../../theme/types';
 
 type Style = {
   view: ViewStyle;
-  loginButtonText: TextStyle;
   header: TextStyle;
   subHeader: TextStyle;
   loginView: ViewStyle;
@@ -17,29 +16,31 @@ export const createStyles = (theme: Theme) =>
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme.colors.background[500],
+      // Use warm sand background for welcoming feel
+      backgroundColor: theme.colors.background[100],
     },
     header: {
       paddingTop: theme.spacing.xl,
-      fontSize: 48,
+      fontSize: 56, // Larger for impact
       fontWeight: 'bold',
-      color: theme.colors.text[900],
+      color: theme.colors.primary[600], // Teal for brand
+      // Serif font will be applied via ThemedText
     },
     subHeader: {
-      fontSize: theme.typography.base,
-      color: theme.colors.text[700],
+      fontSize: theme.typography.lg,
+      color: theme.colors.text[600], // Softer muted text
       textAlign: 'center',
-      marginTop: theme.spacing.xs,
+      marginTop: theme.spacing.sm,
+      fontStyle: 'italic', // Playful touch
     },
     loginView: {
       alignItems: 'center',
-      width: '80%',
-      paddingBottom: 200,
-      backgroundColor: theme.colors.surface[500],
-      borderColor: theme.colors.surface[600],
-      borderWidth: 1,
-      borderRadius: theme.borderRadius.lg,
-      ...theme.shadows.lg,
+      width: '85%',
+      paddingBottom: 120,
+      paddingTop: theme.spacing.xxl,
+      backgroundColor: theme.colors.surface[50], // Lighter surface
+      borderRadius: theme.borderRadius['3xl'], // Softer, rounder corners
+      ...theme.shadows.sm, // Subtle shadow
     },
     loginButtonView: {
       backgroundColor: theme.colors.primary[500],
@@ -48,11 +49,6 @@ export const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.md,
       marginTop: theme.spacing.lg,
       overflow: 'hidden',
-    },
-    loginButtonText: {
-      fontSize: theme.typography.base,
-      fontWeight: '600',
-      color: theme.colors.text[100],
     },
     button: {
       borderRadius: theme.borderRadius.md,

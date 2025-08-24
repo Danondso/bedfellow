@@ -99,18 +99,18 @@ export const commonCardVariants = {
 
 export const commonViewVariants = {
   default: (theme: Theme): ViewStyle => ({
-    backgroundColor: theme.colors.background[500],
+    backgroundColor: theme.colors.background[50], // Light sand base background
   }),
   surface: (theme: Theme): ViewStyle => ({
-    backgroundColor: theme.colors.surface[500],
+    backgroundColor: theme.colors.surface[100], // Light sand surface
   }),
   card: (theme: Theme): ViewStyle => ({
-    backgroundColor: theme.colors.surface[400],
+    backgroundColor: theme.colors.surface[100], // Light sand card surface
     borderRadius: theme.borderRadius.lg,
     ...theme.shadows.base,
   }),
   modal: (theme: Theme): ViewStyle => ({
-    backgroundColor: theme.colors.surface[300],
+    backgroundColor: theme.colors.surface[50], // Very light sand for modals
     borderRadius: theme.borderRadius.xl,
     ...theme.shadows.xl,
   }),

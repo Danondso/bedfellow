@@ -56,9 +56,22 @@ function LoginScreen({ navigation }: LoginScreenProps) {
     <ThemeTransition type="scale" duration={400}>
       <ThemedView style={styles.view}>
         <ThemedView style={styles.loginView}>
-          <ThemedText style={styles.header}>Bedfellow</ThemedText>
-          <ThemedText style={styles.subHeader}>a smol bean app</ThemedText>
-          <ThemedButton variant="primary" size="large" onPress={authenticate} style={{ marginTop: theme.spacing.xl }}>
+          <ThemedText variant="h1" style={styles.header}>
+            Bedfellow
+          </ThemedText>
+          <ThemedText variant="body" style={styles.subHeader}>
+            Discover the stories behind the music
+          </ThemedText>
+          <ThemedButton
+            variant="primary"
+            size="large"
+            fullWidth
+            onPress={authenticate}
+            style={{
+              marginTop: theme.spacing.xxl,
+              marginHorizontal: theme.spacing.xl,
+            }}
+          >
             Login with Spotify
           </ThemedButton>
         </ThemedView>

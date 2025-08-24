@@ -115,7 +115,7 @@ const SettingsScreen: React.FC = () => {
                   </ThemedText>
                 </View>
                 <ThemedButton
-                  variant={isDynamicEnabled ? 'primary' : 'outline'}
+                  variant={isDynamicEnabled ? 'primary' : 'secondary'}
                   size="small"
                   onPress={toggleDynamicTheme}
                 >
@@ -150,16 +150,21 @@ const SettingsScreen: React.FC = () => {
 
               {/* Theme Actions */}
               <View style={styles.actionButtons}>
-                <ThemedButton variant="outline" size="medium" onPress={handleValidateTheme} style={styles.actionButton}>
+                <ThemedButton
+                  variant="secondary"
+                  size="medium"
+                  onPress={handleValidateTheme}
+                  style={styles.actionButton}
+                >
                   Check Accessibility
                 </ThemedButton>
 
-                <ThemedButton variant="outline" size="medium" onPress={handleClearCache} style={styles.actionButton}>
+                <ThemedButton variant="secondary" size="medium" onPress={handleClearCache} style={styles.actionButton}>
                   Clear Color Cache
                 </ThemedButton>
 
                 <ThemedButton
-                  variant="outline"
+                  variant="danger"
                   size="medium"
                   onPress={handleResetTheme}
                   style={{ ...styles.actionButton, ...styles.resetButton }}

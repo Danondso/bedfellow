@@ -3,7 +3,12 @@
     "allow": [
       "Bash(yarn lint:*)",
       "Bash(pod install:*)",
-      "Bash(yarn install)"
+      "Bash(yarn install)",
+      "Bash(find:*)",
+      "Bash(yarn tsc:*)",
+      "Bash(yarn test:*)",
+      "Bash(npx eslint:*)",
+      "Bash(yarn ios-dev:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,25 +1,25 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
-  "moduleResolution": "NodeNext",
   "compilerOptions": {
-    "baseUrl": "./src/",
+    "baseUrl": ".",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     "jsx": "react-native",
     "lib": ["es2017"],
+    "moduleResolution": "bundler",
     "noEmit": true,
     "strict": true,
     "target": "esnext",
     "types": ["node", "jest", "spotify-api"],
     "paths": {
-      "@screens/*": ["screens/*"],
-      "@services/*": ["services/*"],
-      "@components/*": ["components/*"],
-      "@context/*": ["context/*"],
-      "@theme/*": ["theme/*"],
-      "@types/*": ["types/*"]
+      "@screens/*": ["src/screens/*"],
+      "@services/*": ["src/services/*"],
+      "@components/*": ["src/components/*"],
+      "@context/*": ["src/context/*"],
+      "@theme/*": ["src/theme/*"],
+      "@types/*": ["src/types/*"]
     }
   },
   "include": ["**/*.js", "**/*.ts", "**/*.tsx", "**/*.jsx"],

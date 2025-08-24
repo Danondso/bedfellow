@@ -22,13 +22,14 @@ export const BRAND_COLORS = {
 
   // Accent colors
   RUST_600: '#C7522A', // Accent/Danger - error states, critical actions
+  AMBER_500: '#D97706', // Warm amber for warnings
 
   // Text colors
   SLATE_900: '#343941', // Primary text color
   SLATE_600: '#535A63', // Muted text color
 
   // Info and special colors
-  INFO_600: '#64748B', // Info states and messages
+  INFO_600: '#5E7A7D', // Warm teal-gray for info states
   OBSIDIAN: '#000000', // Pure black for special uses
 } as const;
 
@@ -43,6 +44,7 @@ export const brandColors = {
   teal600: BRAND_COLORS.TEAL_600,
   sage500: BRAND_COLORS.SAGE_500,
   rust600: BRAND_COLORS.RUST_600,
+  amber500: BRAND_COLORS.AMBER_500,
   slate900: BRAND_COLORS.SLATE_900,
   slate600: BRAND_COLORS.SLATE_600,
   info600: BRAND_COLORS.INFO_600,
@@ -69,7 +71,7 @@ export const SEMANTIC_BRAND_COLORS = {
   secondary: BRAND_COLORS.SAGE_500,
   accent: BRAND_COLORS.RUST_600,
   success: BRAND_COLORS.SAGE_500,
-  warning: BRAND_COLORS.SAND_300,
+  warning: BRAND_COLORS.AMBER_500, // Warm amber for better visibility
   info: BRAND_COLORS.INFO_600,
   danger: BRAND_COLORS.RUST_600,
 
@@ -202,12 +204,21 @@ export const slateScale: ColorScale = generateColorScale(BRAND_COLORS.SLATE_600,
 });
 
 /**
+ * Amber color scale
+ * Warm warning color for better visibility
+ * Base value: 500 (#D97706)
+ */
+export const amberScale: ColorScale = generateColorScale(BRAND_COLORS.AMBER_500, {
+  500: BRAND_COLORS.AMBER_500, // #D97706 - Warm amber for warnings
+});
+
+/**
  * Info color scale
- * Informational states and messages
- * Base value: 600 (#64748B)
+ * Warm teal-gray for informational states
+ * Base value: 600 (#5E7A7D)
  */
 export const infoScale: ColorScale = generateColorScale(BRAND_COLORS.INFO_600, {
-  600: BRAND_COLORS.INFO_600, // #64748B - Info states
+  600: BRAND_COLORS.INFO_600, // #5E7A7D - Warm teal-gray info
 });
 
 // Export all scales for easy access
@@ -216,6 +227,7 @@ export const brandColorScales = {
   teal: tealScale,
   sage: sageScale,
   rust: rustScale,
+  amber: amberScale,
   slate: slateScale,
   info: infoScale,
 } as const;

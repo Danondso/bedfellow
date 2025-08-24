@@ -88,7 +88,7 @@ function SampleList({ isLoading, showSkeleton, trackSamples, HeaderComponent, on
         }}
         wrapperStyle={styles.snackBar}
         style={{
-          backgroundColor: error ? theme.colors.error[500] : theme.colors.surface[700],
+          backgroundColor: error ? theme.colors.error[500] : theme.colors.surface[100], // Warm sand surface
         }}
       >
         <Text
