@@ -1,7 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 
 export * as BedfellowTypes from './bedfellow-api';
-export * as WhoSampledTypes from './whosampled';
 
 // TODO re-arrange these later get the rn nac stack stuff out this should just be datatypes
 export type RootStackParamList = {
@@ -13,5 +12,3 @@ export type RootStackParamList = {
 export type LoginScreenProps = StackScreenProps<RootStackParamList, 'Login'>;
 
 export type DetailsScreenProps = StackScreenProps<RootStackParamList, 'Details'>;
-
-export type SettingsScreenProps = StackScreenProps<RootStackParamList, 'Settings'>;

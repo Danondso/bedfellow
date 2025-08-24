@@ -1,23 +1,5 @@
-import { ColorScale } from '../types';
-
 // Import brand colors and scales
 import { brandColorScales, BRAND_COLORS, SHADOW_COLORS } from './brandColors';
-
-// Helper function to create a color scale
-export const createColorScale = (baseColor: string, variations: Partial<ColorScale> = {}): ColorScale => {
-  return {
-    50: variations[50] || baseColor,
-    100: variations[100] || baseColor,
-    200: variations[200] || baseColor,
-    300: variations[300] || baseColor,
-    400: variations[400] || baseColor,
-    500: variations[500] || baseColor, // Base
-    600: variations[600] || baseColor,
-    700: variations[700] || baseColor,
-    800: variations[800] || baseColor,
-    900: variations[900] || baseColor,
-  };
-};
 
 // Semantic color definitions for light theme
 export const lightSemanticColors = {

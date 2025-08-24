@@ -3,6 +3,34 @@ import { Platform, Text, TextStyle, View, ViewStyle, StyleSheet } from 'react-na
 import { Card } from 'react-native-paper';
 import { useTheme } from '../../../../context/ThemeContext';
 import { BedfellowSample } from '../../../../types/bedfellow-api';
+import { spacingScale } from '../../../../theme/scales';
+
+const styles = StyleSheet.create({
+  trackListWrapper: {
+    width: '90%',
+    marginVertical: 8,
+  },
+  trackItem: {
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  trackImage: {
+    width: '100%',
+    height: 200,
+  },
+  trackDetails: {
+    padding: spacingScale.sm + spacingScale.xs, // 12 = 8 + 4
+  },
+  trackText: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  artistText: {
+    fontSize: 14,
+    opacity: 0.8,
+  },
+});
 
 const styles = StyleSheet.create({
   trackListWrapper: {

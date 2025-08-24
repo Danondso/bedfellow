@@ -2,6 +2,16 @@ import ImageColors from 'react-native-image-colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DynamicPalette } from '../../theme/types';
 import { BRAND_COLORS } from '../../theme/colors/brandColors';
+import {
+  hexToRgb,
+  rgbToHex,
+  rgbToHsl,
+  hslToRgb,
+  mixColors as mixColorsUtil,
+  lighten,
+  darken,
+  adjustSaturation,
+} from '../../theme/utils/colorGenerator';
 
 // Cache configuration
 const PALETTE_CACHE_KEY = '@bedfellow_palette_cache';
@@ -47,94 +57,28 @@ interface PaletteCacheEntry {
   options: ColorExtractionOptions;
 }
 
-// Color utilities
+// Color utilities - delegates to shared color utilities
 class ColorUtils {
   // Convert hex to RGB
   static hexToRgb(hex: string): { r: number; g: number; b: number } {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16),
-        }
-      : { r: 0, g: 0, b: 0 };
+    return hexToRgb(hex);
   }
 
   // Convert RGB to hex
   static rgbToHex(r: number, g: number, b: number): string {
-    const cr = Math.max(0, Math.min(255, r));
-    const cg = Math.max(0, Math.min(255, g));
-    const cb = Math.max(0, Math.min(255, b));
-    return `#${((1 << 24) + (cr << 16) + (cg << 8) + cb).toString(16).slice(1)}`;
+    return rgbToHex(r, g, b);
   }
 
   // Convert hex to HSL
   static hexToHsl(hex: string): { h: number; s: number; l: number } {
-    const { r, g, b } = this.hexToRgb(hex);
-    const rNorm = r / 255;
-    const gNorm = g / 255;
-    const bNorm = b / 255;
-
-    const max = Math.max(rNorm, gNorm, bNorm);
-    const min = Math.min(rNorm, gNorm, bNorm);
-    let h = 0;
-    let s = 0;
-    const l = (max + min) / 2;
-
-    if (max !== min) {
-      const d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-
-      switch (max) {
-        case rNorm:
-          h = ((gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0)) / 6;
-          break;
-        case gNorm:
-          h = ((bNorm - rNorm) / d + 2) / 6;
-          break;
-        case bNorm:
-          h = ((rNorm - gNorm) / d + 4) / 6;
-          break;
-      }
-    }
-
-    return {
-      h: Math.round(h * 360),
-      s: Math.round(s * 100),
-      l: Math.round(l * 100),
-    };
+    const { r, g, b } = hexToRgb(hex);
+    return rgbToHsl(r, g, b);
   }
 
   // Convert HSL to hex
   static hslToHex(h: number, s: number, l: number): string {
-    const hNorm = h / 360;
-    const sNorm = s / 100;
-    const lNorm = l / 100;
-
-    let r, g, b;
-
-    if (sNorm === 0) {
-      r = g = b = lNorm;
-    } else {
-      const hue2rgb = (p: number, q: number, t: number) => {
-        let tNorm = t;
-        if (tNorm < 0) tNorm += 1;
-        if (tNorm > 1) tNorm -= 1;
-        if (tNorm < 1 / 6) return p + (q - p) * 6 * tNorm;
-        if (tNorm < 1 / 2) return q;
-        if (tNorm < 2 / 3) return p + (q - p) * (2 / 3 - tNorm) * 6;
-        return p;
-      };
-
-      const q = lNorm < 0.5 ? lNorm * (1 + sNorm) : lNorm + sNorm - lNorm * sNorm;
-      const p = 2 * lNorm - q;
-      r = hue2rgb(p, q, hNorm + 1 / 3);
-      g = hue2rgb(p, q, hNorm);
-      b = hue2rgb(p, q, hNorm - 1 / 3);
-    }
-
-    return this.rgbToHex(Math.round(r * 255), Math.round(g * 255), Math.round(b * 255));
+    const { r, g, b } = hslToRgb(h, s, l);
+    return rgbToHex(r, g, b);
   }
 
   // Calculate relative luminance
@@ -158,28 +102,21 @@ class ColorUtils {
 
   // Adjust color saturation
   static adjustSaturation(hex: string, amount: number): string {
-    const hsl = this.hexToHsl(hex);
-    hsl.s = Math.max(0, Math.min(100, hsl.s + amount));
-    return this.hslToHex(hsl.h, hsl.s, hsl.l);
+    return adjustSaturation(hex, amount);
   }
 
   // Adjust color lightness
   static adjustLightness(hex: string, amount: number): string {
-    const hsl = this.hexToHsl(hex);
-    hsl.l = Math.max(0, Math.min(100, hsl.l + amount));
-    return this.hslToHex(hsl.h, hsl.s, hsl.l);
+    if (amount > 0) {
+      return lighten(hex, amount);
+    } else {
+      return darken(hex, Math.abs(amount));
+    }
   }
 
   // Mix two colors
   static mixColors(hex1: string, hex2: string, ratio: number = 0.5): string {
-    const rgb1 = this.hexToRgb(hex1);
-    const rgb2 = this.hexToRgb(hex2);
-
-    const r = Math.round(rgb1.r * (1 - ratio) + rgb2.r * ratio);
-    const g = Math.round(rgb1.g * (1 - ratio) + rgb2.g * ratio);
-    const b = Math.round(rgb1.b * (1 - ratio) + rgb2.b * ratio);
-
-    return this.rgbToHex(r, g, b);
+    return mixColorsUtil(hex1, hex2, ratio);
   }
 }
 

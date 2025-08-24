@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Switch, ViewStyle } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeMode, Theme } from '../../theme/types';
+import { spacingScale } from '../../theme/scales';
 import ThemedText from './ThemedText';
 import ThemedView from './ThemedView';
 
@@ -281,22 +282,22 @@ export const FloatingThemeSwitcher: React.FC<{
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
-    gap: 12,
+    gap: spacingScale.sm + spacingScale.xs, // 12 = 8 + 4
   },
   themeButton: {
-    padding: 12,
-    borderRadius: 12,
+    padding: spacingScale.sm + spacingScale.xs, // 12 = 8 + 4
+    borderRadius: spacingScale.sm + spacingScale.xs, // 12
     alignItems: 'center',
     minWidth: 70,
   },
   segmentedContainer: {
     flexDirection: 'row',
-    padding: 4,
+    padding: spacingScale.xs, // 4
   },
   segmentedButton: {
     flex: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 8,
+    paddingVertical: spacingScale.sm, // 8
+    paddingHorizontal: spacingScale.sm, // 8
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -304,10 +305,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    marginBottom: 4,
+    paddingVertical: spacingScale.sm + spacingScale.xs, // 12 = 8 + 4
+    paddingHorizontal: spacingScale.md, // 16
+    borderRadius: spacingScale.sm, // 8
+    marginBottom: spacingScale.xs, // 4
   },
   listItemContent: {
     flexDirection: 'row',

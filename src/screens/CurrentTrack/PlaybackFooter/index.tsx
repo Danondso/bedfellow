@@ -7,6 +7,26 @@ import useSpotifyAPI from '../../../hooks/spotify/useSpotifyAPI';
 import { useTheme } from '../../../context/ThemeContext';
 import { performPlaybackAction } from '../../../services/spotify/SpotifyAPI.service';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../../context/SpotifyAuthContext';
+import { spacingScale } from '../../../theme/scales';
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    paddingHorizontal: spacingScale.md + spacingScale.xs, // 20 = 16 + 4
+  },
+  buttonWrapper: {
+    flex: 1,
+    marginHorizontal: spacingScale.sm, // 8
+  },
+  button: {
+    borderWidth: 2,
+    borderRadius: spacingScale.sm, // 8
+  },
+});
 
 const styles = StyleSheet.create({
   container: {
