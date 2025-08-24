@@ -42,12 +42,12 @@ export const createStyles = (theme: Theme) =>
       flex: 1,
     },
     scrollContent: {
-      paddingBottom: 20,
+      paddingBottom: theme.spacing.md + theme.spacing.xs, // 20 = 16 + 4
     },
     header: {
-      paddingHorizontal: 20,
-      paddingTop: 10,
-      paddingBottom: 10,
+      paddingHorizontal: theme.spacing.md + theme.spacing.xs, // 20 = 16 + 4
+      paddingTop: theme.spacing.sm + 2, // 10 = 8 + 2
+      paddingBottom: theme.spacing.sm + 2, // 10
     },
     backButtonContainer: {
       marginBottom: 10,
@@ -67,8 +67,8 @@ export const createStyles = (theme: Theme) =>
       color: theme.colors.text[600],
     },
     section: {
-      paddingHorizontal: 20,
-      paddingVertical: 15,
+      paddingHorizontal: theme.spacing.md + theme.spacing.xs, // 20 = 16 + 4
+      paddingVertical: theme.spacing.md - 1, // 15
     },
     sectionTitle: {
       fontSize: 20,
@@ -77,9 +77,9 @@ export const createStyles = (theme: Theme) =>
       color: theme.colors.text[800],
     },
     themePreview: {
-      padding: 15,
-      borderRadius: 12,
-      marginBottom: 20,
+      padding: theme.spacing.md - 1, // 15
+      borderRadius: theme.borderRadius.lg + theme.borderRadius.base, // 12 = 8 + 4
+      marginBottom: theme.spacing.md + theme.spacing.xs, // 20 = 16 + 4
       backgroundColor: theme.colors.surface[100],
       borderWidth: 1,
       borderColor: theme.colors.border[200],
@@ -140,8 +140,8 @@ export const createStyles = (theme: Theme) =>
       paddingVertical: 8,
     },
     footer: {
-      paddingHorizontal: 20,
-      paddingTop: 20,
+      paddingHorizontal: theme.spacing.md + theme.spacing.xs, // 20 = 16 + 4
+      paddingTop: theme.spacing.md + theme.spacing.xs, // 20
     },
     backButton: {
       width: '100%',

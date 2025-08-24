@@ -3,11 +3,16 @@ import { View, ViewProps, ViewStyle, StyleSheet } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import { Theme } from '../../theme/types';
 import { themedStyles } from '../../theme/utils';
+import { applySpacing, SpacingValue, commonViewVariants } from './shared';
 
 interface ThemedViewProps extends ViewProps {
   variant?: 'default' | 'surface' | 'card' | 'modal' | 'transparent';
-  padding?: keyof Theme['spacing'] | 'none';
-  margin?: keyof Theme['spacing'] | 'none';
+  padding?: SpacingValue;
+  paddingHorizontal?: SpacingValue;
+  paddingVertical?: SpacingValue;
+  margin?: SpacingValue;
+  marginHorizontal?: SpacingValue;
+  marginVertical?: SpacingValue;
   rounded?: keyof Theme['borderRadius'] | 'none';
   shadow?: keyof Theme['shadows'] | 'none';
   flex?: number;
@@ -21,7 +26,11 @@ interface ThemedViewProps extends ViewProps {
 export const ThemedView: React.FC<ThemedViewProps> = ({
   variant = 'default',
   padding,
+  paddingHorizontal,
+  paddingVertical,
   margin,
+  marginHorizontal,
+  marginVertical,
   rounded,
   shadow,
   flex,
@@ -36,40 +45,22 @@ export const ThemedView: React.FC<ThemedViewProps> = ({
 }) => {
   const { theme } = useTheme();
 
-  const getVariantStyle = (): ViewStyle => {
-    switch (variant) {
-      case 'surface':
-        return {
-          backgroundColor: theme.colors.surface[500],
-        };
-      case 'card':
-        return {
-          backgroundColor: theme.colors.surface[400],
-          borderRadius: theme.borderRadius.lg,
-          ...theme.shadows.base,
-        };
-      case 'modal':
-        return {
-          backgroundColor: theme.colors.surface[300],
-          borderRadius: theme.borderRadius.xl,
-          ...theme.shadows.xl,
-        };
-      case 'transparent':
-        return {
-          backgroundColor: 'transparent',
-        };
-      case 'default':
-      default:
-        return {
-          backgroundColor: theme.colors.background[500],
-        };
-    }
-  };
+  // Use shared variant styles
+  const variantStyle = commonViewVariants[variant](theme);
+
+  // Use shared spacing utility
+  const spacingStyles = applySpacing(theme, {
+    padding,
+    paddingHorizontal,
+    paddingVertical,
+    margin,
+    marginHorizontal,
+    marginVertical,
+  });
 
   const computedStyle: ViewStyle = {
-    ...getVariantStyle(),
-    ...(padding && padding !== 'none' ? { padding: theme.spacing[padding] } : {}),
-    ...(margin && margin !== 'none' ? { margin: theme.spacing[margin] } : {}),
+    ...variantStyle,
+    ...spacingStyles,
     ...(rounded && rounded !== 'none' ? { borderRadius: theme.borderRadius[rounded] } : {}),
     ...(shadow && shadow !== 'none' ? theme.shadows[shadow] : {}),
     ...(flex !== undefined ? { flex } : {}),

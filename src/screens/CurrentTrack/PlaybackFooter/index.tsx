@@ -7,6 +7,7 @@ import useSpotifyAPI from '../../../hooks/spotify/useSpotifyAPI';
 import { useTheme } from '../../../context/ThemeContext';
 import { performPlaybackAction } from '../../../services/spotify/SpotifyAPI.service';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../../context/SpotifyAuthContext';
+import { spacingScale } from '../../../theme/scales';
 
 const styles = StyleSheet.create({
   container: {
@@ -15,15 +16,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: spacingScale.md + spacingScale.xs, // 20 = 16 + 4
   },
   buttonWrapper: {
     flex: 1,
-    marginHorizontal: 8,
+    marginHorizontal: spacingScale.sm, // 8
   },
   button: {
     borderWidth: 2,
-    borderRadius: 8,
+    borderRadius: spacingScale.sm, // 8
   },
 });
 

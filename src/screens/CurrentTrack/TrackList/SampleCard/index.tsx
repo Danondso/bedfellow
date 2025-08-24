@@ -3,6 +3,7 @@ import { Platform, Text, TextStyle, View, ViewStyle, StyleSheet } from 'react-na
 import { Card } from 'react-native-paper';
 import { useTheme } from '../../../../context/ThemeContext';
 import { BedfellowSample } from '../../../../types/bedfellow-api';
+import { spacingScale } from '../../../../theme/scales';
 
 const styles = StyleSheet.create({
   trackListWrapper: {
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   trackDetails: {
-    padding: 12,
+    padding: spacingScale.sm + spacingScale.xs, // 12 = 8 + 4
   },
   trackText: {
     fontSize: 18,
