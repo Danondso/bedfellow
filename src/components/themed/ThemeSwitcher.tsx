@@ -69,7 +69,7 @@ const ButtonSwitcher: React.FC<{
           style={[
             styles.themeButton,
             {
-              backgroundColor: themeMode === mode.value ? theme.colors.primary[500] : theme.colors.surface[400],
+              backgroundColor: themeMode === mode.value ? theme.colors.primary[500] : theme.colors.surface[100], // Light sand for inactive
             },
           ]}
           onPress={() => handleThemeChange(mode.value)}
@@ -107,7 +107,7 @@ const SegmentedSwitcher: React.FC<{
       style={[
         styles.segmentedContainer,
         {
-          backgroundColor: theme.colors.surface[300],
+          backgroundColor: theme.colors.surface[100], // Light sand background
           borderRadius: theme.borderRadius.lg,
         },
         style,
@@ -159,7 +159,7 @@ const ListSwitcher: React.FC<{
           style={[
             styles.listItem,
             {
-              backgroundColor: themeMode === mode.value ? theme.colors.surface[400] : 'transparent',
+              backgroundColor: themeMode === mode.value ? theme.colors.surface[200] : 'transparent', // Medium sand for active
             },
           ]}
           onPress={() => handleThemeChange(mode.value)}
@@ -216,7 +216,7 @@ export const DarkModeToggle: React.FC<{
       style={[
         styles.darkModeToggle,
         {
-          backgroundColor: theme.colors.surface[400],
+          backgroundColor: theme.colors.surface[100], // Light sand background
         },
         style,
       ]}
@@ -255,7 +255,7 @@ export const FloatingThemeSwitcher: React.FC<{
           style={[
             styles.floatingMenu,
             {
-              backgroundColor: theme.colors.surface[500],
+              backgroundColor: theme.colors.surface[200], // Medium sand for selected
               ...theme.shadows.lg,
             },
           ]}

@@ -20,7 +20,7 @@ export const ThemedCard: React.FC<ThemedCardProps> = ({
   variant = 'elevated',
   padding = 'md',
   margin,
-  rounded = 'lg',
+  rounded = '2xl', // Default to 16px for warm, soft aesthetic
   onPress,
   disabled = false,
   children,
@@ -32,18 +32,18 @@ export const ThemedCard: React.FC<ThemedCardProps> = ({
     switch (variant) {
       case 'elevated':
         return {
-          backgroundColor: theme.colors.surface[400],
-          ...theme.shadows.base,
+          backgroundColor: theme.colors.surface[100], // Light sand for elevated cards
+          ...theme.shadows.sm, // Use subtle shadow for warm aesthetic
         };
       case 'outlined':
         return {
-          backgroundColor: theme.colors.surface[300],
+          backgroundColor: theme.colors.surface[50], // Very light sand for outlined
           borderWidth: 1,
           borderColor: theme.colors.border[400],
         };
       case 'filled':
         return {
-          backgroundColor: theme.colors.surface[500],
+          backgroundColor: theme.colors.surface[200], // Medium sand for filled
         };
       default:
         return {};

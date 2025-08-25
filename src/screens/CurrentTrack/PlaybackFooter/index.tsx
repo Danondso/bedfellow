@@ -16,34 +16,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    paddingHorizontal: spacingScale.md + spacingScale.xs, // 20 = 16 + 4
+    paddingHorizontal: spacingScale.xl, // More generous horizontal padding
+    paddingVertical: spacingScale.lg, // Add vertical padding for breathing room
   },
   buttonWrapper: {
     flex: 1,
-    marginHorizontal: spacingScale.sm, // 8
+    marginHorizontal: spacingScale.md, // More space between buttons
+    maxWidth: 80, // Limit button size for better proportions
   },
   button: {
-    borderWidth: 2,
-    borderRadius: spacingScale.sm, // 8
-  },
-});
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  buttonWrapper: {
-    flex: 1,
-    marginHorizontal: 8,
-  },
-  button: {
-    borderWidth: 2,
-    borderRadius: 8,
+    borderWidth: 1.5,
+    borderRadius: spacingScale.lg + spacingScale.xs, // 28 = 24 + 4
+    paddingVertical: spacingScale.xs, // Add some internal padding
   },
 });
 
@@ -55,7 +39,7 @@ interface PlayerButtonProps {
 function PlayerButton({ buttonName, onPress }: PlayerButtonProps) {
   const { theme } = useTheme();
   const buttonThemeStyle: ViewStyle = {
-    backgroundColor: theme.colors.surface[700],
+    backgroundColor: theme.colors.surface[100], // Warm sand surface for buttons
     borderColor: theme.colors.primary[500],
   };
   return (

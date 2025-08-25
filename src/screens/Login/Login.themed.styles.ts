@@ -3,7 +3,6 @@ import { Theme } from '../../theme/types';
 
 type Style = {
   view: ViewStyle;
-  loginButtonText: TextStyle;
   header: TextStyle;
   subHeader: TextStyle;
   loginView: ViewStyle;
@@ -17,29 +16,37 @@ export const createStyles = (theme: Theme) =>
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme.colors.background[500],
+      // Use warm sand background for welcoming feel
+      backgroundColor: theme.colors.background[100],
     },
     header: {
-      paddingTop: theme.spacing.xl,
-      fontSize: 48,
+      paddingTop: theme.spacing.xxl, // More generous top padding
+      paddingBottom: theme.spacing.lg,
+      fontSize: theme.spacing.xxl, // 64px - using xxxl spacing as font size
       fontWeight: 'bold',
-      color: theme.colors.text[900],
+      color: theme.colors.primary[600], // Teal for brand
+      letterSpacing: -1, // Tighter letter spacing for impact
+      // Serif font will be applied via ThemedText
     },
     subHeader: {
-      fontSize: theme.typography.base,
-      color: theme.colors.text[700],
+      fontSize: theme.typography.lg,
+      color: theme.colors.text[600], // Softer muted text
       textAlign: 'center',
-      marginTop: theme.spacing.xs,
+      marginTop: theme.spacing.md, // More space after header
+      marginBottom: theme.spacing.xl, // Space before button
+      paddingHorizontal: theme.spacing.xl,
+      lineHeight: theme.typography.lg * 1.6, // More generous line height
+      fontStyle: 'italic', // Playful touch
     },
     loginView: {
       alignItems: 'center',
-      width: '80%',
-      paddingBottom: 200,
-      backgroundColor: theme.colors.surface[500],
-      borderColor: theme.colors.surface[600],
-      borderWidth: 1,
-      borderRadius: theme.borderRadius.lg,
-      ...theme.shadows.lg,
+      width: '80%', // Slightly narrower for more breathing room
+      paddingBottom: theme.spacing.xxxl * 2, // Very generous bottom padding
+      paddingTop: theme.spacing.xxxl, // Very generous top padding
+      paddingHorizontal: theme.spacing.xl,
+      backgroundColor: theme.colors.surface[50], // Lighter surface
+      borderRadius: theme.borderRadius['3xl'], // Softer, rounder corners
+      ...theme.shadows.sm, // Subtle shadow
     },
     loginButtonView: {
       backgroundColor: theme.colors.primary[500],
@@ -49,15 +56,10 @@ export const createStyles = (theme: Theme) =>
       marginTop: theme.spacing.lg,
       overflow: 'hidden',
     },
-    loginButtonText: {
-      fontSize: theme.typography.base,
-      fontWeight: '600',
-      color: theme.colors.text[100],
-    },
     button: {
-      borderRadius: theme.borderRadius.md,
-      padding: theme.spacing.md,
-      paddingHorizontal: theme.spacing.xl,
+      borderRadius: theme.borderRadius.xl, // More rounded button
+      paddingVertical: theme.spacing.lg, // More generous vertical padding
+      paddingHorizontal: theme.spacing.xxl, // More generous horizontal padding
       alignItems: 'center',
       justifyContent: 'center',
     },

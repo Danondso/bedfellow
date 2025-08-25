@@ -1,4 +1,5 @@
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+const path = require('path');
 
 /**
  * Metro configuration
@@ -32,6 +33,13 @@ const config = {
       net: require.resolve('react-native-tcp'),
       dns: require.resolve('react-native-tcp'),
       fs: require.resolve('react-native-fs'),
+      // Add path aliases
+      '@theme': path.resolve(__dirname, 'src/theme'),
+      '@context': path.resolve(__dirname, 'src/context'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@screens': path.resolve(__dirname, 'src/screens'),
+      '@services': path.resolve(__dirname, 'src/services'),
+      '@types': path.resolve(__dirname, 'src/types'),
     },
   },
 };

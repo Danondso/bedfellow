@@ -1,7 +1,8 @@
 import { Platform } from 'react-native';
 import { SpacingScale, TypographyScale, BorderRadiusScale, ShadowScale } from '../types';
+import { getFontFamily, fontWeights } from '../fonts';
 
-// Base spacing unit (following 4-point grid system)
+// Base spacing unit (following 4-point grid system with generous whitespace)
 const BASE_SPACING = 4;
 
 export const spacingScale: SpacingScale = {
@@ -12,6 +13,11 @@ export const spacingScale: SpacingScale = {
   xl: BASE_SPACING * 8, // 32
   xxl: BASE_SPACING * 12, // 48
   xxxl: BASE_SPACING * 16, // 64
+  // Additional generous spacing for warm aesthetic
+  '4xl': BASE_SPACING * 20, // 80
+  '5xl': BASE_SPACING * 24, // 96
+  // Special spacing for FAB positioning (64 + 48 + 8 = 120)
+  fabOffset: BASE_SPACING * 30, // 120
 };
 
 // Typography scale (using modular scale with 1.25 ratio)
@@ -122,77 +128,90 @@ export const spacing = {
   },
 };
 
-// Typography presets with line heights
+// Typography presets with line heights and font families
 export const typography = {
-  // Display styles
+  // Display styles - Serif for impact
   display: {
     fontSize: typographyScale['5xl'],
     lineHeight: typographyScale['5xl'] * 1.2,
-    fontWeight: '700' as const,
+    fontWeight: fontWeights.bold,
+    fontFamily: getFontFamily('heading', 'bold'),
   },
-  // Heading styles
+  // Heading styles - All use serif fonts for nostalgic feel
   h1: {
     fontSize: typographyScale['4xl'],
     lineHeight: typographyScale['4xl'] * 1.25,
-    fontWeight: '700' as const,
+    fontWeight: fontWeights.bold,
+    fontFamily: getFontFamily('heading', 'bold'),
   },
   h2: {
     fontSize: typographyScale['3xl'],
     lineHeight: typographyScale['3xl'] * 1.3,
-    fontWeight: '600' as const,
+    fontWeight: fontWeights.semiBold,
+    fontFamily: getFontFamily('heading', 'bold'),
   },
   h3: {
     fontSize: typographyScale['2xl'],
     lineHeight: typographyScale['2xl'] * 1.35,
-    fontWeight: '600' as const,
+    fontWeight: fontWeights.semiBold,
+    fontFamily: getFontFamily('heading', 'regular'),
   },
   h4: {
     fontSize: typographyScale.xl,
     lineHeight: typographyScale.xl * 1.4,
-    fontWeight: '600' as const,
+    fontWeight: fontWeights.semiBold,
+    fontFamily: getFontFamily('heading', 'regular'),
   },
   h5: {
     fontSize: typographyScale.lg,
     lineHeight: typographyScale.lg * 1.4,
-    fontWeight: '600' as const,
+    fontWeight: fontWeights.semiBold,
+    fontFamily: getFontFamily('heading', 'regular'),
   },
   h6: {
     fontSize: typographyScale.base,
     lineHeight: typographyScale.base * 1.4,
-    fontWeight: '600' as const,
+    fontWeight: fontWeights.semiBold,
+    fontFamily: getFontFamily('heading', 'regular'),
   },
-  // Body styles
+  // Body styles - Clean sans-serif
   body: {
     fontSize: typographyScale.base,
     lineHeight: typographyScale.base * 1.5,
-    fontWeight: '400' as const,
+    fontWeight: fontWeights.regular,
+    fontFamily: getFontFamily('body', 'regular'),
   },
   bodyLarge: {
     fontSize: typographyScale.lg,
     lineHeight: typographyScale.lg * 1.5,
-    fontWeight: '400' as const,
+    fontWeight: fontWeights.regular,
+    fontFamily: getFontFamily('body', 'regular'),
   },
   bodySmall: {
     fontSize: typographyScale.sm,
     lineHeight: typographyScale.sm * 1.5,
-    fontWeight: '400' as const,
+    fontWeight: fontWeights.regular,
+    fontFamily: getFontFamily('body', 'regular'),
   },
-  // Caption and label styles
+  // Caption and label styles - Sans-serif for clarity
   caption: {
     fontSize: typographyScale.xs,
     lineHeight: typographyScale.xs * 1.4,
-    fontWeight: '400' as const,
+    fontWeight: fontWeights.regular,
+    fontFamily: getFontFamily('body', 'regular'),
   },
   label: {
     fontSize: typographyScale.sm,
     lineHeight: typographyScale.sm * 1.3,
-    fontWeight: '500' as const,
+    fontWeight: fontWeights.medium,
+    fontFamily: getFontFamily('body', 'regular'),
     letterSpacing: 0.5,
   },
   button: {
     fontSize: typographyScale.base,
     lineHeight: typographyScale.base * 1.2,
-    fontWeight: '600' as const,
+    fontWeight: fontWeights.semiBold,
+    fontFamily: getFontFamily('body', 'regular'),
     letterSpacing: 0.75,
   },
 };

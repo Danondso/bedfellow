@@ -27,6 +27,9 @@ export interface SpacingScale {
   xl: number;
   xxl: number;
   xxxl: number;
+  '4xl': number;
+  '5xl': number;
+  fabOffset: number; // Special spacing for FAB positioning
 }
 
 export interface TypographyScale {

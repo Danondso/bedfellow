@@ -42,59 +42,83 @@ export const createStyles = (theme: Theme) =>
       flex: 1,
     },
     scrollContent: {
-      paddingBottom: theme.spacing.md + theme.spacing.xs, // 20 = 16 + 4
+      paddingTop: theme.spacing.xl, // More generous top padding
+      paddingBottom: theme.spacing.xxxl, // Very generous bottom padding
     },
     header: {
-      paddingHorizontal: theme.spacing.md + theme.spacing.xs, // 20 = 16 + 4
-      paddingTop: theme.spacing.sm + 2, // 10 = 8 + 2
-      paddingBottom: theme.spacing.sm + 2, // 10
+      paddingHorizontal: theme.spacing.lg,
+      paddingTop: theme.spacing.lg,
+      paddingBottom: theme.spacing.xl,
+      backgroundColor: theme.colors.background[50],
     },
     backButtonContainer: {
-      marginBottom: 10,
-      width: 40,
-      height: 40,
+      marginBottom: theme.spacing.sm + theme.spacing.xs / 2, // 10 = 8 + 2
+      width: theme.spacing.xl + theme.spacing.sm, // 40 = 32 + 8
+      height: theme.spacing.xl + theme.spacing.sm, // 40 = 32 + 8
       justifyContent: 'center',
       alignItems: 'flex-start',
     },
     headerTitle: {
-      fontSize: 32,
-      fontWeight: 'bold',
-      marginBottom: 4,
+      fontSize: theme.typography['3xl'],
+      fontFamily: 'Georgia',
+      fontWeight: '600',
+      marginBottom: theme.spacing.xs,
       color: theme.colors.text[900],
+      letterSpacing: -0.5,
     },
     headerSubtitle: {
-      fontSize: 16,
+      fontSize: theme.typography.base,
       color: theme.colors.text[600],
+      lineHeight: theme.typography.base * 1.5,
     },
     section: {
-      paddingHorizontal: theme.spacing.md + theme.spacing.xs, // 20 = 16 + 4
-      paddingVertical: theme.spacing.md - 1, // 15
+      marginHorizontal: theme.spacing.xl, // More generous side margins
+      marginBottom: theme.spacing.xxl, // More space between sections
+      padding: theme.spacing.xl, // More internal padding
+      backgroundColor: theme.colors.surface[50],
+      borderRadius: theme.borderRadius['2xl'],
+      borderWidth: 1,
+      borderColor: theme.colors.border[100],
+      // Warm shadow
+      shadowColor: theme.colors.shadow || 'rgba(52, 57, 65, 0.08)',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.15,
+      shadowRadius: 6,
+      elevation: 3,
     },
     sectionTitle: {
-      fontSize: 20,
+      fontSize: theme.typography.lg,
+      fontFamily: 'Georgia',
       fontWeight: '600',
-      marginBottom: 15,
+      marginBottom: theme.spacing.xl, // More space after section titles
       color: theme.colors.text[800],
+      letterSpacing: -0.3,
     },
     themePreview: {
-      padding: theme.spacing.md - 1, // 15
-      borderRadius: theme.borderRadius.lg + theme.borderRadius.base, // 12 = 8 + 4
-      marginBottom: theme.spacing.md + theme.spacing.xs, // 20 = 16 + 4
+      padding: theme.spacing.xl, // More generous internal padding
+      borderRadius: theme.borderRadius.xl,
+      marginBottom: theme.spacing.xl, // More space after preview
       backgroundColor: theme.colors.surface[100],
       borderWidth: 1,
-      borderColor: theme.colors.border[200],
+      borderColor: theme.colors.border[100],
     },
     previewRow: {
       flexDirection: 'row',
       justifyContent: 'space-around',
-      marginBottom: 10,
+      marginBottom: theme.spacing.sm + theme.spacing.xs / 2, // 10 = 8 + 2
     },
     colorSwatch: {
-      width: 60,
-      height: 60,
-      borderRadius: 30,
+      width: theme.spacing.xxl + theme.spacing.sm, // 56 = 48 + 8
+      height: theme.spacing.xxl + theme.spacing.sm, // 56 = 48 + 8
+      borderRadius: theme.borderRadius.full,
+      borderWidth: 2,
+      borderColor: theme.colors.background[50],
+      shadowColor: theme.colors.shadow || 'rgba(52, 57, 65, 0.1)',
       shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
+      shadowOpacity: 0.2,
       shadowRadius: 4,
       elevation: 3,
     },
@@ -107,15 +131,23 @@ export const createStyles = (theme: Theme) =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingVertical: 12,
+      paddingVertical: theme.spacing.lg, // More generous vertical padding
+      paddingHorizontal: theme.spacing.lg, // More generous horizontal padding
+      marginBottom: theme.spacing.md, // More space between items
+      backgroundColor: theme.colors.background[50],
+      borderRadius: theme.borderRadius.lg,
+      borderWidth: 1,
+      borderColor: theme.colors.border[50],
     },
     settingInfo: {
       flex: 1,
       marginRight: 10,
     },
     settingLabel: {
-      fontSize: 16,
+      fontSize: theme.typography.base,
+      fontWeight: '500',
       color: theme.colors.text[800],
+      letterSpacing: -0.2,
     },
     themeSwitcher: {
       flex: 1,
@@ -126,10 +158,13 @@ export const createStyles = (theme: Theme) =>
       color: theme.colors.text[600],
     },
     actionButtons: {
-      marginTop: 10,
+      marginTop: theme.spacing.xl, // More space before action buttons
+      gap: theme.spacing.md,
     },
     actionButton: {
-      marginBottom: 10,
+      marginBottom: theme.spacing.md, // More space between buttons
+      borderRadius: theme.borderRadius.xl,
+      overflow: 'hidden',
     },
     resetButton: {
       borderColor: theme.colors.error[500],
@@ -137,7 +172,11 @@ export const createStyles = (theme: Theme) =>
     infoItem: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      paddingVertical: 8,
+      paddingVertical: theme.spacing.md, // More generous padding
+      paddingHorizontal: theme.spacing.lg,
+      backgroundColor: theme.colors.background[50],
+      borderRadius: theme.borderRadius.lg,
+      marginBottom: theme.spacing.sm, // More space between info items
     },
     footer: {
       paddingHorizontal: theme.spacing.md + theme.spacing.xs, // 20 = 16 + 4

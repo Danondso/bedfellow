@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-// Types from @types/spotify-api are available globally via SpotifyApi namespace
-import { View, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTheme } from '../../context/ThemeContext';
 import { useDynamicTheme } from '../../context/ThemeContext/dynamicTheme';
 import ThemedView from '../../components/themed/ThemedView';
 import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
+import FloatingActionButton from '../../components/navigation/FloatingActionButton';
 import { searchAndRetrieveParsedWhoSampledPage } from '../../services/whosampled/WhoSampled.service';
 import { getBedfellowDBData, postToBedfellowDB } from '../../services/bedfellow-db-api/BedfellowDBAPI.service';
 import { BedfellowTrackSamples } from '../../types/bedfellow-api';
@@ -13,8 +11,8 @@ import { DetailsScreenProps } from '../../types';
 import { createStyles } from './CurrentTrack.themed.styles';
 import SampleList from './TrackList';
 import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
-import PlaybackFooter from './PlaybackFooter';
 import CurrentSongHeader from './CurrentSongHeader';
+import FloatingPlayer from '../../components/player/FloatingPlayer';
 
 const parseAndPostWhoSampledData = async (artists: SpotifyApi.ArtistObjectSimplified[], name: string) => {
   try {
@@ -68,19 +66,33 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   // Use the new dynamic theme system
   useDynamicTheme(albumArtURL);
 
-  const refreshControl = () => {
+  const refreshControl = async () => {
     setIsLoading(true);
     setShowSkeleton(true);
 
-    // Set a timeout to hide skeleton after 3 seconds
-    const skeletonTimeout = setTimeout(() => {
-      setShowSkeleton(false);
-    }, 3000);
+    try {
+      // Load the current playing track data
+      await loadData();
 
-    loadData();
+      // If there's a currently playing track, load its samples
+      if (currentlyPlayingTrack) {
+        const { artists, name } = currentlyPlayingTrack;
+        const result = await loadBedfellowData(artists, name);
+        if (result) {
+          setSamples(result);
+        }
+      }
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+    } finally {
+      // Ensure loading states are cleared
+      setIsLoading(false);
 
-    // Clean up timeout if component unmounts
-    return () => clearTimeout(skeletonTimeout);
+      // Hide skeleton after a short delay for better UX
+      setTimeout(() => {
+        setShowSkeleton(false);
+      }, 500);
+    }
   };
 
   useEffect(() => {
@@ -116,10 +128,14 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   return (
     <ThemeTransition type="fade" duration={300}>
       <ThemedView style={styles.view}>
-        {/* Settings Button */}
-        <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate('Settings' as any)}>
-          <Icon name="cog" size={24} color={theme.colors.primary[400]} />
-        </TouchableOpacity>
+        {/* Settings Button with softer styling */}
+        <FloatingActionButton
+          icon="settings-outline"
+          onPress={() => navigation.navigate('Settings' as any)}
+          position="top-right"
+          size="medium"
+          animated
+        />
 
         <SampleList
           onRefresh={refreshControl}
@@ -128,9 +144,7 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
           HeaderComponent={<CurrentSongHeader item={currentlyPlayingTrack} isLoading={showSkeleton} />}
           trackSamples={samples}
         />
-        <View style={styles.footerWrapper}>
-          <PlaybackFooter refreshCurrentlyPlayingTrack={loadData} />
-        </View>
+        <FloatingPlayer refreshCurrentlyPlayingTrack={loadData} />
       </ThemedView>
     </ThemeTransition>
   );

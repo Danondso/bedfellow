@@ -10,5 +10,20 @@ module.exports = {
         path: '.env',
       },
     ],
+    [
+      'module-resolver',
+      {
+        root: ['.'],
+        extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
+        alias: {
+          '@screens': './src/screens',
+          '@services': './src/services',
+          '@components': './src/components',
+          '@context': './src/context',
+          '@theme': './src/theme',
+          '@types': './src/types',
+        },
+      },
+    ],
   ],
 };

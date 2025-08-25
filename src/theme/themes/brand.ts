@@ -67,11 +67,11 @@ const brandTheme: Theme = {
     // Accent - Rust scale
     accent: brandColorScales.rust, // #C7522A at 600
 
-    // Semantic colors
-    error: brandColorScales.rust,
-    warning: brandColorScales.sand,
-    success: brandColorScales.sage,
-    info: brandColorScales.info,
+    // Semantic colors - using warm palette
+    error: brandColorScales.rust, // Warm rust/coral for errors
+    warning: brandColorScales.amber, // Warm amber for warnings (more visible than sand)
+    success: brandColorScales.sage, // Warm sage green for success
+    info: brandColorScales.info, // Warm teal-gray for info
 
     // Borders with opacity
     border: {

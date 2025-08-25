@@ -1,19 +1,18 @@
 import React from 'react';
-import { ScrollView, View, Alert, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../../context/ThemeContext';
 import ThemedView from '../../components/themed/ThemedView';
 import ThemedText from '../../components/themed/ThemedText';
 import ThemedButton from '../../components/themed/ThemedButton';
+import SoftHeader from '../../components/navigation/SoftHeader';
 import ThemeSwitcher, { DarkModeToggle } from '../../components/themed/ThemeSwitcher';
 import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
 import { useAdvancedDynamicTheme } from '../../context/ThemeContext/dynamicTheme';
 import { createStyles } from './Settings.themed.styles';
 
 const SettingsScreen: React.FC = () => {
-  const navigation = useNavigation();
   const { theme, themeMode, isDynamicEnabled, toggleDynamicTheme, resetToDefaults } = useTheme();
   const { clearCache, validateAccessibility } = useAdvancedDynamicTheme(null);
   const styles = createStyles(theme);
@@ -52,35 +51,19 @@ const SettingsScreen: React.FC = () => {
     <ThemeTransition type="fade" duration={300}>
       <SafeAreaView
         style={[styles.container, { backgroundColor: theme.colors.background[50] }]}
-        edges={['top', 'left', 'right']}
+        edges={['left', 'right']}
       >
+        <SoftHeader title="Settings" subtitle="Customize your experience" showBackButton />
         <ThemedView style={styles.safeArea}>
           <ScrollView
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {/* Header */}
-            <View style={styles.header}>
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={styles.backButtonContainer}
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-              >
-                <Icon name="chevron-back-outline" size={28} color={theme.colors.text[900]} />
-              </TouchableOpacity>
-              <ThemedText variant="h3" style={styles.headerTitle}>
-                Settings
-              </ThemedText>
-              <ThemedText variant="body" color="muted" style={styles.headerSubtitle}>
-                Customize your app experience
-              </ThemedText>
-            </View>
-
             {/* Theme Section */}
             <View style={styles.section}>
               <ThemedText variant="h4" style={styles.sectionTitle}>
-                Theme
+                Appearance
               </ThemedText>
 
               {/* Current Theme Preview */}
@@ -89,20 +72,25 @@ const SettingsScreen: React.FC = () => {
                   <View style={[styles.colorSwatch, { backgroundColor: theme.colors.primary[500] }]} />
                   <View style={[styles.colorSwatch, { backgroundColor: theme.colors.secondary[500] }]} />
                   <View style={[styles.colorSwatch, { backgroundColor: theme.colors.accent[500] }]} />
-                  <View style={[styles.colorSwatch, { backgroundColor: theme.colors.background[500] }]} />
+                  <View style={[styles.colorSwatch, { backgroundColor: theme.colors.surface[200] }]} />
                 </View>
                 <ThemedText variant="caption" style={styles.previewLabel}>
-                  Current Theme: {themeMode}
+                  Active: {themeMode.charAt(0).toUpperCase() + themeMode.slice(1)} Mode
                 </ThemedText>
               </View>
 
               {/* Theme Mode Selector */}
               <View style={styles.settingItem}>
-                <ThemedText variant="body" style={styles.settingLabel}>
-                  Theme Mode
-                </ThemedText>
-                <ThemeSwitcher variant="segmented" showDynamicToggle={false} style={styles.themeSwitcher} />
+                <View style={styles.settingInfo}>
+                  <ThemedText variant="body" style={styles.settingLabel}>
+                    Theme Mode
+                  </ThemedText>
+                  <ThemedText variant="caption" color="muted">
+                    Choose your preferred color scheme
+                  </ThemedText>
+                </View>
               </View>
+              <ThemeSwitcher variant="segmented" showDynamicToggle={false} style={{ marginBottom: theme.spacing.md }} />
 
               {/* Dynamic Theme Toggle */}
               <View style={styles.settingItem}>
@@ -111,23 +99,29 @@ const SettingsScreen: React.FC = () => {
                     Dynamic Album Colors
                   </ThemedText>
                   <ThemedText variant="caption" color="muted">
-                    Extract colors from album artwork
+                    Adapt theme to album artwork
                   </ThemedText>
                 </View>
                 <ThemedButton
                   variant={isDynamicEnabled ? 'primary' : 'outline'}
                   size="small"
                   onPress={toggleDynamicTheme}
+                  style={{ borderRadius: theme.borderRadius.full }}
                 >
-                  {isDynamicEnabled ? 'Enabled' : 'Disabled'}
+                  {isDynamicEnabled ? 'On' : 'Off'}
                 </ThemedButton>
               </View>
 
               {/* Quick Dark Mode Toggle */}
               <View style={styles.settingItem}>
-                <ThemedText variant="body" style={styles.settingLabel}>
-                  Quick Toggle
-                </ThemedText>
+                <View style={styles.settingInfo}>
+                  <ThemedText variant="body" style={styles.settingLabel}>
+                    Dark Mode
+                  </ThemedText>
+                  <ThemedText variant="caption" color="muted">
+                    Quick toggle for dark mode
+                  </ThemedText>
+                </View>
                 <DarkModeToggle />
               </View>
             </View>
@@ -135,36 +129,41 @@ const SettingsScreen: React.FC = () => {
             {/* Advanced Theme Options */}
             <View style={styles.section}>
               <ThemedText variant="h4" style={styles.sectionTitle}>
-                Advanced
+                Advanced Options
               </ThemedText>
 
               {/* Color Harmony Selector */}
               <View style={styles.settingItem}>
-                <ThemedText variant="body" style={styles.settingLabel}>
-                  Color Harmony
-                </ThemedText>
-                <ThemedText variant="caption" color="muted" style={styles.harmonyInfo}>
-                  Algorithm for dynamic color generation
-                </ThemedText>
+                <View style={styles.settingInfo}>
+                  <ThemedText variant="body" style={styles.settingLabel}>
+                    Color Harmony
+                  </ThemedText>
+                  <ThemedText variant="caption" color="muted">
+                    Algorithm for dynamic colors
+                  </ThemedText>
+                </View>
               </View>
 
               {/* Theme Actions */}
               <View style={styles.actionButtons}>
                 <ThemedButton variant="outline" size="medium" onPress={handleValidateTheme} style={styles.actionButton}>
-                  Check Accessibility
+                  <Icon name="checkmark-circle-outline" size={18} color={theme.colors.primary[600]} />
+                  <ThemedText variant="body"> Check Accessibility</ThemedText>
                 </ThemedButton>
 
                 <ThemedButton variant="outline" size="medium" onPress={handleClearCache} style={styles.actionButton}>
-                  Clear Color Cache
+                  <Icon name="trash-outline" size={18} color={theme.colors.primary[600]} />
+                  <ThemedText variant="body"> Clear Cache</ThemedText>
                 </ThemedButton>
 
                 <ThemedButton
-                  variant="outline"
+                  variant="danger"
                   size="medium"
                   onPress={handleResetTheme}
-                  style={{ ...styles.actionButton, ...styles.resetButton }}
+                  style={{ ...styles.actionButton, borderColor: theme.colors.error[400] }}
                 >
-                  Reset to Defaults
+                  <Icon name="refresh-outline" size={18} color={theme.colors.error[600]} />
+                  <ThemedText variant="body"> Reset All Settings</ThemedText>
                 </ThemedButton>
               </View>
             </View>
@@ -172,24 +171,42 @@ const SettingsScreen: React.FC = () => {
             {/* App Info */}
             <View style={styles.section}>
               <ThemedText variant="h4" style={styles.sectionTitle}>
-                About
+                About Bedfellow
               </ThemedText>
 
               <View style={styles.infoItem}>
-                <ThemedText variant="caption" color="muted">
-                  Bedfellow
+                <ThemedText variant="body" style={{ fontWeight: '500' }}>
+                  App Version
                 </ThemedText>
-                <ThemedText variant="caption" color="muted">
-                  Version 0.2.0
+                <ThemedText variant="body" color="muted">
+                  0.2.0
                 </ThemedText>
               </View>
 
               <View style={styles.infoItem}>
-                <ThemedText variant="caption" color="muted">
-                  Theme System v2.0
+                <ThemedText variant="body" style={{ fontWeight: '500' }}>
+                  Theme Engine
                 </ThemedText>
-                <ThemedText variant="caption" color="muted">
-                  WCAG AA Compliant
+                <ThemedText variant="body" color="muted">
+                  v2.0
+                </ThemedText>
+              </View>
+
+              <View style={styles.infoItem}>
+                <ThemedText variant="body" style={{ fontWeight: '500' }}>
+                  Accessibility
+                </ThemedText>
+                <ThemedText variant="body" color="muted">
+                  WCAG AA
+                </ThemedText>
+              </View>
+
+              <View style={{ ...styles.infoItem, marginTop: theme.spacing.md }}>
+                <ThemedText
+                  variant="caption"
+                  style={{ textAlign: 'center', width: '100%', color: theme.colors.text[500] }}
+                >
+                  Made with ♪ for music lovers
                 </ThemedText>
               </View>
             </View>

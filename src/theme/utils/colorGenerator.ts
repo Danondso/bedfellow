@@ -21,6 +21,16 @@ export function hexToRgb(hex: string): { r: number; g: number; b: number } {
 }
 
 /**
+ * Convert hex color to RGBA string
+ */
+export function hexToRgba(hex: string, opacity: number): string {
+  const { r, g, b } = hexToRgb(hex);
+  // Format opacity to 1 decimal place for cleaner CSS
+  const formattedOpacity = opacity.toFixed(1);
+  return `rgba(${r}, ${g}, ${b}, ${formattedOpacity})`;
+}
+
+/**
  * Convert RGB values to hex color
  */
 export function rgbToHex(r: number, g: number, b: number): string {

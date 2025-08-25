@@ -44,24 +44,60 @@ export default function CurrentSongHeader({ item, isLoading }: CurrentSongHeader
         ]}
       >
         {item && 'album' in item ? (
-          <Avatar.Image
-            size={90}
-            source={Platform.OS === 'android' ? { uri: item?.album.images[0].url } : item?.album.images[0]}
-          />
+          <View
+            style={{
+              borderRadius: theme.borderRadius.full,
+              borderWidth: 3,
+              borderColor: theme.colors.surface[200],
+              padding: theme.spacing.xs / 2, // 2px = half of xs (4px)
+              backgroundColor: theme.colors.surface[50],
+              shadowColor: theme.colors.shadow || 'rgba(52, 57, 65, 0.14)',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.25,
+              shadowRadius: 8,
+              elevation: 5,
+            }}
+          >
+            <Avatar.Image
+              size={90}
+              source={Platform.OS === 'android' ? { uri: item?.album.images[0].url } : item?.album.images[0]}
+              style={{ borderRadius: theme.borderRadius.full }}
+            />
+          </View>
         ) : (
-          // @ts-ignore artists is inside of album don't believe the typescript warning
-          <Avatar.Text size={90} label={item?.artists[0].name} />
+          <View
+            style={{
+              borderRadius: theme.borderRadius.full,
+              borderWidth: 3,
+              borderColor: theme.colors.surface[200],
+              padding: theme.spacing.xs / 2, // 2px = half of xs (4px)
+              backgroundColor: theme.colors.surface[50],
+            }}
+          >
+            <Avatar.Text
+              size={90}
+              label={item ? formatArtistNames(item).substring(0, 2) : 'NA'}
+              style={{
+                borderRadius: theme.borderRadius.full,
+                backgroundColor: theme.colors.primary[100],
+              }}
+              labelStyle={{ color: theme.colors.primary[700] }}
+            />
+          </View>
         )}
 
-        <ThemedText style={[styles.trackName, dynamicPalette ? { color: dynamicPalette.primary } : {}]}>
+        <ThemedText variant="h3" style={[styles.trackName, dynamicPalette ? { color: dynamicPalette.primary } : {}]}>
           {item ? item.name : 'Nothing playing currently.'}
         </ThemedText>
 
-        <ThemedText style={[styles.artistName, dynamicPalette ? { color: dynamicPalette.secondary } : {}]}>
+        <ThemedText variant="h5" style={[styles.artistName, dynamicPalette ? { color: dynamicPalette.secondary } : {}]}>
           {item ? formatArtistNames(item) : ''}
         </ThemedText>
 
-        <ThemedText style={[styles.albumDescription, dynamicPalette ? { color: dynamicPalette.detail } : {}]}>
+        <ThemedText
+          variant="caption"
+          style={[styles.albumDescription, dynamicPalette ? { color: dynamicPalette.detail } : {}]}
+        >
           {item ? item.album.name : ''}
         </ThemedText>
       </View>
