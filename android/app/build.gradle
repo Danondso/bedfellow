@@ -76,6 +76,12 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace "com.bedfellow"
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    
     defaultConfig {
         applicationId "com.bedfellow"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -114,14 +120,29 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    
+    packagingOptions {
+        pickFirst '**/libc++_shared.so'
+        pickFirst '**/libjsi.so'
+        pickFirst '**/libhermes.so'
+        pickFirst '**/libfbjni.so'
+        pickFirst '**/libfolly_runtime.so'
+        pickFirst '**/libglog.so'
+        pickFirst '**/libreact_nativemodule_core.so'
+        pickFirst '**/libturbomodulejsijni.so'
+        pickFirst '**/libhermes-executor-debug.so'
+        pickFirst '**/libhermes-executor-release.so'
+        pickFirst '**/libreactnativejni.so'
+        pickFirst '**/libreact_render_*.so'
+        pickFirst '**/libyoga.so'
+        pickFirst '**/libhermes-inspector.so'
+        pickFirst '**/libjscexecutor.so'
+    }
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation project(':react-native-lottie-splash-screen')
-    implementation project(':react-native-config')
-    implementation project(':react-native-vector-icons')
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
@@ -130,6 +151,5 @@ dependencies {
     }
 }
 
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+apply from: file("../../node_modules/react-native-config/android/dotenv.gradle")
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
