@@ -20,24 +20,30 @@ export const createStyles = (theme: Theme) =>
       backgroundColor: theme.colors.background[100],
     },
     header: {
-      paddingTop: theme.spacing.xl,
-      fontSize: 56, // Larger for impact
+      paddingTop: theme.spacing.xxl, // More generous top padding
+      paddingBottom: theme.spacing.lg,
+      fontSize: theme.spacing.xxl, // 64px - using xxxl spacing as font size
       fontWeight: 'bold',
       color: theme.colors.primary[600], // Teal for brand
+      letterSpacing: -1, // Tighter letter spacing for impact
       // Serif font will be applied via ThemedText
     },
     subHeader: {
       fontSize: theme.typography.lg,
       color: theme.colors.text[600], // Softer muted text
       textAlign: 'center',
-      marginTop: theme.spacing.sm,
+      marginTop: theme.spacing.md, // More space after header
+      marginBottom: theme.spacing.xl, // Space before button
+      paddingHorizontal: theme.spacing.xl,
+      lineHeight: theme.typography.lg * 1.6, // More generous line height
       fontStyle: 'italic', // Playful touch
     },
     loginView: {
       alignItems: 'center',
-      width: '85%',
-      paddingBottom: 120,
-      paddingTop: theme.spacing.xxl,
+      width: '80%', // Slightly narrower for more breathing room
+      paddingBottom: theme.spacing.xxxl * 2, // Very generous bottom padding
+      paddingTop: theme.spacing.xxxl, // Very generous top padding
+      paddingHorizontal: theme.spacing.xl,
       backgroundColor: theme.colors.surface[50], // Lighter surface
       borderRadius: theme.borderRadius['3xl'], // Softer, rounder corners
       ...theme.shadows.sm, // Subtle shadow
@@ -51,9 +57,9 @@ export const createStyles = (theme: Theme) =>
       overflow: 'hidden',
     },
     button: {
-      borderRadius: theme.borderRadius.md,
-      padding: theme.spacing.md,
-      paddingHorizontal: theme.spacing.xl,
+      borderRadius: theme.borderRadius.xl, // More rounded button
+      paddingVertical: theme.spacing.lg, // More generous vertical padding
+      paddingHorizontal: theme.spacing.xxl, // More generous horizontal padding
       alignItems: 'center',
       justifyContent: 'center',
     },

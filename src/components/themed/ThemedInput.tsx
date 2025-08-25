@@ -1,15 +1,5 @@
 import React, { useState, useRef } from 'react';
-import {
-  TextInput,
-  TextInputProps,
-  View,
-  ViewStyle,
-  TextStyle,
-  Animated,
-  Platform,
-  NativeSyntheticEvent,
-  TextInputFocusEventData,
-} from 'react-native';
+import { TextInput, TextInputProps, View, ViewStyle, TextStyle, Animated, Platform } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import ThemedText from './ThemedText';
 

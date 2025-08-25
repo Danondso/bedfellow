@@ -16,15 +16,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    paddingHorizontal: spacingScale.md + spacingScale.xs, // 20 = 16 + 4
+    paddingHorizontal: spacingScale.xl, // More generous horizontal padding
+    paddingVertical: spacingScale.lg, // Add vertical padding for breathing room
   },
   buttonWrapper: {
     flex: 1,
-    marginHorizontal: spacingScale.sm, // 8
+    marginHorizontal: spacingScale.md, // More space between buttons
+    maxWidth: 80, // Limit button size for better proportions
   },
   button: {
-    borderWidth: 2,
-    borderRadius: spacingScale.sm, // 8
+    borderWidth: 1.5,
+    borderRadius: spacingScale.lg + spacingScale.xs, // 28 = 24 + 4
+    paddingVertical: spacingScale.xs, // Add some internal padding
   },
 });
 

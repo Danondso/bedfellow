@@ -12,9 +12,20 @@ import {
 import { useTheme } from '../../context/ThemeContext';
 import ThemedText from './ThemedText';
 import { useComponentState, getButtonSizeStyles, getIconButtonSizeStyles, addAlpha, ComponentStates } from './shared';
+import LinearGradient from 'react-native-linear-gradient';
 
 interface ThemedButtonProps extends Omit<TouchableOpacityProps, 'style'> {
-  variant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'outline' | 'sage-outline' | 'danger' | 'success';
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'accent'
+    | 'ghost'
+    | 'outline'
+    | 'sage-outline'
+    | 'danger'
+    | 'success'
+    | 'gradient'
+    | 'spotify';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
   rounded?: boolean;
@@ -26,6 +37,7 @@ interface ThemedButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   style?: ViewStyle;
   textStyle?: TextStyle;
   ripple?: boolean;
+  gradient?: { colors: string[]; start?: { x: number; y: number }; end?: { x: number; y: number } };
 }
 
 export const ThemedButton: React.FC<ThemedButtonProps> = ({
@@ -40,6 +52,7 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
   style,
   textStyle,
   ripple = true,
+  gradient,
   onPress,
   onPressIn,
   onPressOut,
@@ -190,6 +203,25 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
             color: theme.colors.text[50],
           },
         };
+      case 'gradient':
+        return {
+          button: {
+            backgroundColor: 'transparent', // Background will be handled by LinearGradient
+          },
+          text: {
+            color: theme.colors.text[50],
+          },
+        };
+      case 'spotify':
+        return {
+          button: {
+            backgroundColor: states.isDisabled ? '#1DB95466' : '#1DB954', // Spotify Green
+            borderWidth: 0,
+          },
+          text: {
+            color: '#FFFFFF',
+          },
+        };
 
       default:
         return {
@@ -219,6 +251,29 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
     ...textStyle,
   };
 
+  const buttonContent = (
+    <>
+      {loading ? (
+        <ActivityIndicator size={size === 'small' ? 'small' : 'small'} color={variantStyles.text.color} />
+      ) : (
+        <>
+          {icon && iconPosition === 'left' && <View style={{ marginRight: theme.spacing.xs }}>{icon}</View>}
+          {typeof children === 'string' ? <ThemedText style={textStyles}>{children}</ThemedText> : children}
+          {icon && iconPosition === 'right' && <View style={{ marginLeft: theme.spacing.xs }}>{icon}</View>}
+        </>
+      )}
+    </>
+  );
+
+  // Use gradient for gradient variant or when gradient prop is provided
+  const shouldUseGradient = variant === 'gradient' || gradient;
+  const gradientColors = gradient?.colors || [
+    theme.colors.secondary[500], // Sage
+    theme.colors.primary[500], // Teal
+  ];
+  const gradientStart = gradient?.start || { x: 0, y: 0 };
+  const gradientEnd = gradient?.end || { x: 1, y: 1 };
+
   return (
     <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
       <TouchableOpacity
@@ -227,17 +282,20 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        style={buttonStyle}
+        style={shouldUseGradient ? {} : buttonStyle}
         {...props}
       >
-        {loading ? (
-          <ActivityIndicator size={size === 'small' ? 'small' : 'small'} color={variantStyles.text.color} />
+        {shouldUseGradient ? (
+          <LinearGradient
+            colors={isDisabled ? [theme.colors.surface[300], theme.colors.surface[400]] : gradientColors}
+            start={gradientStart}
+            end={gradientEnd}
+            style={buttonStyle}
+          >
+            {buttonContent}
+          </LinearGradient>
         ) : (
-          <>
-            {icon && iconPosition === 'left' && <View style={{ marginRight: theme.spacing.xs }}>{icon}</View>}
-            {typeof children === 'string' ? <ThemedText style={textStyles}>{children}</ThemedText> : children}
-            {icon && iconPosition === 'right' && <View style={{ marginLeft: theme.spacing.xs }}>{icon}</View>}
-          </>
+          buttonContent
         )}
       </TouchableOpacity>
     </Animated.View>

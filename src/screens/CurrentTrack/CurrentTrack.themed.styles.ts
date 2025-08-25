@@ -2,7 +2,6 @@ import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { Theme } from '../../theme/types';
 
 type Style = {
-  footerWrapper: ViewStyle;
   view: ViewStyle;
   button: ViewStyle;
   samplesHeading: TextStyle;
@@ -12,15 +11,6 @@ type Style = {
 
 export const createStyles = (theme: Theme) =>
   StyleSheet.create<Style>({
-    footerWrapper: {
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      height: '15%',
-      backgroundColor: theme.colors.surface[200], // Warm sand elevation
-      ...theme.shadows.lg,
-    },
     view: {
       flex: 1,
       backgroundColor: theme.colors.background[50], // Light sand background
@@ -44,15 +34,23 @@ export const createStyles = (theme: Theme) =>
     },
     settingsButton: {
       position: 'absolute',
-      top: 50,
-      right: 20,
+      top: theme.spacing.xxxl - theme.spacing.xs, // 60 = 64 - 4
+      right: theme.spacing.lg,
       zIndex: 100,
-      padding: theme.spacing.sm,
-      backgroundColor: `${theme.colors.surface[100]}E6`, // Warm sand with opacity
-      borderRadius: theme.borderRadius.full,
+      padding: theme.spacing.md, // More generous padding
+      backgroundColor: `${theme.colors.surface[100]}F2`, // Warm sand with higher opacity
+      borderRadius: theme.borderRadius.full, // Fully rounded
       borderWidth: 1,
-      borderColor: theme.colors.border[400],
-      ...theme.shadows.lg,
+      borderColor: theme.colors.border[200], // Softer border
+      // Subtle warm shadow
+      shadowColor: theme.colors.shadow || 'rgba(52, 57, 65, 0.14)',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 6,
+      elevation: 4, // Android shadow
     },
   });
 

@@ -27,6 +27,8 @@ export interface SpacingScale {
   xl: number;
   xxl: number;
   xxxl: number;
+  '4xl': number;
+  '5xl': number;
 }
 
 export interface TypographyScale {

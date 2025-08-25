@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import { SpacingScale, TypographyScale, BorderRadiusScale, ShadowScale } from '../types';
 import { getFontFamily, fontWeights } from '../fonts';
 
-// Base spacing unit (following 4-point grid system)
+// Base spacing unit (following 4-point grid system with generous whitespace)
 const BASE_SPACING = 4;
 
 export const spacingScale: SpacingScale = {
@@ -13,6 +13,9 @@ export const spacingScale: SpacingScale = {
   xl: BASE_SPACING * 8, // 32
   xxl: BASE_SPACING * 12, // 48
   xxxl: BASE_SPACING * 16, // 64
+  // Additional generous spacing for warm aesthetic
+  '4xl': BASE_SPACING * 20, // 80
+  '5xl': BASE_SPACING * 24, // 96
 };
 
 // Typography scale (using modular scale with 1.25 ratio)
