@@ -4,13 +4,17 @@
  */
 
 import { Theme, ThemeMode } from '../types';
-import { brandColorScales } from '../colors/brandColors';
+import { brandColorScales, BRAND_COLORS } from '../colors/brandColors';
+import { hexToRgba } from '../utils/colorGenerator';
 import {
   spacingScale as spacing,
   typographyScale as typography,
   borderRadiusScale as borderRadius,
   shadowScale as shadows,
 } from '../scales';
+
+// Base color for borders and dividers in dark mode
+const sandBase = BRAND_COLORS.SAND_50; // #FEF9E0
 
 const darkTheme: Theme = {
   mode: ThemeMode.DARK,
@@ -54,8 +58,8 @@ const darkTheme: Theme = {
       500: brandColorScales.sand[200], // Base text - warm light
       600: brandColorScales.sand[100], // Brighter text
       700: brandColorScales.sand[50], // Primary text
-      800: '#FFF9F0', // Very bright text
-      900: '#FFFFFF', // Pure white for emphasis
+      800: brandColorScales.white[50], // Very bright text - warm white
+      900: brandColorScales.white[100], // Pure white for emphasis
     },
 
     // Primary - Lighter teal for dark mode
@@ -152,38 +156,38 @@ const darkTheme: Theme = {
 
     // Borders with warm tones and opacity
     border: {
-      50: 'rgba(254, 249, 224, 0.05)', // Sand-based border
-      100: 'rgba(254, 249, 224, 0.10)',
-      200: 'rgba(254, 249, 224, 0.15)',
-      300: 'rgba(254, 249, 224, 0.20)',
-      400: 'rgba(254, 249, 224, 0.25)',
-      500: 'rgba(254, 249, 224, 0.30)', // Base
-      600: 'rgba(254, 249, 224, 0.35)',
-      700: 'rgba(254, 249, 224, 0.40)',
-      800: 'rgba(254, 249, 224, 0.45)',
-      900: 'rgba(254, 249, 224, 0.50)',
+      50: hexToRgba(sandBase, 0.05), // Sand-based border
+      100: hexToRgba(sandBase, 0.1),
+      200: hexToRgba(sandBase, 0.15),
+      300: hexToRgba(sandBase, 0.2),
+      400: hexToRgba(sandBase, 0.25),
+      500: hexToRgba(sandBase, 0.3), // Base
+      600: hexToRgba(sandBase, 0.35),
+      700: hexToRgba(sandBase, 0.4),
+      800: hexToRgba(sandBase, 0.45),
+      900: hexToRgba(sandBase, 0.5),
     },
 
     // Dividers with lower opacity
     divider: {
-      50: 'rgba(254, 249, 224, 0.03)',
-      100: 'rgba(254, 249, 224, 0.05)',
-      200: 'rgba(254, 249, 224, 0.08)',
-      300: 'rgba(254, 249, 224, 0.10)',
-      400: 'rgba(254, 249, 224, 0.12)',
-      500: 'rgba(254, 249, 224, 0.15)', // Base
-      600: 'rgba(254, 249, 224, 0.18)',
-      700: 'rgba(254, 249, 224, 0.20)',
-      800: 'rgba(254, 249, 224, 0.23)',
-      900: 'rgba(254, 249, 224, 0.25)',
+      50: hexToRgba(sandBase, 0.03),
+      100: hexToRgba(sandBase, 0.05),
+      200: hexToRgba(sandBase, 0.08),
+      300: hexToRgba(sandBase, 0.1),
+      400: hexToRgba(sandBase, 0.12),
+      500: hexToRgba(sandBase, 0.15), // Base
+      600: hexToRgba(sandBase, 0.18),
+      700: hexToRgba(sandBase, 0.2),
+      800: hexToRgba(sandBase, 0.23),
+      900: hexToRgba(sandBase, 0.25),
     },
 
     // Special colors for dark theme
     shadow: 'rgba(0, 0, 0, 0.4)', // Darker shadows
     overlay: 'rgba(0, 0, 0, 0.7)', // Darker overlay
-    softStroke: 'rgba(254, 249, 224, 0.08)',
-    mediumStroke: 'rgba(254, 249, 224, 0.12)',
-    strongStroke: 'rgba(254, 249, 224, 0.16)',
+    softStroke: hexToRgba(sandBase, 0.08),
+    mediumStroke: hexToRgba(sandBase, 0.12),
+    strongStroke: hexToRgba(sandBase, 0.16),
   },
 
   // Scales remain the same

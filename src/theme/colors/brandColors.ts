@@ -31,6 +31,10 @@ export const BRAND_COLORS = {
   // Info and special colors
   INFO_600: '#5E7A7D', // Warm teal-gray for info states
   OBSIDIAN: '#000000', // Pure black for special uses
+
+  // White variants for dark mode
+  WHITE_WARM: '#FFF9F0', // Warm white with slight sand tint
+  WHITE_PURE: '#FFFFFF', // Pure white for maximum contrast
 } as const;
 
 /**
@@ -49,6 +53,8 @@ export const brandColors = {
   slate600: BRAND_COLORS.SLATE_600,
   info600: BRAND_COLORS.INFO_600,
   obsidian: BRAND_COLORS.OBSIDIAN,
+  whiteWarm: BRAND_COLORS.WHITE_WARM,
+  whitePure: BRAND_COLORS.WHITE_PURE,
 } as const;
 
 /**
@@ -221,6 +227,16 @@ export const infoScale: ColorScale = generateColorScale(BRAND_COLORS.INFO_600, {
   600: BRAND_COLORS.INFO_600, // #5E7A7D - Warm teal-gray info
 });
 
+/**
+ * White color scale
+ * Whites and off-whites for dark mode text
+ * Preserves warm and pure white values
+ */
+export const whiteScale: ColorScale = generateColorScale(BRAND_COLORS.WHITE_WARM, {
+  50: BRAND_COLORS.WHITE_WARM, // #FFF9F0 - Warm white
+  100: BRAND_COLORS.WHITE_PURE, // #FFFFFF - Pure white
+});
+
 // Export all scales for easy access
 export const brandColorScales = {
   sand: sandScale,
@@ -230,4 +246,5 @@ export const brandColorScales = {
   amber: amberScale,
   slate: slateScale,
   info: infoScale,
+  white: whiteScale,
 } as const;

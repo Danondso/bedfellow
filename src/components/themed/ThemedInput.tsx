@@ -40,7 +40,7 @@ export const ThemedInput: React.FC<ThemedInputProps> = ({
   const borderWidth = useRef(new Animated.Value(1)).current;
   const borderColor = useRef(new Animated.Value(0)).current;
 
-  const handleFocus = (e: any) => {
+  const handleFocus: TextInputProps['onFocus'] = (e) => {
     setIsFocused(true);
     Animated.parallel([
       Animated.timing(borderWidth, {
@@ -57,7 +57,7 @@ export const ThemedInput: React.FC<ThemedInputProps> = ({
     onFocus?.(e);
   };
 
-  const handleBlur = (e: any) => {
+  const handleBlur: TextInputProps['onBlur'] = (e) => {
     setIsFocused(false);
     Animated.parallel([
       Animated.timing(borderWidth, {

@@ -181,7 +181,7 @@ const AnimatedOwl: React.FC<AnimatedOwlProps> = ({
 
   return (
     <Animated.View style={[style, animated ? getTransform() : {}]}>
-      <OwlMascot size={size} variant={variant} animated={animated} />
+      <OwlMascot size={size} variant={variant} />
     </Animated.View>
   );
 };

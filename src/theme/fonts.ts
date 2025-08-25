@@ -66,11 +66,12 @@ export const fontFamilies = {
     boldItalic: SANS_SERIF_FONTS?.boldItalic || 'System',
   },
   // Monospace for code/technical content
-  mono: Platform.select({
-    ios: 'Courier',
-    android: 'monospace',
-    default: 'Courier',
-  }),
+  mono:
+    Platform.select({
+      ios: 'Courier',
+      android: 'monospace',
+      default: 'Courier',
+    }) || 'Courier',
 };
 
 // Helper function to get the appropriate font family
@@ -80,7 +81,7 @@ export const getFontFamily = (
   italic: boolean = false
 ): string => {
   if (variant === 'mono') {
-    return fontFamilies.mono as string;
+    return fontFamilies.mono;
   }
 
   const fontSet = fontFamilies[variant];
