@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// Types from @types/spotify-api are available globally via SpotifyApi namespace
-import { View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../context/ThemeContext';
 import { useDynamicTheme } from '../../context/ThemeContext/dynamicTheme';
 import ThemedView from '../../components/themed/ThemedView';
@@ -60,7 +57,6 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
   const { theme } = useTheme();
-  const insets = useSafeAreaInsets();
   const styles = createStyles(theme);
 
   const currentPlaybackResponse = response as SpotifyApi.CurrentPlaybackResponse;

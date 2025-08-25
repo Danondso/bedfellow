@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useState } from 'react';
-import { FlatList, View, Text, RefreshControl, StyleSheet, Animated } from 'react-native';
+import { FlatList, View, Text, RefreshControl, StyleSheet } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import Svg, { Path } from 'react-native-svg';
 import { useTheme } from '../../../context/ThemeContext';
@@ -66,7 +66,7 @@ function EmptyListMessage() {
           No Track Playing
         </ThemedText>
         <ThemedText variant="body" style={{ color: theme.colors.text[500], textAlign: 'center', opacity: 0.8 }}>
-          What's on your mind?
+          What&apos;s on your mind?
         </ThemedText>
       </View>
     </View>

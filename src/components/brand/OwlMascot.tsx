@@ -7,10 +7,9 @@ interface OwlMascotProps {
   size?: number;
   variant?: 'default' | 'sleeping' | 'winking' | 'happy' | 'outlined';
   style?: ViewStyle;
-  animated?: boolean;
 }
 
-const OwlMascot: React.FC<OwlMascotProps> = ({ size = 120, variant = 'default', style, animated = false }) => {
+const OwlMascot: React.FC<OwlMascotProps> = ({ size = 120, variant = 'default', style }) => {
   const { theme } = useTheme();
 
   // Scale all measurements based on size
