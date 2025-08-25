@@ -102,14 +102,14 @@ describe('Dark Theme with Brand Palette', () => {
     test('should use warm sand-based borders with opacity', () => {
       const { border } = darkTheme.colors;
       // Dark theme uses sand color with opacity for warm borders
-      expect(border[500]).toBe('rgba(254, 249, 224, 0.30)');
+      expect(border[500]).toBe('rgba(254, 249, 224, 0.3)');
     });
 
     test('should have lighter divider colors than borders', () => {
       const { divider, border } = darkTheme.colors;
       // Dividers should use lower opacity than borders
-      expect(divider[300]).toBe('rgba(254, 249, 224, 0.10)'); // 10% opacity
-      expect(border[300]).toBe('rgba(254, 249, 224, 0.20)'); // 20% opacity
+      expect(divider[300]).toBe('rgba(254, 249, 224, 0.1)'); // 10% opacity
+      expect(border[300]).toBe('rgba(254, 249, 224, 0.2)'); // 20% opacity
     });
   });
 

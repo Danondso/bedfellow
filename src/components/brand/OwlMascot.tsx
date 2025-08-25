@@ -3,17 +3,20 @@ import Svg, { Circle, Ellipse, Path, G, Defs, LinearGradient, Stop } from 'react
 import { View, ViewStyle } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 
+// Base size for the SVG viewBox
+const BASE_SIZE = 120;
+
 interface OwlMascotProps {
   size?: number;
   variant?: 'default' | 'sleeping' | 'winking' | 'happy' | 'outlined';
   style?: ViewStyle;
 }
 
-const OwlMascot: React.FC<OwlMascotProps> = ({ size = 120, variant = 'default', style }) => {
+const OwlMascot: React.FC<OwlMascotProps> = ({ size = BASE_SIZE, variant = 'default', style }) => {
   const { theme } = useTheme();
 
   // Scale all measurements based on size
-  const scale = size / 120;
+  const scale = size / BASE_SIZE;
 
   // Warm brand colors
   const primaryColor = theme.colors.primary[500]; // Teal
@@ -29,7 +32,7 @@ const OwlMascot: React.FC<OwlMascotProps> = ({ size = 120, variant = 'default', 
 
     return (
       <View style={[{ width: size, height: size }, style]}>
-        <Svg width={size} height={size} viewBox="0 0 120 120">
+        <Svg width={size} height={size} viewBox={`0 0 ${BASE_SIZE} ${BASE_SIZE}`}>
           <G transform={`scale(${scale})`}>
             {/* Body outline */}
             <Ellipse cx="60" cy="70" rx="35" ry="40" fill="none" stroke={strokeColor} strokeWidth={strokeWidth} />
@@ -103,7 +106,7 @@ const OwlMascot: React.FC<OwlMascotProps> = ({ size = 120, variant = 'default', 
 
   return (
     <View style={[{ width: size, height: size }, style]}>
-      <Svg width={size} height={size} viewBox="0 0 120 120">
+      <Svg width={size} height={size} viewBox={`0 0 ${BASE_SIZE} ${BASE_SIZE}`}>
         <Defs>
           {/* Gradient for body */}
           <LinearGradient id="bodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">

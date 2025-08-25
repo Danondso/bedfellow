@@ -74,10 +74,13 @@ export const fontFamilies = {
     }) || 'Courier',
 };
 
+// Type for all font weight keys (exported for use in components)
+export type FontWeightKey = keyof typeof fontWeights;
+
 // Helper function to get the appropriate font family
 export const getFontFamily = (
   variant: 'heading' | 'body' | 'mono' = 'body',
-  weight: 'regular' | 'bold' = 'regular',
+  weight: 'regular' | 'bold' = 'regular', // Still use simple weights for font family selection
   italic: boolean = false
 ): string => {
   if (variant === 'mono') {

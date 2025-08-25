@@ -16,6 +16,8 @@ export const spacingScale: SpacingScale = {
   // Additional generous spacing for warm aesthetic
   '4xl': BASE_SPACING * 20, // 80
   '5xl': BASE_SPACING * 24, // 96
+  // Special spacing for FAB positioning (64 + 48 + 8 = 120)
+  fabOffset: BASE_SPACING * 30, // 120
 };
 
 // Typography scale (using modular scale with 1.25 ratio)

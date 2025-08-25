@@ -25,8 +25,8 @@ export function hexToRgb(hex: string): { r: number; g: number; b: number } {
  */
 export function hexToRgba(hex: string, opacity: number): string {
   const { r, g, b } = hexToRgb(hex);
-  // Format opacity to always have 2 decimal places for consistency
-  const formattedOpacity = opacity.toFixed(2);
+  // Format opacity to 1 decimal place for cleaner CSS
+  const formattedOpacity = opacity.toFixed(1);
   return `rgba(${r}, ${g}, ${b}, ${formattedOpacity})`;
 }
 

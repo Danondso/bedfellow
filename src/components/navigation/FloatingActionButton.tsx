@@ -94,13 +94,13 @@ const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
       case 'bottom-left':
         return {
           ...basePosition,
-          bottom: theme.spacing.xxxl + theme.spacing.xxl + theme.spacing.sm, // 120 = 64 + 48 + 8
+          bottom: theme.spacing.fabOffset, // 120px offset for proper positioning
           left: theme.spacing.xl,
         };
       case 'bottom-right':
         return {
           ...basePosition,
-          bottom: theme.spacing.xxxl + theme.spacing.xxl + theme.spacing.sm, // 120 = 64 + 48 + 8
+          bottom: theme.spacing.fabOffset, // 120px offset for proper positioning
           right: theme.spacing.xl,
         };
     }

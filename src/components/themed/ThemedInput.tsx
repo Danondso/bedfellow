@@ -31,8 +31,6 @@ export const ThemedInput: React.FC<ThemedInputProps> = ({
   containerStyle,
   inputStyle,
   disabled = false,
-  onFocus,
-  onBlur,
   ...props
 }) => {
   const { theme } = useTheme();
@@ -54,7 +52,7 @@ export const ThemedInput: React.FC<ThemedInputProps> = ({
         useNativeDriver: false,
       }),
     ]).start();
-    onFocus?.(e);
+    props.onFocus?.(e);
   };
 
   const handleBlur: TextInputProps['onBlur'] = (e) => {
@@ -71,7 +69,7 @@ export const ThemedInput: React.FC<ThemedInputProps> = ({
         useNativeDriver: false,
       }),
     ]).start();
-    onBlur?.(e);
+    props.onBlur?.(e);
   };
 
   // Get size-based styles
@@ -196,12 +194,12 @@ export const ThemedInput: React.FC<ThemedInputProps> = ({
         {leftIcon && <View style={{ marginRight: theme.spacing.sm }}>{leftIcon}</View>}
 
         <TextInput
+          {...props}
           style={textInputStyle}
           placeholderTextColor={theme.colors.text[500]} // Darker placeholder for readability
           editable={!disabled}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          {...props}
         />
 
         {rightIcon && <View style={{ marginLeft: theme.spacing.sm }}>{rightIcon}</View>}
