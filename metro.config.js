@@ -30,9 +30,6 @@ const config = {
       domain: require.resolve('domain-browser'),
       timers: require.resolve('timers-browserify'),
       tty: require.resolve('tty-browserify'),
-      // net and dns are not needed for this app, commenting out
-      // net: require.resolve('react-native-tcp'),
-      // dns: require.resolve('react-native-tcp'),
       fs: require.resolve('react-native-fs'),
       // Add path aliases
       '@theme': path.resolve(__dirname, 'src/theme'),
