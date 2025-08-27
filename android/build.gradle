@@ -2,23 +2,21 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "35.0.1"
-        minSdkVersion = 26
-        compileSdkVersion = 35
-        targetSdkVersion = 34
-        ndkVersion = "26.1.10909125"
-        kotlinVersion = "1.9.22"
-        // Set the react-native node_modules directory for all subprojects
-        REACT_NATIVE_NODE_MODULES_DIR = file("../node_modules/react-native")
+        buildToolsVersion = "36.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 36
+        targetSdkVersion = 36
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "2.1.20"
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.7.1")
+        classpath('com.android.tools.build:gradle:8.12.1')
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("com.facebook.react:react-native-gradle-plugin")
     }
 }
 
-apply plugin: "com.facebook.react.rootproject"
