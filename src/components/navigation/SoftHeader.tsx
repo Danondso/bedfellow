@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon, { type IoniconsIconName } from '@react-native-vector-icons/ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../context/ThemeContext';
 import ThemedText from '../themed/ThemedText';
@@ -11,7 +11,7 @@ interface SoftHeaderProps {
   subtitle?: string;
   showBackButton?: boolean;
   rightAction?: {
-    icon: string;
+    icon: IoniconsIconName;
     onPress: () => void;
     color?: string;
   };

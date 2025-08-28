@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { TouchableOpacity, Animated, StyleSheet, ViewStyle } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon, { type IoniconsIconName } from '@react-native-vector-icons/ionicons';
 import { useTheme } from '../../context/ThemeContext';
 
 interface FloatingActionButtonProps {
-  icon: string;
+  icon: IoniconsIconName;
   onPress: () => void;
   position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   color?: string;
