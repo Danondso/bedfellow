@@ -1,6 +1,10 @@
-# Bedfellow 🎵
-
-A React Native music discovery app that reveals the samples behind your favorite tracks. Seamlessly integrated with Spotify, Bedfellow enriches your listening experience by showing the musical DNA of what you're playing.
+<div align="center">
+  <img src="assets/images/bedfellow-appIcon.png" alt="Bedfellow Logo" style="border-radius: 16px" width="120" height="120">
+  
+  # Bedfellow 🎵
+  
+  A React Native music discovery app that reveals the samples behind your favorite tracks. Seamlessly integrated with Spotify, Bedfellow enriches your listening experience by showing the musical DNA of what you're playing.
+</div>
 
 Inspired by: [bezola by RyanRau](https://github.com/RyanRau/bezola).
 
