@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon, { type FontAwesomeIconName } from '@react-native-vector-icons/fontawesome';
 import { useTheme } from '../../context/ThemeContext';
 import { performPlaybackAction } from '../../services/spotify/SpotifyAPI.service';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
@@ -17,7 +17,9 @@ const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshCurrentlyPlaying
   const { response, loadData } = useSpotifyAPI('v1/me/player');
   const fadeAnim = new Animated.Value(0);
 
-  const playButtonIconName = (response as SpotifyApi.CurrentPlaybackResponse)?.is_playing ? 'pause' : 'play';
+  const playButtonIconName: FontAwesomeIconName = (response as SpotifyApi.CurrentPlaybackResponse)?.is_playing
+    ? 'pause'
+    : 'play';
 
   const toggleExpanded = () => {
     setExpanded(!expanded);

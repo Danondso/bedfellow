@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 // Types from @types/spotify-api are available globally via SpotifyApi namespace
 import { View, ViewStyle, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon, { type FontAwesomeIconName } from '@react-native-vector-icons/fontawesome';
 import useSpotifyAPI from '../../../hooks/spotify/useSpotifyAPI';
 import { useTheme } from '../../../context/ThemeContext';
 import { performPlaybackAction } from '../../../services/spotify/SpotifyAPI.service';
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 });
 
 interface PlayerButtonProps {
-  buttonName: string;
+  buttonName: FontAwesomeIconName;
   onPress: () => void;
 }
 
@@ -58,7 +58,9 @@ interface PlaybackFooterProps {
 function PlaybackFooter({ refreshCurrentlyPlayingTrack }: PlaybackFooterProps) {
   const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { response, loadData } = useSpotifyAPI('v1/me/player');
-  const playButtonIconName = (response as SpotifyApi.CurrentPlaybackResponse)?.is_playing ? 'pause' : 'play';
+  const playButtonIconName: FontAwesomeIconName = (response as SpotifyApi.CurrentPlaybackResponse)?.is_playing
+    ? 'pause'
+    : 'play';
 
   return (
     <View style={styles.container}>
