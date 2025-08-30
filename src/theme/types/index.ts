@@ -1,7 +1,6 @@
 export enum ThemeMode {
   LIGHT = 'light',
   DARK = 'dark',
-  BRAND = 'brand',
   AUTO = 'auto',
   DYNAMIC = 'dynamic',
 }
