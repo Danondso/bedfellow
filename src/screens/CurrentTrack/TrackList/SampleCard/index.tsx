@@ -23,7 +23,7 @@ function SampleCard({ item, onPress }: SampleCardProps) {
   // Create dynamic styles based on theme
   const styles = StyleSheet.create({
     trackListWrapper: {
-      width: '85%', // Narrower for more side breathing room
+      width: '75%', // Narrower for more side breathing room
       marginVertical: theme.spacing.lg, // More generous vertical spacing between cards
       alignSelf: 'center',
     },
@@ -46,7 +46,7 @@ function SampleCard({ item, onPress }: SampleCardProps) {
     },
     trackImage: {
       width: '100%',
-      height: theme.spacing.xxxl * 3 + theme.spacing.xxl, // 240 = 64*3 + 48
+      alignSelf: 'center',
       borderTopLeftRadius: theme.borderRadius['3xl'],
       borderTopRightRadius: theme.borderRadius['3xl'],
       backgroundColor: theme.colors.surface[200], // Warm fallback color while loading

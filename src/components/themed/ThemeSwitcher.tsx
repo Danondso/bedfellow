@@ -10,7 +10,6 @@ import ThemedView from './ThemedView';
 const THEME_MODES = [
   { value: ThemeMode.LIGHT, label: 'Light', icon: '☀️' },
   { value: ThemeMode.DARK, label: 'Dark', icon: '🌙' },
-  { value: ThemeMode.BRAND, label: 'Brand', icon: '🎨' },
   { value: ThemeMode.AUTO, label: 'System', icon: '⚙️' },
   { value: ThemeMode.DYNAMIC, label: 'Dynamic', icon: '🎵' },
 ];
