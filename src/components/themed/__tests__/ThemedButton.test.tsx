@@ -29,7 +29,7 @@ describe('ThemedButton', () => {
     });
 
     it('renders danger-outline variant correctly', () => {
-      const { getByText, getByTestId, root } = render(
+      const { getByText, root } = render(
         <ThemedButton variant="danger-outline" testID="danger-outline-btn">
           Danger Outline Button
         </ThemedButton>
