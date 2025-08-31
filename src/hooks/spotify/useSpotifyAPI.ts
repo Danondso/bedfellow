@@ -1,4 +1,4 @@
-import { useContext, useState, useCallback } from 'react';
+import { useContext, useState, useCallback, useRef, useEffect } from 'react';
 import { AxiosError } from 'axios';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
 // Types from @types/spotify-api are available globally via SpotifyApi namespace
@@ -22,6 +22,14 @@ function useSpotifyAPI(url: string): SpotifyAPIHookResponse {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
 
+  // Keep a ref to the latest token to use after refresh
+  const tokenRef = useRef(authState.token);
+
+  // Update the ref whenever authState.token changes
+  useEffect(() => {
+    tokenRef.current = authState.token;
+  }, [authState.token]);
+
   function resetState() {
     setResponse(undefined);
     setError(null);
@@ -33,19 +41,23 @@ function useSpotifyAPI(url: string): SpotifyAPIHookResponse {
     setLoading(true);
 
     try {
-      const result = await spotifyGETData(url, authState.token);
+      const result = await spotifyGETData(url, tokenRef.current);
       setResponse(result.data);
       setError(null);
     } catch (e) {
       const apiError = e as AxiosError;
 
       // If we get a 401, try to refresh the token and retry
-      if (apiError.response?.status === 401 && authState.token) {
+      if (apiError.response?.status === 401 && tokenRef.current) {
         const refreshSuccess = await refreshToken();
         if (refreshSuccess) {
-          // Retry the request with the new token
+          // After refresh, tokenRef will be updated via the useEffect
+          // Wait a tick for the context to update
+          await new Promise((resolve) => setTimeout(resolve, 0));
+
           try {
-            const result = await spotifyGETData(url, authState.token);
+            // Now use the updated token from the ref
+            const result = await spotifyGETData(url, tokenRef.current);
             setResponse(result.data);
             setError(null);
             setLoading(false);
@@ -62,7 +74,7 @@ function useSpotifyAPI(url: string): SpotifyAPIHookResponse {
       });
     }
     setLoading(false);
-  }, [url, authState.token, refreshToken]);
+  }, [url, refreshToken]);
 
   return { response, loading, error, loadData };
 }

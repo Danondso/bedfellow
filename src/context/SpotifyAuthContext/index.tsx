@@ -1,4 +1,4 @@
-import React, { createContext, useState, useCallback, ReactNode, useEffect, Context, useRef } from 'react';
+import React, { createContext, useState, useCallback, ReactNode, useEffect, Context, useRef, useMemo } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, { AxiosError } from 'axios';
 import { AuthorizeResult } from 'react-native-app-auth';
@@ -281,15 +281,29 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval);
   }, [authState.token, authState.isRefreshing, isTokenExpiring, refreshToken]);
 
-  const contextValue: SpotifyAuthContextData = {
-    authState,
-    setAuthToken,
-    refreshToken,
-    logout,
-    isTokenExpiring,
-    isAuthenticated: !!authState.token && !isTokenExpiring(),
-    clearError,
-  };
+  // Calculate isAuthenticated separately to avoid circular dependency
+  const isAuthenticated = useMemo(() => {
+    if (!authState.token?.expiresAt) return false;
+
+    const expiresAt = new Date(authState.token.expiresAt).getTime();
+    const now = Date.now();
+    const isExpiringSoon = expiresAt - TOKEN_REFRESH_BUFFER_MS <= now;
+
+    return !isExpiringSoon;
+  }, [authState.token]);
+
+  const contextValue: SpotifyAuthContextData = useMemo(
+    () => ({
+      authState,
+      setAuthToken,
+      refreshToken,
+      logout,
+      isTokenExpiring,
+      isAuthenticated,
+      clearError,
+    }),
+    [authState, setAuthToken, refreshToken, logout, isTokenExpiring, isAuthenticated, clearError]
+  );
 
   return <SpotifyAuthContext.Provider value={contextValue}>{children}</SpotifyAuthContext.Provider>;
 }

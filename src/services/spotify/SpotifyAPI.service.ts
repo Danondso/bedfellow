@@ -7,9 +7,9 @@ import { BedfellowSample } from '../../types/bedfellow-api';
 export const BASE_URL = 'https://api.spotify.com/';
 const PLAYER_URL_FRAGMENT = 'v1/me/player';
 
-export const buildSpotifyHeaders = (token: SpotifyAuthToken | null): Object => ({
+export const buildSpotifyHeaders = (token: SpotifyAuthToken): Object => ({
   headers: {
-    Authorization: `Bearer ${token?.accessToken || ''}`,
+    Authorization: `Bearer ${token.accessToken}`,
     'Content-Type': 'application/json',
   },
 });
