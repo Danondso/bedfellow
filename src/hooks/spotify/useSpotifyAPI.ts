@@ -49,15 +49,11 @@ function useSpotifyAPI(url: string): SpotifyAPIHookResponse {
 
       // If we get a 401, try to refresh the token and retry
       if (apiError.response?.status === 401 && tokenRef.current) {
-        const refreshSuccess = await refreshToken();
-        if (refreshSuccess) {
-          // After refresh, tokenRef will be updated via the useEffect
-          // Wait a tick for the context to update
-          await new Promise((resolve) => setTimeout(resolve, 0));
-
+        const refreshedToken = await refreshToken();
+        if (refreshedToken) {
           try {
-            // Now use the updated token from the ref
-            const result = await spotifyGETData(url, tokenRef.current);
+            // Use the new token returned by refreshToken for the retry
+            const result = await spotifyGETData(url, refreshedToken);
             setResponse(result.data);
             setError(null);
             setLoading(false);
