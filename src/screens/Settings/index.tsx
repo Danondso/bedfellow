@@ -7,7 +7,7 @@ import ThemedView from '../../components/themed/ThemedView';
 import ThemedText from '../../components/themed/ThemedText';
 import ThemedButton from '../../components/themed/ThemedButton';
 import SoftHeader from '../../components/navigation/SoftHeader';
-import ThemeSwitcher, { DarkModeToggle } from '../../components/themed/ThemeSwitcher';
+import ThemeSwitcher from '../../components/themed/ThemeSwitcher';
 import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
 import { useAdvancedDynamicTheme } from '../../context/ThemeContext/dynamicTheme';
 import { createStyles } from './Settings.themed.styles';
