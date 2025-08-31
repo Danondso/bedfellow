@@ -56,7 +56,7 @@ interface PlaybackFooterProps {
 }
 
 function PlaybackFooter({ refreshCurrentlyPlayingTrack }: PlaybackFooterProps) {
-  const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { response, loadData } = useSpotifyAPI('v1/me/player');
   const playButtonIconName: FontAwesomeIconName = (response as SpotifyApi.CurrentPlaybackResponse)?.is_playing
     ? 'pause'
@@ -67,7 +67,7 @@ function PlaybackFooter({ refreshCurrentlyPlayingTrack }: PlaybackFooterProps) {
       <PlayerButton
         buttonName="backward"
         onPress={async () => {
-          await performPlaybackAction('backward', spotifyAuth);
+          await performPlaybackAction('backward', authState.token);
           await refreshCurrentlyPlayingTrack();
           await loadData();
         }}
@@ -75,14 +75,14 @@ function PlaybackFooter({ refreshCurrentlyPlayingTrack }: PlaybackFooterProps) {
       <PlayerButton
         buttonName={playButtonIconName}
         onPress={async () => {
-          await performPlaybackAction(playButtonIconName, spotifyAuth);
+          await performPlaybackAction(playButtonIconName, authState.token);
           await loadData();
         }}
       />
       <PlayerButton
         buttonName="forward"
         onPress={async () => {
-          await performPlaybackAction('forward', spotifyAuth);
+          await performPlaybackAction('forward', authState.token);
           await refreshCurrentlyPlayingTrack();
           await loadData();
         }}

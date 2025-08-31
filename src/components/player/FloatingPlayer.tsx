@@ -13,7 +13,7 @@ interface FloatingPlayerProps {
 const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshCurrentlyPlayingTrack }) => {
   const { theme } = useTheme();
   const [expanded, setExpanded] = useState(false);
-  const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { response, loadData } = useSpotifyAPI('v1/me/player');
   const [fadeAnim] = useState(new Animated.Value(0));
 
@@ -31,18 +31,18 @@ const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshCurrentlyPlaying
   };
 
   const handlePlayPause = async () => {
-    await performPlaybackAction(playButtonIconName as any, spotifyAuth);
+    await performPlaybackAction(playButtonIconName as any, authState.token);
     await loadData();
   };
 
   const handlePrevious = async () => {
-    await performPlaybackAction('backward' as any, spotifyAuth);
+    await performPlaybackAction('backward' as any, authState.token);
     await refreshCurrentlyPlayingTrack();
     await loadData();
   };
 
   const handleNext = async () => {
-    await performPlaybackAction('forward' as any, spotifyAuth);
+    await performPlaybackAction('forward' as any, authState.token);
     await refreshCurrentlyPlayingTrack();
     await loadData();
   };
