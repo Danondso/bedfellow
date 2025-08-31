@@ -23,10 +23,13 @@ export default function () {
     headerShown: false,
   };
 
+  // Check if user is not authenticated (no token or expired)
+  const isNotAuthenticated = !spotifyAuth?.accessToken || expirationDate.getTime() <= currentDate.getTime();
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={screenOptions}>
-        {expirationDate.getTime() <= currentDate.getTime() ? (
+        {isNotAuthenticated ? (
           <>
             <Stack.Screen name={LOGIN} component={LoginScreen} />
             <Stack.Screen name={DETAILS} component={DetailsScreen} />
