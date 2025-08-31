@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Platform, Alert } from 'react-native';
 import Config from 'react-native-config';
 import { authorize, AuthorizeResult } from 'react-native-app-auth';
@@ -15,10 +15,17 @@ import { LoginScreenProps } from '../../types';
 import { createStyles } from './Login.themed.styles';
 
 function LoginScreen({ navigation }: LoginScreenProps) {
-  const spotifyAuthContext = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
-  const { setSpotifyAuth } = spotifyAuthContext as SpotifyAuthContextData;
+  const { setAuthToken, authState, clearError } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { theme } = useTheme();
   const styles = createStyles(theme);
+
+  // Show error if auth failed
+  useEffect(() => {
+    if (authState.error) {
+      Alert.alert('Authentication Error', authState.error);
+      clearError();
+    }
+  }, [authState.error, clearError]);
 
   async function authenticate() {
     try {
@@ -38,11 +45,8 @@ function LoginScreen({ navigation }: LoginScreenProps) {
       };
 
       const session: AuthorizeResult = await authorize(config);
-      if (setSpotifyAuth && session.refreshToken) {
-        setSpotifyAuth({
-          ...session,
-          expired: false,
-        });
+      if (session.refreshToken) {
+        await setAuthToken(session);
         navigation.navigate(DETAILS);
       }
     } catch (error) {

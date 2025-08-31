@@ -212,7 +212,7 @@ type SampleListProps = {
 };
 
 function SampleList({ isLoading, showSkeleton, trackSamples, HeaderComponent, onRefresh }: SampleListProps) {
-  const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { theme } = useTheme();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [snackbarText, setSnackbarText] = useState('');
@@ -220,7 +220,7 @@ function SampleList({ isLoading, showSkeleton, trackSamples, HeaderComponent, on
 
   const onPressHandler = async (item: BedfellowTypes.BedfellowSample) => {
     try {
-      const result = await findAndQueueTrack(item, spotifyAuth);
+      const result = await findAndQueueTrack(item, authState.token);
       setSnackbarText(result);
       setError(false);
     } catch (err) {
