@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ScrollView, View, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from '@react-native-vector-icons/ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CommonActions } from '@react-navigation/native';
 import { useTheme } from '../../context/ThemeContext';
+import { SpotifyAuthContext, initialState } from '../../context/SpotifyAuthContext';
+import { LOGIN } from '../constants/Screens';
 import ThemedView from '../../components/themed/ThemedView';
 import ThemedText from '../../components/themed/ThemedText';
 import ThemedButton from '../../components/themed/ThemedButton';
@@ -11,10 +15,12 @@ import ThemeSwitcher from '../../components/themed/ThemeSwitcher';
 import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
 import { useAdvancedDynamicTheme } from '../../context/ThemeContext/dynamicTheme';
 import { createStyles } from './Settings.themed.styles';
+import { SettingsScreenProps } from '../../types';
 
-const SettingsScreen: React.FC = () => {
+const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   const { theme, themeMode, resetToDefaults } = useTheme();
   const { clearCache } = useAdvancedDynamicTheme(null);
+  const { setSpotifyAuth } = useContext(SpotifyAuthContext);
   const styles = createStyles(theme);
 
   const handleResetTheme = () => {
@@ -34,6 +40,35 @@ const SettingsScreen: React.FC = () => {
   const handleClearCache = async () => {
     await clearCache();
     Alert.alert('Cache Cleared', 'Color extraction cache has been cleared');
+  };
+
+  const handleLogout = () => {
+    Alert.alert('Logout', 'Are you sure you want to logout from Spotify?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Logout',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            // Clear the stored auth data
+            await AsyncStorage.removeItem('SPOTIFY_AUTH_DATA');
+            // Reset the auth context to initial state
+            setSpotifyAuth(initialState);
+            // Show success alert
+            Alert.alert('Success', 'You have been logged out successfully');
+            // Reset the navigation stack to go to Login screen
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: LOGIN }],
+              })
+            );
+          } catch (error) {
+            Alert.alert('Error', 'Failed to logout. Please try again.');
+          }
+        },
+      },
+    ]);
   };
 
   return (
@@ -97,6 +132,24 @@ const SettingsScreen: React.FC = () => {
                   </ThemedText>
                 </ThemedButton>
               </View>
+            </View>
+
+            {/* Account Section */}
+            <View style={styles.section}>
+              <ThemedText variant="h4" style={styles.sectionTitle}>
+                Account
+              </ThemedText>
+
+              <ThemedButton
+                variant="spotify"
+                size="medium"
+                fullWidth
+                onPress={handleLogout}
+                icon={<Icon name="log-out-outline" size={20} color="#FFFFFF" />}
+                iconPosition="left"
+              >
+                Logout from Spotify
+              </ThemedButton>
             </View>
 
             {/* App Info */}

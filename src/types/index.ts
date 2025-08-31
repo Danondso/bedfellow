@@ -12,3 +12,5 @@ export type RootStackParamList = {
 export type LoginScreenProps = StackScreenProps<RootStackParamList, 'Login'>;
 
 export type DetailsScreenProps = StackScreenProps<RootStackParamList, 'Details'>;
+
+export type SettingsScreenProps = StackScreenProps<RootStackParamList, 'Settings'>;
