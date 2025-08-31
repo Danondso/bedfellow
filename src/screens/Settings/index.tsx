@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions } from '@react-navigation/native';
 import { useTheme } from '../../context/ThemeContext';
 import { SpotifyAuthContext, initialState } from '../../context/SpotifyAuthContext';
+import { LOGIN } from '../constants/Screens';
 import ThemedView from '../../components/themed/ThemedView';
 import ThemedText from '../../components/themed/ThemedText';
 import ThemedButton from '../../components/themed/ThemedButton';
@@ -59,7 +60,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
             navigation.dispatch(
               CommonActions.reset({
                 index: 0,
-                routes: [{ name: 'Login' }],
+                routes: [{ name: LOGIN }],
               })
             );
           } catch (error) {
