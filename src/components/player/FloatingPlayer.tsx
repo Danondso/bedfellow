@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
-import Icon, { type FontAwesomeIconName } from '@react-native-vector-icons/fontawesome';
+import Icon from '@react-native-vector-icons/ionicons';
 import { useTheme } from '../../context/ThemeContext';
 import { performPlaybackAction } from '../../services/spotify/SpotifyAPI.service';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
@@ -15,34 +15,34 @@ const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshCurrentlyPlaying
   const [expanded, setExpanded] = useState(false);
   const { spotifyAuth } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { response, loadData } = useSpotifyAPI('v1/me/player');
-  const fadeAnim = new Animated.Value(0);
+  const [fadeAnim] = useState(new Animated.Value(0));
 
-  const playButtonIconName: FontAwesomeIconName = (response as SpotifyApi.CurrentPlaybackResponse)?.is_playing
-    ? 'pause'
-    : 'play';
+  const isPlaying = (response as SpotifyApi.CurrentPlaybackResponse)?.is_playing;
+  const playButtonIconName = isPlaying ? 'pause' : 'play';
 
   const toggleExpanded = () => {
-    setExpanded(!expanded);
+    const newExpanded = !expanded;
+    setExpanded(newExpanded);
     Animated.timing(fadeAnim, {
-      toValue: expanded ? 0 : 1,
+      toValue: newExpanded ? 1 : 0,
       duration: 200,
       useNativeDriver: true,
     }).start();
   };
 
   const handlePlayPause = async () => {
-    await performPlaybackAction(playButtonIconName, spotifyAuth);
+    await performPlaybackAction(playButtonIconName as any, spotifyAuth);
     await loadData();
   };
 
   const handlePrevious = async () => {
-    await performPlaybackAction('backward', spotifyAuth);
+    await performPlaybackAction('backward' as any, spotifyAuth);
     await refreshCurrentlyPlayingTrack();
     await loadData();
   };
 
   const handleNext = async () => {
-    await performPlaybackAction('forward', spotifyAuth);
+    await performPlaybackAction('forward' as any, spotifyAuth);
     await refreshCurrentlyPlayingTrack();
     await loadData();
   };
@@ -51,7 +51,8 @@ const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshCurrentlyPlaying
     container: {
       position: 'absolute',
       bottom: theme.spacing.xl,
-      right: theme.spacing.lg,
+      left: 0,
+      right: 0,
       alignItems: 'center',
       zIndex: 1000,
     },
@@ -72,9 +73,10 @@ const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshCurrentlyPlaying
       position: 'absolute',
       bottom: 70,
       flexDirection: 'row',
+      alignItems: 'center',
       backgroundColor: theme.colors.surface[100],
       borderRadius: theme.borderRadius.full,
-      paddingHorizontal: theme.spacing.md,
+      paddingHorizontal: theme.spacing.lg,
       paddingVertical: theme.spacing.sm,
       shadowColor: theme.colors.shadow || 'rgba(52, 57, 65, 0.14)',
       shadowOffset: { width: 0, height: 2 },
@@ -83,24 +85,24 @@ const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshCurrentlyPlaying
       elevation: 6,
     },
     controlButton: {
-      width: 44,
-      height: 44,
+      width: 40,
+      height: 40,
       borderRadius: theme.borderRadius.full,
       backgroundColor: theme.colors.surface[50],
       justifyContent: 'center',
       alignItems: 'center',
-      marginHorizontal: theme.spacing.xs,
+      marginHorizontal: theme.spacing.sm,
       borderWidth: 1,
       borderColor: theme.colors.border[100],
     },
     playPauseButton: {
-      width: 48,
-      height: 48,
+      width: 44,
+      height: 44,
       borderRadius: theme.borderRadius.full,
       backgroundColor: theme.colors.primary[500],
       justifyContent: 'center',
       alignItems: 'center',
-      marginHorizontal: theme.spacing.xs,
+      marginHorizontal: theme.spacing.sm,
     },
   });
 
@@ -109,21 +111,21 @@ const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshCurrentlyPlaying
       {expanded && (
         <Animated.View style={[styles.expandedContainer, { opacity: fadeAnim }]}>
           <TouchableOpacity style={styles.controlButton} onPress={handlePrevious}>
-            <Icon name="backward" size={16} color={theme.colors.primary[600]} />
+            <Icon name="play-skip-back" size={18} color={theme.colors.primary[600]} />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.playPauseButton} onPress={handlePlayPause}>
-            <Icon name={playButtonIconName} size={18} color={theme.colors.text[50]} />
+            <Icon name={playButtonIconName} size={20} color={theme.colors.text[50]} />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.controlButton} onPress={handleNext}>
-            <Icon name="forward" size={16} color={theme.colors.primary[600]} />
+            <Icon name="play-skip-forward" size={18} color={theme.colors.primary[600]} />
           </TouchableOpacity>
         </Animated.View>
       )}
 
       <TouchableOpacity style={styles.mainButton} onPress={toggleExpanded} activeOpacity={0.8}>
-        <Icon name={expanded ? 'times' : 'music'} size={24} color={theme.colors.text[50]} />
+        <Icon name={expanded ? 'close' : 'musical-notes'} size={24} color={theme.colors.text[50]} />
       </TouchableOpacity>
     </View>
   );
