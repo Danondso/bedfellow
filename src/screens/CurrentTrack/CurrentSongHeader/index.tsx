@@ -59,7 +59,7 @@ export default function CurrentSongHeader({ item, isLoading }: CurrentSongHeader
             }}
           >
             <Avatar.Image
-              size={90}
+              size={120}
               source={Platform.OS === 'android' ? { uri: item?.album.images[0].url } : item?.album.images[0]}
               style={{ borderRadius: theme.borderRadius.full }}
             />

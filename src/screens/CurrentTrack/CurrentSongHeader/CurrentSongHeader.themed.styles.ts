@@ -43,11 +43,12 @@ export const createStyles = (theme: Theme) =>
       elevation: 8, // Android shadow
     },
     artistName: {
-      paddingHorizontal: theme.spacing.lg,
+      paddingHorizontal: theme.spacing.sm,
       paddingVertical: theme.spacing.sm,
       textAlign: 'center',
       color: theme.colors.text[700], // Slightly muted for hierarchy
       marginTop: theme.spacing.xs, // Small spacing between track and artist
+      fontSize: theme.typography.xl, // Larger for readability
     },
     trackName: {
       paddingHorizontal: theme.spacing.xl,
@@ -56,6 +57,7 @@ export const createStyles = (theme: Theme) =>
       textAlign: 'center',
       color: theme.colors.text[900], // Primary text color for main track
       lineHeight: theme.typography['2xl'] * 1.2, // Better line height for serif
+      fontSize: theme.typography['3xl'], // Larger for emphasis
     },
     albumDescription: {
       textAlign: 'center',
@@ -63,6 +65,7 @@ export const createStyles = (theme: Theme) =>
       paddingTop: theme.spacing.md,
       paddingHorizontal: theme.spacing.xl,
       marginBottom: theme.spacing.sm,
+      fontSize: theme.typography.base * 1.1, // Slightly larger for readability
     },
     button: {
       borderRadius: theme.borderRadius.md,

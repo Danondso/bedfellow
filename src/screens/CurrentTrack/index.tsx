@@ -133,6 +133,9 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
           icon="settings-outline"
           onPress={() => navigation.navigate('Settings' as any)}
           position="top-right"
+          style={{
+            marginTop: theme.spacing.md,
+          }}
           size="medium"
           animated
         />

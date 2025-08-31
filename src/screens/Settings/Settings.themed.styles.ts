@@ -158,8 +158,7 @@ export const createStyles = (theme: Theme) =>
       color: theme.colors.text[600],
     },
     actionButtons: {
-      marginTop: theme.spacing.xl, // More space before action buttons
-      gap: theme.spacing.md,
+      gap: theme.spacing.xs,
     },
     actionButton: {
       marginBottom: theme.spacing.md, // More space between buttons
