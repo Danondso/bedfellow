@@ -95,7 +95,7 @@ const SoftHeader: React.FC<SoftHeaderProps> = ({
       letterSpacing: -0.3,
     } as TextStyle,
     subtitle: {
-      fontSize: theme.typography.sm,
+      fontSize: theme.typography.lg,
       color: theme.colors.text[600],
       marginTop: theme.spacing.xs,
     } as TextStyle,

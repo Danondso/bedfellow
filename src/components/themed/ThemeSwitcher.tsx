@@ -62,7 +62,7 @@ const ButtonSwitcher: React.FC<{
 }> = ({ theme, themeMode, handleThemeChange, showLabels, style }) => {
   return (
     <View style={[styles.buttonContainer, style]}>
-      {THEME_MODES.filter((mode) => mode.value !== ThemeMode.DYNAMIC).map((mode) => (
+      {THEME_MODES.map((mode) => (
         <TouchableOpacity
           key={mode.value}
           style={[
@@ -99,7 +99,7 @@ const SegmentedSwitcher: React.FC<{
   handleThemeChange: (mode: ThemeMode) => void;
   style?: ViewStyle;
 }> = ({ theme, themeMode, handleThemeChange, style }) => {
-  const modes = THEME_MODES.filter((mode) => mode.value !== ThemeMode.DYNAMIC && mode.value !== ThemeMode.AUTO);
+  const modes = THEME_MODES.filter((mode) => mode.value !== ThemeMode.AUTO);
 
   return (
     <View
@@ -152,7 +152,7 @@ const ListSwitcher: React.FC<{
 }> = ({ theme, themeMode, handleThemeChange, isDynamicEnabled, toggleDynamicTheme, showDynamicToggle, style }) => {
   return (
     <ThemedView style={style}>
-      {THEME_MODES.filter((mode) => (!showDynamicToggle ? mode.value !== ThemeMode.DYNAMIC : true)).map((mode) => (
+      {THEME_MODES.map((mode) => (
         <TouchableOpacity
           key={mode.value}
           style={[

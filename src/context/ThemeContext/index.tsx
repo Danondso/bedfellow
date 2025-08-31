@@ -123,9 +123,24 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   // Calculate the current theme based on mode and settings
   const currentTheme = useMemo(() => {
-    // If dynamic theme is enabled and we have a palette, create dynamic theme
-    if (isDynamicEnabled && dynamicPalette) {
-      const isDark = themeMode === ThemeMode.DARK || (themeMode === ThemeMode.AUTO && systemTheme === 'dark');
+    // Handle DYNAMIC theme mode
+    if (themeMode === ThemeMode.DYNAMIC) {
+      if (dynamicPalette) {
+        // Use system theme preference for base (light/dark)
+        const isDark = systemTheme === 'dark';
+        const baseTheme = getBaseThemeForDynamic(isDark);
+        return createDynamicTheme(dynamicPalette, baseTheme);
+      }
+      // If no palette available, fall back to AUTO mode behavior
+      return systemTheme === 'dark' ? darkTheme : lightTheme;
+    }
+
+    // TODO: Remove isDynamicEnabled flag in future version
+    // The isDynamicEnabled flag is legacy and should be replaced with ThemeMode.DYNAMIC
+    // Keeping for backward compatibility - users should use ThemeMode.DYNAMIC instead
+    // If dynamic theme is enabled and we have a palette (legacy behavior for AUTO mode)
+    if (isDynamicEnabled && dynamicPalette && themeMode === ThemeMode.AUTO) {
+      const isDark = systemTheme === 'dark';
       const baseTheme = getBaseThemeForDynamic(isDark);
       return createDynamicTheme(dynamicPalette, baseTheme);
     }

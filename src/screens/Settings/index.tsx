@@ -7,14 +7,14 @@ import ThemedView from '../../components/themed/ThemedView';
 import ThemedText from '../../components/themed/ThemedText';
 import ThemedButton from '../../components/themed/ThemedButton';
 import SoftHeader from '../../components/navigation/SoftHeader';
-import ThemeSwitcher, { DarkModeToggle } from '../../components/themed/ThemeSwitcher';
+import ThemeSwitcher from '../../components/themed/ThemeSwitcher';
 import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
 import { useAdvancedDynamicTheme } from '../../context/ThemeContext/dynamicTheme';
 import { createStyles } from './Settings.themed.styles';
 
 const SettingsScreen: React.FC = () => {
-  const { theme, themeMode, isDynamicEnabled, toggleDynamicTheme, resetToDefaults } = useTheme();
-  const { clearCache, validateAccessibility } = useAdvancedDynamicTheme(null);
+  const { theme, themeMode, resetToDefaults } = useTheme();
+  const { clearCache } = useAdvancedDynamicTheme(null);
   const styles = createStyles(theme);
 
   const handleResetTheme = () => {
@@ -36,24 +36,13 @@ const SettingsScreen: React.FC = () => {
     Alert.alert('Cache Cleared', 'Color extraction cache has been cleared');
   };
 
-  const handleValidateTheme = () => {
-    const validation = validateAccessibility();
-    if (validation) {
-      if (validation.valid) {
-        Alert.alert('Accessibility Check', 'Current theme meets WCAG AA standards! ✓');
-      } else {
-        Alert.alert('Accessibility Issues', validation.issues.join('\n'), [{ text: 'OK' }]);
-      }
-    }
-  };
-
   return (
     <ThemeTransition type="fade" duration={300}>
       <SafeAreaView
         style={[styles.container, { backgroundColor: theme.colors.background[50] }]}
         edges={['left', 'right']}
       >
-        <SoftHeader title="Settings" subtitle="Customize your experience" showBackButton />
+        <SoftHeader title="Settings" showBackButton />
         <ThemedView style={styles.safeArea}>
           <ScrollView
             style={styles.scrollView}
@@ -79,91 +68,33 @@ const SettingsScreen: React.FC = () => {
                 </ThemedText>
               </View>
 
-              {/* Theme Mode Selector */}
-              <View style={styles.settingItem}>
-                <View style={styles.settingInfo}>
-                  <ThemedText variant="body" style={styles.settingLabel}>
-                    Theme Mode
-                  </ThemedText>
-                  <ThemedText variant="caption" color="muted">
-                    Choose your preferred color scheme
-                  </ThemedText>
-                </View>
-              </View>
               <ThemeSwitcher variant="segmented" showDynamicToggle={false} style={{ marginBottom: theme.spacing.md }} />
-
-              {/* Dynamic Theme Toggle */}
-              <View style={styles.settingItem}>
-                <View style={styles.settingInfo}>
-                  <ThemedText variant="body" style={styles.settingLabel}>
-                    Dynamic Album Colors
-                  </ThemedText>
-                  <ThemedText variant="caption" color="muted">
-                    Adapt theme to album artwork
-                  </ThemedText>
-                </View>
-                <ThemedButton
-                  variant={isDynamicEnabled ? 'primary' : 'outline'}
-                  size="small"
-                  onPress={toggleDynamicTheme}
-                  style={{ borderRadius: theme.borderRadius.full }}
-                >
-                  {isDynamicEnabled ? 'On' : 'Off'}
-                </ThemedButton>
-              </View>
-
-              {/* Quick Dark Mode Toggle */}
-              <View style={styles.settingItem}>
-                <View style={styles.settingInfo}>
-                  <ThemedText variant="body" style={styles.settingLabel}>
-                    Dark Mode
-                  </ThemedText>
-                  <ThemedText variant="caption" color="muted">
-                    Quick toggle for dark mode
-                  </ThemedText>
-                </View>
-                <DarkModeToggle />
-              </View>
             </View>
 
             {/* Advanced Theme Options */}
             <View style={styles.section}>
               <ThemedText variant="h4" style={styles.sectionTitle}>
-                Advanced Options
+                Options
               </ThemedText>
-
-              {/* Color Harmony Selector */}
-              <View style={styles.settingItem}>
-                <View style={styles.settingInfo}>
-                  <ThemedText variant="body" style={styles.settingLabel}>
-                    Color Harmony
-                  </ThemedText>
-                  <ThemedText variant="caption" color="muted">
-                    Algorithm for dynamic colors
-                  </ThemedText>
-                </View>
-              </View>
 
               {/* Theme Actions */}
               <View style={styles.actionButtons}>
-                <ThemedButton variant="outline" size="medium" onPress={handleValidateTheme} style={styles.actionButton}>
-                  <Icon name="checkmark-circle-outline" size={18} color={theme.colors.primary[600]} />
-                  <ThemedText variant="body"> Check Accessibility</ThemedText>
-                </ThemedButton>
-
                 <ThemedButton variant="outline" size="medium" onPress={handleClearCache} style={styles.actionButton}>
                   <Icon name="trash-outline" size={18} color={theme.colors.primary[600]} />
                   <ThemedText variant="body"> Clear Cache</ThemedText>
                 </ThemedButton>
 
                 <ThemedButton
-                  variant="danger"
+                  variant="danger-outline"
                   size="medium"
                   onPress={handleResetTheme}
-                  style={{ ...styles.actionButton, borderColor: theme.colors.error[400] }}
+                  style={styles.actionButton}
                 >
                   <Icon name="refresh-outline" size={18} color={theme.colors.error[600]} />
-                  <ThemedText variant="body"> Reset All Settings</ThemedText>
+                  <ThemedText variant="body" style={{ color: theme.colors.error[600] }}>
+                    {' '}
+                    Reset All Settings
+                  </ThemedText>
                 </ThemedButton>
               </View>
             </View>
@@ -189,15 +120,6 @@ const SettingsScreen: React.FC = () => {
                 </ThemedText>
                 <ThemedText variant="body" color="muted">
                   v2.0
-                </ThemedText>
-              </View>
-
-              <View style={styles.infoItem}>
-                <ThemedText variant="body" style={{ fontWeight: '500' }}>
-                  Accessibility
-                </ThemedText>
-                <ThemedText variant="body" color="muted">
-                  WCAG AA
                 </ThemedText>
               </View>
 

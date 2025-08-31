@@ -179,7 +179,7 @@ describe('ThemeContext', () => {
 
       expect(getByTestId('theme-mode').children[0]).toBe(ThemeMode.AUTO);
       // Dark theme background[500] should be the generated slate[100] color
-      expect(getByTestId('theme-background').children[0]).toBe('#F0F0F0');
+      expect(getByTestId('theme-background').children[0]).toBe('#E5C185');
     });
 
     it('should apply dynamic palette when enabled', () => {

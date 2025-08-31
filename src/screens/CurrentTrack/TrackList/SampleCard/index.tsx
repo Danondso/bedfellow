@@ -15,6 +15,7 @@ function SampleCard({ item, onPress }: SampleCardProps) {
   const { track, artist, image } = item;
   const [isPressed, setIsPressed] = useState(false);
   const scaleValue = new Animated.Value(1);
+  const opacityValue = new Animated.Value(1);
 
   if (!artist) {
     return null;
@@ -30,19 +31,23 @@ function SampleCard({ item, onPress }: SampleCardProps) {
     trackItem: {
       borderRadius: theme.borderRadius['3xl'], // Extra rounded for warm aesthetic
       overflow: 'hidden',
-      backgroundColor: theme.colors.surface[100], // Use warm sand surface color
+      backgroundColor: isPressed
+        ? theme.colors.surface[100] // Keep same background when pressed
+        : theme.colors.surface[100], // Use warm sand surface color
       borderWidth: 1.5,
-      borderColor: isPressed ? theme.colors.primary[300] : theme.colors.border[100], // Interactive border
-      // Enhanced warm shadow system
+      borderColor: isPressed
+        ? theme.colors.border[200] // Very subtle border change - just slightly darker
+        : theme.colors.border[100], // Interactive border
+      // Very soft shadow system
       shadowColor: theme.colors.shadow || 'rgba(52, 57, 65, 0.14)',
       shadowOffset: {
         width: 0,
-        height: isPressed ? 2 : 6,
+        height: isPressed ? 4 : 5, // Minimal shadow change
       },
-      shadowOpacity: isPressed ? 0.2 : 0.35,
-      shadowRadius: isPressed ? 6 : 12,
-      elevation: isPressed ? 4 : 8, // Android shadow
-      transform: [{ scale: isPressed ? 0.98 : 1 }],
+      shadowOpacity: isPressed ? 0.18 : 0.22, // Even softer shadow change
+      shadowRadius: isPressed ? 9 : 10, // Almost imperceptible radius change
+      elevation: isPressed ? 6 : 7, // Android shadow - minimal difference
+      // Transform is handled by Animated.View, not needed in static styles
     },
     trackImage: {
       width: '100%',
@@ -73,26 +78,48 @@ function SampleCard({ item, onPress }: SampleCardProps) {
 
   const handlePressIn = () => {
     setIsPressed(true);
-    Animated.spring(scaleValue, {
-      toValue: 0.98,
-      useNativeDriver: true,
-    }).start();
+    Animated.parallel([
+      Animated.timing(scaleValue, {
+        toValue: 0.995, // Even more subtle scale down
+        duration: 200, // Slower, smoother transition
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityValue, {
+        toValue: 0.92, // Slightly more opacity reduction for visual feedback
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
 
   const handlePressOut = () => {
     setIsPressed(false);
-    Animated.spring(scaleValue, {
-      toValue: 1,
-      friction: 3,
-      tension: 40,
-      useNativeDriver: true,
-    }).start();
+    Animated.parallel([
+      Animated.timing(scaleValue, {
+        toValue: 1,
+        duration: 250, // Even slower release for smoothness
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityValue, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
 
   return (
     <View style={styles.trackListWrapper}>
       <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={onPress}>
-        <Animated.View style={[styles.trackItem, { transform: [{ scale: scaleValue }] }]}>
+        <Animated.View
+          style={[
+            styles.trackItem,
+            {
+              transform: [{ scale: scaleValue }],
+              opacity: opacityValue,
+            },
+          ]}
+        >
           <Card mode="elevated" style={{ borderRadius: theme.borderRadius['3xl'], overflow: 'hidden' }}>
             <Card.Cover style={styles.trackImage} source={{ uri: image }} />
             <Card.Content style={styles.cardContent}>

@@ -1,5 +1,5 @@
 import { useEffect, useContext, useCallback } from 'react';
-import { DynamicPalette } from '../../theme/types';
+import { ThemeMode } from '../../theme/types';
 import { ThemeContext } from './index';
 import ColorExtractionService, {
   ExtractionQuality,
@@ -9,18 +9,23 @@ import ColorExtractionService, {
 
 // Default extraction options
 const DEFAULT_EXTRACTION_OPTIONS: ColorExtractionOptions = {
-  quality: ExtractionQuality.LOW,
+  quality: ExtractionQuality.HIGH, // Better quality extraction
   cache: true,
   enhanceContrast: true,
-  harmony: ColorHarmony.TRIADIC,
+  harmony: ColorHarmony.COMPLEMENTARY, // More vibrant color combinations
+  saturate: 20, // Boost saturation for more vibrant colors
+  brighten: 10, // Slightly brighten for better visibility
+  blendWithBrand: false, // Don't blend with brand colors to keep album colors pure
 };
 
 // Hook to use dynamic theme from album artwork
 export const useDynamicTheme = (imageUrl: string | null | undefined, options: Partial<ColorExtractionOptions> = {}) => {
-  const { setDynamicPalette, isDynamicEnabled } = useContext(ThemeContext);
+  const { setDynamicPalette, isDynamicEnabled, themeMode } = useContext(ThemeContext);
 
   const updatePalette = useCallback(async () => {
-    if (!isDynamicEnabled || !imageUrl) {
+    // Check if we should extract colors (either DYNAMIC mode or legacy isDynamicEnabled)
+    const shouldExtract = themeMode === ThemeMode.DYNAMIC || isDynamicEnabled;
+    if (!shouldExtract || !imageUrl) {
       setDynamicPalette(null);
       return;
     }
@@ -33,7 +38,7 @@ export const useDynamicTheme = (imageUrl: string | null | undefined, options: Pa
     if (palette) {
       setDynamicPalette(palette);
     }
-  }, [imageUrl, isDynamicEnabled, setDynamicPalette, options]);
+  }, [imageUrl, isDynamicEnabled, themeMode, setDynamicPalette, options]);
 
   useEffect(() => {
     updatePalette();
@@ -70,10 +75,11 @@ export const useAdvancedDynamicTheme = (
     quality?: ExtractionQuality;
   } = {}
 ) => {
-  const { dynamicPalette, setDynamicPalette, isDynamicEnabled } = useContext(ThemeContext);
+  const { dynamicPalette, setDynamicPalette, isDynamicEnabled, themeMode } = useContext(ThemeContext);
 
   const extractAndApply = useCallback(async () => {
-    if (!isDynamicEnabled || !imageUrl) {
+    const shouldExtract = themeMode === ThemeMode.DYNAMIC || isDynamicEnabled;
+    if (!shouldExtract || !imageUrl) {
       setDynamicPalette(null);
       return null;
     }
@@ -89,7 +95,7 @@ export const useAdvancedDynamicTheme = (
     }
 
     return null;
-  }, [imageUrl, isDynamicEnabled, setDynamicPalette, options]);
+  }, [imageUrl, isDynamicEnabled, themeMode, setDynamicPalette, options]);
 
   const createFromColor = useCallback(
     (baseColor: string, harmony: ColorHarmony = ColorHarmony.TRIADIC) => {
@@ -98,16 +104,6 @@ export const useAdvancedDynamicTheme = (
       return palette;
     },
     [setDynamicPalette]
-  );
-
-  const validateAccessibility = useCallback(
-    (palette?: DynamicPalette) => {
-      const targetPalette = palette || dynamicPalette;
-      if (!targetPalette) return null;
-
-      return ColorExtractionService.validateAccessibility(targetPalette);
-    },
-    [dynamicPalette]
   );
 
   const clearCache = useCallback(async () => {
@@ -122,7 +118,6 @@ export const useAdvancedDynamicTheme = (
     palette: dynamicPalette,
     extractAndApply,
     createFromColor,
-    validateAccessibility,
     clearCache,
   };
 };

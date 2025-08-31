@@ -23,6 +23,7 @@ interface ThemedButtonProps extends Omit<TouchableOpacityProps, 'style'> {
     | 'outline'
     | 'sage-outline'
     | 'danger'
+    | 'danger-outline'
     | 'success'
     | 'gradient'
     | 'spotify';
@@ -187,6 +188,18 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
           },
           text: {
             color: theme.colors.text[50],
+          },
+        };
+
+      case 'danger-outline':
+        return {
+          button: {
+            backgroundColor: states.isPressed ? addAlpha(theme.colors.error[500], 0.05) : 'transparent',
+            borderWidth: 1.5,
+            borderColor: states.isDisabled ? theme.colors.error[300] : theme.colors.error[500],
+          },
+          text: {
+            color: states.isDisabled ? theme.colors.error[400] : theme.colors.error[600],
           },
         };
 
