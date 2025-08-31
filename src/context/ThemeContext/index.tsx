@@ -135,6 +135,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       return systemTheme === 'dark' ? darkTheme : lightTheme;
     }
 
+    // TODO: Remove isDynamicEnabled flag in future version
+    // The isDynamicEnabled flag is legacy and should be replaced with ThemeMode.DYNAMIC
+    // Keeping for backward compatibility - users should use ThemeMode.DYNAMIC instead
     // If dynamic theme is enabled and we have a palette (legacy behavior for AUTO mode)
     if (isDynamicEnabled && dynamicPalette && themeMode === ThemeMode.AUTO) {
       const isDark = systemTheme === 'dark';

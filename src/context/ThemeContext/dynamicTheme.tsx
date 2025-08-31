@@ -1,5 +1,5 @@
 import { useEffect, useContext, useCallback } from 'react';
-import { DynamicPalette } from '../../theme/types';
+import { ThemeMode } from '../../theme/types';
 import { ThemeContext } from './index';
 import ColorExtractionService, {
   ExtractionQuality,
@@ -24,7 +24,7 @@ export const useDynamicTheme = (imageUrl: string | null | undefined, options: Pa
 
   const updatePalette = useCallback(async () => {
     // Check if we should extract colors (either DYNAMIC mode or legacy isDynamicEnabled)
-    const shouldExtract = themeMode === 'dynamic' || isDynamicEnabled;
+    const shouldExtract = themeMode === ThemeMode.DYNAMIC || isDynamicEnabled;
     if (!shouldExtract || !imageUrl) {
       setDynamicPalette(null);
       return;
@@ -78,7 +78,7 @@ export const useAdvancedDynamicTheme = (
   const { dynamicPalette, setDynamicPalette, isDynamicEnabled, themeMode } = useContext(ThemeContext);
 
   const extractAndApply = useCallback(async () => {
-    const shouldExtract = themeMode === 'dynamic' || isDynamicEnabled;
+    const shouldExtract = themeMode === ThemeMode.DYNAMIC || isDynamicEnabled;
     if (!shouldExtract || !imageUrl) {
       setDynamicPalette(null);
       return null;

@@ -47,7 +47,7 @@ function SampleCard({ item, onPress }: SampleCardProps) {
       shadowOpacity: isPressed ? 0.18 : 0.22, // Even softer shadow change
       shadowRadius: isPressed ? 9 : 10, // Almost imperceptible radius change
       elevation: isPressed ? 6 : 7, // Android shadow - minimal difference
-      transform: [{ scale: isPressed ? 0.995 : 1 }], // Match the animated scale
+      // Transform is handled by Animated.View, not needed in static styles
     },
     trackImage: {
       width: '100%',
