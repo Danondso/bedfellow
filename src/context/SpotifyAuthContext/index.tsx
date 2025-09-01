@@ -18,7 +18,7 @@ const initialAuthState: SpotifyAuthState = {
 export const SpotifyAuthContext: Context<SpotifyAuthContextData> = createContext<SpotifyAuthContextData>({
   authState: initialAuthState,
   setAuthToken: async () => {},
-  refreshToken: async () => false,
+  refreshToken: async () => null,
   logout: async () => {},
   isTokenExpiring: () => true,
   isAuthenticated: false,
@@ -108,14 +108,14 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
   );
 
   // Refresh the access token
-  const refreshToken = useCallback(async (): Promise<boolean> => {
+  const refreshToken = useCallback(async (): Promise<SpotifyAuthToken | null> => {
     // If already refreshing, wait for the existing refresh to complete
     if (activeRefreshPromise) {
       try {
         const token = await activeRefreshPromise;
-        return token !== null;
+        return token;
       } catch {
-        return false;
+        return null;
       }
     }
 
@@ -126,7 +126,7 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
         isRefreshing: false,
         error: 'No refresh token available',
       });
-      return false;
+      return null;
     }
 
     // Create new refresh promise
@@ -184,9 +184,9 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
 
     try {
       const token = await activeRefreshPromise;
-      return token !== null;
+      return token;
     } catch {
-      return false;
+      return null;
     }
   }, [authState.token, persistToken, safeSetAuthState]);
 

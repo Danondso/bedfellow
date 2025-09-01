@@ -3,20 +3,9 @@ import { AxiosError } from 'axios';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
 // Types from @types/spotify-api are available globally via SpotifyApi namespace
 import { spotifyGETData } from '../../services/spotify/SpotifyAPI.service';
+import type { SpotifyAPIHookResponse, ApiError } from './types';
 
-type SpotifyAPIHookResponse = {
-  loadData: () => void;
-  loading: boolean;
-  error: ApiError | null;
-  response?: unknown;
-};
-
-type ApiError = {
-  message: string;
-  status: number;
-};
-
-function useSpotifyAPI(url: string): SpotifyAPIHookResponse {
+const useSpotifyAPI = (url: string): SpotifyAPIHookResponse => {
   const { authState, refreshToken } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const [response, setResponse] = useState<SpotifyApi.CurrentPlaybackResponse | null>();
   const [loading, setLoading] = useState(false);
@@ -73,6 +62,6 @@ function useSpotifyAPI(url: string): SpotifyAPIHookResponse {
   }, [url, refreshToken]);
 
   return { response, loading, error, loadData };
-}
+};
 
 export default useSpotifyAPI;
