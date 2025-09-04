@@ -56,8 +56,7 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
     playback: { playing },
   } = useSpotify();
   const { track, loading, refresh } = playing;
-  // @ts-ignore the type is goofy
-  const { artists, name, album } = track?.item ?? {};
+  const { artists, name, album } = (track?.item as SpotifyApi.TrackObjectFull) ?? {};
   const hasTrack = track?.item; //truthy
   const [samples, setSamples] = useState<BedfellowTrackSamples | null>(null);
   const [showSkeleton, setShowSkeleton] = useState(false);

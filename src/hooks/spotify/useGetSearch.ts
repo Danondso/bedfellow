@@ -26,7 +26,7 @@ const useGetSearch = (): UseGetSearchHookResponse => {
     if (!token) throw new Error('No access token available');
 
     try {
-      const { data } = await spotifyGETData(`/search?q=${query}&type=track`, token);
+      const { data } = await spotifyGETData(`/search?q=${encodeURIComponent(query)}&type=track`, token);
       setSearchResults(data);
       setLoading(false);
       return data;

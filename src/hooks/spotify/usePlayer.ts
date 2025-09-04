@@ -4,6 +4,8 @@ import { performPlaybackAction, spotifyGETData } from '@services/spotify/Spotify
 import { useState } from 'react';
 import type { UsePlayerHookResponse } from './types';
 
+type PlaybackAction = 'play' | 'pause' | 'forward' | 'backward';
+
 const usePlayer = (): UsePlayerHookResponse => {
   const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
   const { token } = authState;
@@ -37,18 +39,30 @@ const usePlayer = (): UsePlayerHookResponse => {
 
   const refresh = async () => await getData();
 
-  const playbackWrapper = (action: string) => performPlaybackAction(action, token);
+  const playbackWrapper = (action: PlaybackAction) => performPlaybackAction(action, token);
 
   const forward = async () => await playbackWrapper('forward');
 
   const pause = async () => {
-    setIsPaused(true);
-    await playbackWrapper('pause');
+    try {
+      await playbackWrapper('pause');
+      setIsPaused(true);
+    } catch (err: any) {
+      setError(err);
+      throw err;
+    }
   };
+
   const backward = async () => await playbackWrapper('backward');
+
   const play = async () => {
-    setIsPaused(false);
-    await playbackWrapper('play');
+    try {
+      await playbackWrapper('play');
+      setIsPaused(false);
+    } catch (err: any) {
+      setError(err);
+      throw err;
+    }
   };
 
   return {
