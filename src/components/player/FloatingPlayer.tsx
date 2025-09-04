@@ -4,11 +4,7 @@ import Icon from '@react-native-vector-icons/ionicons';
 import { useTheme } from '../../context/ThemeContext';
 import useSpotify from 'src/hooks/spotify/useSpotify';
 
-interface FloatingPlayerProps {
-  refreshTrack: () => void;
-}
-
-const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshTrack: _refreshTrack }) => {
+const FloatingPlayer: React.FC = () => {
   const { theme } = useTheme();
   const [expanded, setExpanded] = useState(false);
   const { playback } = useSpotify();
