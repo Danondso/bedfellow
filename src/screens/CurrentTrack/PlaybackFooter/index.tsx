@@ -49,18 +49,13 @@ function PlayerButton({ buttonName, onPress }: PlayerButtonProps) {
   );
 }
 
-interface PlaybackFooterProps {
-  refreshCurrentlyPlayingTrack: () => void;
-}
-
-function PlaybackFooter({ refreshCurrentlyPlayingTrack }: PlaybackFooterProps) {
+function PlaybackFooter() {
   const { playback } = useSpotify();
   const { actions, playing } = playback;
   const playButtonIconName: FontAwesomeIconName = actions.isPaused ? 'play' : 'pause';
 
   const handleBackward = async () => {
     await actions.backward();
-    await refreshCurrentlyPlayingTrack();
     await playing.refresh();
   };
 
@@ -75,7 +70,6 @@ function PlaybackFooter({ refreshCurrentlyPlayingTrack }: PlaybackFooterProps) {
 
   const handleForward = async () => {
     await actions.forward();
-    await refreshCurrentlyPlayingTrack();
     await playing.refresh();
   };
 
