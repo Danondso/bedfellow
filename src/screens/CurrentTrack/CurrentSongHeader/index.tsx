@@ -9,12 +9,12 @@ import ThemedText from '../../../components/themed/ThemedText';
 import CurrentSongHeaderSkeleton from './Skeleton';
 
 type CurrentSongHeaderProps = {
-  item: SpotifyApi.TrackObjectFull;
+  item: SpotifyApi.TrackObjectFull | SpotifyApi.EpisodeObject | null;
   isLoading?: boolean;
 };
 
-function formatArtistNames(item: SpotifyApi.TrackObjectFull): string {
-  if ('artists' in item) {
+function formatArtistNames(item: SpotifyApi.TrackObjectFull | SpotifyApi.EpisodeObject | null): string {
+  if (item && 'artists' in item) {
     return item.artists.map((artist) => artist.name).join(',');
   }
   return 'No Artist Name Available';
@@ -98,7 +98,7 @@ export default function CurrentSongHeader({ item, isLoading }: CurrentSongHeader
           variant="caption"
           style={[styles.albumDescription, dynamicPalette ? { color: dynamicPalette.detail } : {}]}
         >
-          {item ? item.album.name : ''}
+          {item && 'artists' in item ? item.album.name : ''}
         </ThemedText>
       </View>
     </ThemedView>

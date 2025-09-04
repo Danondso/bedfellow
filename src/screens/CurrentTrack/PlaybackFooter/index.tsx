@@ -1,12 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 // Types from @types/spotify-api are available globally via SpotifyApi namespace
 import { View, ViewStyle, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import Icon, { type FontAwesomeIconName } from '@react-native-vector-icons/fontawesome';
-import useSpotifyAPI from '../../../hooks/spotify/useSpotifyAPI';
+import useSpotify from '../../../hooks/spotify/useSpotify';
 import { useTheme } from '../../../context/ThemeContext';
-import { performPlaybackAction } from '../../../services/spotify/SpotifyAPI.service';
-import { SpotifyAuthContext, SpotifyAuthContextData } from '../../../context/SpotifyAuthContext';
 import { spacingScale } from '../../../theme/scales';
 
 const styles = StyleSheet.create({
@@ -51,42 +49,35 @@ function PlayerButton({ buttonName, onPress }: PlayerButtonProps) {
   );
 }
 
-interface PlaybackFooterProps {
-  refreshCurrentlyPlayingTrack: () => void;
-}
+function PlaybackFooter() {
+  const { playback } = useSpotify();
+  const { actions, playing } = playback;
+  const playButtonIconName: FontAwesomeIconName = actions.isPaused ? 'play' : 'pause';
 
-function PlaybackFooter({ refreshCurrentlyPlayingTrack }: PlaybackFooterProps) {
-  const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
-  const { response, loadData } = useSpotifyAPI('v1/me/player');
-  const playButtonIconName: FontAwesomeIconName = (response as SpotifyApi.CurrentPlaybackResponse)?.is_playing
-    ? 'pause'
-    : 'play';
+  const handleBackward = async () => {
+    await actions.backward();
+    await playing.refresh();
+  };
+
+  const handlePlayPause = async () => {
+    if (actions.isPaused) {
+      await actions.play();
+    } else {
+      await actions.pause();
+    }
+    await playing.refresh();
+  };
+
+  const handleForward = async () => {
+    await actions.forward();
+    await playing.refresh();
+  };
 
   return (
     <View style={styles.container}>
-      <PlayerButton
-        buttonName="backward"
-        onPress={async () => {
-          await performPlaybackAction('backward', authState.token);
-          await refreshCurrentlyPlayingTrack();
-          await loadData();
-        }}
-      />
-      <PlayerButton
-        buttonName={playButtonIconName}
-        onPress={async () => {
-          await performPlaybackAction(playButtonIconName, authState.token);
-          await loadData();
-        }}
-      />
-      <PlayerButton
-        buttonName="forward"
-        onPress={async () => {
-          await performPlaybackAction('forward', authState.token);
-          await refreshCurrentlyPlayingTrack();
-          await loadData();
-        }}
-      />
+      <PlayerButton buttonName="backward" onPress={handleBackward} />
+      <PlayerButton buttonName={playButtonIconName} onPress={handlePlayPause} />
+      <PlayerButton buttonName="forward" onPress={handleForward} />
     </View>
   );
 }

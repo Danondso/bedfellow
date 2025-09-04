@@ -18,7 +18,7 @@ export type SpotifyAuthState = {
 export type SpotifyAuthContextData = {
   authState: SpotifyAuthState;
   setAuthToken: (authResult: AuthorizeResult) => Promise<void>;
-  refreshToken: () => Promise<boolean>;
+  refreshToken: () => Promise<SpotifyAuthToken | null>;
   logout: () => Promise<void>;
   isTokenExpiring: () => boolean;
   isAuthenticated: boolean;
