@@ -1,9 +1,6 @@
-import { useContext } from 'react';
-import { SpotifyAuthContext, type SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
-import useGetCurrentTrack from './useGetCurrentTrack';
 import useGetSearch from './useGetSearch';
-import usePlayback from './usePlayback';
 import type { UseSpotifyHookResponse } from './types';
+import usePlayer from './usePlayer';
 
 /**
  * Domain hook for all Spotify-related data and actions.
@@ -30,12 +27,10 @@ import type { UseSpotifyHookResponse } from './types';
  * ```
  */
 const useSpotify = (): UseSpotifyHookResponse => {
-  const currentTrack = useGetCurrentTrack();
   const search = useGetSearch();
-  const playback = usePlayback();
+  const playback = usePlayer();
 
   return {
-    currentTrack,
     search,
     playback,
   };

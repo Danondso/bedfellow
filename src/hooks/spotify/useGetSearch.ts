@@ -1,6 +1,6 @@
 import { spotifyGETData } from '@services/spotify/SpotifyAPI.service';
-import { type SpotifyAuthState } from '@context/SpotifyAuthContext';
-import { useState } from 'react';
+import { SpotifyAuthContext, type SpotifyAuthContextData } from '@context/SpotifyAuthContext';
+import { useContext, useState } from 'react';
 import type { UseGetSearchHookResponse } from './types';
 
 /**
@@ -14,13 +14,13 @@ import type { UseGetSearchHookResponse } from './types';
  * @internal
  */
 const useGetSearch = (): UseGetSearchHookResponse => {
-  // @ts-expect-error
-  const { token } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { token } = authState;
   const [searchResults, setSearchResults] = useState<SpotifyApi.SearchResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const getData = async (query: string) => {
+  const search = async (query: string) => {
     setLoading(true);
     setError(null);
     if (!token) throw new Error('No access token available');
@@ -39,7 +39,7 @@ const useGetSearch = (): UseGetSearchHookResponse => {
   };
 
   return {
-    getData,
+    search,
     searchResults,
     error,
     loading,

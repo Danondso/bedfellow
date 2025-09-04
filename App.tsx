@@ -17,9 +17,9 @@ import RootNavigation from './src/screens';
 import SpotifyAuthContextProvider from './src/context';
 
 // Temporarily disabled - Reactotron needs update for RN 0.81
-// if (__DEV__) {
-//   require('./ReactotronConfig');
-// }
+if (__DEV__) {
+  require('./ReactotronConfig');
+}
 
 const safeAreaStyle: ViewStyle = {
   flex: 1,

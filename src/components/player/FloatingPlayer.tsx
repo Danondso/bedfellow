@@ -1,23 +1,21 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import Icon from '@react-native-vector-icons/ionicons';
 import { useTheme } from '../../context/ThemeContext';
-import { performPlaybackAction } from '../../services/spotify/SpotifyAPI.service';
-import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
-import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
+import useSpotify from 'src/hooks/spotify/useSpotify';
 
 interface FloatingPlayerProps {
-  refreshCurrentlyPlayingTrack: () => void;
+  refreshTrack: () => void;
 }
 
-const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshCurrentlyPlayingTrack }) => {
+const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshTrack }) => {
   const { theme } = useTheme();
   const [expanded, setExpanded] = useState(false);
-  const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
-  const { response, loadData } = useSpotifyAPI('v1/me/player');
+  const { playback } = useSpotify();
+  const { actions, playing } = playback;
   const [fadeAnim] = useState(new Animated.Value(0));
 
-  const isPlaying = (response as SpotifyApi.CurrentPlaybackResponse)?.is_playing;
+  const isPlaying = !actions.isPaused;
   const playButtonIconName = isPlaying ? 'pause' : 'play';
 
   const toggleExpanded = () => {
@@ -31,20 +29,23 @@ const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshCurrentlyPlaying
   };
 
   const handlePlayPause = async () => {
-    await performPlaybackAction(playButtonIconName as any, authState.token);
-    await loadData();
+    if (isPlaying) {
+      await actions.pause();
+    } else {
+      await actions.play();
+    }
+    await playing.refresh();
   };
 
   const handlePrevious = async () => {
-    await performPlaybackAction('backward' as any, authState.token);
-    await refreshCurrentlyPlayingTrack();
-    await loadData();
+    await actions.backward();
+    await playing.refresh();
   };
 
   const handleNext = async () => {
-    await performPlaybackAction('forward' as any, authState.token);
-    await refreshCurrentlyPlayingTrack();
-    await loadData();
+    await actions.forward();
+
+    await playing.refresh();
   };
 
   const styles = StyleSheet.create({

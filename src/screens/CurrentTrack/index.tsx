@@ -10,9 +10,9 @@ import { BedfellowTrackSamples } from '../../types/bedfellow-api';
 import { DetailsScreenProps } from '../../types';
 import { createStyles } from './CurrentTrack.themed.styles';
 import SampleList from './TrackList';
-import useSpotifyAPI from '../../hooks/spotify/useSpotifyAPI';
 import CurrentSongHeader from './CurrentSongHeader';
 import FloatingPlayer from '../../components/player/FloatingPlayer';
+import useSpotify from 'src/hooks/spotify/useSpotify';
 
 const parseAndPostWhoSampledData = async (artists: SpotifyApi.ArtistObjectSimplified[], name: string) => {
   try {
@@ -52,51 +52,21 @@ const loadBedfellowData = async (artists: SpotifyApi.ArtistObjectSimplified[] = 
 };
 
 function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
-  const { response, loadData } = useSpotifyAPI('v1/me/player/currently-playing');
+  const {
+    playback: { playing },
+  } = useSpotify();
+  const { track, loading, refresh } = playing;
+  // @ts-ignore the type is goofy
+  const { artists, name, album } = track?.item ?? {};
+  const hasTrack = track?.item; //truthy
   const [samples, setSamples] = useState<BedfellowTrackSamples | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
+  const [showSkeleton, setShowSkeleton] = useState(false);
   const { theme } = useTheme();
   const styles = createStyles(theme);
-
-  const currentPlaybackResponse = response as SpotifyApi.CurrentPlaybackResponse;
-  const currentlyPlayingTrack = currentPlaybackResponse?.item as SpotifyApi.TrackObjectFull;
-  const albumArtURL = currentlyPlayingTrack?.album?.images?.[0].url || '';
-
   // Use the new dynamic theme system
-  useDynamicTheme(albumArtURL);
-
-  const refreshControl = async () => {
-    setIsLoading(true);
-    setShowSkeleton(true);
-
-    try {
-      // Load the current playing track data
-      await loadData();
-
-      // If there's a currently playing track, load its samples
-      if (currentlyPlayingTrack) {
-        const { artists, name } = currentlyPlayingTrack;
-        const result = await loadBedfellowData(artists, name);
-        if (result) {
-          setSamples(result);
-        }
-      }
-    } catch (error) {
-      console.error('Error refreshing data:', error);
-    } finally {
-      // Ensure loading states are cleared
-      setIsLoading(false);
-
-      // Hide skeleton after a short delay for better UX
-      setTimeout(() => {
-        setShowSkeleton(false);
-      }, 500);
-    }
-  };
+  useDynamicTheme(album?.images?.[0].url || '');
 
   useEffect(() => {
-    setIsLoading(true);
     setShowSkeleton(true);
 
     // Set a timeout to hide skeleton after 3 seconds
@@ -104,26 +74,22 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
       setShowSkeleton(false);
     }, 3000);
 
-    if (currentlyPlayingTrack) {
-      const { artists, name } = currentlyPlayingTrack;
+    if (hasTrack) {
       loadBedfellowData(artists, name).then((result) => {
         if (result) {
           setSamples(result);
         }
-        setIsLoading(false);
         setShowSkeleton(false);
       });
     } else {
       setSamples(null);
-      setIsLoading(false);
       setShowSkeleton(false);
-      loadData();
     }
 
     // Clean up timeout
     return () => clearTimeout(skeletonTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentlyPlayingTrack?.artists, currentlyPlayingTrack?.name]);
+  }, [artists, name]);
 
   return (
     <ThemeTransition type="fade" duration={300}>
@@ -141,13 +107,13 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
         />
 
         <SampleList
-          onRefresh={refreshControl}
-          isLoading={isLoading}
+          onRefresh={refresh}
+          isLoading={loading}
           showSkeleton={showSkeleton}
-          HeaderComponent={<CurrentSongHeader item={currentlyPlayingTrack} isLoading={showSkeleton} />}
+          HeaderComponent={<CurrentSongHeader item={track?.item ?? null} isLoading={showSkeleton} />}
           trackSamples={samples}
         />
-        <FloatingPlayer refreshCurrentlyPlayingTrack={loadData} />
+        <FloatingPlayer refreshCurrentlyPlayingTrack={refresh} />
       </ThemedView>
     </ThemeTransition>
   );
