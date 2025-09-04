@@ -18,13 +18,11 @@ const usePlayer = (): UsePlayerHookResponse => {
     if (!token) throw new Error('No access token available');
 
     try {
-      console.log('Fetching current playback data from Spotify');
       const { data } = await spotifyGETData('v1/me/player/currently-playing', token);
       setCurrentTrack(data);
       setLoading(false);
       return data;
     } catch (error: any) {
-      console.error('Failed to fetch Spotify data:', error);
       setError(error);
       setLoading(false);
       throw error;
