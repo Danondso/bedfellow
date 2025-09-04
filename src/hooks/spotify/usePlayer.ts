@@ -3,7 +3,6 @@ import { SpotifyAuthContext, type SpotifyAuthContextData } from '@context/Spotif
 import { performPlaybackAction, spotifyGETData } from '@services/spotify/SpotifyAPI.service';
 import { useState } from 'react';
 import type { UsePlayerHookResponse } from './types';
-import { type AxiosError } from 'axios';
 
 const usePlayer = (): UsePlayerHookResponse => {
   const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
@@ -24,7 +23,7 @@ const usePlayer = (): UsePlayerHookResponse => {
       setCurrentTrack(data);
       setLoading(false);
       return data;
-    } catch (error: AxiosError<SpotifyApi.ErrorObject> | any) {
+    } catch (error: any) {
       console.error('Failed to fetch Spotify data:', error);
       setError(error);
       setLoading(false);
@@ -42,16 +41,16 @@ const usePlayer = (): UsePlayerHookResponse => {
 
   const playbackWrapper = (action: string) => performPlaybackAction(action, token);
 
-  const forward = () => playbackWrapper('forward');
+  const forward = async () => await playbackWrapper('forward');
 
-  const pause = () => {
+  const pause = async () => {
     setIsPaused(true);
-    playbackWrapper('pause');
+    await playbackWrapper('pause');
   };
-  const backward = () => playbackWrapper('backward');
-  const play = () => {
+  const backward = async () => await playbackWrapper('backward');
+  const play = async () => {
     setIsPaused(false);
-    playbackWrapper('play');
+    await playbackWrapper('play');
   };
 
   return {

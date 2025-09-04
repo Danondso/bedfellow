@@ -8,7 +8,7 @@ interface FloatingPlayerProps {
   refreshTrack: () => void;
 }
 
-const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshTrack }) => {
+const FloatingPlayer: React.FC<FloatingPlayerProps> = ({ refreshTrack: _refreshTrack }) => {
   const { theme } = useTheme();
   const [expanded, setExpanded] = useState(false);
   const { playback } = useSpotify();

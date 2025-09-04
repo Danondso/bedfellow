@@ -124,7 +124,7 @@ export const getInitialTheme = (fallback: 'light' | 'dark' = 'light'): 'light' |
 // Hook for responsive theme detection with debouncing
 export const useDebouncedSystemTheme = (delay: number = 300) => {
   const [debouncedTheme, setDebouncedTheme] = useState<ColorSchemeName>(systemThemeManager.getSystemTheme());
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const unsubscribe = systemThemeManager.subscribe((theme) => {

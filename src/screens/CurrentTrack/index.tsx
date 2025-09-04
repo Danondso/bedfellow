@@ -113,7 +113,7 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
           HeaderComponent={<CurrentSongHeader item={track?.item ?? null} isLoading={showSkeleton} />}
           trackSamples={samples}
         />
-        <FloatingPlayer refreshCurrentlyPlayingTrack={refresh} />
+        <FloatingPlayer refreshTrack={refresh} />
       </ThemedView>
     </ThemeTransition>
   );
