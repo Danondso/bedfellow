@@ -40,11 +40,6 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
 
       setShowSkeleton(true);
 
-      // Set a timeout to hide skeleton after 3 seconds
-      const skeletonTimeout = setTimeout(() => {
-        setShowSkeleton(false);
-      }, 3000);
-
       try {
         // Try to get samples from each artist
         let samplesFound = false;
@@ -70,7 +65,6 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
       } catch (error) {
         console.error('Error loading samples:', error);
       } finally {
-        clearTimeout(skeletonTimeout);
         setShowSkeleton(false);
       }
     };
