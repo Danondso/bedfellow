@@ -44,7 +44,7 @@ const useGetSamples = () => {
    *
    * @param {string} artist - The name of the artist
    * @param {string} name - The name of the track
-   * @returns {Promise<void>} Resolves when the fetch operation completes
+   * @returns {Promise<BedfellowTrackSamples | null>} The fetched sample data or null if not found/error
    */
   const getBedfellowData = async (artist: string, name: string) => {
     setLoading(true);
@@ -52,10 +52,13 @@ const useGetSamples = () => {
     try {
       const data = await getBedfellowDBData(artist, name);
       setSamples(data);
+      setLoading(false);
+      return data;
     } catch (error: any) {
       setError(error);
+      setLoading(false);
+      return null;
     }
-    setLoading(false);
   };
 
   return {

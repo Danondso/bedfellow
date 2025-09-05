@@ -12,16 +12,12 @@ import CurrentSongHeader from './CurrentSongHeader';
 import FloatingPlayer from '../../components/player/FloatingPlayer';
 import useSpotify from 'src/hooks/spotify/useSpotify';
 import useBedfellow from 'src/hooks/bedfellow/useBedfellow';
-import { trackGlobalLogs } from 'reactotron-react-native';
 
 function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   const {
     playback: { playing },
   } = useSpotify();
-  const bedfellow = useBedfellow();
-  const { mutations, samples } = bedfellow;
-  const { samples: trackSamples, getBedfellowData } = samples;
-  const { submitBedfellowData } = mutations;
+  const { samples, getSamplesWithFallback } = useBedfellow();
   const { track, loading, refresh } = playing;
   const { artists, name, album } = (track?.item as SpotifyApi.TrackObjectFull) ?? {};
   const hasTrack = track?.item; //truthy
@@ -41,25 +37,18 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
       setShowSkeleton(true);
 
       try {
-        // Try to get samples from each artist
-        let samplesFound = false;
+        // Try each artist until we find samples
         for (const artist of artists) {
-          await getBedfellowData(artist.name, name);
-          if (samples.samples?.samples.length) {
-            samplesFound = true;
-            break;
-          }
-        }
-
-        // If no samples found in DB, try to parse from WhoSampled
-        if (!samplesFound) {
-          const parseResult = await searchAndRetrieveParsedWhoSampledPage(artists, name);
-          if (parseResult) {
-            const submitted = await submitBedfellowData.submitBedfellowData(parseResult);
-            // Fetch the newly saved samples if submission was successful
-            if (submitted) {
-              await getBedfellowData(artists[0].name, name);
+          const samplesData = await getSamplesWithFallback(artist.name, name, async () => {
+            // Only scrape on the first artist attempt
+            if (artist === artists[0]) {
+              return await searchAndRetrieveParsedWhoSampledPage(artists, name);
             }
+            return null;
+          });
+
+          if (samplesData) {
+            break; // Found samples, stop searching
           }
         }
       } catch (error) {
@@ -90,7 +79,7 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
 
         <SampleList
           onRefresh={refresh}
-          isLoading={loading || bedfellow.samples.loading}
+          isLoading={loading || samples.loading}
           showSkeleton={showSkeleton}
           HeaderComponent={<CurrentSongHeader item={track?.item ?? null} isLoading={showSkeleton} />}
           trackSamples={samples.samples}
