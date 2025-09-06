@@ -135,17 +135,17 @@ async fn test_search_samples_with_query(pool: MySqlPool) {
             .configure(handlers::config)).await;
 
     let req = test::TestRequest::get()
-        .uri("/api/samples/search?q=ick")
+        .uri("/api/samples/search?q=Bound")
         .to_request();
 
     let resp: PaginatedSearchResponse = test::call_and_read_body_json(&app, req).await;
     
-    // Should match "Stick" in the test data
+    // Should match "Bound 2" in the test data
     assert!(!resp.data.is_empty());
-    assert_eq!(resp.search.query, Some("ick".to_string()));
+    assert_eq!(resp.search.query, Some("Bound".to_string()));
     for sample in &resp.data {
-        assert!(sample.artist.to_lowercase().contains("ick") || 
-                sample.track.to_lowercase().contains("ick"));
+        assert!(sample.artist.to_lowercase().contains("bound") || 
+                sample.track.to_lowercase().contains("bound"));
     }
 }
 
