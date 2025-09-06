@@ -15,11 +15,13 @@ import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
 import { useAdvancedDynamicTheme } from '../../context/ThemeContext/dynamicTheme';
 import { createStyles } from './Settings.themed.styles';
 import { SettingsScreenProps } from '../../types';
+import useProfile from '../../hooks/spotify/useProfile';
 
 const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   const { theme, themeMode, resetToDefaults } = useTheme();
   const { clearCache } = useAdvancedDynamicTheme(null);
   const { logout } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { profile, isPremium } = useProfile();
   const styles = createStyles(theme);
 
   const handleResetTheme = () => {
@@ -136,6 +138,26 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
               <ThemedText variant="h4" style={styles.sectionTitle}>
                 Account
               </ThemedText>
+
+              {/* Premium Status Indicator */}
+              <View style={[styles.infoItem, { marginBottom: theme.spacing.md }]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Icon
+                    name={isPremium ? 'checkmark-circle' : 'information-circle-outline'}
+                    size={20}
+                    color={isPremium ? theme.colors.success[600] : theme.colors.warning[600]}
+                    style={{ marginRight: theme.spacing.xs }}
+                  />
+                  <ThemedText variant="body" style={{ fontWeight: '500' }}>
+                    Spotify {isPremium ? 'Premium' : 'Free'}
+                  </ThemedText>
+                </View>
+                {profile?.display_name && (
+                  <ThemedText variant="caption" color="muted" style={{ marginTop: theme.spacing.xs }}>
+                    {profile.display_name}
+                  </ThemedText>
+                )}
+              </View>
 
               <ThemedButton
                 variant="spotify"
