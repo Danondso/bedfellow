@@ -25,15 +25,16 @@ pub async fn get_samples_handler(
     let artist: &String = &opts.artist_name;
     let track: &String = &opts.track_name;
 
-    let artist_id: (u64,) = get_artist(artist, &data).await;
-
-    if artist_id.0 == 0 {
-        return HttpResponse::NotFound().json(serde_json::json!({
-            "status": "failure",
-            "message": "artist not found"
-        })); 
-    }
-    println!("INFO:: artist_id: {:?} and track_name: {:?}", artist_id.0, track);
+    let artist_id = match get_artist(artist, &data).await {
+        Ok(id) => id,
+        Err(_) => {
+            return HttpResponse::NotFound().json(serde_json::json!({
+                "status": "failure",
+                "message": "artist not found"
+            }));
+        }
+    };
+    println!("INFO:: artist_id: {:?} and track_name: {:?}", artist_id, track);
     let samples = sqlx::query_as(
         "SELECT
         SAMPLE.sample_id as id,
@@ -52,7 +53,7 @@ pub async fn get_samples_handler(
         AND SAMPLE.track_artist = ?", 
         )
             .bind(track)
-            .bind(artist_id.0)
+            .bind(artist_id)
         .fetch_all(&data.db).await;
 
     match samples {
@@ -96,56 +97,87 @@ async fn create_samples_handler(
     let track_name: &String = &body.track_name;
     let sample_tracks: &Vec<InsertSampleSchema> = &body.samples;
 
-    // TODO replace some logic here with match
-    // Get the artist
-    let found_artist_id: (u64, ) = get_artist(&artist_name, &data).await;
-    println!("FOUND ARTIST ID:: ID:{}", found_artist_id.0);
-
-    // Get the track
-    let found_sample_id: (u64, ) = get_sample_id(&track_name, found_artist_id.0, &data).await;
-    println!("QUERY: SELECT sample_id sample WHERE track_name =  {} track_artist = {} LIMIT 1", track_name, found_artist_id.0);
-
-    println!("FOUND ARTIST SAMPLE ID:: ID:{}", found_sample_id.0);
-
-    // If there's a track, return a 409, no need to process
-    println!("IS THIS A CONFLICT? : {} RESULT: {}", found_sample_id.0,  found_sample_id.0 != 0);
-
-    if found_sample_id.0 != 0 {
-        return HttpResponse::Conflict().finish();
-    }
-
-    // Create the artist for the track we have samples for
-    let mut artist_id = found_artist_id;
-    if found_artist_id.0 == 0 {
-        artist_id = create_artist(&artist_name, &data).await;
-        if artist_id.0 == 0 {
-            return HttpResponse::InternalServerError().json(serde_json::json!({
-                "status": "failure",
-                "error": "unable to create artist for track",
-            }));
+    // Get or create the artist
+    let artist_id = match get_artist(&artist_name, &data).await {
+        Ok(id) => {
+            println!("FOUND ARTIST ID:: ID:{}", id);
+            // Check if sample already exists
+            if let Ok(sample_id) = get_sample_id(&track_name, id, &data).await {
+                println!("FOUND ARTIST SAMPLE ID:: ID:{}", sample_id);
+                return HttpResponse::Conflict().finish();
+            }
+            id
+        },
+        Err(_) => {
+            // Artist doesn't exist, create it
+            match create_artist(&artist_name, &data).await {
+                Ok(id) => {
+                    println!("CREATED ARTIST ID:: ID:{}", id);
+                    id
+                },
+                Err(err) => {
+                    println!("ERROR::create_artist:: {}", err);
+                    return HttpResponse::InternalServerError().json(serde_json::json!({
+                        "status": "failure",
+                        "error": "unable to create artist for track",
+                    }));
+                }
+            }
         }
-    }
+    };
 
-    // artist_id
     let mut created_sample_ids: Vec<u64> = Vec::new();
     for sample_track in sample_tracks {
-        // Check if track artist exists
-        let mut sample_track_artist_id: (u64, ) = get_artist(&sample_track.artist, &data).await;
-        // Check if track exists for sampled track
-        let mut sample_track_id: (u64, ) = get_track_id(&sample_track.track, sample_track_artist_id.0, &data).await;
-
-        if sample_track_artist_id.0 == 0 {
-            sample_track_artist_id = create_artist(&sample_track.artist, &data).await;
-        }
-        if sample_track_id.0 == 0 {
-            sample_track_id = create_track(sample_track_artist_id.0, &sample_track.track, sample_track.year.unwrap_or(0), &sample_track.image.as_bytes().to_vec(), &data).await;
-        }
-
-        if sample_track_artist_id.0 == 0 && sample_track_id.0 == 0 {
-            println!("ERROR:: create sample track -> ignoring sample because 0 found in tuple, sample_track_artist_id: {} sample_track_id: {}", sample_track_artist_id.0, sample_track_id.0);
-        } else {
-            let sample_id = create_sample(track_name, artist_id.0, 0, Vec::new(), sample_track_artist_id.0, sample_track_id.0, &data).await;
-            created_sample_ids.push(sample_id.0);
+        // Get or create sample track artist
+        let sample_track_artist_id = match get_artist(&sample_track.artist, &data).await {
+            Ok(id) => id,
+            Err(_) => {
+                match create_artist(&sample_track.artist, &data).await {
+                    Ok(id) => id,
+                    Err(err) => {
+                        println!("ERROR::create_artist for sample:: {}", err);
+                        continue;
+                    }
+                }
+            }
+        };
+        
+        // Get or create sample track
+        let sample_track_id = match get_track_id(&sample_track.track, sample_track_artist_id, &data).await {
+            Ok(id) => id,
+            Err(_) => {
+                match create_track(
+                    sample_track_artist_id,
+                    &sample_track.track,
+                    sample_track.year.unwrap_or(0),
+                    &sample_track.image.as_bytes().to_vec(),
+                    &data
+                ).await {
+                    Ok(id) => id,
+                    Err(err) => {
+                        println!("ERROR::create_track for sample:: {}", err);
+                        continue;
+                    }
+                }
+            }
+        };
+        
+        // Create the sample
+        match create_sample(
+            track_name,
+            artist_id,
+            0,
+            Vec::new(),
+            sample_track_artist_id,
+            sample_track_id,
+            &data
+        ).await {
+            Ok(id) => {
+                created_sample_ids.push(id);
+            },
+            Err(err) => {
+                println!("ERROR::create_sample:: {}", err);
+            }
         }
     }
     println!("INFO:: created sample count {}", created_sample_ids.len());

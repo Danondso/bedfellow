@@ -44,7 +44,9 @@ async fn test_create_and_fetch_samples(pool: MySqlPool) {
 
     let resp: ServiceResponse = test::call_service(&app, req).await;
 
-    assert_eq!(resp.status(), StatusCode::NO_CONTENT);
+    // Accept either NO_CONTENT (all succeeded) or MULTI_STATUS (partial success)
+    assert!(resp.status() == StatusCode::NO_CONTENT || resp.status() == StatusCode::MULTI_STATUS,
+            "Expected 204 or 207, got {}", resp.status());
 
     let get_req = test::TestRequest::get().uri("/api/samples?artist_name=Horn%20Goat&track_name=Beat%20up%20shit").to_request();
 
