@@ -29,7 +29,6 @@ const useProfile = (): UseProfileHookResponse => {
       const spotifyError = error as SpotifyApi.ErrorObject;
       setError(spotifyError);
       setLoading(false);
-      throw error;
     }
   }, [token]);
 
