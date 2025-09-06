@@ -15,7 +15,7 @@ const useProfile = (): UseProfileHookResponse => {
   const getData = async () => {
     setLoading(true);
     setError(null);
-    if (!token) throw new Error('No access token available');
+    if (!token) throw new Error('Authentication token is required to fetch user profile. Please ensure you are logged in to Spotify.');
 
     try {
       const { data } = await spotifyGETData('v1/me/', token);
