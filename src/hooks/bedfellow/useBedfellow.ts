@@ -1,5 +1,6 @@
 import useGetSamples from './useGetSamples';
 import useSubmitSamples from './useSubmitSamples';
+import useSearchSamples from './useSearchSamples';
 import { TrackWithSamples } from '../../types/whosampled';
 import { BedfellowTrackSamples } from '../../types/bedfellow-api';
 
@@ -13,13 +14,30 @@ import { BedfellowTrackSamples } from '../../types/bedfellow-api';
  *   - samples: The fetched sample data
  *   - loading: Loading state for sample fetching
  *   - error: Any error that occurred during fetching
+ * - search: Methods and state for searching samples
+ *   - searchSamples: Search for samples with debouncing
+ *   - loadMore: Load more search results
+ *   - refresh: Refresh the current search
+ *   - results: Array of search results
+ *   - loading: Boolean indicating if search is in progress
+ *   - loadingMore: Boolean indicating if loading more results
+ *   - refreshing: Boolean indicating if refreshing
+ *   - error: Error message if search failed
+ *   - hasMore: Boolean indicating if more results are available
+ *   - query: Current search query
  * - mutations: Methods for modifying sample data
  *   - submitBedfellowData: Submit new sample data to the database
  * - getSamplesWithFallback: Orchestration method that tries DB first, then falls back to scraping
  *
  * @example
  * ```tsx
- * const { samples, mutations, getSamplesWithFallback } = useBedfellow();
+ * const { samples, search, mutations, getSamplesWithFallback } = useBedfellow();
+ *
+ * // Search for samples
+ * search.searchSamples('Pink Floyd');
+ *
+ * // Load more results
+ * search.loadMore();
  *
  * // Fetch samples with fallback to scraping
  * const samplesData = await getSamplesWithFallback(
@@ -37,6 +55,7 @@ import { BedfellowTrackSamples } from '../../types/bedfellow-api';
  */
 const useBedfellow = () => {
   const samples = useGetSamples();
+  const search = useSearchSamples();
   const submitBedfellowData = useSubmitSamples();
 
   /**
@@ -83,6 +102,7 @@ const useBedfellow = () => {
 
   return {
     samples,
+    search,
     mutations: {
       submitBedfellowData,
     },

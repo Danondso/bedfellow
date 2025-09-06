@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import Icon from '@react-native-vector-icons/ionicons';
+import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../context/ThemeContext';
 import useSpotify from 'src/hooks/spotify/useSpotify';
+import { SEARCH } from '../../screens/constants/Screens';
 
 const FloatingPlayer: React.FC = () => {
   const { theme } = useTheme();
+  const navigation = useNavigation();
   const [expanded, setExpanded] = useState(false);
   const { playback } = useSpotify();
   const { actions, playing } = playback;
@@ -42,6 +45,10 @@ const FloatingPlayer: React.FC = () => {
     await actions.forward();
 
     await playing.refresh();
+  };
+
+  const handleSearch = () => {
+    (navigation as any).navigate(SEARCH);
   };
 
   const styles = StyleSheet.create({
@@ -117,6 +124,12 @@ const FloatingPlayer: React.FC = () => {
 
           <TouchableOpacity style={styles.controlButton} onPress={handleNext}>
             <Icon name="play-skip-forward" size={18} color={theme.colors.primary[600]} />
+          </TouchableOpacity>
+
+          <View style={{ width: theme.spacing.md }} />
+
+          <TouchableOpacity style={styles.controlButton} onPress={handleSearch}>
+            <Icon name="search" size={18} color={theme.colors.primary[600]} />
           </TouchableOpacity>
         </Animated.View>
       )}
