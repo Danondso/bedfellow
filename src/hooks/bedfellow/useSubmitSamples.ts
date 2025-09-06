@@ -32,7 +32,7 @@ import { useState } from 'react';
  */
 const useSubmitSamples = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState<Error | null>(null);
 
   /**
    * Submits sample data to the Bedfellow database.
@@ -48,8 +48,8 @@ const useSubmitSamples = () => {
       await postToBedfellowDB(request);
       setLoading(false);
       return true;
-    } catch (err: any) {
-      setError(err);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error(String(err)));
       setLoading(false);
       return false;
     }

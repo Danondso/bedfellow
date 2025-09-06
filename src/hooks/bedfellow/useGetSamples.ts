@@ -36,7 +36,7 @@ import { useState } from 'react';
 const useGetSamples = () => {
   const [loading, setLoading] = useState(false);
   const [samples, setSamples] = useState<BedfellowTrackSamples | null>(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
 
   /**
    * Fetches sample data for a specific track from the Bedfellow database.
@@ -54,8 +54,8 @@ const useGetSamples = () => {
       setSamples(data);
       setLoading(false);
       return data;
-    } catch (error: any) {
-      setError(error);
+    } catch (error) {
+      setError(error instanceof Error ? error : new Error(String(error)));
       setLoading(false);
       return null;
     }
