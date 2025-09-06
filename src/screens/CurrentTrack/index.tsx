@@ -5,60 +5,22 @@ import ThemedView from '../../components/themed/ThemedView';
 import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
 import FloatingActionButton from '../../components/navigation/FloatingActionButton';
 import { searchAndRetrieveParsedWhoSampledPage } from '../../services/whosampled/WhoSampled.service';
-import { getBedfellowDBData, postToBedfellowDB } from '../../services/bedfellow-db-api/BedfellowDBAPI.service';
-import { BedfellowTrackSamples } from '../../types/bedfellow-api';
 import { DetailsScreenProps } from '../../types';
 import { createStyles } from './CurrentTrack.themed.styles';
 import SampleList from './TrackList';
 import CurrentSongHeader from './CurrentSongHeader';
 import FloatingPlayer from '../../components/player/FloatingPlayer';
 import useSpotify from 'src/hooks/spotify/useSpotify';
-
-const parseAndPostWhoSampledData = async (artists: SpotifyApi.ArtistObjectSimplified[], name: string) => {
-  try {
-    const parseResult = await searchAndRetrieveParsedWhoSampledPage(artists, name);
-    if (!parseResult) {
-      return false;
-    }
-    const result = await postToBedfellowDB(parseResult);
-    return result;
-  } catch (err) {
-    return false;
-  }
-};
-const loadBedfellowData = async (artists: SpotifyApi.ArtistObjectSimplified[] = [], track: string = '') => {
-  try {
-    if ((artists[0].name, track)) {
-      const trackSamplesResults = await Promise.all(
-        await artists.map(async (artist) => {
-          const result: BedfellowTrackSamples | null = await getBedfellowDBData(artist?.name, track);
-          return result;
-        })
-      );
-      // This could lead to a situation where we make a bunch of calls then only use the first result
-      // let's try to make this smarter later
-      const filteredTrackSampleResults = trackSamplesResults.filter((trackSample) => trackSample);
-      if (filteredTrackSampleResults.length) {
-        return filteredTrackSampleResults[0];
-      }
-    }
-    const result = await parseAndPostWhoSampledData(artists, track);
-    if (result) {
-      return await getBedfellowDBData(artists[0].name, track);
-    }
-  } catch (error) {
-    return null;
-  }
-};
+import useBedfellow from 'src/hooks/bedfellow/useBedfellow';
 
 function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   const {
     playback: { playing },
   } = useSpotify();
+  const { samples, getSamplesWithFallback } = useBedfellow();
   const { track, loading, refresh } = playing;
   const { artists, name, album } = (track?.item as SpotifyApi.TrackObjectFull) ?? {};
   const hasTrack = track?.item; //truthy
-  const [samples, setSamples] = useState<BedfellowTrackSamples | null>(null);
   const [showSkeleton, setShowSkeleton] = useState(false);
   const { theme } = useTheme();
   const styles = createStyles(theme);
@@ -66,27 +28,37 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
   useDynamicTheme(album?.images?.[0].url || '');
 
   useEffect(() => {
-    setShowSkeleton(true);
-
-    // Set a timeout to hide skeleton after 3 seconds
-    const skeletonTimeout = setTimeout(() => {
-      setShowSkeleton(false);
-    }, 3000);
-
-    if (hasTrack) {
-      loadBedfellowData(artists, name).then((result) => {
-        if (result) {
-          setSamples(result);
-        }
+    const loadSamples = async () => {
+      if (!hasTrack || !artists?.length || !name) {
         setShowSkeleton(false);
-      });
-    } else {
-      setSamples(null);
-      setShowSkeleton(false);
-    }
+        return;
+      }
 
-    // Clean up timeout
-    return () => clearTimeout(skeletonTimeout);
+      setShowSkeleton(true);
+
+      try {
+        // Try each artist until we find samples
+        for (const artist of artists) {
+          const samplesData = await getSamplesWithFallback(artist.name, name, async () => {
+            // Only scrape on the first artist attempt
+            if (artist === artists[0]) {
+              return await searchAndRetrieveParsedWhoSampledPage(artists, name);
+            }
+            return null;
+          });
+
+          if (samplesData) {
+            break; // Found samples, stop searching
+          }
+        }
+      } catch (error) {
+        console.error('Error loading samples:', error);
+      } finally {
+        setShowSkeleton(false);
+      }
+    };
+
+    loadSamples();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [artists, name]);
 
@@ -107,10 +79,10 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
 
         <SampleList
           onRefresh={refresh}
-          isLoading={loading}
+          isLoading={loading || samples.loading}
           showSkeleton={showSkeleton}
           HeaderComponent={<CurrentSongHeader item={track?.item ?? null} isLoading={showSkeleton} />}
-          trackSamples={samples}
+          trackSamples={samples.samples}
         />
         <FloatingPlayer />
       </ThemedView>
