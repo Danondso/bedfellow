@@ -23,8 +23,17 @@ export type UsePlayerHookResponse = {
   };
 };
 
+// useProfile hook types
+export type UseProfileHookResponse = {
+  loading: boolean;
+  error: SpotifyApi.ErrorObject | null;
+  profile: SpotifyApi.CurrentUsersProfileResponse | null;
+  isPremium: boolean;
+};
+
 // useSpotify aggregate hook types
 export type UseSpotifyHookResponse = {
   search: UseGetSearchHookResponse;
   playback: UsePlayerHookResponse;
+  profile: UseProfileHookResponse;
 };

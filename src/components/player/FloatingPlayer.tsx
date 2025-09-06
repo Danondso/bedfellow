@@ -112,7 +112,7 @@ const FloatingPlayer: React.FC = () => {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.playPauseButton} onPress={handlePlayPause}>
-            <Icon name={playButtonIconName} size={20} color={theme.colors.text[50]} />
+            <Icon name={playButtonIconName} size={20} color={theme.colors.background[50]} />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.controlButton} onPress={handleNext}>
@@ -122,7 +122,7 @@ const FloatingPlayer: React.FC = () => {
       )}
 
       <TouchableOpacity style={styles.mainButton} onPress={toggleExpanded} activeOpacity={0.8}>
-        <Icon name={expanded ? 'close' : 'musical-notes'} size={24} color={theme.colors.text[50]} />
+        <Icon name={expanded ? 'close' : 'musical-notes'} size={24} color={theme.colors.background[50]} />
       </TouchableOpacity>
     </View>
   );

@@ -1,38 +1,43 @@
 import useGetSearch from './useGetSearch';
 import type { UseSpotifyHookResponse } from './types';
 import usePlayer from './usePlayer';
+import useProfile from './useProfile';
 
 /**
  * Domain hook for all Spotify-related data and actions.
  * This is the main entry point for consuming Spotify functionality in the application.
  *
  * @returns {UseSpotifyHookResponse} An object containing:
- * - currentTrack: Methods and state for fetching current track information
  * - search: Methods and state for searching Spotify tracks
  * - playback: Methods for controlling Spotify playback (play, pause, skip, etc.)
+ * - profile: Methods and state for fetching user profile information
  *
  * @example
  * ```tsx
- * const { currentTrack, search, playback } = useSpotify();
- *
- * // Get current track
- * await currentTrack.getData();
+ * const { search, playback, profile } = useSpotify();
  *
  * // Search for tracks
- * await search.getData('artist name');
+ * await search.search('artist name');
  *
  * // Control playback
- * playback.play();
- * playback.pause();
+ * playback.actions.play();
+ * playback.actions.pause();
+ *
+ * // Access profile data
+ * if (profile.profile) {
+ *   console.log(profile.profile.display_name);
+ * }
  * ```
  */
 const useSpotify = (): UseSpotifyHookResponse => {
   const search = useGetSearch();
   const playback = usePlayer();
+  const profile = useProfile();
 
   return {
     search,
     playback,
+    profile,
   };
 };
 
