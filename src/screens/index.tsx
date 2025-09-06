@@ -4,9 +4,10 @@ import { createStackNavigator, StackNavigationOptions } from '@react-navigation/
 import { View, ActivityIndicator } from 'react-native';
 import { RootStackParamList } from '../types';
 import DetailsScreen from './CurrentTrack';
-import { DETAILS, LOGIN, SETTINGS } from './constants/Screens';
+import { DETAILS, LOGIN, SETTINGS, SEARCH } from './constants/Screens';
 import LoginScreen from './Login';
 import SettingsScreen from './Settings';
+import SearchScreen from './Search';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../context/SpotifyAuthContext';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -35,11 +36,29 @@ export default function () {
             <Stack.Screen name={LOGIN} component={LoginScreen} />
             <Stack.Screen name={DETAILS} component={DetailsScreen} />
             <Stack.Screen name={SETTINGS} component={SettingsScreen} />
+            <Stack.Screen
+              name={SEARCH}
+              component={SearchScreen}
+              options={{
+                presentation: 'modal',
+                animationTypeForReplace: 'push',
+                animation: 'slide_from_bottom',
+              }}
+            />
           </>
         ) : (
           <>
             <Stack.Screen name={DETAILS} component={DetailsScreen} />
             <Stack.Screen name={SETTINGS} component={SettingsScreen} />
+            <Stack.Screen
+              name={SEARCH}
+              component={SearchScreen}
+              options={{
+                presentation: 'modal',
+                animationTypeForReplace: 'push',
+                animation: 'slide_from_bottom',
+              }}
+            />
           </>
         )}
       </Stack.Navigator>

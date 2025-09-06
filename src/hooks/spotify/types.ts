@@ -1,3 +1,5 @@
+import { BedfellowSample } from '../../types/bedfellow-api';
+
 // useGetSearch hook types
 export type UseGetSearchHookResponse = {
   search: (query: string) => Promise<SpotifyApi.SearchResponse>;
@@ -31,9 +33,15 @@ export type UseProfileHookResponse = {
   isPremium: boolean;
 };
 
+// useQueue hook types
+export type UseQueueHookResponse = {
+  addToQueue: (item: BedfellowSample) => Promise<string>;
+};
+
 // useSpotify aggregate hook types
 export type UseSpotifyHookResponse = {
   search: UseGetSearchHookResponse;
   playback: UsePlayerHookResponse;
   profile: UseProfileHookResponse;
+  queue: UseQueueHookResponse;
 };
