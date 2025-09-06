@@ -1,6 +1,6 @@
 import { SpotifyAuthContext, type SpotifyAuthContextData } from '@context/SpotifyAuthContext';
 import { spotifyGETData } from '@services/spotify/SpotifyAPI.service';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useCallback } from 'react';
 import type { UseProfileHookResponse } from './types';
 
 const useProfile = (): UseProfileHookResponse => {
@@ -12,10 +12,13 @@ const useProfile = (): UseProfileHookResponse => {
 
   const isPremium = profile?.product === 'premium';
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     setLoading(true);
     setError(null);
-    if (!token) throw new Error('Authentication token is required to fetch user profile. Please ensure you are logged in to Spotify.');
+    if (!token)
+      throw new Error(
+        'Authentication token is required to fetch user profile. Please ensure you are logged in to Spotify.'
+      );
 
     try {
       const { data } = await spotifyGETData('v1/me/', token);
@@ -28,13 +31,13 @@ const useProfile = (): UseProfileHookResponse => {
       setLoading(false);
       throw error;
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     if (token) {
       getData();
     }
-  }, [token]);
+  }, [token, getData]);
 
   return {
     loading,
