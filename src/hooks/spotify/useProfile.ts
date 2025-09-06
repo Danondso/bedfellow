@@ -15,10 +15,14 @@ const useProfile = (): UseProfileHookResponse => {
   const getData = useCallback(async () => {
     setLoading(true);
     setError(null);
-    if (!token)
-      throw new Error(
-        'Authentication token is required to fetch user profile. Please ensure you are logged in to Spotify.'
-      );
+    if (!token) {
+      setError({
+        status: 401,
+        message: 'Authentication token is required to fetch user profile. Please ensure you are logged in to Spotify.',
+      } as SpotifyApi.ErrorObject);
+      setLoading(false);
+      return;
+    }
 
     try {
       const { data } = await spotifyGETData('v1/me/', token);
