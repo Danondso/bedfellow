@@ -60,6 +60,25 @@ const FloatingPlayer: React.FC = () => {
       alignItems: 'center',
       zIndex: 1000,
     },
+    buttonsContainer: {
+      alignItems: 'center',
+      gap: theme.spacing.md,
+    },
+    searchButton: {
+      width: 48,
+      height: 48,
+      borderRadius: theme.borderRadius.full,
+      backgroundColor: theme.colors.surface[100],
+      justifyContent: 'center',
+      alignItems: 'center',
+      shadowColor: theme.colors.shadow || 'rgba(52, 57, 65, 0.2)',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 6,
+      elevation: 6,
+      borderWidth: 1,
+      borderColor: theme.colors.border[200],
+    },
     mainButton: {
       width: 56,
       height: 56,
@@ -74,8 +93,6 @@ const FloatingPlayer: React.FC = () => {
       elevation: 8,
     },
     expandedContainer: {
-      position: 'absolute',
-      bottom: 70,
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: theme.colors.surface[100],
@@ -112,31 +129,35 @@ const FloatingPlayer: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {expanded && (
-        <Animated.View style={[styles.expandedContainer, { opacity: fadeAnim }]}>
-          <TouchableOpacity style={styles.controlButton} onPress={handlePrevious}>
-            <Icon name="play-skip-back" size={18} color={theme.colors.primary[600]} />
-          </TouchableOpacity>
+      <View style={styles.buttonsContainer}>
+        {expanded && (
+          <>
+            <Animated.View style={{ opacity: fadeAnim }}>
+              <TouchableOpacity style={styles.searchButton} onPress={handleSearch} activeOpacity={0.8}>
+                <Icon name="search" size={20} color={theme.colors.primary[600]} />
+              </TouchableOpacity>
+            </Animated.View>
 
-          <TouchableOpacity style={styles.playPauseButton} onPress={handlePlayPause}>
-            <Icon name={playButtonIconName} size={20} color={theme.colors.background[50]} />
-          </TouchableOpacity>
+            <Animated.View style={[styles.expandedContainer, { opacity: fadeAnim }]}>
+              <TouchableOpacity style={styles.controlButton} onPress={handlePrevious}>
+                <Icon name="play-skip-back" size={18} color={theme.colors.primary[600]} />
+              </TouchableOpacity>
 
-          <TouchableOpacity style={styles.controlButton} onPress={handleNext}>
-            <Icon name="play-skip-forward" size={18} color={theme.colors.primary[600]} />
-          </TouchableOpacity>
+              <TouchableOpacity style={styles.playPauseButton} onPress={handlePlayPause}>
+                <Icon name={playButtonIconName} size={20} color={theme.colors.background[50]} />
+              </TouchableOpacity>
 
-          <View style={{ width: theme.spacing.md }} />
+              <TouchableOpacity style={styles.controlButton} onPress={handleNext}>
+                <Icon name="play-skip-forward" size={18} color={theme.colors.primary[600]} />
+              </TouchableOpacity>
+            </Animated.View>
+          </>
+        )}
 
-          <TouchableOpacity style={styles.controlButton} onPress={handleSearch}>
-            <Icon name="search" size={18} color={theme.colors.primary[600]} />
-          </TouchableOpacity>
-        </Animated.View>
-      )}
-
-      <TouchableOpacity style={styles.mainButton} onPress={toggleExpanded} activeOpacity={0.8}>
-        <Icon name={expanded ? 'close' : 'musical-notes'} size={24} color={theme.colors.background[50]} />
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.mainButton} onPress={toggleExpanded} activeOpacity={0.8}>
+          <Icon name={expanded ? 'close' : 'musical-notes'} size={24} color={theme.colors.background[50]} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

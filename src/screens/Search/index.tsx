@@ -18,34 +18,33 @@ import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
 import ThemedView, { ThemedSpacer } from '../../components/themed/ThemedView';
 import { BedfellowSample } from '../../types/bedfellow-api';
 import useBedfellow from '../../hooks/bedfellow/useBedfellow';
-import SearchResultItem from '../../components/search/SearchResultItem';
 import useSpotify from '../../hooks/spotify/useSpotify';
+import SearchResultItem from '../../components/search/SearchResultItem';
 import { createStyles } from './Search.themed.styles';
 
 const SearchScreen: React.FC = () => {
   const navigation = useNavigation();
   const { theme } = useTheme();
   const styles = createStyles(theme);
-  const { search: spotifySearch } = useSpotify();
   const { search } = useBedfellow();
   const { searchSamples, loadMore, refresh, results, loading, loadingMore, refreshing, error, query } = search;
+  const { queue } = useSpotify();
 
   const handleAddToQueue = useCallback(
     async (item: BedfellowSample) => {
       try {
-        const searchResults = await spotifySearch.search(`${item.artist} ${item.track}`);
-        if (searchResults?.tracks?.items?.[0]) {
-          // Track found but queue functionality not implemented yet
-          Alert.alert('Coming Soon', 'Queue functionality will be available soon');
+        const result = await queue.addToQueue(item);
+        if (result.includes('Queued')) {
+          Alert.alert('Success', result);
         } else {
-          Alert.alert('Not Found', 'Track not found on Spotify');
+          Alert.alert('Unable to Queue', result);
         }
       } catch (err) {
         Alert.alert('Error', 'Failed to add track to queue');
         console.error('Queue error:', err);
       }
     },
-    [spotifySearch]
+    [queue]
   );
 
   const handlePlayAtSample = useCallback(async (_item: BedfellowSample) => {

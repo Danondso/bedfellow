@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Config from 'react-native-config';
 import { postToBedfellowDB, getBedfellowDBData, searchSamples } from './BedfellowDBAPI.service';
 import { SearchQueryParams } from '../../types/bedfellow-api';
 
