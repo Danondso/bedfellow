@@ -1,11 +1,14 @@
 
 use crate::{
     models::SampleModel,
-    schema::{ParamOptions, SampleSchema, InsertSamplesRequestSchema, InsertSampleSchema},
+    schema::{ParamOptions, SampleSchema, InsertSamplesRequestSchema, InsertSampleSchema,
+             SearchQueryParams, PaginatedSearchResponse, PaginationMetadata, SearchMetadata, SortingMetadata},
+    pagination::{Cursor, build_pagination_query},
     AppState,
 };
 use actix_web::{get, post, web, HttpResponse, Responder};
 use serde_json::json;
+use std::time::Instant;
 
 #[get("/healthchecker")]
 async fn health_checker_handler() -> impl Responder {
@@ -271,10 +274,154 @@ fn filter_db_record(sample: &SampleModel) -> SampleSchema {
     }
 }
 
+#[get("/samples/search")]
+pub async fn search_samples_handler(
+    mut params: web::Query<SearchQueryParams>,
+    data: web::Data<AppState>,
+) -> impl Responder {
+    let start_time = Instant::now();
+    
+    // Validate and normalize parameters
+    params.validate();
+    
+    // Decode cursor if provided
+    let cursor = if let Some(ref cursor_str) = params.cursor {
+        match Cursor::decode(cursor_str) {
+            Ok(c) if !c.is_expired(3600) => Some(c),
+            _ => None,
+        }
+    } else {
+        None
+    };
+    
+    // Build search WHERE clause
+    let search_clause = if let Some(ref query) = params.q {
+        let escaped_query = query.replace("%", "\\%").replace("_", "\\_");
+        format!(
+            "WHERE (a1.artist_name LIKE '%{}%' OR s.track_name LIKE '%{}%')",
+            escaped_query, escaped_query
+        )
+    } else {
+        String::from("WHERE 1=1")
+    };
+    
+    // Add cursor pagination
+    let cursor_clause = build_pagination_query(
+        cursor.as_ref(),
+        params.sort.as_ref().unwrap_or(&"created_at".to_string()),
+        params.order.as_ref().unwrap_or(&"desc".to_string()),
+    );
+    
+    // Build ORDER BY clause
+    let sort_field = params.sort.clone().unwrap_or_else(|| "created_at".to_string());
+    let sort_order = params.order.clone().unwrap_or_else(|| "desc".to_string());
+    
+    let order_by = format!(
+        "ORDER BY {} {}",
+        match sort_field.as_str() {
+            "track_name" => "s.track_name",
+            "artist_name" => "a1.artist_name",
+            _ => "s.sample_id",
+        },
+        sort_order
+    );
+    
+    let limit = params.limit.unwrap_or(20);
+    
+    // Count total results
+    let count_query = format!(
+        "SELECT COUNT(*) as count
+        FROM sample s
+        JOIN artist a1 ON s.track_artist = a1.artist_id
+        {}",
+        search_clause
+    );
+    
+    let total_count: (i64,) = sqlx::query_as(&count_query)
+        .fetch_one(&data.db)
+        .await
+        .unwrap_or((0,));
+    
+    // Fetch samples
+    let samples_query = format!(
+        "SELECT 
+            s.sample_id as id,
+            a1.artist_name as artist,
+            s.track_name as track,
+            s.track_year as track_year,
+            s.track_image as track_image
+        FROM sample s
+        JOIN artist a1 ON s.track_artist = a1.artist_id
+        JOIN artist a2 ON s.sample_artist_id = a2.artist_id
+        JOIN track t ON s.sample_track_id = t.track_id
+        {} {}
+        {}
+        LIMIT {}",
+        search_clause, cursor_clause, order_by, limit + 1
+    );
+    
+    let samples_result: Vec<SampleModel> = sqlx::query_as(&samples_query)
+        .fetch_all(&data.db)
+        .await
+        .unwrap_or_else(|_| vec![]);
+    
+    let has_more = samples_result.len() > limit as usize;
+    let samples = if has_more {
+        &samples_result[..limit as usize]
+    } else {
+        &samples_result[..]
+    };
+    
+    // Generate cursors
+    let next_cursor = if has_more && !samples.is_empty() {
+        let last = &samples[samples.len() - 1];
+        let sort_value = match sort_field.as_str() {
+            "track_name" => last.track.clone(),
+            "artist_name" => last.artist.clone(),
+            _ => last.id.to_string(),
+        };
+        Some(Cursor::new(last.id as u64, sort_value).encode())
+    } else {
+        None
+    };
+    
+    let prev_cursor = cursor.map(|c| c.encode());
+    
+    // Convert to response format
+    let samples_response: Vec<SampleSchema> = samples
+        .iter()
+        .map(|sample| filter_db_record(sample))
+        .collect();
+    
+    let search_time_ms = start_time.elapsed().as_millis() as u64;
+    
+    let response = PaginatedSearchResponse {
+        data: samples_response,
+        pagination: PaginationMetadata {
+            next_cursor,
+            prev_cursor,
+            has_more,
+            total_count: total_count.0 as u64,
+            current_page_size: samples.len(),
+        },
+        search: SearchMetadata {
+            query: params.q.clone(),
+            search_time_ms,
+        },
+        sorting: SortingMetadata {
+            field: sort_field.clone(),
+            order: sort_order.clone(),
+        },
+    };
+    
+    HttpResponse::Ok().json(response)
+}
+
 pub fn config(conf: &mut web::ServiceConfig) {
     let scope = web::scope("/api")
         .service(health_checker_handler)
         .service(get_samples_handler)
+        .service(search_samples_handler)
         .service(create_samples_handler);
 
     conf.service(scope);

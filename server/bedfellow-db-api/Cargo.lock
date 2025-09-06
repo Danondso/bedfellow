@@ -528,6 +528,7 @@ dependencies = [
  "actix-cors",
  "actix-rt",
  "actix-web",
+ "base64 0.22.1",
  "blob",
  "chrono",
  "dotenv",

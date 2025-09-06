@@ -48,7 +48,10 @@ async fn main() -> std::io::Result<()> {
             .wrap(cors)
             .wrap(Logger::default())
     })
-        .bind((env::var("HOST_IP").unwrap_or("127.0.0.1".to_string()), 8000))?
+        .bind((
+            env::var("HOST_IP").unwrap_or("127.0.0.1".to_string()), 
+            env::var("PORT").unwrap_or("8000".to_string()).parse::<u16>().unwrap_or(8000)
+        ))?
         .run()
         .await
 }

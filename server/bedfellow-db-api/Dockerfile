@@ -1,5 +1,5 @@
 # Build the rust app
-FROM rust:1.79 as build
+FROM rust:1.80 as build
 
 WORKDIR /bedfellow-db-api
 COPY . .

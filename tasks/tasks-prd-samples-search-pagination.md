@@ -22,7 +22,7 @@
 
 ## Tasks
 
-- [ ] 1.0 Set up database indexes and query optimization
+- [x] 1.0 Set up database indexes and query optimization
   - [x] 1.1 Analyze current sample table structure and identify searchable columns
   - [x] 1.2 Create indexes on artist.artist_name for faster searches (already exists: artist_name_index)
   - [x] 1.3 Create indexes on track.track_name for faster searches (already exists: track_name_index)
@@ -30,43 +30,43 @@
   - [x] 1.5 Test query performance with EXPLAIN to verify index usage
   - [x] 1.6 Update db/init.sql with new index definitions
 
-- [ ] 2.0 Create request/response schemas for the new endpoint
-  - [ ] 2.1 Define SearchQueryParams struct with q, cursor, limit, sort, order fields
-  - [ ] 2.2 Create PaginationMetadata struct with next_cursor, prev_cursor, has_more, total_count
-  - [ ] 2.3 Define SearchMetadata struct with query and search_time_ms fields
-  - [ ] 2.4 Create SortingMetadata struct with field and order properties
-  - [ ] 2.5 Build PaginatedSearchResponse struct combining data, pagination, search, and sorting
-  - [ ] 2.6 Add validation rules for query parameters (max limit, valid sort fields)
-  - [ ] 2.7 Implement Default trait for SearchQueryParams with sensible defaults
+- [x] 2.0 Create request/response schemas for the new endpoint
+  - [x] 2.1 Define SearchQueryParams struct with q, cursor, limit, sort, order fields
+  - [x] 2.2 Create PaginationMetadata struct with next_cursor, prev_cursor, has_more, total_count
+  - [x] 2.3 Define SearchMetadata struct with query and search_time_ms fields
+  - [x] 2.4 Create SortingMetadata struct with field and order properties
+  - [x] 2.5 Build PaginatedSearchResponse struct combining data, pagination, search, and sorting
+  - [x] 2.6 Add validation rules for query parameters (max limit, valid sort fields)
+  - [x] 2.7 Implement Default trait for SearchQueryParams with sensible defaults
 
-- [ ] 3.0 Implement cursor-based pagination utilities
-  - [ ] 3.1 Create pagination.rs module in src/
-  - [ ] 3.2 Define Cursor struct to hold pagination state (id, sort_value, direction)
-  - [ ] 3.3 Implement encode_cursor function using base64 encoding
-  - [ ] 3.4 Implement decode_cursor function with error handling for invalid cursors
-  - [ ] 3.5 Create build_pagination_query helper to add WHERE clauses for cursor
-  - [ ] 3.6 Add cursor validation to ensure cursors haven't been tampered with
-  - [ ] 3.7 Implement cursor expiration logic (optional timestamp in cursor)
+- [x] 3.0 Implement cursor-based pagination utilities
+  - [x] 3.1 Create pagination.rs module in src/
+  - [x] 3.2 Define Cursor struct to hold pagination state (id, sort_value, direction)
+  - [x] 3.3 Implement encode_cursor function using base64 encoding
+  - [x] 3.4 Implement decode_cursor function with error handling for invalid cursors
+  - [x] 3.5 Create build_pagination_query helper to add WHERE clauses for cursor
+  - [x] 3.6 Add cursor validation to ensure cursors haven't been tampered with
+  - [x] 3.7 Implement cursor expiration logic (optional timestamp in cursor)
 
-- [ ] 4.0 Build the search query logic with partial matching
-  - [ ] 4.1 Create search_samples_query function in handlers.rs
-  - [ ] 4.2 Implement SQL query builder with dynamic WHERE clauses
-  - [ ] 4.3 Add LIKE patterns with % wildcards for partial matching
-  - [ ] 4.4 Escape special SQL characters in search input to prevent injection
-  - [ ] 4.5 Implement case-insensitive search using LOWER() or COLLATE
-  - [ ] 4.6 Add relevance scoring for search results (optional MATCH or custom logic)
-  - [ ] 4.7 Handle empty search queries to return all samples
+- [x] 4.0 Build the search query logic with partial matching
+  - [x] 4.1 Create search_samples_query function in handlers.rs
+  - [x] 4.2 Implement SQL query builder with dynamic WHERE clauses
+  - [x] 4.3 Add LIKE patterns with % wildcards for partial matching
+  - [x] 4.4 Escape special SQL characters in search input to prevent injection
+  - [x] 4.5 Implement case-insensitive search using LOWER() or COLLATE
+  - [x] 4.6 Add relevance scoring for search results (optional MATCH or custom logic)
+  - [x] 4.7 Handle empty search queries to return all samples
 
-- [ ] 5.0 Create the main search handler with pagination
-  - [ ] 5.1 Define get_samples_search_handler function with proper Actix Web signature
-  - [ ] 5.2 Extract and validate query parameters from request
-  - [ ] 5.3 Decode cursor if provided and build pagination WHERE clause
-  - [ ] 5.4 Execute count query to get total_count for pagination metadata
-  - [ ] 5.5 Execute main search query with LIMIT and OFFSET/cursor logic
-  - [ ] 5.6 Transform database results into response models
-  - [ ] 5.7 Generate next and previous cursors based on results
-  - [ ] 5.8 Calculate search execution time for metadata
-  - [ ] 5.9 Build and return JSON response with all metadata
+- [x] 5.0 Create the main search handler with pagination
+  - [x] 5.1 Define get_samples_search_handler function with proper Actix Web signature
+  - [x] 5.2 Extract and validate query parameters from request
+  - [x] 5.3 Decode cursor if provided and build pagination WHERE clause
+  - [x] 5.4 Execute count query to get total_count for pagination metadata
+  - [x] 5.5 Execute main search query with LIMIT and OFFSET/cursor logic
+  - [x] 5.6 Transform database results into response models
+  - [x] 5.7 Generate next and previous cursors based on results
+  - [x] 5.8 Calculate search execution time for metadata
+  - [x] 5.9 Build and return JSON response with all metadata
 
 - [ ] 6.0 Implement caching layer for performance
   - [ ] 6.1 Create cache.rs module with Cache trait definition
@@ -78,14 +78,14 @@
   - [ ] 6.7 Integrate cache checks in search handler before database query
   - [ ] 6.8 Add configuration for cache size limits and TTL
 
-- [ ] 7.0 Add sorting functionality
-  - [ ] 7.1 Define SortField enum (CreatedAt, TrackName, ArtistName, Relevance)
-  - [ ] 7.2 Define SortOrder enum (Ascending, Descending)
-  - [ ] 7.3 Parse sort and order parameters from query string
-  - [ ] 7.4 Build ORDER BY clause dynamically based on sort parameters
-  - [ ] 7.5 Handle relevance sorting when search query is present
-  - [ ] 7.6 Ensure cursor includes sort values for consistent pagination
-  - [ ] 7.7 Add default sorting fallback (e.g., by created_at desc)
+- [x] 7.0 Add sorting functionality
+  - [x] 7.1 Define SortField enum (CreatedAt, TrackName, ArtistName, Relevance)
+  - [x] 7.2 Define SortOrder enum (Ascending, Descending)
+  - [x] 7.3 Parse sort and order parameters from query string
+  - [x] 7.4 Build ORDER BY clause dynamically based on sort parameters
+  - [x] 7.5 Handle relevance sorting when search query is present
+  - [x] 7.6 Ensure cursor includes sort values for consistent pagination
+  - [x] 7.7 Add default sorting fallback (e.g., by created_at desc)
 
 - [ ] 8.0 Register the new route and wire up dependencies
   - [ ] 8.1 Add route registration in main.rs for GET /api/samples or /api/samples/search
