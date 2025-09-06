@@ -37,3 +37,8 @@ CREATE TABLE IF NOT EXISTS sample
 );
 CREATE INDEX track_name_index ON track (track_name);
 CREATE INDEX artist_name_index ON artist (artist_name);
+
+-- Composite indexes for search optimization
+CREATE INDEX idx_sample_track_name ON sample (track_name);
+CREATE INDEX idx_track_artist_name ON track (artist_id, track_name);
+CREATE INDEX idx_sample_search ON sample (track_artist, track_name);
