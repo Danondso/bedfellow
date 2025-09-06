@@ -19,6 +19,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "^5.2.6",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-vector-icons/fontawesome": "^12.3.0",
     "@react-native-vector-icons/ionicons": "^12.3.0",
@@ -52,8 +53,10 @@
     "react-native-linear-gradient": "^2.8.3",
     "react-native-lottie-splash-screen": "^1.1.2",
     "react-native-paper": "^5.11.3",
+    "react-native-reanimated": "^4.1.0",
     "react-native-safe-area-context": "5.6.1",
     "react-native-svg": "^15.4.0",
+    "react-native-worklets": "^0.5.0",
     "readable-stream": "^4.7.0",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",

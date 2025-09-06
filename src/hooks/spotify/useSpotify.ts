@@ -2,6 +2,7 @@ import useGetSearch from './useGetSearch';
 import type { UseSpotifyHookResponse } from './types';
 import usePlayer from './usePlayer';
 import useProfile from './useProfile';
+import useQueue from './useQueue';
 
 /**
  * Domain hook for all Spotify-related data and actions.
@@ -11,6 +12,7 @@ import useProfile from './useProfile';
  * - search: Methods and state for searching Spotify tracks
  * - playback: Methods for controlling Spotify playback (play, pause, skip, etc.)
  * - profile: Methods and state for fetching user profile information
+ * - queue: Methods for managing the Spotify playback queue
  *
  * @example
  * ```tsx
@@ -33,11 +35,13 @@ const useSpotify = (): UseSpotifyHookResponse => {
   const search = useGetSearch();
   const playback = usePlayer();
   const profile = useProfile();
+  const queue = useQueue();
 
   return {
     search,
     playback,
     profile,
+    queue,
   };
 };
 
