@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   Text,
   TextInput,
@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  Alert,
   RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,8 +17,7 @@ import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
 import ThemedView, { ThemedSpacer } from '../../components/themed/ThemedView';
 import { BedfellowSample } from '../../types/bedfellow-api';
 import useBedfellow from '../../hooks/bedfellow/useBedfellow';
-import useSpotify from '../../hooks/spotify/useSpotify';
-import SearchResultItem from '../../components/search/SearchResultItem';
+import ExpandableSampleCard from '../../components/ExpandableSampleCard';
 import { createStyles } from './Search.themed.styles';
 
 const SearchScreen: React.FC = () => {
@@ -28,39 +26,9 @@ const SearchScreen: React.FC = () => {
   const styles = createStyles(theme);
   const { search } = useBedfellow();
   const { searchSamples, loadMore, refresh, results, loading, loadingMore, refreshing, error, query } = search;
-  const { queue } = useSpotify();
 
-  const handleAddToQueue = useCallback(
-    async (item: BedfellowSample) => {
-      try {
-        const result = await queue.addToQueue(item);
-        if (result.includes('Queued')) {
-          Alert.alert('Success', result);
-        } else {
-          Alert.alert('Unable to Queue', result);
-        }
-      } catch (err) {
-        Alert.alert('Error', 'Failed to add track to queue');
-        console.error('Queue error:', err);
-      }
-    },
-    [queue]
-  );
-
-  const handlePlayAtSample = useCallback(async (_item: BedfellowSample) => {
-    Alert.alert('Coming Soon', 'Play at sample position will be available soon');
-  }, []);
-
-  const renderItem = ({ item }: { item: BedfellowSample }) => {
-    return (
-      <SearchResultItem
-        item={item}
-        onAddToQueue={() => handleAddToQueue(item)}
-        onPlayAtSample={() => handlePlayAtSample(item)}
-        isInCurrentTrack={false}
-        hasBeenPlayed={false}
-      />
-    );
+  const renderItem = ({ item, index }: { item: BedfellowSample; index: number }) => {
+    return <ExpandableSampleCard sample={item} isLast={index === results.length - 1} />;
   };
 
   const renderEmpty = () => {
