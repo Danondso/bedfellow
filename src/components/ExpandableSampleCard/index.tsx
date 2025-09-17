@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Image, Animated, ActivityIndicator, Alert } from 'react-native';
 import Icon from '@react-native-vector-icons/ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,15 +15,41 @@ interface ExpandableSampleCardProps {
 
 const ExpandableSampleCard: React.FC<ExpandableSampleCardProps> = ({ sample, isLast = false }) => {
   const { theme } = useTheme();
-  const styles = createStyles(theme);
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [samplesLoading, setSamplesLoading] = useState(false);
-  const expandAnimation = useRef(new Animated.Value(0)).current;
-  const rotateAnimation = useRef(new Animated.Value(0)).current;
+  const expandAnimationRef = useRef<Animated.Value | null>(null);
+  const rotateAnimationRef = useRef<Animated.Value | null>(null);
+
+  if (!expandAnimationRef.current) {
+    expandAnimationRef.current = new Animated.Value(0);
+  }
+
+  if (!rotateAnimationRef.current) {
+    rotateAnimationRef.current = new Animated.Value(0);
+  }
+
+  const expandAnimation = expandAnimationRef.current!;
+  const rotateAnimation = rotateAnimationRef.current!;
   const { getBedfellowData, samples } = useGetSamples();
   const { queue, search } = useSpotify();
 
-  const handleExpand = async () => {
+  const primaryIconColor = theme.colors.primary[500];
+  const mutedIconColor = theme.colors.text[300];
+  const sampleCount = samples?.samples?.length ?? 0;
+
+  const estimatedContentHeight = useMemo(() => {
+    const headerHeight = theme.spacing.lg * 2;
+    const estimatedRowHeight = theme.spacing.lg * 2 + 40;
+    const defaultRows = 3;
+    const maxRows = 6;
+    const rows = sampleCount > 0 ? sampleCount : defaultRows;
+    const clampedRows = Math.min(rows, maxRows);
+
+    return headerHeight + clampedRows * estimatedRowHeight;
+  }, [sampleCount, theme.spacing.lg]);
+
+  const handleExpand = useCallback(async () => {
     if (!isExpanded && !samples) {
       setSamplesLoading(true);
       await getBedfellowData(sample.artist, sample.track);
@@ -46,69 +72,83 @@ const ExpandableSampleCard: React.FC<ExpandableSampleCardProps> = ({ sample, isL
         useNativeDriver: true,
       }),
     ]).start();
-  };
+  }, [expandAnimation, getBedfellowData, isExpanded, rotateAnimation, sample.artist, sample.track, samples]);
 
-  const handleAddToQueue = async (item: BedfellowSample) => {
-    try {
-      const searchQuery = `${item.artist} ${item.track}`;
-      const results = await search.search(searchQuery);
+  const handleAddToQueue = useCallback(
+    async (item: BedfellowSample) => {
+      try {
+        const searchQuery = `${item.artist} ${item.track}`;
+        const results = await search.search(searchQuery);
 
-      if (results?.tracks?.items && results.tracks.items.length > 0) {
-        const track = results.tracks.items[0];
-        // Create a new sample object with the Spotify URI
-        const sampleWithUri: BedfellowSampleWithUri = {
-          ...item,
-          uri: track.uri,
-        };
-        const result = await queue.addToQueue(sampleWithUri);
-        if (result.includes('Queued')) {
-          Alert.alert('Success', result);
+        if (results?.tracks?.items && results.tracks.items.length > 0) {
+          const track = results.tracks.items[0];
+          // Create a new sample object with the Spotify URI
+          const sampleWithUri: BedfellowSampleWithUri = {
+            ...item,
+            uri: track.uri,
+          };
+          const result = await queue.addToQueue(sampleWithUri);
+          if (result.includes('Queued')) {
+            Alert.alert('Success', result);
+          } else {
+            Alert.alert('Unable to Queue', result);
+          }
         } else {
-          Alert.alert('Unable to Queue', result);
+          Alert.alert('Not Found', `Could not find "${item.track}" on Spotify`);
         }
-      } else {
-        Alert.alert('Not Found', `Could not find "${item.track}" on Spotify`);
+      } catch (error) {
+        Alert.alert('Error', 'Failed to add to queue');
+        console.error('Queue error:', error);
       }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to add to queue');
-      console.error('Queue error:', error);
-    }
-  };
+    },
+    [queue, search]
+  );
 
   const chevronRotation = rotateAnimation.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
   });
 
-  const maxHeight = expandAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 500],
-  });
+  const maxHeight = useMemo(
+    () =>
+      expandAnimation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, estimatedContentHeight],
+      }),
+    [estimatedContentHeight, expandAnimation]
+  );
 
-  const renderSampleItem = (sampleItem: BedfellowSample, index: number) => (
-    <View key={`${sampleItem.artist}-${sampleItem.track}-${index}`} style={styles.sampleItem}>
-      <View style={styles.sampleArtworkContainer}>
-        {sampleItem.image ? (
-          <Image source={{ uri: sampleItem.image }} style={styles.sampleArtwork} />
-        ) : (
-          <View style={[styles.sampleArtwork, styles.sampleArtworkPlaceholder]}>
-            <Icon name="musical-notes" size={18} color={theme.colors.text[300]} />
-          </View>
-        )}
-      </View>
+  const renderSampleItem = useCallback(
+    (sampleItem: BedfellowSample, index: number) => (
+      <View key={`${sampleItem.artist}-${sampleItem.track}-${index}`} style={styles.sampleItem}>
+        <View style={styles.sampleArtworkContainer}>
+          {sampleItem.image ? (
+            <Image source={{ uri: sampleItem.image }} style={styles.sampleArtwork} />
+          ) : (
+            <View style={[styles.sampleArtwork, styles.sampleArtworkPlaceholder]}>
+              <Icon name="musical-notes" size={18} color={mutedIconColor} />
+            </View>
+          )}
+        </View>
 
-      <View style={styles.sampleInfo}>
-        <Text style={styles.sampleArtist}>{sampleItem.artist}</Text>
-        <Text style={styles.sampleTrack}>{sampleItem.track}</Text>
-        {sampleItem.year && <Text style={styles.sampleYear}>{sampleItem.year}</Text>}
-      </View>
+        <View style={styles.sampleInfo}>
+          <Text style={styles.sampleArtist}>{sampleItem.artist}</Text>
+          <Text style={styles.sampleTrack}>{sampleItem.track}</Text>
+          {sampleItem.year && <Text style={styles.sampleYear}>{sampleItem.year}</Text>}
+        </View>
 
-      <View style={styles.sampleActions}>
-        <TouchableOpacity style={styles.actionButton} onPress={() => handleAddToQueue(sampleItem)} activeOpacity={0.7}>
-          <Icon name="add-circle-outline" size={24} color={theme.colors.primary[500]} />
-        </TouchableOpacity>
+        <View style={styles.sampleActions}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => handleAddToQueue(sampleItem)}
+            activeOpacity={0.7}
+          >
+            <Icon name="add-circle-outline" size={24} color={primaryIconColor} />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    ),
+    [handleAddToQueue, mutedIconColor, primaryIconColor, styles]
   );
 
   return (
