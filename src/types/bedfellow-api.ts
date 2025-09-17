@@ -6,6 +6,10 @@ export interface BedfellowSample {
   year: number | null;
 }
 
+export interface BedfellowSampleWithUri extends BedfellowSample {
+  uri: string;
+}
+
 export interface BedfellowTrackSamples {
   artist: string;
   samples: Array<BedfellowSample>;
