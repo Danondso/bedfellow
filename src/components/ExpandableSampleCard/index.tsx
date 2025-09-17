@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Image, Animated, ActivityIndicator, Alert } from 'react-native';
 import Icon from '@react-native-vector-icons/ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -18,19 +18,8 @@ const ExpandableSampleCard: React.FC<ExpandableSampleCardProps> = ({ sample, isL
   const styles = useMemo(() => createStyles(theme), [theme]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [samplesLoading, setSamplesLoading] = useState(false);
-  const expandAnimationRef = useRef<Animated.Value | null>(null);
-  const rotateAnimationRef = useRef<Animated.Value | null>(null);
-
-  if (!expandAnimationRef.current) {
-    expandAnimationRef.current = new Animated.Value(0);
-  }
-
-  if (!rotateAnimationRef.current) {
-    rotateAnimationRef.current = new Animated.Value(0);
-  }
-
-  const expandAnimation = expandAnimationRef.current!;
-  const rotateAnimation = rotateAnimationRef.current!;
+  const [expandAnimation] = useState(() => new Animated.Value(0));
+  const [rotateAnimation] = useState(() => new Animated.Value(0));
   const { getBedfellowData, samples } = useGetSamples();
   const { queue, search } = useSpotify();
 
