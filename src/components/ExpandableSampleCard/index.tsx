@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, Image, Animated, ActivityIndicator, Alert, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Animated, ActivityIndicator, Alert } from 'react-native';
 import Icon from '@react-native-vector-icons/ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { BedfellowSample, BedfellowSampleWithUri } from '../../types/bedfellow-api';
@@ -75,33 +75,6 @@ const ExpandableSampleCard: React.FC<ExpandableSampleCardProps> = ({ sample, isL
     }
   };
 
-  const handlePlayAtPosition = async (item: BedfellowSample, position: number) => {
-    try {
-      const searchQuery = `${item.artist} ${item.track}`;
-      const results = await search.search(searchQuery);
-
-      if (results?.tracks?.items && results.tracks.items.length > 0) {
-        const track = results.tracks.items[0];
-        // Create sample with position encoded in URI
-        const sampleWithPosition: BedfellowSampleWithUri = {
-          ...item,
-          uri: `${track.uri}#${position}`,
-        };
-        const result = await queue.addToQueue(sampleWithPosition);
-        if (result.includes('Queued')) {
-          Alert.alert('Success', `${result} (at ${position}s)`);
-        } else {
-          Alert.alert('Unable to Queue', result);
-        }
-      } else {
-        Alert.alert('Not Found', `Could not find "${item.track}" on Spotify`);
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to play track');
-      console.error('Play error:', error);
-    }
-  };
-
   const chevronRotation = rotateAnimation.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
@@ -114,6 +87,16 @@ const ExpandableSampleCard: React.FC<ExpandableSampleCardProps> = ({ sample, isL
 
   const renderSampleItem = (sampleItem: BedfellowSample, index: number) => (
     <View key={`${sampleItem.artist}-${sampleItem.track}-${index}`} style={styles.sampleItem}>
+      <View style={styles.sampleArtworkContainer}>
+        {sampleItem.image ? (
+          <Image source={{ uri: sampleItem.image }} style={styles.sampleArtwork} />
+        ) : (
+          <View style={[styles.sampleArtwork, styles.sampleArtworkPlaceholder]}>
+            <Icon name="musical-notes" size={18} color={theme.colors.text[300]} />
+          </View>
+        )}
+      </View>
+
       <View style={styles.sampleInfo}>
         <Text style={styles.sampleArtist}>{sampleItem.artist}</Text>
         <Text style={styles.sampleTrack}>{sampleItem.track}</Text>
@@ -124,61 +107,46 @@ const ExpandableSampleCard: React.FC<ExpandableSampleCardProps> = ({ sample, isL
         <TouchableOpacity style={styles.actionButton} onPress={() => handleAddToQueue(sampleItem)} activeOpacity={0.7}>
           <Icon name="add-circle-outline" size={24} color={theme.colors.primary[500]} />
         </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={() => {
-            // Using a simple text input in an Alert since React Native doesn't have Alert.prompt
-            Alert.alert('Play at Position', 'Enter position in seconds (0-300):', [
-              { text: 'Play at 0s', onPress: () => handlePlayAtPosition(sampleItem, 0) },
-              { text: 'Play at 30s', onPress: () => handlePlayAtPosition(sampleItem, 30) },
-              { text: 'Play at 60s', onPress: () => handlePlayAtPosition(sampleItem, 60) },
-              { text: 'Cancel', style: 'cancel' },
-            ]);
-          }}
-          activeOpacity={0.7}
-        >
-          <Icon name="play-circle-outline" size={24} color={theme.colors.secondary[600]} />
-        </TouchableOpacity>
       </View>
     </View>
   );
 
   return (
     <View style={[styles.container, isLast && styles.lastCard]}>
+      <LinearGradient
+        colors={[theme.colors.surface[50], theme.colors.surface[100]]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.cardGradient}
+        pointerEvents="none"
+      />
+
       <TouchableOpacity onPress={handleExpand} activeOpacity={0.9}>
-        <LinearGradient
-          colors={[theme.colors.surface[50], theme.colors.surface[100]]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.cardGradient}
-        >
-          <View style={styles.mainContent}>
-            <View style={styles.imageContainer}>
-              {sample.image ? (
-                <Image source={{ uri: sample.image }} style={styles.albumImage} />
-              ) : (
-                <View style={[styles.albumImage, styles.placeholderImage]}>
-                  <Icon name="musical-notes" size={24} color={theme.colors.text[300]} />
-                </View>
-              )}
-            </View>
-
-            <View style={styles.trackInfo}>
-              <Text style={styles.artistName} numberOfLines={1}>
-                {sample.artist}
-              </Text>
-              <Text style={styles.trackName} numberOfLines={2}>
-                {sample.track}
-              </Text>
-              {sample.year && <Text style={styles.yearText}>{sample.year}</Text>}
-            </View>
-
-            <Animated.View style={{ transform: [{ rotate: chevronRotation }] }}>
-              <Icon name="chevron-down" size={24} color={theme.colors.primary[500]} />
-            </Animated.View>
+        <View style={styles.mainContent}>
+          <View style={styles.imageContainer}>
+            {sample.image ? (
+              <Image source={{ uri: sample.image }} style={styles.albumImage} />
+            ) : (
+              <View style={[styles.albumImage, styles.placeholderImage]}>
+                <Icon name="musical-notes" size={24} color={theme.colors.text[300]} />
+              </View>
+            )}
           </View>
-        </LinearGradient>
+
+          <View style={styles.trackInfo}>
+            <Text style={styles.artistName} numberOfLines={1}>
+              {sample.artist}
+            </Text>
+            <Text style={styles.trackName} numberOfLines={2}>
+              {sample.track}
+            </Text>
+            {sample.year && <Text style={styles.yearText}>{sample.year}</Text>}
+          </View>
+
+          <Animated.View style={{ transform: [{ rotate: chevronRotation }] }}>
+            <Icon name="chevron-down" size={24} color={theme.colors.primary[500]} />
+          </Animated.View>
+        </View>
       </TouchableOpacity>
 
       <Animated.View style={[styles.expandableContent, { maxHeight }]}>

@@ -19,6 +19,7 @@ export const styles = (theme: Theme) =>
       marginBottom: theme.spacing.xxl,
     },
     cardGradient: {
+      ...StyleSheet.absoluteFillObject,
       borderRadius: theme.borderRadius.lg,
     },
     mainContent: {
@@ -62,7 +63,6 @@ export const styles = (theme: Theme) =>
     },
     expandableContent: {
       overflow: 'hidden',
-      backgroundColor: theme.colors.surface[50],
     },
     samplesContainer: {
       padding: theme.spacing.md,
@@ -99,13 +99,25 @@ export const styles = (theme: Theme) =>
     sampleItem: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between',
       paddingVertical: theme.spacing.sm,
       paddingHorizontal: theme.spacing.md,
       backgroundColor: theme.colors.background[50],
       borderRadius: theme.borderRadius.md,
       borderLeftWidth: 3,
       borderLeftColor: theme.colors.secondary[400],
+    },
+    sampleArtworkContainer: {
+      marginRight: theme.spacing.sm,
+    },
+    sampleArtwork: {
+      width: 40,
+      height: 40,
+      borderRadius: theme.borderRadius.sm,
+      backgroundColor: theme.colors.surface[200],
+    },
+    sampleArtworkPlaceholder: {
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     sampleInfo: {
       flex: 1,
