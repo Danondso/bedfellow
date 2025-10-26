@@ -8,6 +8,8 @@ services:
       SPOTIFY_CLIENT_SECRET: ''
       SPOTIFY_CLIENT_CALLBACK_IOS: org.danondso.bedfellow://callback/
       SPOTIFY_CLIENT_CALLBACK_ANDROID: com.bedfellow://callback/
+      LASTFM_API_KEY: ''
+      LASTFM_API_SECRET: ''
       RUST_LOG: INFO
       HOST_IP: '0.0.0.0'
     build:
