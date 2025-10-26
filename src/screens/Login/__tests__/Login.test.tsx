@@ -4,6 +4,22 @@ import { Alert } from 'react-native';
 import LoginScreen from '../index';
 import { LastFmAuthContextProvider } from '../../../context';
 
+// Mock react-native-svg components
+jest.mock('react-native-svg', () => ({
+  __esModule: true,
+  default: 'Svg',
+  Svg: 'Svg',
+  Circle: 'Circle',
+  Ellipse: 'Ellipse',
+  Path: 'Path',
+  G: 'G',
+  Defs: 'Defs',
+  LinearGradient: 'LinearGradient',
+  Stop: 'Stop',
+  Rect: 'Rect',
+  Polygon: 'Polygon',
+}));
+
 // Mock the LastFmAuthContext since it requires provider
 jest.mock('../../../context/LastFmAuthContext', () => ({
   useLastFmAuth: jest.fn(),
