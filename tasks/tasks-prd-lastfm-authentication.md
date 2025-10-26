@@ -96,9 +96,9 @@
   - [x] 3.12 Add error handling for last.fm authentication failures (done in authenticateLastFm)
 
 - [ ] 4.0 Build last.fm API Service Layer (TDD)
-  - [ ] 4.1 Create `src/services/lastfm/utilities/utilities.ts` with API signature generation functions
-  - [ ] 4.2 Write failing test for generateApiSignature utility function
-  - [ ] 4.3 Implement generateApiSignature and MD5 hashing for last.fm API signatures
+  - [x] 4.1 Create `src/services/lastfm/utilities/utilities.ts` with API signature generation functions
+  - [x] 4.2 Write failing test for generateApiSignature utility function
+  - [x] 4.3 Implement generateApiSignature and MD5 hashing for last.fm API signatures (already done in 4.1)
   - [ ] 4.4 Write failing test for last.fm API service GET request
   - [ ] 4.5 Create `src/services/lastfm/lastfm.api.service.ts` with base API functions
   - [ ] 4.6 Write failing test for fetchRecentTracks API call
