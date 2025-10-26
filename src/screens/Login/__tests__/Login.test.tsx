@@ -44,6 +44,23 @@ jest.mock('../../../components/brand/OwlMascot', () => {
   };
 });
 
+// Mock LastFmLogo and SpotifyLogo to avoid SVG rendering issues
+jest.mock('../../../components/brand/LastFmLogo', () => {
+  const React = require('react');
+  const { View, Text } = require('react-native');
+  return ({ size, color }: any) => {
+    return React.createElement(View, { testID: 'lastfm-logo', style: { size, color } }, React.createElement(Text, null, 'LastFm'));
+  };
+});
+
+jest.mock('../../../components/brand/SpotifyLogo', () => {
+  const React = require('react');
+  const { View, Text } = require('react-native');
+  return ({ size, color }: any) => {
+    return React.createElement(View, { testID: 'spotify-logo', style: { size, color } }, React.createElement(Text, null, 'Spotify'));
+  };
+});
+
 // Mock react-native-app-auth
 jest.mock('react-native-app-auth', () => ({
   authorize: jest.fn(() => Promise.resolve({
