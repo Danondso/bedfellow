@@ -165,6 +165,7 @@ export function useLastFmAuth(): LastFmAuthContextData {
   return context;
 }
 
+export { LastFmAuthContext };
 export default LastFmAuthContextProvider;
 export { type LastFmAuthContextData, type LastFmAuthToken, type LastFmAuthState } from './types';
 

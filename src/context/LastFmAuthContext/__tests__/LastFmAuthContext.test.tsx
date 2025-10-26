@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LastFmAuthContextProvider, useLastFmAuth } from '../index';
+import LastFmAuthContextProvider, { useLastFmAuth } from '../index';
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({

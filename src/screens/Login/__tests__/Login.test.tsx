@@ -3,7 +3,12 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 import LoginScreen from '../index';
 import { LastFmAuthContextProvider } from '../../../context';
-import { useLastFmAuth } from '../../../context/LastFmAuthContext';
+
+// Mock the LastFmAuthContext since it requires provider
+jest.mock('../../../context/LastFmAuthContext', () => ({
+  useLastFmAuth: jest.fn(),
+  LastFmAuthContextProvider: ({ children }: { children: React.ReactNode }) => children,
+}));
 
 // Mock react-native-app-auth
 jest.mock('react-native-app-auth', () => ({
