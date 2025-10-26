@@ -2,16 +2,6 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import LastFmLogo from '../LastFmLogo';
 
-// Mock react-native-svg
-jest.mock('react-native-svg', () => {
-  const React = require('react');
-  return {
-    Svg: ({ children, ...props }) => <mock-svg {...props}>{children}</mock-svg>,
-    Path: (props) => <mock-path {...props} />,
-    Rect: (props) => <mock-rect {...props} />,
-  };
-});
-
 describe('LastFmLogo', () => {
   it('should render with default props', () => {
     const { UNSAFE_root } = render(<LastFmLogo />);
