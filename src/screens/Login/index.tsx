@@ -9,13 +9,16 @@ import ThemedText from '../../components/themed/ThemedText';
 import ThemedButton from '../../components/themed/ThemedButton';
 import AnimatedOwl from '../../components/brand/AnimatedOwl';
 import SpotifyLogo from '../../components/brand/SpotifyLogo';
+import LastFmLogo from '../../components/brand/LastFmLogo';
+import { useLastFmAuth } from '../../context';
 import { ThemeTransition } from '../../context/ThemeContext/ThemeTransition';
 import { DETAILS } from '../constants/Screens';
 import { LoginScreenProps } from '../../types';
 import { createStyles } from './Login.themed.styles';
 
 function LoginScreen({ navigation }: LoginScreenProps) {
-  const { setAuthToken, authState, clearError } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { setAuthToken: setSpotifyAuth, authState, clearError } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { setAuthToken: setLastFmAuth, logout: lastFmLogout } = useLastFmAuth();
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
@@ -46,9 +49,26 @@ function LoginScreen({ navigation }: LoginScreenProps) {
 
       const session: AuthorizeResult = await authorize(config);
       if (session.refreshToken) {
-        await setAuthToken(session);
+        await setSpotifyAuth(session);
         navigation.navigate(DETAILS);
       }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert('Failed to login', error.message);
+      } else {
+        Alert.alert('Failed to login');
+      }
+    }
+  }
+
+  async function authenticateLastFm() {
+    try {
+      // TODO: Implement last.fm OAuth flow
+      // For now, using a placeholder - will be implemented in next sub-tasks
+      const sessionKey = 'mock_session_key';
+      const username = 'mock_user';
+      await setLastFmAuth(sessionKey, username);
+      navigation.navigate(DETAILS);
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert('Failed to login', error.message);
@@ -98,6 +118,30 @@ function LoginScreen({ navigation }: LoginScreenProps) {
             }}
           >
             Continue with Spotify
+          </ThemedButton>
+          <ThemedButton
+            variant="lastfm"
+            size="large"
+            fullWidth
+            onPress={authenticateLastFm}
+            icon={<LastFmLogo size={21} color="#FFFFFF" />}
+            iconPosition="left"
+            style={{
+              marginTop: theme.spacing.lg,
+              marginHorizontal: theme.spacing.xl,
+              backgroundColor: '#D51007', // last.fm Red
+              borderRadius: 500, // Same pill-shaped button
+              paddingVertical: 14,
+              paddingHorizontal: 32,
+            }}
+            textStyle={{
+              color: '#FFFFFF',
+              fontSize: 16,
+              fontWeight: '700',
+              letterSpacing: 0,
+            }}
+          >
+            Continue with last.fm
           </ThemedButton>
         </ThemedView>
       </ThemedView>

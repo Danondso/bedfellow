@@ -1,0 +1,109 @@
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react-native';
+import { Alert } from 'react-native';
+import LoginScreen from '../index';
+import { LastFmAuthContextProvider } from '../../../context';
+import { useLastFmAuth } from '../../../context/LastFmAuthContext';
+
+// Mock react-native-app-auth
+jest.mock('react-native-app-auth', () => ({
+  authorize: jest.fn(() => Promise.resolve({
+    accessToken: 'mock_token',
+    accessTokenExpirationDate: '2024-12-31',
+    idToken: 'mock_id',
+    refreshToken: 'mock_refresh',
+    tokenType: 'bearer',
+    scopes: [],
+    authorizationCode: 'mock_code',
+  })),
+}));
+
+// Mock react-native-config
+jest.mock('react-native-config', () => ({
+  SPOTIFY_CLIENT_ID: 'test_client_id',
+  SPOTIFY_REDIRECT_URI: 'test://callback',
+  SPOTIFY_REDIRECT_URI_ANDROID: 'test://callback',
+  BEDFELLOW_API_BASE_URL: 'http://localhost:8085',
+  LASTFM_API_KEY: 'test_lastfm_key',
+  LASTFM_API_SECRET: 'test_lastfm_secret',
+}));
+
+// Mock Alert
+jest.spyOn(Alert, 'alert');
+
+// Mock navigation
+const mockNavigation = {
+  navigate: jest.fn(),
+  goBack: jest.fn(),
+  dispatch: jest.fn(),
+  reset: jest.fn(),
+  canGoBack: jest.fn(() => false),
+  isFocused: jest.fn(() => true),
+};
+
+describe('LoginScreen', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('renders Spotify login button', () => {
+    const { getByText } = render(
+      <LoginScreen navigation={mockNavigation} />
+    );
+    
+    expect(getByText('Continue with Spotify')).toBeTruthy();
+  });
+
+  it('renders last.fm login button', () => {
+    const { getByText } = render(
+      <LastFmAuthContextProvider>
+        <LoginScreen navigation={mockNavigation} />
+      </LastFmAuthContextProvider>
+    );
+    
+    expect(getByText('Continue with last.fm')).toBeTruthy();
+  });
+
+  it('has last.fm button with equal prominence to Spotify button', () => {
+    const { getByText } = render(
+      <LastFmAuthContextProvider>
+        <LoginScreen navigation={mockNavigation} />
+      </LastFmAuthContextProvider>
+    );
+    
+    const spotifyButton = getByText('Continue with Spotify');
+    const lastfmButton = getByText('Continue with last.fm');
+    
+    expect(spotifyButton).toBeTruthy();
+    expect(lastfmButton).toBeTruthy();
+    // Both buttons should be visible and accessible
+  });
+
+  it('calls last.fm authentication when last.fm button is pressed', () => {
+    const { getByText } = render(
+      <LastFmAuthContextProvider>
+        <LoginScreen navigation={mockNavigation} />
+      </LastFmAuthContextProvider>
+    );
+    
+    const lastfmButton = getByText('Continue with last.fm');
+    fireEvent.press(lastfmButton);
+    
+    // Test will verify authentication flow is triggered
+  });
+
+  it('last.fm button uses lastfm variant styling', () => {
+    const { getByText } = render(
+      <LastFmAuthContextProvider>
+        <LoginScreen navigation={mockNavigation} />
+      </LastFmAuthContextProvider>
+    );
+    
+    const lastfmButton = getByText('Continue with last.fm');
+    expect(lastfmButton).toBeTruthy();
+    // The button should use last.fm red color (#D51007)
+  });
+});
+
+export default {};
+

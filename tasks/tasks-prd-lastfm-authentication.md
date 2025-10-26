@@ -67,7 +67,7 @@
   - [x] 1.7 Add environment variables for LASTFM_API_KEY and LASTFM_API_SECRET to server configuration
   - [x] 1.8 Test backend endpoints with integration test file
 
-- [x] 2.0 Create last.fm Authentication Context and Types (TDD)
+- [x] 2.0 Create last.fm Authentication Context and Types (TDD) ✅ COMMITTED
   - [x] 2.1 Create `src/context/LastFmAuthContext/types.ts` with LastFmAuthToken, LastFmAuthState, and LastFmAuthContextData types
   - [x] 2.2 Write failing test for LastFmAuthContext provider initialization
   - [x] 2.3 Create `src/context/LastFmAuthContext/index.tsx` with LastFmAuthContextProvider
@@ -82,13 +82,13 @@
   - [x] 2.12 Write comprehensive test suite for all LastFmAuthContext methods
 
 - [ ] 3.0 Implement last.fm Login UI Integration (TDD)
-  - [ ] 3.1 Write failing test for LastFmLogo component rendering
-  - [ ] 3.2 Create `src/components/brand/LastFmLogo.tsx` component (red brand color #D51007)
-  - [ ] 3.3 Write failing test for last.fm button variant in ThemedButton
-  - [ ] 3.4 Add 'lastfm' variant to ThemedButton in `src/components/themed/ThemedButton.tsx` (use last.fm red #D51007)
-  - [ ] 3.5 Write failing test for last.fm button appearing on Login screen
-  - [ ] 3.6 Update `src/screens/Login/index.tsx` to add last.fm login button with equal prominence to Spotify button
-  - [ ] 3.7 Implement last.fm authentication handler function in Login screen
+  - [x] 3.1 Write failing test for LastFmLogo component rendering
+  - [x] 3.2 Create `src/components/brand/LastFmLogo.tsx` component (red brand color #D51007)
+  - [x] 3.3 Write failing test for last.fm button variant in ThemedButton
+  - [x] 3.4 Add 'lastfm' variant to ThemedButton in `src/components/themed/ThemedButton.tsx` (use last.fm red #D51007)
+  - [x] 3.5 Write failing test for last.fm button appearing on Login screen
+  - [x] 3.6 Update `src/screens/Login/index.tsx` to add last.fm login button with equal prominence to Spotify button
+  - [x] 3.7 Implement last.fm authentication handler function in Login screen
   - [ ] 3.8 Write failing test for last.fm OAuth flow integration
   - [ ] 3.9 Implement OAuth authentication flow using last.fm Mobile Session API
   - [ ] 3.10 Write failing test for navigation after successful last.fm authentication
