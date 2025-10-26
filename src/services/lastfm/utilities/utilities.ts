@@ -1,4 +1,6 @@
-import crypto from 'crypto';
+// Use crypto-browserify for React Native compatibility
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const crypto = require('crypto-browserify');
 
 /**
  * Generates last.fm API signature for authenticated requests

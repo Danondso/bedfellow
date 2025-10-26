@@ -1,5 +1,4 @@
 import { generateApiSignature, buildLastFmApiUrl, sanitizeLastFmName, formatLastFmTimestamp } from '../utilities/utilities';
-import crypto from 'crypto';
 
 describe('last.fm Utilities', () => {
   describe('generateApiSignature', () => {
@@ -115,10 +114,12 @@ describe('last.fm Utilities', () => {
   });
 
   describe('formatLastFmTimestamp', () => {
-    const date = new Date('2024-01-01T00:00:00Z');
-    const timestamp = formatLastFmTimestamp(date);
-    
-    expect(timestamp).toBe('1704067200'); // Unix timestamp for the date
+    it('should format date as Unix timestamp string', () => {
+      const date = new Date('2024-01-01T00:00:00Z');
+      const timestamp = formatLastFmTimestamp(date);
+      
+      expect(timestamp).toBe('1704067200'); // Unix timestamp for the date
+    });
   });
 });
 
