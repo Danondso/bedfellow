@@ -26,6 +26,24 @@ jest.mock('../../../context/LastFmAuthContext', () => ({
   LastFmAuthContextProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
+// Mock AnimatedOwl to avoid animation issues in tests
+jest.mock('../../../components/brand/AnimatedOwl', () => {
+  const React = require('react');
+  const { View, Text } = require('react-native');
+  return ({ size, variant, animationType, duration, style, animated }: any) => {
+    return React.createElement(View, { testID: 'animated-owl', style }, React.createElement(Text, null, 'AnimatedOwl'));
+  };
+});
+
+// Mock OwlMascot to avoid SVG rendering issues
+jest.mock('../../../components/brand/OwlMascot', () => {
+  const React = require('react');
+  const { View, Text } = require('react-native');
+  return ({ size, variant, style }: any) => {
+    return React.createElement(View, { testID: 'owl-mascot', style }, React.createElement(Text, null, 'OwlMascot'));
+  };
+});
+
 // Mock react-native-app-auth
 jest.mock('react-native-app-auth', () => ({
   authorize: jest.fn(() => Promise.resolve({
