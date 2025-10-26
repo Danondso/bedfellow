@@ -21,10 +21,15 @@ jest.mock('react-native-svg', () => ({
 }));
 
 // Mock the LastFmAuthContext since it requires provider
-jest.mock('../../../context/LastFmAuthContext', () => ({
-  useLastFmAuth: jest.fn(),
-  LastFmAuthContextProvider: ({ children }: { children: React.ReactNode }) => children,
-}));
+jest.mock('../../../context/LastFmAuthContext', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  return {
+    useLastFmAuth: jest.fn(),
+    LastFmAuthContextProvider: ({ children }: { children: React.ReactNode }) => 
+      React.createElement(View, { testID: 'lastfm-auth-provider' }, children),
+  };
+});
 
 // Mock AnimatedOwl to avoid animation issues in tests
 jest.mock('../../../components/brand/AnimatedOwl', () => {
