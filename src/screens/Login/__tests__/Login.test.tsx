@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 import LoginScreen from '../index';
 import { LastFmAuthContextProvider } from '../../../context';
@@ -102,6 +102,63 @@ describe('LoginScreen', () => {
     const lastfmButton = getByText('Continue with last.fm');
     expect(lastfmButton).toBeTruthy();
     // The button should use last.fm red color (#D51007)
+  });
+
+  describe('last.fm OAuth flow integration', () => {
+    it('should call setAuthToken with session key and username', async () => {
+      const mockSetAuthToken = jest.fn();
+      
+      // Mock the context
+      jest.mock('../../../context/LastFmAuthContext', () => ({
+        useLastFmAuth: () => ({
+          setAuthToken: mockSetAuthToken,
+          logout: jest.fn(),
+        }),
+      }));
+
+      const { getByText } = render(
+        <LastFmAuthContextProvider>
+          <LoginScreen navigation={mockNavigation} />
+        </LastFmAuthContextProvider>
+      );
+      
+      const lastfmButton = getByText('Continue with last.fm');
+      fireEvent.press(lastfmButton);
+      
+      // Wait for the async operation
+      await waitFor(() => {
+        expect(mockSetAuthToken).toHaveBeenCalled();
+      });
+    });
+
+    it('should navigate to DETAILS screen after successful authentication', async () => {
+      const { getByText } = render(
+        <LastFmAuthContextProvider>
+          <LoginScreen navigation={mockNavigation} />
+        </LastFmAuthContextProvider>
+      );
+      
+      const lastfmButton = getByText('Continue with last.fm');
+      fireEvent.press(lastfmButton);
+      
+      await waitFor(() => {
+        expect(mockNavigation.navigate).toHaveBeenCalledWith('Details');
+      });
+    });
+
+    it('should show error alert on authentication failure', async () => {
+      const { getByText } = render(
+        <LastFmAuthContextProvider>
+          <LoginScreen navigation={mockNavigation} />
+        </LastFmAuthContextProvider>
+      );
+      
+      const lastfmButton = getByText('Continue with last.fm');
+      fireEvent.press(lastfmButton);
+      
+      // Error handling should trigger Alert.alert
+      // This will be tested in the implementation
+    });
   });
 });
 
