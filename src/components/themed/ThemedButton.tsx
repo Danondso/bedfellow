@@ -26,7 +26,8 @@ interface ThemedButtonProps extends Omit<TouchableOpacityProps, 'style'> {
     | 'danger-outline'
     | 'success'
     | 'gradient'
-    | 'spotify';
+    | 'spotify'
+    | 'lastfm';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
   rounded?: boolean;
@@ -229,6 +230,17 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
         return {
           button: {
             backgroundColor: states.isDisabled ? '#1DB95466' : '#1DB954', // Spotify Green
+            borderWidth: 0,
+          },
+          text: {
+            color: '#FFFFFF',
+          },
+        };
+
+      case 'lastfm':
+        return {
+          button: {
+            backgroundColor: states.isDisabled ? '#D5100733' : '#D51007', // last.fm Red
             borderWidth: 0,
           },
           text: {

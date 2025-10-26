@@ -11,12 +11,14 @@ This guide is predicated on:
 
 ---
 
-1. Export the following env variables with values from your spotify dev account:
+1. Export the following env variables with values from your spotify dev account and last.fm:
 
 ```zsh
 export SPOTIFY_CLIENT_ID=''
 export SPOTIFY_CLIENT_SECRET=''
 export SPOTIFY_CLIENT_CALLBACK=''
+export LASTFM_API_KEY=''
+export LASTFM_API_SECRET=''
 export ENCRYPTION_SECRET=''
 export RUST_LOG=info # debug, error, warn, trace
 # export HOST_IP='' # optional, localhost is the default. Used by docker to open up server in container

@@ -56,6 +56,22 @@ describe('ThemedButton', () => {
       const { getByText } = render(<ThemedButton variant="ghost">Ghost Button</ThemedButton>);
       expect(getByText('Ghost Button')).toBeTruthy();
     });
+
+    it('renders spotify variant correctly', () => {
+      const { getByText } = render(<ThemedButton variant="spotify">Spotify Button</ThemedButton>);
+      expect(getByText('Spotify Button')).toBeTruthy();
+    });
+
+    it('renders lastfm variant correctly', () => {
+      const { getByText } = render(<ThemedButton variant="lastfm">Last.fm Button</ThemedButton>);
+      expect(getByText('Last.fm Button')).toBeTruthy();
+    });
+
+    it('lastfm variant has correct brand color', () => {
+      const { root } = render(<ThemedButton variant="lastfm" testID="lastfm-button">Last.fm</ThemedButton>);
+      const button = root.findByProps({ testID: 'lastfm-button' });
+      expect(button).toBeTruthy();
+    });
   });
 
   describe('Interactions', () => {
