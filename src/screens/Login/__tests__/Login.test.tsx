@@ -21,13 +21,21 @@ jest.mock('react-native-svg', () => ({
 }));
 
 // Mock the LastFmAuthContext since it requires provider
-jest.mock('../../../context/LastFmAuthContext', () => {
+jest.mock('../../../context', () => {
+  const actualContext = jest.requireActual('../../../context');
   const React = require('react');
   const { View } = require('react-native');
   return {
-    useLastFmAuth: jest.fn(),
-    LastFmAuthContextProvider: ({ children }: { children: React.ReactNode }) => 
+    ...actualContext,
+    LastFmAuthContextProvider: ({ children }: { children: any }) => 
       React.createElement(View, { testID: 'lastfm-auth-provider' }, children),
+    useLastFmAuth: () => ({
+      setAuthToken: jest.fn(),
+      logout: jest.fn(),
+      authState: { token: null, isLoading: false, error: null },
+      isAuthenticated: false,
+      clearError: jest.fn(),
+    }),
   };
 });
 
