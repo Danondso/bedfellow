@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* bedfellowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* bedfellowTests.m */; };
 		12457C9661513A53C47F609D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F0FACD2915106A424D7EF32A /* PrivacyInfo.xcprivacy */; };
-		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
+		13B07FBC1A68108700A75B9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7D8F5F2E9398027EF79412D3 /* libPods-bedfellow-bedfellowTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 89F9373D197DE4623935E808 /* libPods-bedfellow-bedfellowTests.a */; };
 		A2553CB92B179055001E0FE8 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2553CB82B179055001E0FE8 /* Dynamic.swift */; };
+		A2A0AA352EAFB39A00A21A0E /* ios.xcode.env in Resources */ = {isa = PBXBuildFile; fileRef = A2A0AA342EAFB39A00A21A0E /* ios.xcode.env */; };
 		F2BA0F338F84C5B8E27BFF44 /* libPods-bedfellow.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D47AFECE57688C32E130E9D3 /* libPods-bedfellow.a */; };
 /* End PBXBuildFile section */
 
@@ -32,8 +33,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* bedfellowTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bedfellowTests.m; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* bedfellow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bedfellow.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = bedfellow/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = bedfellow/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = bedfellow/AppDelegate.swift; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = bedfellow/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = bedfellow/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = bedfellow/main.m; sourceTree = "<group>"; };
@@ -62,6 +62,7 @@
 		A28DC7442C567291008333C8 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = Fonts/MaterialIcons.ttf; sourceTree = "<group>"; };
 		A28DC7452C567291008333C8 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = Fonts/SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		A28DC7462C567291008333C8 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Regular.ttf; path = Fonts/FontAwesome5_Regular.ttf; sourceTree = "<group>"; };
+		A2A0AA342EAFB39A00A21A0E /* ios.xcode.env */ = {isa = PBXFileReference; lastKnownFileType = text; path = ios.xcode.env; sourceTree = "<group>"; };
 		A2F440D92B14CDC60037B18E /* bedfellow-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "bedfellow-Bridging-Header.h"; sourceTree = "<group>"; };
 		D47AFECE57688C32E130E9D3 /* libPods-bedfellow.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bedfellow.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -109,14 +110,14 @@
 			isa = PBXGroup;
 			children = (
 				A28DC7322C567012008333C8 /* Fonts */,
-				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
+				13B07FB01A68108700A75B9A /* AppDelegate.swift */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				A2F440D92B14CDC60037B18E /* bedfellow-Bridging-Header.h */,
 				A2553CB82B179055001E0FE8 /* Dynamic.swift */,
 				F0FACD2915106A424D7EF32A /* PrivacyInfo.xcprivacy */,
+				A2A0AA342EAFB39A00A21A0E /* ios.xcode.env */,
 			);
 			name = bedfellow;
 			sourceTree = "<group>";
@@ -295,6 +296,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				12457C9661513A53C47F609D /* PrivacyInfo.xcprivacy in Resources */,
+				A2A0AA352EAFB39A00A21A0E /* ios.xcode.env in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,7 +466,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2553CB92B179055001E0FE8 /* Dynamic.swift in Sources */,
-				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				13B07FBC1A68108700A75B9A /* AppDelegate.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
