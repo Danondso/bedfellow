@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { ScrollView, View, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from '@react-native-vector-icons/ionicons';
 import { CommonActions } from '@react-navigation/native';
 import { useTheme } from '../../context/ThemeContext';
-import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
+import { useMusicProvider } from '../../context/MusicProviderContext';
 import { LOGIN } from '../constants/Screens';
 import ThemedView from '../../components/themed/ThemedView';
 import ThemedText from '../../components/themed/ThemedText';
@@ -20,7 +20,7 @@ import useProfile from '../../hooks/spotify/useProfile';
 const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   const { theme, themeMode, resetToDefaults } = useTheme();
   const { clearCache } = useAdvancedDynamicTheme(null);
-  const { logout } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { logout } = useMusicProvider();
   const { profile, isPremium } = useProfile();
   const styles = createStyles(theme);
 

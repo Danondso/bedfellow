@@ -14,9 +14,18 @@ rm -f yarn.lock
 
 echo "🍎 Step 2: Cleaning iOS build artifacts..."
 cd ios
-rm -rf Pods
+# Clean Xcode derived data
+echo "  - Removing Xcode derived data..."
+rm -rf ~/Library/Developer/Xcode/DerivedData/*
+# Clean Xcode build through xcodebuild
+echo "  - Running xcodebuild clean..."
+xcodebuild clean -project bedfellow.xcodeproj -scheme development 2>/dev/null || echo "  - xcodebuild clean skipped"
+# Remove iOS build directory
+echo "  - Removing build directory..."
 rm -rf build
-rm -rf ~/Library/Developer/Xcode/DerivedData
+# Remove Pods
+echo "  - Removing Pods and Podfile.lock..."
+rm -rf Pods
 rm -f Podfile.lock
 cd ..
 
@@ -38,9 +47,8 @@ echo "📥 Step 5: Installing fresh dependencies..."
 yarn install
 
 echo "🍎 Step 6: Installing iOS pods..."
-cd ios
-pod install --repo-update
-cd ..
+yarn pods
+
 
 echo "✅ Complete! Environment has been nuked and rebuilt."
 echo "📱 Starting Metro bundler..."

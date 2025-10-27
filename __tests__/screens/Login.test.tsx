@@ -93,33 +93,6 @@ jest.mock('@context/MusicProviderContext', () => ({
   useMusicProvider: () => mockUseMusicProvider(),
 }));
 
-jest.mock('@context/SpotifyAuthContext', () => {
-  const React = require('react');
-  const value = {
-    setAuthToken: jest.fn(),
-    authState: {
-      token: null,
-      isLoading: false,
-      isRefreshing: false,
-      error: null,
-    },
-    clearError: jest.fn(),
-    refreshToken: jest.fn(),
-    isTokenExpiring: jest.fn(),
-    logout: jest.fn(),
-    isAuthenticated: false,
-  };
-  const Context = React.createContext(value);
-  return {
-    __esModule: true,
-    SpotifyAuthContext: Context,
-    SpotifyAuthContextData: {},
-    default: ({ children }: { children: React.ReactNode }) => (
-      <Context.Provider value={value}>{children}</Context.Provider>
-    ),
-  };
-});
-
 const renderLogin = () => {
   const props = {
     navigation: { navigate: jest.fn() },
@@ -139,6 +112,14 @@ describe('LoginScreen', () => {
       activeProviderId: MusicProviderId.Spotify,
       setActiveProvider: jest.fn(),
       isProviderAvailable: () => true,
+      authorize: jest.fn(),
+      authState: {
+        isLoading: false,
+        isRefreshing: false,
+        error: null,
+        isAuthenticated: false,
+      },
+      clearError: jest.fn(),
     });
 
     const { getByText } = renderLogin();
@@ -154,6 +135,14 @@ describe('LoginScreen', () => {
       activeProviderId: MusicProviderId.Spotify,
       setActiveProvider: jest.fn(),
       isProviderAvailable: () => false,
+      authorize: jest.fn(),
+      authState: {
+        isLoading: false,
+        isRefreshing: false,
+        error: null,
+        isAuthenticated: false,
+      },
+      clearError: jest.fn(),
     });
 
     const { getByText } = renderLogin();
@@ -167,6 +156,14 @@ describe('LoginScreen', () => {
       activeProviderId: MusicProviderId.Spotify,
       setActiveProvider: jest.fn(),
       isProviderAvailable: () => true,
+      authorize: jest.fn(),
+      authState: {
+        isLoading: false,
+        isRefreshing: false,
+        error: null,
+        isAuthenticated: false,
+      },
+      clearError: jest.fn(),
     });
 
     const { getByText } = renderLogin();

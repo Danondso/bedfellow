@@ -1,8 +1,5 @@
-import React, { useContext, useEffect, useCallback, useMemo } from 'react';
-import { Platform, Alert } from 'react-native';
-import Config from 'react-native-config';
-import type { AuthorizeResult } from 'react-native-app-auth';
-import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
+import React, { useEffect, useCallback, useMemo } from 'react';
+import { Alert } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import ThemedView from '../../components/themed/ThemedView';
 import ThemedText from '../../components/themed/ThemedText';
@@ -17,8 +14,8 @@ import { useMusicProvider } from '../../context/MusicProviderContext';
 import { MusicProviderId } from '../../services/music-providers/types';
 
 function LoginScreen({ navigation }: LoginScreenProps) {
-  const { setAuthToken, authState, clearError } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
-  const { availableProviders, activeProviderId, setActiveProvider, isProviderAvailable } = useMusicProvider();
+  const { availableProviders, activeProviderId, isProviderAvailable, authorize, authState, clearError } =
+    useMusicProvider();
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
@@ -68,48 +65,32 @@ function LoginScreen({ navigation }: LoginScreenProps) {
     }
   }, [authState.error, clearError]);
 
-  const handleSelectProvider = useCallback(
-    async (providerId: MusicProviderId) => {
-      try {
-        await setActiveProvider(providerId);
-      } catch (error) {
-        console.error('Failed to set active provider', error);
-        Alert.alert('Error', 'Unable to switch music provider. Please try again.');
-      }
-    },
-    [setActiveProvider]
-  );
+  // const handleSelectProvider = useCallback(
+  //   async (providerId: MusicProviderId) => {
+  //     try {
+  //       await setActiveProvider(providerId);
+  //     } catch (error) {
+  //       console.error('Failed to set active provider', error);
+  //       Alert.alert('Error', 'Unable to switch music provider. Please try again.');
+  //     }
+  //   },
+  //   [setActiveProvider]
+  // );
 
-  async function authenticate() {
+  const handleAuthenticate = useCallback(async () => {
     if (activeProviderId !== MusicProviderId.Spotify) {
       Alert.alert('Coming Soon', 'YouTube Music integration is not available yet. Please select Spotify.');
       return;
     }
 
     try {
-      // Lazy-load authorize to avoid premature native module initialization
-      const { authorize } = await import('react-native-app-auth');
+      // Use the adapter's authorize method from MusicProviderContext
+      await authorize(activeProviderId);
 
-      const config: any = {
-        clientId: Config.SPOTIFY_CLIENT_ID,
-        redirectUrl: Platform.OS === 'ios' ? Config.SPOTIFY_REDIRECT_URI : Config.SPOTIFY_REDIRECT_URI_ANDROID,
-        scopes: [
-          'user-read-playback-state',
-          'user-modify-playback-state',
-          'user-follow-read',
-          'user-read-currently-playing',
-        ],
-        serviceConfiguration: {
-          authorizationEndpoint: 'https://accounts.spotify.com/authorize',
-          tokenEndpoint: `${Config.BEDFELLOW_API_BASE_URL}/token`,
-        },
-      };
+      // Small delay to ensure state updates have propagated
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
-      const session: AuthorizeResult = await authorize(config);
-      if (session.refreshToken) {
-        await setAuthToken(session);
-        navigation.navigate(DETAILS);
-      }
+      navigation.navigate(DETAILS);
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert('Failed to login', error.message);
@@ -117,7 +98,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
         Alert.alert('Failed to login');
       }
     }
-  }
+  }, [activeProviderId, authorize, navigation]);
 
   return (
     <ThemeTransition type="scale" duration={400}>
@@ -140,7 +121,7 @@ function LoginScreen({ navigation }: LoginScreenProps) {
             variant={loginButtonVariant}
             size="large"
             fullWidth
-            onPress={authenticate}
+            onPress={handleAuthenticate}
             disabled={!isActiveProviderAvailable}
             icon={loginButtonIcon}
             iconPosition="left"

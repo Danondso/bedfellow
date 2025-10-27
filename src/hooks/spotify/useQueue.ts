@@ -1,7 +1,7 @@
-import { useCallback, useContext } from 'react';
-import { SpotifyAuthContext, type SpotifyAuthContextData } from '@context/SpotifyAuthContext';
+import { useCallback } from 'react';
 import { findAndQueueTrack } from '../../services/spotify/SpotifyAPI.service';
 import { BedfellowSample } from '../../types/bedfellow-api';
+import { useAuth } from '../useAuth';
 
 /**
  * Hook for managing Spotify queue operations.
@@ -19,23 +19,23 @@ import { BedfellowSample } from '../../types/bedfellow-api';
  * ```
  */
 const useQueue = () => {
-  const { authState } = useContext(SpotifyAuthContext) as SpotifyAuthContextData;
+  const { token } = useAuth();
 
   const addToQueue = useCallback(
     async (item: BedfellowSample): Promise<string> => {
-      if (!authState.token) {
+      if (!token) {
         return 'Not authenticated with Spotify';
       }
 
       try {
-        const result = await findAndQueueTrack(item, authState.token);
+        const result = await findAndQueueTrack(item, token);
         return result;
       } catch (error) {
         console.error('Error adding to queue:', error);
         return 'Failed to add track to queue';
       }
     },
-    [authState.token]
+    [token]
   );
 
   return {

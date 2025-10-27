@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { FlatList, View, Text, RefreshControl, StyleSheet } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import Svg, { Path } from 'react-native-svg';
@@ -8,7 +8,7 @@ import { BedfellowTrackSamples } from '../../../types/bedfellow-api';
 import AnimatedOwl from '../../../components/brand/AnimatedOwl';
 
 import { findAndQueueTrack } from '../../../services/spotify/SpotifyAPI.service';
-import { SpotifyAuthContext, SpotifyAuthContextData } from '../../../context/SpotifyAuthContext';
+import { useAuth } from '../../../hooks/useAuth';
 import SampleCard from './SampleCard';
 import WhoSampledSkeleton from './Skeleton';
 import ThemedText from '../../../components/themed/ThemedText';
@@ -20,58 +20,6 @@ const styles = StyleSheet.create({
     marginHorizontal: spacingScale.lg - spacingScale.xs, // 20 = 24 - 4
   },
 });
-
-function EmptyListMessage() {
-  const { theme } = useTheme();
-  return (
-    <View
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: theme.spacing.xxxl * 1.5, // Adjusted padding for better centering
-        paddingBottom: theme.spacing.xxxl,
-      }}
-    >
-      <View
-        style={{
-          paddingVertical: theme.spacing.xxl,
-          paddingHorizontal: theme.spacing.xxxl,
-          backgroundColor: theme.colors.surface[50],
-          borderRadius: theme.borderRadius['3xl'],
-          borderWidth: 1,
-          borderColor: theme.colors.border[50],
-          alignItems: 'center',
-          justifyContent: 'center',
-          minWidth: 250,
-        }}
-      >
-        <AnimatedOwl
-          size={120}
-          variant="sleeping"
-          animated={false}
-          style={{ marginBottom: theme.spacing.xl, alignContent: 'center' }}
-        />
-        <ThemedText
-          variant="h3"
-          style={{
-            color: theme.colors.text[400],
-            marginBottom: theme.spacing.md,
-            fontSize: theme.typography['2xl'],
-            fontWeight: '400',
-            opacity: 0.6,
-            letterSpacing: -0.5,
-            textAlign: 'center',
-          }}
-        >
-          No Track Playing
-        </ThemedText>
-        <ThemedText variant="body" style={{ color: theme.colors.text[500], textAlign: 'center', opacity: 0.8 }}>
-          What&apos;s on your mind?
-        </ThemedText>
-      </View>
-    </View>
-  );
-}
 
 function SamplesHeader({ samplesCount }: { samplesCount: number }) {
   const { theme } = useTheme();
@@ -212,7 +160,7 @@ type SampleListProps = {
 };
 
 function SampleList({ isLoading, showSkeleton, trackSamples, HeaderComponent, onRefresh }: SampleListProps) {
-  const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { token } = useAuth();
   const { theme } = useTheme();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [snackbarText, setSnackbarText] = useState('');
@@ -220,7 +168,7 @@ function SampleList({ isLoading, showSkeleton, trackSamples, HeaderComponent, on
 
   const onPressHandler = async (item: BedfellowTypes.BedfellowSample) => {
     try {
-      const result = await findAndQueueTrack(item, authState.token);
+      const result = await findAndQueueTrack(item, token);
       setSnackbarText(result);
       setError(false);
     } catch (err) {
@@ -255,7 +203,7 @@ function SampleList({ isLoading, showSkeleton, trackSamples, HeaderComponent, on
           paddingBottom: theme.spacing.xxxl * 2, // Extra bottom padding to ensure content scrolls above FAB
         }}
         ListHeaderComponent={<ListHeader />}
-        ListEmptyComponent={(showSkeleton ?? isLoading) ? <WhoSampledSkeleton /> : <EmptyListMessage />}
+        ListEmptyComponent={(showSkeleton ?? isLoading) ? <WhoSampledSkeleton /> : null}
         ListFooterComponent={samplesCount > 0 && !isLoading ? <EndOfListMascot /> : null}
         data={trackSamples?.samples || []}
         renderItem={({ item }) => (

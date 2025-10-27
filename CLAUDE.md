@@ -70,12 +70,15 @@ Current providers: Spotify (full support), YouTube Music (in progress)
 
 ### Authentication Architecture
 
-Authentication is provider-specific but follows a common pattern:
+Authentication is provider-agnostic and centralized in the MusicProviderContext:
 
-- **SpotifyAuthContext** ([src/context/SpotifyAuthContext/](src/context/SpotifyAuthContext/)): OAuth 2.0 flow with token refresh
+- **MusicProviderContext** ([src/context/MusicProviderContext/](src/context/MusicProviderContext/)): Unified auth management for all music providers
+  - OAuth 2.0 flow with automatic token refresh
+  - Token management with 5-minute buffer before expiration
+  - Singleton refresh promise prevents concurrent refresh attempts
+  - Provider adapters handle provider-specific auth details
 - **Backend OAuth Handler** ([server/bedfellow-api/](server/bedfellow-api/)): Rust service handling Spotify OAuth
-- Token management includes automatic refresh with 5-minute buffer before expiration
-- Singleton refresh promise prevents concurrent refresh attempts
+- **useAuth Hook** ([src/hooks/useAuth.ts](src/hooks/useAuth.ts)): Convenient access to auth state and methods
 
 ### Sample Data Architecture
 
@@ -215,11 +218,12 @@ PRDs and task lists are stored in `/tasks` directory.
 
 ### Token Refresh Strategy
 
-[src/context/SpotifyAuthContext/index.tsx:28-29](src/context/SpotifyAuthContext/index.tsx#L28-L29) implements singleton refresh pattern:
+[src/context/MusicProviderContext/index.tsx](src/context/MusicProviderContext/index.tsx) implements singleton refresh pattern:
 
 - Single active refresh promise prevents race conditions
 - 5-minute buffer before expiration triggers proactive refresh
-- All API calls check token validity before execution
+- Auto-refresh check runs every minute for active sessions
+- All API calls through provider adapters use current session tokens
 
 ### Database Schema
 

@@ -17,21 +17,36 @@ export const MUSIC_PROVIDER_STORAGE_KEYS = {
   activeProvider: '@bedfellow/music-provider/active',
 } as const;
 
+import { createSpotifyAdapter } from '@services/music-providers/adapters/spotifyAdapter';
+
 type ProviderSessions = Partial<Record<MusicProviderId, ProviderAuthSession | null>>;
 
 type AdapterRegistry = Partial<Record<MusicProviderId, MusicProviderAdapter>>;
+
+type AuthState = {
+  isLoading: boolean;
+  isRefreshing: boolean;
+  error: string | null;
+  isAuthenticated: boolean;
+};
 
 type MusicProviderContextValue = {
   availableProviders: MusicProviderDescriptor[];
   activeProviderId: MusicProviderId;
   isLoading: boolean;
   sessions: ProviderSessions;
+  authState: AuthState;
   setSession: (providerId: MusicProviderId, session: ProviderAuthSession | null) => Promise<void>;
   clearSession: (providerId: MusicProviderId) => Promise<void>;
   getSession: (providerId?: MusicProviderId) => ProviderAuthSession | null;
   setActiveProvider: (providerId: MusicProviderId) => Promise<void>;
   isProviderAvailable: (providerId: MusicProviderId) => boolean;
   getAdapter: (providerId?: MusicProviderId) => MusicProviderAdapter;
+  authorize: (providerId?: MusicProviderId) => Promise<ProviderAuthSession>;
+  refreshSession: (providerId?: MusicProviderId) => Promise<ProviderAuthSession | null>;
+  logout: (providerId?: MusicProviderId) => Promise<void>;
+  clearError: () => void;
+  isTokenExpiring: (providerId?: MusicProviderId) => boolean;
 };
 
 const MusicProviderContext = createContext<MusicProviderContextValue | undefined>(undefined);
@@ -76,6 +91,11 @@ const resolveActiveProvider = (stored: string | null, defaultProvider: MusicProv
   return defaultProvider;
 };
 
+const TOKEN_REFRESH_BUFFER_MS = 5 * 60 * 1000; // 5 minutes
+
+// Singleton refresh promise to prevent multiple simultaneous refresh attempts
+let activeRefreshPromise: Promise<ProviderAuthSession | null> | null = null;
+
 const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> = ({
   children,
   initialProviderId = MusicProviderId.Spotify,
@@ -85,6 +105,12 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
   const [sessions, setSessions] = useState<ProviderSessions>({});
   const [activeProviderId, setActiveProviderId] = useState<MusicProviderId>(initialProviderId);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [authState, setAuthState] = useState<AuthState>({
+    isLoading: true,
+    isRefreshing: false,
+    error: null,
+    isAuthenticated: false,
+  });
 
   // Use refs for values that need synchronous access without triggering re-renders
   const sessionsRef = useRef<ProviderSessions>({});
@@ -97,8 +123,6 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
   useEffect(() => {
     // Lazy-load createSpotifyAdapter to avoid premature native module initialization
     const buildRegistry = async () => {
-      const { createSpotifyAdapter } = await import('@services/music-providers/adapters/spotifyAdapter');
-
       const registry = MUSIC_PROVIDER_DESCRIPTORS.reduce(
         (acc, descriptor) => {
           const override = adaptersOverride[descriptor.id];
@@ -162,8 +186,36 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
         const resolvedActive = resolveActiveProvider(storedActiveRaw, initialProviderId);
         setActiveProviderId(resolvedActive);
+
+        // Update auth state based on active session
+        const activeSession = hydratedSessions[resolvedActive];
+        if (activeSession) {
+          const expiresAt = activeSession.expiresAt ? new Date(activeSession.expiresAt).getTime() : 0;
+          const now = Date.now();
+          const isExpiring = expiresAt - TOKEN_REFRESH_BUFFER_MS <= now;
+
+          setAuthState({
+            isLoading: false,
+            isRefreshing: false,
+            error: null,
+            isAuthenticated: !isExpiring,
+          });
+        } else {
+          setAuthState({
+            isLoading: false,
+            isRefreshing: false,
+            error: null,
+            isAuthenticated: false,
+          });
+        }
       } catch (error) {
         console.error('Failed to hydrate music provider state', error);
+        setAuthState({
+          isLoading: false,
+          isRefreshing: false,
+          error: 'Failed to load authentication',
+          isAuthenticated: false,
+        });
       } finally {
         if (isMounted) {
           setIsLoading(false);
@@ -244,30 +296,221 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     [activeProviderId]
   );
 
+  // Check if token is expiring soon
+  const isTokenExpiring = useCallback(
+    (providerId?: MusicProviderId) => {
+      const id = providerId ?? activeProviderId;
+      const session = sessionsRef.current[id];
+
+      if (!session?.expiresAt) return true;
+
+      const expiresAt = new Date(session.expiresAt).getTime();
+      const now = Date.now();
+      return expiresAt - TOKEN_REFRESH_BUFFER_MS <= now;
+    },
+    [activeProviderId]
+  );
+
+  // Authorize with a provider
+  const authorize = useCallback(
+    async (providerId?: MusicProviderId): Promise<ProviderAuthSession> => {
+      const id = providerId ?? activeProviderId;
+      const adapter = getAdapter(id);
+
+      setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
+
+      try {
+        const session = await adapter.auth.authorize();
+        await setSession(id, session);
+
+        setAuthState({
+          isLoading: false,
+          isRefreshing: false,
+          error: null,
+          isAuthenticated: true,
+        });
+
+        return session;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to authorize';
+        setAuthState({
+          isLoading: false,
+          isRefreshing: false,
+          error: errorMessage,
+          isAuthenticated: false,
+        });
+        throw error;
+      }
+    },
+    [activeProviderId, getAdapter, setSession]
+  );
+
+  // Refresh session token
+  const refreshSession = useCallback(
+    async (providerId?: MusicProviderId): Promise<ProviderAuthSession | null> => {
+      const id = providerId ?? activeProviderId;
+
+      // If already refreshing, wait for the existing refresh to complete
+      if (activeRefreshPromise) {
+        try {
+          const session = await activeRefreshPromise;
+          return session;
+        } catch {
+          return null;
+        }
+      }
+
+      const session = sessionsRef.current[id];
+      if (!session) {
+        setAuthState((prev) => ({
+          ...prev,
+          isRefreshing: false,
+          error: 'No session available to refresh',
+          isAuthenticated: false,
+        }));
+        return null;
+      }
+
+      const adapter = getAdapter(id);
+
+      // Create new refresh promise
+      activeRefreshPromise = (async () => {
+        setAuthState((prev) => ({ ...prev, isRefreshing: true, error: null }));
+
+        try {
+          const refreshedSession = await adapter.auth.refresh(session);
+          await setSession(id, refreshedSession);
+
+          setAuthState({
+            isLoading: false,
+            isRefreshing: false,
+            error: null,
+            isAuthenticated: true,
+          });
+
+          return refreshedSession;
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error && (error.message.includes('401') || error.message.includes('400'))
+              ? 'Session expired. Please log in again.'
+              : 'Failed to refresh session';
+
+          setAuthState((prev) => ({
+            ...prev,
+            isRefreshing: false,
+            error: errorMessage,
+            isAuthenticated: false,
+          }));
+
+          // Clear session if refresh failed with auth error
+          if (errorMessage.includes('Session expired')) {
+            await clearSession(id);
+          }
+
+          return null;
+        } finally {
+          activeRefreshPromise = null;
+        }
+      })();
+
+      try {
+        const result = await activeRefreshPromise;
+        return result;
+      } catch {
+        return null;
+      }
+    },
+    [activeProviderId, getAdapter, setSession, clearSession]
+  );
+
+  // Logout from a provider
+  const logout = useCallback(
+    async (providerId?: MusicProviderId) => {
+      const id = providerId ?? activeProviderId;
+      const adapter = getAdapter(id);
+      const session = sessionsRef.current[id];
+
+      try {
+        if (session && adapter.auth.revoke) {
+          await adapter.auth.revoke(session);
+        }
+      } catch (error) {
+        console.error('Failed to revoke session:', error);
+      }
+
+      await clearSession(id);
+      setAuthState({
+        isLoading: false,
+        isRefreshing: false,
+        error: null,
+        isAuthenticated: false,
+      });
+      activeRefreshPromise = null;
+    },
+    [activeProviderId, getAdapter, clearSession]
+  );
+
+  // Clear error
+  const clearError = useCallback(() => {
+    setAuthState((prev) => ({ ...prev, error: null }));
+  }, []);
+
+  // Auto-refresh token when it's about to expire
+  useEffect(() => {
+    const activeSession = sessionsRef.current[activeProviderId];
+    if (!activeSession || authState.isRefreshing) return;
+
+    const checkAndRefresh = () => {
+      if (isTokenExpiring(activeProviderId)) {
+        refreshSession(activeProviderId);
+      }
+    };
+
+    // Check immediately
+    checkAndRefresh();
+
+    // Set up interval to check periodically (every minute)
+    const interval = setInterval(checkAndRefresh, 60000);
+
+    return () => clearInterval(interval);
+  }, [activeProviderId, authState.isRefreshing, isTokenExpiring, refreshSession]);
+
   const contextValue = useMemo<MusicProviderContextValue>(
     () => ({
       availableProviders,
       activeProviderId,
       isLoading,
       sessions,
+      authState,
       setSession,
       clearSession,
       getSession,
       setActiveProvider,
       isProviderAvailable,
       getAdapter,
+      authorize,
+      refreshSession,
+      logout,
+      clearError,
+      isTokenExpiring,
     }),
     [
       availableProviders,
       activeProviderId,
       isLoading,
       sessions,
+      authState,
       setSession,
       clearSession,
       getSession,
       setActiveProvider,
       isProviderAvailable,
       getAdapter,
+      authorize,
+      refreshSession,
+      logout,
+      clearError,
+      isTokenExpiring,
     ]
   );
 

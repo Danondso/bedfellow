@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { View, ActivityIndicator } from 'react-native';
@@ -8,12 +8,12 @@ import { DETAILS, LOGIN, SETTINGS, SEARCH } from './constants/Screens';
 import LoginScreen from './Login';
 import SettingsScreen from './Settings';
 import SearchScreen from './Search';
-import { SpotifyAuthContext, SpotifyAuthContextData } from '../context/SpotifyAuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default function () {
-  const { authState, isAuthenticated } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
+  const { authState, isAuthenticated } = useAuth();
 
   const screenOptions: StackNavigationOptions = {
     headerShown: false,

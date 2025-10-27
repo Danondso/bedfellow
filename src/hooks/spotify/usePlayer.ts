@@ -1,23 +1,29 @@
-import { useContext, useEffect } from 'react';
-import { SpotifyAuthContext, type SpotifyAuthContextData } from '@context/SpotifyAuthContext';
+import { useEffect, useState } from 'react';
 import { performPlaybackAction, spotifyGETData } from '@services/spotify/SpotifyAPI.service';
-import { useState } from 'react';
 import type { UsePlayerHookResponse } from './types';
+import { useAuth } from '../useAuth';
 
 type PlaybackAction = 'play' | 'pause' | 'forward' | 'backward';
 
 const usePlayer = (): UsePlayerHookResponse => {
-  const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
-  const { token } = authState;
+  const { token, isAuthenticated, isLoading: authIsLoading } = useAuth();
   const [currentTrack, setCurrentTrack] = useState<SpotifyApi.CurrentPlaybackResponse | null>(null);
   const [error, setError] = useState<SpotifyApi.ErrorObject | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(currentTrack?.is_playing === false);
 
   const getData = async () => {
+    // Don't attempt to fetch if auth is still loading
+    if (authIsLoading) {
+      return null;
+    }
+
+    if (!token) {
+      throw new Error('No access token available');
+    }
+
     setLoading(true);
     setError(null);
-    if (!token) throw new Error('No access token available');
 
     try {
       const { data } = await spotifyGETData('v1/me/player/currently-playing', token);
@@ -32,10 +38,11 @@ const usePlayer = (): UsePlayerHookResponse => {
   };
 
   useEffect(() => {
-    if (token) {
+    // Only fetch data when authenticated and auth is not loading
+    if (isAuthenticated && !authIsLoading && token) {
       getData();
     }
-  }, [token]);
+  }, [token, isAuthenticated, authIsLoading]);
 
   const refresh = async () => await getData();
 

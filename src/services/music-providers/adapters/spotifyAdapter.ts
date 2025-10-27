@@ -1,10 +1,12 @@
 import { Platform } from 'react-native';
+import { authorize } from 'react-native-app-auth';
+
 import type { AuthorizeResult } from 'react-native-app-auth';
 import axios from 'axios';
 import Config from 'react-native-config';
 import { MusicProviderId, type MusicProviderAdapter, type ProviderAuthSession } from '../types';
 import { performPlaybackAction, spotifyGETData, spotifyPOSTData } from '@services/spotify/SpotifyAPI.service';
-import type { SpotifyAuthToken } from '@context/SpotifyAuthContext';
+import type { SpotifyAuthToken } from '../../../types/auth';
 
 const SPOTIFY_SCOPES = [
   'user-read-playback-state',
@@ -86,8 +88,6 @@ export const createSpotifyAdapter = ({ getSession }: SpotifyAdapterOptions): Mus
     capabilities,
     auth: {
       authorize: async () => {
-        // Lazy-load authorize to avoid premature native module initialization
-        const { authorize } = await import('react-native-app-auth');
         const result = await authorize(authorizeConfig());
         return sessionFromAuthorizeResult(result);
       },

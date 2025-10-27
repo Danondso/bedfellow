@@ -1,11 +1,10 @@
-import { SpotifyAuthContext, type SpotifyAuthContextData } from '@context/SpotifyAuthContext';
 import { spotifyGETData } from '@services/spotify/SpotifyAPI.service';
-import { useContext, useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import type { UseProfileHookResponse } from './types';
+import { useAuth } from '../useAuth';
 
 const useProfile = (): UseProfileHookResponse => {
-  const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
-  const { token } = authState;
+  const { token } = useAuth();
   const [profile, setProfile] = useState<SpotifyApi.CurrentUsersProfileResponse | null>(null);
   const [error, setError] = useState<SpotifyApi.ErrorObject | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
