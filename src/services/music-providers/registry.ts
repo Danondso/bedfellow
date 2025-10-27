@@ -1,6 +1,5 @@
 import {
   MusicProviderId,
-  MUSIC_PROVIDER_CAPABILITY_KEYS,
   type MusicProviderCapabilities,
   type MusicProviderDescriptor,
   type MusicProviderAdapter,

@@ -2,12 +2,7 @@ import { authorize } from 'react-native-app-auth';
 import axios from 'axios';
 import { createSpotifyAdapter } from '@services/music-providers/adapters/spotifyAdapter';
 import { MusicProviderId, type ProviderAuthSession } from '@services/music-providers/types';
-import {
-  performPlaybackAction,
-  spotifyGETData,
-  spotifyPOSTData,
-  spotifyPUTData,
-} from '@services/spotify/SpotifyAPI.service';
+import { performPlaybackAction, spotifyGETData, spotifyPOSTData } from '@services/spotify/SpotifyAPI.service';
 
 jest.mock('react-native-app-auth', () => ({
   authorize: jest.fn(),
@@ -37,7 +32,6 @@ describe('createSpotifyAdapter', () => {
   const playbackMock = performPlaybackAction as jest.Mock;
   const getMock = spotifyGETData as jest.Mock;
   const postMock = spotifyPOSTData as jest.Mock;
-  const putMock = spotifyPUTData as jest.Mock;
 
   const createSession = (overrides: Partial<ProviderAuthSession> = {}): ProviderAuthSession => ({
     accessToken: 'access-token',

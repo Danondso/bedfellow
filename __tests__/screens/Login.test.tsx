@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text, View } from 'react-native';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import LoginScreen from '@screens/Login';
 import { MusicProviderId } from '@services/music-providers/types';
