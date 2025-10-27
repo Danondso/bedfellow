@@ -5,7 +5,6 @@ import {
   createNotImplementedAdapter,
   getProviderDescriptor,
 } from '@services/music-providers/registry';
-import { createSpotifyAdapter } from '@services/music-providers/adapters/spotifyAdapter';
 import {
   MusicProviderAdapter,
   MusicProviderDescriptor,
@@ -96,28 +95,35 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
   // Build adapter registry once on mount and when override adapters change
   useEffect(() => {
-    const registry = MUSIC_PROVIDER_DESCRIPTORS.reduce(
-      (acc, descriptor) => {
-        const override = adaptersOverride[descriptor.id];
-        if (override) {
-          acc[descriptor.id] = override;
+    // Lazy-load createSpotifyAdapter to avoid premature native module initialization
+    const buildRegistry = async () => {
+      const { createSpotifyAdapter } = await import('@services/music-providers/adapters/spotifyAdapter');
+
+      const registry = MUSIC_PROVIDER_DESCRIPTORS.reduce(
+        (acc, descriptor) => {
+          const override = adaptersOverride[descriptor.id];
+          if (override) {
+            acc[descriptor.id] = override;
+            return acc;
+          }
+
+          if (descriptor.id === MusicProviderId.Spotify) {
+            acc[descriptor.id] = createSpotifyAdapter({
+              getSession: () => sessionsRef.current[MusicProviderId.Spotify] ?? null,
+            });
+            return acc;
+          }
+
+          acc[descriptor.id] = createNotImplementedAdapter(descriptor);
           return acc;
-        }
+        },
+        {} as Record<MusicProviderId, MusicProviderAdapter>
+      );
 
-        if (descriptor.id === MusicProviderId.Spotify) {
-          acc[descriptor.id] = createSpotifyAdapter({
-            getSession: () => sessionsRef.current[MusicProviderId.Spotify] ?? null,
-          });
-          return acc;
-        }
+      adaptersRef.current = registry;
+    };
 
-        acc[descriptor.id] = createNotImplementedAdapter(descriptor);
-        return acc;
-      },
-      {} as Record<MusicProviderId, MusicProviderAdapter>
-    );
-
-    adaptersRef.current = registry;
+    buildRegistry();
   }, [adaptersOverride]);
 
   const persistSessions = useCallback(async (nextSessions: ProviderSessions) => {

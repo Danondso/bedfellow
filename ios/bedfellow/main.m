@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
-
-#import "AppDelegate.h"
+#import "bedfellow-Swift.h"
 
 int main(int argc, char *argv[])
 {

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useCallback, useMemo } from 'react';
 import { Platform, Alert } from 'react-native';
 import Config from 'react-native-config';
-import { authorize, AuthorizeResult } from 'react-native-app-auth';
+import type { AuthorizeResult } from 'react-native-app-auth';
 import { SpotifyAuthContext, SpotifyAuthContextData } from '../../context/SpotifyAuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import ThemedView from '../../components/themed/ThemedView';
@@ -87,6 +87,9 @@ function LoginScreen({ navigation }: LoginScreenProps) {
     }
 
     try {
+      // Lazy-load authorize to avoid premature native module initialization
+      const { authorize } = await import('react-native-app-auth');
+
       const config: any = {
         clientId: Config.SPOTIFY_CLIENT_ID,
         redirectUrl: Platform.OS === 'ios' ? Config.SPOTIFY_REDIRECT_URI : Config.SPOTIFY_REDIRECT_URI_ANDROID,
