@@ -93,15 +93,12 @@ const resolveActiveProvider = (stored: string | null, defaultProvider: MusicProv
 
 const TOKEN_REFRESH_BUFFER_MS = 5 * 60 * 1000; // 5 minutes
 
-// Singleton refresh promise to prevent multiple simultaneous refresh attempts
-let activeRefreshPromise: Promise<ProviderAuthSession | null> | null = null;
-
 const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> = ({
   children,
   initialProviderId = MusicProviderId.Spotify,
   adapters = {},
 }) => {
-  const availableProviders = useMemo(() => MUSIC_PROVIDER_DESCRIPTORS, []);
+  const availableProviders = MUSIC_PROVIDER_DESCRIPTORS;
   const [sessions, setSessions] = useState<ProviderSessions>({});
   const [activeProviderId, setActiveProviderId] = useState<MusicProviderId>(initialProviderId);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -115,6 +112,8 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
   // Use refs for values that need synchronous access without triggering re-renders
   const sessionsRef = useRef<ProviderSessions>({});
   const adaptersRef = useRef<Partial<Record<MusicProviderId, MusicProviderAdapter>>>({});
+  // Use ref instead of module-level singleton to prevent memory leaks on unmount
+  const activeRefreshPromisesRef = useRef<Partial<Record<MusicProviderId, Promise<ProviderAuthSession | null>>>>({});
 
   // Memoize adapters prop to prevent unnecessary rebuilds
   const adaptersOverride = useMemo(() => adapters, [adapters]);
@@ -350,10 +349,10 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     async (providerId?: MusicProviderId): Promise<ProviderAuthSession | null> => {
       const id = providerId ?? activeProviderId;
 
-      // If already refreshing, wait for the existing refresh to complete
-      if (activeRefreshPromise) {
+      // If already refreshing this provider, wait for the existing refresh to complete
+      if (activeRefreshPromisesRef.current[id]) {
         try {
-          const session = await activeRefreshPromise;
+          const session = await activeRefreshPromisesRef.current[id]!;
           return session;
         } catch {
           return null;
@@ -373,8 +372,8 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
       const adapter = getAdapter(id);
 
-      // Create new refresh promise
-      activeRefreshPromise = (async () => {
+      // Create new refresh promise for this provider
+      const refreshPromise = (async () => {
         setAuthState((prev) => ({ ...prev, isRefreshing: true, error: null }));
 
         try {
@@ -409,12 +408,14 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
           return null;
         } finally {
-          activeRefreshPromise = null;
+          delete activeRefreshPromisesRef.current[id];
         }
       })();
 
+      activeRefreshPromisesRef.current[id] = refreshPromise;
+
       try {
-        const result = await activeRefreshPromise;
+        const result = await refreshPromise;
         return result;
       } catch {
         return null;
@@ -445,7 +446,8 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
         error: null,
         isAuthenticated: false,
       });
-      activeRefreshPromise = null;
+      // Clean up any active refresh promises for this provider
+      delete activeRefreshPromisesRef.current[id];
     },
     [activeProviderId, getAdapter, clearSession]
   );
