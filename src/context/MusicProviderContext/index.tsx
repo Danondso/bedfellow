@@ -36,6 +36,7 @@ type MusicProviderContextValue = {
   isLoading: boolean;
   sessions: ProviderSessions;
   authState: AuthState;
+  storageError: string | null;
   setSession: (providerId: MusicProviderId, session: ProviderAuthSession | null) => Promise<void>;
   clearSession: (providerId: MusicProviderId) => Promise<void>;
   getSession: (providerId?: MusicProviderId) => ProviderAuthSession | null;
@@ -109,6 +110,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     error: null,
     isAuthenticated: false,
   });
+  const [storageError, setStorageError] = useState<string | null>(null);
 
   // Use refs for values that need synchronous access without triggering re-renders
   const sessionsRef = useRef<ProviderSessions>({});
@@ -155,8 +157,12 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
   const persistSessions = useCallback(async (nextSessions: ProviderSessions) => {
     try {
       await AsyncStorage.setItem(MUSIC_PROVIDER_STORAGE_KEYS.sessions, JSON.stringify(nextSessions));
+      setStorageError(null);
     } catch (error) {
+      const message = 'Unable to save login state. You may be logged out on app restart.';
       console.error('Failed to persist music provider sessions', error);
+      setStorageError(message);
+      // Consider showing a toast/alert to user in the UI
     }
   }, []);
 
@@ -506,6 +512,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
       isLoading,
       sessions,
       authState,
+      storageError,
       setSession,
       clearSession,
       getSession,
@@ -524,6 +531,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
       isLoading,
       sessions,
       authState,
+      storageError,
       setSession,
       clearSession,
       getSession,
