@@ -114,6 +114,8 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
   const adaptersRef = useRef<Partial<Record<MusicProviderId, MusicProviderAdapter>>>({});
   // Use ref instead of module-level singleton to prevent memory leaks on unmount
   const activeRefreshPromisesRef = useRef<Partial<Record<MusicProviderId, Promise<ProviderAuthSession | null>>>>({});
+  // Queue for serializing persistence operations to prevent race conditions
+  const persistenceQueueRef = useRef<Promise<void>>(Promise.resolve());
 
   // Memoize adapters prop to prevent unnecessary rebuilds
   const adaptersOverride = useMemo(() => adapters, [adapters]);
@@ -238,7 +240,16 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
       sessionsRef.current = nextSessions;
       setSessions(nextSessions);
-      await persistSessions(nextSessions);
+
+      // Serialize persistence operations to prevent race conditions
+      persistenceQueueRef.current = persistenceQueueRef.current
+        .then(() => persistSessions(nextSessions))
+        .catch((error) => {
+          console.error('Persistence failed', error);
+          // Don't break the queue on error
+        });
+
+      await persistenceQueueRef.current;
     },
     [persistSessions]
   );
