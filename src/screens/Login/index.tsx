@@ -74,10 +74,6 @@ function LoginScreen({ navigation }: LoginScreenProps) {
     try {
       // Use the adapter's authorize method from MusicProviderContext
       await authorize(activeProviderId);
-
-      // Small delay to ensure state updates have propagated
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
       navigation.navigate(DETAILS);
     } catch (error) {
       if (error instanceof Error) {
