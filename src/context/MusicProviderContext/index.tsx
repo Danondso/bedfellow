@@ -100,7 +100,6 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
   initialProviderId = MusicProviderId.Spotify,
   adapters = {},
 }) => {
-  const availableProviders = MUSIC_PROVIDER_DESCRIPTORS;
   const [sessions, setSessions] = useState<ProviderSessions>({});
   const [activeProviderId, setActiveProviderId] = useState<MusicProviderId>(initialProviderId);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -162,7 +161,6 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
       const message = 'Unable to save login state. You may be logged out on app restart.';
       console.error('Failed to persist music provider sessions', error);
       setStorageError(message);
-      // Consider showing a toast/alert to user in the UI
     }
   }, []);
 
@@ -249,14 +247,12 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
       setSessions(nextSessions);
 
       // Serialize persistence operations to prevent race conditions
-      persistenceQueueRef.current = persistenceQueueRef.current
-        .then(() => persistSessions(nextSessions))
-        .catch((error) => {
-          console.error('Persistence failed', error);
-          // Don't break the queue on error
-        });
-
-      await persistenceQueueRef.current;
+      const prev = persistenceQueueRef.current;
+      await prev;
+      persistenceQueueRef.current = persistSessions(nextSessions).catch((error) => {
+        console.error('Persistence failed', error);
+        // Don't break the queue on error
+      });
     },
     [persistSessions]
   );
@@ -507,7 +503,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
   const contextValue = useMemo<MusicProviderContextValue>(
     () => ({
-      availableProviders,
+      availableProviders: MUSIC_PROVIDER_DESCRIPTORS,
       activeProviderId,
       isLoading,
       sessions,
@@ -526,7 +522,6 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
       isTokenExpiring,
     }),
     [
-      availableProviders,
       activeProviderId,
       isLoading,
       sessions,
