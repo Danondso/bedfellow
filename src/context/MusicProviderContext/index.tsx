@@ -92,6 +92,7 @@ const resolveActiveProvider = (stored: string | null, defaultProvider: MusicProv
 };
 
 const TOKEN_REFRESH_BUFFER_MS = 5 * 60 * 1000; // 5 minutes
+const TOKEN_REFRESH_CHECK_INTERVAL_MS = 60 * 1000; // 1 minute
 
 const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> = ({
   children,
@@ -468,25 +469,35 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     setAuthState((prev) => ({ ...prev, error: null }));
   }, []);
 
+  // Store refs for callbacks to avoid recreating interval
+  const isTokenExpiringRef = useRef(isTokenExpiring);
+  const refreshSessionRef = useRef(refreshSession);
+
+  // Sync refs when callbacks change
+  useEffect(() => {
+    isTokenExpiringRef.current = isTokenExpiring;
+    refreshSessionRef.current = refreshSession;
+  }, [isTokenExpiring, refreshSession]);
+
   // Auto-refresh token when it's about to expire
   useEffect(() => {
     const activeSession = sessionsRef.current[activeProviderId];
     if (!activeSession || authState.isRefreshing) return;
 
     const checkAndRefresh = () => {
-      if (isTokenExpiring(activeProviderId)) {
-        refreshSession(activeProviderId);
+      if (isTokenExpiringRef.current(activeProviderId)) {
+        refreshSessionRef.current(activeProviderId);
       }
     };
 
     // Check immediately
     checkAndRefresh();
 
-    // Set up interval to check periodically (every minute)
-    const interval = setInterval(checkAndRefresh, 60000);
+    // Set up interval to check periodically
+    const interval = setInterval(checkAndRefresh, TOKEN_REFRESH_CHECK_INTERVAL_MS);
 
     return () => clearInterval(interval);
-  }, [activeProviderId, authState.isRefreshing, isTokenExpiring, refreshSession]);
+  }, [activeProviderId, authState.isRefreshing]); // Stable dependencies only
 
   const contextValue = useMemo<MusicProviderContextValue>(
     () => ({
