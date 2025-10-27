@@ -30,37 +30,19 @@ export default function () {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={screenOptions}>
-        {!isAuthenticated ? (
-          <>
-            <Stack.Screen name={LOGIN} component={LoginScreen} />
-            <Stack.Screen name={DETAILS} component={DetailsScreen} />
-            <Stack.Screen name={SETTINGS} component={SettingsScreen} />
-            <Stack.Screen
-              name={SEARCH}
-              component={SearchScreen}
-              options={{
-                presentation: 'modal',
-                animationTypeForReplace: 'push',
-                animation: 'slide_from_bottom',
-              }}
-            />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name={DETAILS} component={DetailsScreen} />
-            <Stack.Screen name={SETTINGS} component={SettingsScreen} />
-            <Stack.Screen
-              name={SEARCH}
-              component={SearchScreen}
-              options={{
-                presentation: 'modal',
-                animationTypeForReplace: 'push',
-                animation: 'slide_from_bottom',
-              }}
-            />
-          </>
-        )}
+      <Stack.Navigator screenOptions={screenOptions} initialRouteName={isAuthenticated ? DETAILS : LOGIN}>
+        <Stack.Screen name={LOGIN} component={LoginScreen} />
+        <Stack.Screen name={DETAILS} component={DetailsScreen} />
+        <Stack.Screen name={SETTINGS} component={SettingsScreen} />
+        <Stack.Screen
+          name={SEARCH}
+          component={SearchScreen}
+          options={{
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_bottom',
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
