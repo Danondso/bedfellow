@@ -133,31 +133,6 @@ function LoginScreen({ navigation }: LoginScreenProps) {
           <ThemedText variant="body" style={styles.subHeader}>
             Discover the stories behind the music
           </ThemedText>
-          <ThemedView style={styles.providerContainer}>
-            <ThemedText variant="h5" style={styles.providerTitle}>
-              Choose your music provider
-            </ThemedText>
-            <ThemedView style={styles.providerButtons}>
-              {availableProviders.map((provider) => {
-                const isActive = provider.id === activeProviderId;
-                const available = isProviderAvailable(provider.id);
-                return (
-                  <ThemedButton
-                    key={provider.id}
-                    variant={isActive ? 'primary' : 'outline'}
-                    size="medium"
-                    fullWidth
-                    disabled={!available}
-                    style={styles.providerButton}
-                    onPress={() => handleSelectProvider(provider.id)}
-                  >
-                    {provider.displayName}
-                    {!available ? ' (coming soon)' : ''}
-                  </ThemedButton>
-                );
-              })}
-            </ThemedView>
-          </ThemedView>
           <ThemedButton
             variant={loginButtonVariant}
             size="large"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import LoginScreen from '@screens/Login';
 import { MusicProviderId } from '@services/music-providers/types';
 import type { LoginScreenProps } from '@types';
@@ -128,43 +128,49 @@ const renderLogin = () => {
   return render(<LoginScreen {...props} />);
 };
 
-describe('LoginScreen provider selection', () => {
+describe('LoginScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('disables the continue button when the active provider is unavailable', () => {
+  it('renders the login screen with Spotify button', () => {
     mockUseMusicProvider.mockReturnValue({
-      availableProviders: [
-        { id: MusicProviderId.Spotify, displayName: 'Spotify' },
-        { id: MusicProviderId.YouTubeMusic, displayName: 'YouTube Music' },
-      ],
-      activeProviderId: MusicProviderId.YouTubeMusic,
-      setActiveProvider: jest.fn(),
-      isProviderAvailable: (id: MusicProviderId) => id === MusicProviderId.Spotify,
-    });
-
-    const { getByText } = renderLogin();
-
-    expect(getByText('Continue with YouTube Music').props.onPress).toBeUndefined();
-  });
-
-  it('switches active provider when a provider button is pressed', async () => {
-    const setActiveProvider = jest.fn().mockResolvedValue(undefined);
-    mockUseMusicProvider.mockReturnValue({
-      availableProviders: [
-        { id: MusicProviderId.Spotify, displayName: 'Spotify' },
-        { id: MusicProviderId.YouTubeMusic, displayName: 'YouTube Music' },
-      ],
+      availableProviders: [{ id: MusicProviderId.Spotify, displayName: 'Spotify' }],
       activeProviderId: MusicProviderId.Spotify,
-      setActiveProvider,
+      setActiveProvider: jest.fn(),
       isProviderAvailable: () => true,
     });
 
     const { getByText } = renderLogin();
 
-    fireEvent.press(getByText('YouTube Music'));
+    expect(getByText('Bedfellow')).toBeTruthy();
+    expect(getByText('Discover the stories behind the music')).toBeTruthy();
+    expect(getByText('Continue with Spotify')).toBeTruthy();
+  });
 
-    await waitFor(() => expect(setActiveProvider).toHaveBeenCalledWith(MusicProviderId.YouTubeMusic));
+  it('disables the continue button when the active provider is unavailable', () => {
+    mockUseMusicProvider.mockReturnValue({
+      availableProviders: [{ id: MusicProviderId.Spotify, displayName: 'Spotify' }],
+      activeProviderId: MusicProviderId.Spotify,
+      setActiveProvider: jest.fn(),
+      isProviderAvailable: () => false,
+    });
+
+    const { getByText } = renderLogin();
+
+    expect(getByText('Continue with Spotify').props.onPress).toBeUndefined();
+  });
+
+  it('enables the continue button when the active provider is available', () => {
+    mockUseMusicProvider.mockReturnValue({
+      availableProviders: [{ id: MusicProviderId.Spotify, displayName: 'Spotify' }],
+      activeProviderId: MusicProviderId.Spotify,
+      setActiveProvider: jest.fn(),
+      isProviderAvailable: () => true,
+    });
+
+    const { getByText } = renderLogin();
+
+    expect(getByText('Continue with Spotify').props.onPress).toBeDefined();
   });
 });
