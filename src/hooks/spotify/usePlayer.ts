@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { performPlaybackAction, spotifyGETData } from '@services/spotify/SpotifyAPI.service';
 import type { UsePlayerHookResponse } from './types';
 import { useAuth } from '../useAuth';
@@ -12,7 +12,7 @@ const usePlayer = (): UsePlayerHookResponse => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(currentTrack?.is_playing === false);
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     // Don't attempt to fetch if auth is still loading
     if (authIsLoading) {
       return null;
@@ -35,14 +35,14 @@ const usePlayer = (): UsePlayerHookResponse => {
       setLoading(false);
       throw error;
     }
-  };
+  }, [authIsLoading, token]);
 
   useEffect(() => {
     // Only fetch data when authenticated and auth is not loading
     if (isAuthenticated && !authIsLoading && token) {
       getData();
     }
-  }, [token, isAuthenticated, authIsLoading]);
+  }, [getData, isAuthenticated, authIsLoading, token]);
 
   const refresh = async () => await getData();
 
