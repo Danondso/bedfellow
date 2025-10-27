@@ -1,11 +1,11 @@
 import React, { createContext, useState, useCallback, ReactNode, useEffect, Context, useRef, useMemo } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, { AxiosError } from 'axios';
 import { AuthorizeResult } from 'react-native-app-auth';
 import Config from 'react-native-config';
 import { type SpotifyAuthContextData, type SpotifyAuthToken, type SpotifyAuthState } from './types';
+import { useMusicProvider } from '../MusicProviderContext';
+import { MusicProviderId, type ProviderAuthSession } from '@services/music-providers/types';
 
-const SPOTIFY_AUTH_STORAGE_KEY = '@bedfellow/spotify_auth';
 const TOKEN_REFRESH_BUFFER_MS = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 const initialAuthState: SpotifyAuthState = {
@@ -31,6 +31,7 @@ let activeRefreshPromise: Promise<SpotifyAuthToken | null> | null = null;
 function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
   const [authState, setAuthState] = useState<SpotifyAuthState>(initialAuthState);
   const isMountedRef = useRef(true);
+  const musicProvider = useMusicProvider();
 
   // Helper function to safely update state only if component is mounted
   const safeSetAuthState = useCallback(
@@ -61,6 +62,34 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const providerSessionToSpotifyToken = useCallback((session: ProviderAuthSession | null): SpotifyAuthToken | null => {
+    if (!session) {
+      return null;
+    }
+
+    return {
+      accessToken: session.accessToken,
+      refreshToken: session.refreshToken ?? '',
+      expiresAt: session.expiresAt ?? new Date(Date.now() + 3600000).toISOString(),
+      tokenType: session.tokenType ?? 'Bearer',
+      scopes: session.scopes ?? [],
+    };
+  }, []);
+
+  const spotifyTokenToProviderSession = useCallback((token: SpotifyAuthToken | null): ProviderAuthSession | null => {
+    if (!token) {
+      return null;
+    }
+
+    return {
+      accessToken: token.accessToken,
+      refreshToken: token.refreshToken,
+      expiresAt: token.expiresAt,
+      tokenType: token.tokenType,
+      scopes: token.scopes,
+    };
+  }, []);
+
   // Check if token is expiring soon
   const isTokenExpiring = useCallback((): boolean => {
     if (!authState.token?.expiresAt) return true;
@@ -69,19 +98,6 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
     const now = Date.now();
     return expiresAt - TOKEN_REFRESH_BUFFER_MS <= now;
   }, [authState.token]);
-
-  // Store token in AsyncStorage
-  const persistToken = useCallback(async (token: SpotifyAuthToken | null) => {
-    try {
-      if (token) {
-        await AsyncStorage.setItem(SPOTIFY_AUTH_STORAGE_KEY, JSON.stringify(token));
-      } else {
-        await AsyncStorage.removeItem(SPOTIFY_AUTH_STORAGE_KEY);
-      }
-    } catch (error) {
-      console.error('Failed to persist auth token:', error);
-    }
-  }, []);
 
   // Set auth token from login
   const setAuthToken = useCallback(
@@ -94,7 +110,7 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
           isRefreshing: false,
           error: null,
         });
-        await persistToken(token);
+        await musicProvider.setSession(MusicProviderId.Spotify, spotifyTokenToProviderSession(token));
       } catch (error) {
         safeSetAuthState({
           token: null,
@@ -104,7 +120,7 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
         throw error;
       }
     },
-    [convertToAuthToken, persistToken, safeSetAuthState]
+    [convertToAuthToken, musicProvider, safeSetAuthState, spotifyTokenToProviderSession]
   );
 
   // Refresh the access token
@@ -155,7 +171,7 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
           error: null,
         });
 
-        await persistToken(newToken);
+        await musicProvider.setSession(MusicProviderId.Spotify, spotifyTokenToProviderSession(newToken));
         return newToken;
       } catch (error) {
         const axiosError = error as AxiosError;
@@ -173,7 +189,7 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
 
         // Clear stored token if refresh failed with auth error
         if (axiosError.response?.status === 400 || axiosError.response?.status === 401) {
-          await persistToken(null);
+          await musicProvider.clearSession(MusicProviderId.Spotify);
         }
 
         return null;
@@ -188,7 +204,7 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
     } catch {
       return null;
     }
-  }, [authState.token, persistToken, safeSetAuthState]);
+  }, [authState.token, musicProvider, safeSetAuthState, spotifyTokenToProviderSession]);
 
   // Logout
   const logout = useCallback(async () => {
@@ -198,51 +214,54 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
       isRefreshing: false,
       error: null,
     });
-    await persistToken(null);
+    await musicProvider.clearSession(MusicProviderId.Spotify);
     activeRefreshPromise = null;
-  }, [persistToken, safeSetAuthState]);
+  }, [musicProvider, safeSetAuthState]);
 
   // Clear error
   const clearError = useCallback(() => {
     safeSetAuthState({ error: null });
   }, [safeSetAuthState]);
 
-  // Load stored token on mount
+  // Load stored token on mount from the music provider context
   useEffect(() => {
     let mounted = true;
 
     const loadStoredAuth = async () => {
       try {
-        const storedData = await AsyncStorage.getItem(SPOTIFY_AUTH_STORAGE_KEY);
-
-        if (!mounted) return;
-
-        if (storedData) {
-          const token = JSON.parse(storedData) as SpotifyAuthToken;
-
-          // Check if token needs refresh
-          const expiresAt = new Date(token.expiresAt).getTime();
-          const now = Date.now();
-          const needsRefresh = expiresAt - TOKEN_REFRESH_BUFFER_MS <= now;
-
-          if (needsRefresh && token.refreshToken) {
-            // Set token temporarily and trigger refresh
-            safeSetAuthState({
-              token,
-              isLoading: false,
-              isRefreshing: true,
-            });
-            // Don't await - let it refresh in background
-            refreshToken();
-          } else {
-            safeSetAuthState({
-              token,
-              isLoading: false,
-            });
-          }
-        } else {
-          safeSetAuthState({ isLoading: false });
+        if (!mounted || musicProvider.isLoading) {
+          return;
         }
+
+        const session = musicProvider.getSession(MusicProviderId.Spotify);
+
+        if (session) {
+          const token = providerSessionToSpotifyToken(session);
+
+          if (token) {
+            const expiresAt = new Date(token.expiresAt).getTime();
+            const now = Date.now();
+            const needsRefresh = expiresAt - TOKEN_REFRESH_BUFFER_MS <= now;
+
+            if (needsRefresh && token.refreshToken) {
+              safeSetAuthState({
+                token,
+                isLoading: false,
+                isRefreshing: true,
+              });
+              refreshToken();
+              return;
+            }
+
+            safeSetAuthState({
+              token,
+              isLoading: false,
+            });
+            return;
+          }
+        }
+
+        safeSetAuthState({ isLoading: false });
       } catch (error) {
         console.error('Failed to load stored auth:', error);
         if (mounted) {
@@ -260,7 +279,7 @@ function SpotifyAuthContextProvider({ children }: { children: ReactNode }) {
       mounted = false;
       isMountedRef.current = false;
     };
-  }, []); // Only run on mount
+  }, [musicProvider, providerSessionToSpotifyToken, refreshToken, safeSetAuthState]);
 
   // Auto-refresh token when it's about to expire
   useEffect(() => {

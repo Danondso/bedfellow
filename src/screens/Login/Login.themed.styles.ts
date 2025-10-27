@@ -8,6 +8,10 @@ type Style = {
   loginView: ViewStyle;
   button: ViewStyle;
   loginButtonView: ViewStyle;
+  providerContainer: ViewStyle;
+  providerTitle: TextStyle;
+  providerButtons: ViewStyle;
+  providerButton: ViewStyle;
 };
 
 export const createStyles = (theme: Theme) =>
@@ -62,6 +66,24 @@ export const createStyles = (theme: Theme) =>
       paddingHorizontal: theme.spacing.xxl, // More generous horizontal padding
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    providerContainer: {
+      width: '100%',
+      marginBottom: theme.spacing.xl,
+      paddingHorizontal: theme.spacing.md,
+    },
+    providerTitle: {
+      textAlign: 'center',
+      marginBottom: theme.spacing.md,
+      color: theme.colors.text[600],
+      fontWeight: '600',
+    },
+    providerButtons: {
+      flexDirection: 'column',
+    },
+    providerButton: {
+      borderRadius: theme.borderRadius.lg,
+      marginBottom: theme.spacing.sm,
     },
   });
 
