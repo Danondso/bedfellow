@@ -61,6 +61,16 @@ class AdapterRegistry {
   }
 
   /**
+   * Unregisters an adapter for a provider.
+   * Useful for cleanup in tests or when removing custom adapters.
+   *
+   * @param id - Provider ID
+   */
+  unregister(id: MusicProviderId): void {
+    this.adapters.delete(id);
+  }
+
+  /**
    * Gets the adapter for a specific provider.
    *
    * @param id - Provider ID

@@ -126,6 +126,28 @@ describe('AdapterRegistry', () => {
     });
   });
 
+  describe('unregister', () => {
+    it('should unregister an adapter', () => {
+      const customAdapter = createMockAdapter(MusicProviderId.Spotify);
+      adapterRegistry.register(MusicProviderId.Spotify, customAdapter);
+
+      expect(adapterRegistry.has(MusicProviderId.Spotify)).toBe(true);
+
+      adapterRegistry.unregister(MusicProviderId.Spotify);
+
+      expect(adapterRegistry.has(MusicProviderId.Spotify)).toBe(false);
+      expect(adapterRegistry.get(MusicProviderId.Spotify)).toBeUndefined();
+    });
+
+    it('should handle unregistering non-existent adapter gracefully', () => {
+      expect(() => {
+        adapterRegistry.unregister(MusicProviderId.Spotify);
+      }).not.toThrow();
+
+      expect(adapterRegistry.has(MusicProviderId.Spotify)).toBe(false);
+    });
+  });
+
   describe('get', () => {
     beforeEach(() => {
       adapterRegistry.initialize(mockGetSession);

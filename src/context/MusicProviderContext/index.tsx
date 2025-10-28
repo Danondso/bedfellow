@@ -85,25 +85,38 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
   // Use ref instead of module-level singleton to prevent memory leaks on unmount
   const activeRefreshPromisesRef = useRef<Partial<Record<MusicProviderId, Promise<ProviderAuthSession | null>>>>({});
+  // Track if this component has attempted initialization to prevent race conditions
+  const hasAttemptedInitRef = useRef<boolean>(false);
 
   // Memoize adapters prop to prevent unnecessary rebuilds
   const adaptersOverride = useMemo(() => adapters, [adapters]);
 
   // Initialize adapter registry once on mount
   useEffect(() => {
-    if (!adapterRegistry.initialized) {
+    // Atomically check and set initialization attempt flag
+    if (!hasAttemptedInitRef.current && !adapterRegistry.initialized) {
+      hasAttemptedInitRef.current = true;
       adapterRegistry.initialize(getStorageSession);
     }
 
     // Register any custom adapters (for testing)
+    const registeredOverrideIds: MusicProviderId[] = [];
     if (adaptersOverride) {
       (Object.keys(adaptersOverride) as MusicProviderId[]).forEach((id) => {
         const adapter = adaptersOverride[id];
         if (adapter) {
           adapterRegistry.register(id, adapter);
+          registeredOverrideIds.push(id);
         }
       });
     }
+
+    // Cleanup: unregister custom adapters on unmount or when overrides change
+    return () => {
+      registeredOverrideIds.forEach((id) => {
+        adapterRegistry.unregister(id);
+      });
+    };
   }, [adaptersOverride, getStorageSession]);
 
   // Hydrate active provider and update auth state after sessions are hydrated
