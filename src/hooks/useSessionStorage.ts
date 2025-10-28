@@ -105,14 +105,17 @@ export const useSessionStorage = (): UseSessionStorageReturn => {
       setSessions(nextSessions);
 
       // Serialize persistence operations to prevent race conditions
-      persistenceQueueRef.current = persistenceQueueRef.current
-        .then(() => persistSessions(nextSessions))
-        .catch((error) => {
-          console.error('Failed to persist session for provider', providerId, error);
-          // Don't break the queue on error
-        });
+      // We keep two promises: one for the queue (which never throws), and one for the caller (which can throw)
+      const persistPromise = persistenceQueueRef.current.then(() => persistSessions(nextSessions));
 
-      await persistenceQueueRef.current;
+      // Update the queue to continue even if this operation fails
+      persistenceQueueRef.current = persistPromise.catch((error) => {
+        console.error('Failed to persist session for provider', providerId, error);
+        // Don't break the queue on error - allow subsequent operations to continue
+      });
+
+      // Wait for persistence and propagate errors to caller
+      await persistPromise;
     },
     [persistSessions]
   );

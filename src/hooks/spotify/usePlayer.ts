@@ -13,9 +13,12 @@ const usePlayer = (): UsePlayerHookResponse => {
   const [isPaused, setIsPaused] = useState<boolean>(currentTrack?.is_playing === false);
 
   const getData = useCallback(async () => {
-    // Don't attempt to fetch if auth is still loading or no token available
-    if (authIsLoading || !token) {
-      return null;
+    // Throw error if auth is still loading or no token available
+    if (authIsLoading) {
+      throw new Error('Authentication is still loading');
+    }
+    if (!token) {
+      throw new Error('No access token available');
     }
 
     setLoading(true);
@@ -36,7 +39,10 @@ const usePlayer = (): UsePlayerHookResponse => {
   useEffect(() => {
     // Only fetch data when authenticated and auth is not loading
     if (isAuthenticated && !authIsLoading && token) {
-      getData();
+      getData().catch((error) => {
+        console.error('Failed to fetch current playback:', error);
+        // Error is already set in state by getData
+      });
     }
   }, [getData, isAuthenticated, authIsLoading, token]);
 

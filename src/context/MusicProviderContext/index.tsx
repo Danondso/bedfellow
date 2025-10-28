@@ -8,6 +8,7 @@ import {
 } from '@services/music-providers/types';
 import { useSessionStorage, type ProviderSessions } from '@hooks/useSessionStorage';
 import { adapterRegistry } from '@services/music-providers/AdapterRegistry';
+import { isAuthError } from './errorUtils';
 
 type AdapterOverrides = Partial<Record<MusicProviderId, MusicProviderAdapter>>;
 
@@ -332,18 +333,12 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
           return refreshedSession;
         } catch (error) {
-          // Check for HTTP status code from axios error or error object
-          const isAuthError =
-            (typeof error === 'object' &&
-              error !== null &&
-              'response' in error &&
-              typeof error.response === 'object' &&
-              error.response !== null &&
-              'status' in error.response &&
-              (error.response.status === 401 || error.response.status === 400)) ||
-            (error instanceof Error && (error.message.includes('401') || error.message.includes('400')));
+          // Check if this is an authentication error (401/400)
+          const isAuthenticationError = isAuthError(error);
 
-          const errorMessage = isAuthError ? 'Session expired. Please log in again.' : 'Failed to refresh session';
+          const errorMessage = isAuthenticationError
+            ? 'Session expired. Please log in again.'
+            : 'Failed to refresh session';
 
           setAuthState((prev) => ({
             ...prev,
@@ -353,7 +348,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
           }));
 
           // Clear session if refresh failed with auth error
-          if (isAuthError) {
+          if (isAuthenticationError) {
             await clearSession(id);
           }
 
