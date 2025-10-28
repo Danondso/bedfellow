@@ -100,21 +100,25 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     }
 
     // Register any custom adapters (for testing)
-    const registeredOverrideIds: MusicProviderId[] = [];
+    const originalAdapters = new Map<MusicProviderId, MusicProviderAdapter>();
     if (adaptersOverride) {
       (Object.keys(adaptersOverride) as MusicProviderId[]).forEach((id) => {
         const adapter = adaptersOverride[id];
         if (adapter) {
+          // Store original adapter before overriding
+          const original = adapterRegistry.get(id);
+          if (original) {
+            originalAdapters.set(id, original);
+          }
           adapterRegistry.register(id, adapter);
-          registeredOverrideIds.push(id);
         }
       });
     }
 
-    // Cleanup: unregister custom adapters on unmount or when overrides change
+    // Cleanup: restore original adapters on unmount or when overrides change
     return () => {
-      registeredOverrideIds.forEach((id) => {
-        adapterRegistry.unregister(id);
+      originalAdapters.forEach((adapter, id) => {
+        adapterRegistry.register(id, adapter);
       });
     };
   }, [adaptersOverride, getStorageSession]);
