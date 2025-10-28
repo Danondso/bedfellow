@@ -79,7 +79,9 @@ const buildDefaultAdapters = () => ({
 describe('MusicProviderContext', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
+    // Make AsyncStorage resolve immediately to prevent timing issues in CI
+    (AsyncStorage.getItem as jest.Mock).mockImplementation(() => Promise.resolve(null));
+    (AsyncStorage.setItem as jest.Mock).mockImplementation(() => Promise.resolve());
   });
 
   const latestContext = (callback: ContextCallback) => callback.mock.calls[callback.mock.calls.length - 1]?.[0];
