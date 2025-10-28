@@ -93,7 +93,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
   // Initialize adapter registry once on mount
   useEffect(() => {
-    // Atomically check and set initialization attempt flag
+    // Check and set initialization attempt flag (React guarantees single-threaded execution)
     if (!hasAttemptedInitRef.current && !adapterRegistry.initialized) {
       hasAttemptedInitRef.current = true;
       adapterRegistry.initialize(getStorageSession);

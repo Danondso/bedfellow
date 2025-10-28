@@ -22,6 +22,12 @@ class AdapterRegistry {
    * Initializes the registry with default adapters.
    * Must be called before using the registry.
    *
+   * Note: This method uses a simple check-then-set pattern for initialization.
+   * In JavaScript's single-threaded event loop, this is safe when called from
+   * React's useEffect or similar single-threaded contexts. For concurrent or
+   * multi-threaded environments (e.g., Web Workers), ensure this is only called
+   * once from a single synchronized location.
+   *
    * @param getSession - Function to retrieve session for a provider
    */
   initialize(getSession: (providerId: MusicProviderId) => ProviderAuthSession | null): void {
@@ -30,7 +36,7 @@ class AdapterRegistry {
       return;
     }
 
-    // Set initialized flag immediately to prevent concurrent initializations
+    // Set initialized flag immediately to reduce window for duplicate initialization
     this.isInitialized = true;
 
     // Register all available providers
