@@ -10,7 +10,7 @@ import { ColorUtils } from '../../services/theme/colorExtraction';
 // WCAG AA Standards
 const WCAG_AA_NORMAL = 4.5;
 const WCAG_AA_LARGE = 3.0;
-const WCAG_AAA_NORMAL = 7.0;
+// const WCAG_AAA_NORMAL = 7.0;
 // const WCAG_AAA_LARGE = 4.5;
 
 describe('Brand Theme Accessibility', () => {
