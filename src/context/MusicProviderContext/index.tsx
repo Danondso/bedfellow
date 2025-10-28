@@ -1,19 +1,15 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, ReactNode } from 'react';
-import {
-  MUSIC_PROVIDER_DESCRIPTORS,
-  createNotImplementedAdapter,
-  getProviderDescriptor,
-} from '@services/music-providers/registry';
+import { MUSIC_PROVIDER_DESCRIPTORS } from '@services/music-providers/registry';
 import {
   MusicProviderAdapter,
   MusicProviderDescriptor,
   MusicProviderId,
   ProviderAuthSession,
 } from '@services/music-providers/types';
-import { createSpotifyAdapter } from '@services/music-providers/adapters/spotifyAdapter';
 import { useSessionStorage, type ProviderSessions } from '@hooks/useSessionStorage';
+import { adapterRegistry } from '@services/music-providers/AdapterRegistry';
 
-type AdapterRegistry = Partial<Record<MusicProviderId, MusicProviderAdapter>>;
+type AdapterOverrides = Partial<Record<MusicProviderId, MusicProviderAdapter>>;
 
 type AuthState = {
   isLoading: boolean;
@@ -55,7 +51,7 @@ export const useMusicProvider = (): MusicProviderContextValue => {
 export interface MusicProviderContextProviderProps {
   children: ReactNode;
   initialProviderId?: MusicProviderId;
-  adapters?: AdapterRegistry;
+  adapters?: AdapterOverrides;
 }
 
 const TOKEN_REFRESH_BUFFER_MS = 5 * 60 * 1000; // 5 minutes
@@ -87,43 +83,44 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     isAuthenticated: false,
   });
 
-  // Use refs for values that need synchronous access without triggering re-renders
-  const adaptersRef = useRef<Partial<Record<MusicProviderId, MusicProviderAdapter>>>({});
   // Use ref instead of module-level singleton to prevent memory leaks on unmount
   const activeRefreshPromisesRef = useRef<Partial<Record<MusicProviderId, Promise<ProviderAuthSession | null>>>>({});
+  // Track if this component has attempted initialization to prevent race conditions
+  const hasAttemptedInitRef = useRef<boolean>(false);
 
   // Memoize adapters prop to prevent unnecessary rebuilds
   const adaptersOverride = useMemo(() => adapters, [adapters]);
 
-  // Build adapter registry once on mount and when override adapters change
+  // Initialize adapter registry once on mount
   useEffect(() => {
-    // Lazy-load createSpotifyAdapter to avoid premature native module initialization
-    const buildRegistry = async () => {
-      const registry = MUSIC_PROVIDER_DESCRIPTORS.reduce(
-        (acc, descriptor) => {
-          const override = adaptersOverride[descriptor.id];
-          if (override) {
-            acc[descriptor.id] = override;
-            return acc;
+    // Initialize once (hasAttemptedInitRef prevents double-init in React strict mode)
+    if (!hasAttemptedInitRef.current && !adapterRegistry.initialized) {
+      hasAttemptedInitRef.current = true;
+      adapterRegistry.initialize(getStorageSession);
+    }
+
+    // Register any custom adapters (for testing)
+    if (adaptersOverride) {
+      const originalAdapters = new Map<MusicProviderId, MusicProviderAdapter>();
+      (Object.keys(adaptersOverride) as MusicProviderId[]).forEach((id) => {
+        const adapter = adaptersOverride[id];
+        if (adapter) {
+          // Store original adapter before overriding
+          const original = adapterRegistry.get(id);
+          if (original) {
+            originalAdapters.set(id, original);
           }
+          adapterRegistry.register(id, adapter);
+        }
+      });
 
-          if (descriptor.id === MusicProviderId.Spotify) {
-            acc[descriptor.id] = createSpotifyAdapter({
-              getSession: () => getStorageSession(MusicProviderId.Spotify),
-            });
-            return acc;
-          }
-
-          acc[descriptor.id] = createNotImplementedAdapter(descriptor);
-          return acc;
-        },
-        {} as Record<MusicProviderId, MusicProviderAdapter>
-      );
-
-      adaptersRef.current = registry;
-    };
-
-    buildRegistry();
+      // Cleanup: restore original adapters on unmount or when overrides change
+      return () => {
+        originalAdapters.forEach((adapter, id) => {
+          adapterRegistry.register(id, adapter);
+        });
+      };
+    }
   }, [adaptersOverride, getStorageSession]);
 
   // Hydrate active provider and update auth state after sessions are hydrated
@@ -212,7 +209,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
   const setActiveProvider = useCallback(
     async (providerId: MusicProviderId) => {
-      if (!adaptersRef.current[providerId]) {
+      if (!adapterRegistry.has(providerId)) {
         throw new Error(`Unsupported music provider: ${providerId}`);
       }
 
@@ -223,26 +220,19 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
   );
 
   const isProviderAvailable = useCallback((providerId: MusicProviderId) => {
-    return Boolean(adaptersRef.current[providerId]);
+    return adapterRegistry.has(providerId);
   }, []);
 
   const getAdapter = useCallback(
     (providerId?: MusicProviderId) => {
       const id = providerId ?? activeProviderId;
-      const adapter = adaptersRef.current[id];
+      const adapter = adapterRegistry.get(id);
 
-      if (adapter) {
-        return adapter;
-      }
-
-      const descriptor = getProviderDescriptor(id);
-      if (!descriptor) {
+      if (!adapter) {
         throw new Error(`Unknown music provider: ${id}`);
       }
 
-      const fallback = createNotImplementedAdapter(descriptor);
-      adaptersRef.current[id] = fallback;
-      return fallback;
+      return adapter;
     },
     [activeProviderId]
   );

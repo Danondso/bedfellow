@@ -28,6 +28,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/no-shadow': 'off',
     'react/jsx-no-bind': 'off',
+    'no-catch-shadow': 'off', // IE8 and earlier is not a concern for React Native
   },
   settings: {
     'import/resolver': {
