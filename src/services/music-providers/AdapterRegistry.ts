@@ -1,4 +1,4 @@
-import { MusicProviderAdapter, MusicProviderId } from './types';
+import { MusicProviderAdapter, MusicProviderId, ProviderAuthSession } from './types';
 import { MUSIC_PROVIDER_DESCRIPTORS, createNotImplementedAdapter } from './registry';
 import { createSpotifyAdapter } from './adapters/spotifyAdapter';
 
@@ -24,11 +24,14 @@ class AdapterRegistry {
    *
    * @param getSession - Function to retrieve session for a provider
    */
-  initialize(getSession: (providerId: MusicProviderId) => any): void {
+  initialize(getSession: (providerId: MusicProviderId) => ProviderAuthSession | null): void {
     if (this.isInitialized) {
       console.warn('AdapterRegistry already initialized. Skipping re-initialization.');
       return;
     }
+
+    // Set initialized flag immediately to prevent concurrent initializations
+    this.isInitialized = true;
 
     // Register all available providers
     MUSIC_PROVIDER_DESCRIPTORS.forEach((descriptor) => {
@@ -44,8 +47,6 @@ class AdapterRegistry {
         this.adapters.set(descriptor.id, createNotImplementedAdapter(descriptor));
       }
     });
-
-    this.isInitialized = true;
   }
 
   /**

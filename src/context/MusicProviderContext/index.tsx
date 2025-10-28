@@ -97,8 +97,11 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
     // Register any custom adapters (for testing)
     if (adaptersOverride) {
-      Object.entries(adaptersOverride).forEach(([id, adapter]) => {
-        adapterRegistry.register(id as MusicProviderId, adapter);
+      (Object.keys(adaptersOverride) as MusicProviderId[]).forEach((id) => {
+        const adapter = adaptersOverride[id];
+        if (adapter) {
+          adapterRegistry.register(id, adapter);
+        }
       });
     }
   }, [adaptersOverride, getStorageSession]);
