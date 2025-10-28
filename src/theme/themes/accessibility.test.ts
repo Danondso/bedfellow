@@ -10,7 +10,7 @@ import { ColorUtils } from '../../services/theme/colorExtraction';
 // WCAG AA Standards
 const WCAG_AA_NORMAL = 4.5;
 const WCAG_AA_LARGE = 3.0;
-const WCAG_AAA_NORMAL = 7.0;
+// const WCAG_AAA_NORMAL = 7.0;
 // const WCAG_AAA_LARGE = 4.5;
 
 describe('Brand Theme Accessibility', () => {
@@ -267,32 +267,32 @@ describe('Brand Theme Accessibility', () => {
     });
   });
 
-  describe('WCAG Compliance Summary', () => {
-    test('Generate accessibility report', () => {
-      const criticalPairs = [
-        { name: 'Primary Text on Background', fg: BRAND_COLORS.SLATE_900, bg: BRAND_COLORS.SAND_50 },
-        { name: 'Teal Button', fg: '#FFFFFF', bg: BRAND_COLORS.TEAL_600 },
-        { name: 'Sage Button', fg: '#FFFFFF', bg: BRAND_COLORS.SAGE_500 },
-        { name: 'Rust Button', fg: '#FFFFFF', bg: BRAND_COLORS.RUST_600 },
-        { name: 'Amber Warning', fg: BRAND_COLORS.SLATE_900, bg: BRAND_COLORS.AMBER_500 },
-        { name: 'Info Text', fg: BRAND_COLORS.INFO_600, bg: BRAND_COLORS.SAND_50 },
-      ];
+  // describe('WCAG Compliance Summary', () => {
+  //   test('Generate accessibility report', () => {
+  //     const criticalPairs = [
+  //       { name: 'Primary Text on Background', fg: BRAND_COLORS.SLATE_900, bg: BRAND_COLORS.SAND_50 },
+  //       { name: 'Teal Button', fg: '#FFFFFF', bg: BRAND_COLORS.TEAL_600 },
+  //       { name: 'Sage Button', fg: '#FFFFFF', bg: BRAND_COLORS.SAGE_500 },
+  //       { name: 'Rust Button', fg: '#FFFFFF', bg: BRAND_COLORS.RUST_600 },
+  //       { name: 'Amber Warning', fg: BRAND_COLORS.SLATE_900, bg: BRAND_COLORS.AMBER_500 },
+  //       { name: 'Info Text', fg: BRAND_COLORS.INFO_600, bg: BRAND_COLORS.SAND_50 },
+  //     ];
 
-      console.log('\n=== WCAG Compliance Report ===\n');
+  //     console.log('\n=== WCAG Compliance Report ===\n');
 
-      criticalPairs.forEach(({ name, fg, bg }) => {
-        const contrast = getContrastRatio(fg, bg);
-        const meetsAA = contrast >= WCAG_AA_NORMAL;
-        const meetsAAA = contrast >= WCAG_AAA_NORMAL;
-        const meetsLargeAA = contrast >= WCAG_AA_LARGE;
+  //     criticalPairs.forEach(({ name, fg, bg }) => {
+  //       const contrast = getContrastRatio(fg, bg);
+  //       const meetsAA = contrast >= WCAG_AA_NORMAL;
+  //       const meetsAAA = contrast >= WCAG_AAA_NORMAL;
+  //       const meetsLargeAA = contrast >= WCAG_AA_LARGE;
 
-        console.log(`${name}:`);
-        console.log(`  Contrast: ${contrast.toFixed(2)}:1`);
-        console.log(`  WCAG AA (4.5:1): ${meetsAA ? '✓ PASS' : '✗ FAIL'}`);
-        console.log(`  WCAG AAA (7:1): ${meetsAAA ? '✓ PASS' : '✗ FAIL'}`);
-        console.log(`  Large Text AA (3:1): ${meetsLargeAA ? '✓ PASS' : '✗ FAIL'}`);
-        console.log('');
-      });
-    });
-  });
+  //       console.log(`${name}:`);
+  //       console.log(`  Contrast: ${contrast.toFixed(2)}:1`);
+  //       console.log(`  WCAG AA (4.5:1): ${meetsAA ? '✓ PASS' : '✗ FAIL'}`);
+  //       console.log(`  WCAG AAA (7:1): ${meetsAAA ? '✓ PASS' : '✗ FAIL'}`);
+  //       console.log(`  Large Text AA (3:1): ${meetsLargeAA ? '✓ PASS' : '✗ FAIL'}`);
+  //       console.log('');
+  //     });
+  //   });
+  // });
 });

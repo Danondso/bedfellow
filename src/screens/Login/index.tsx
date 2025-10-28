@@ -65,18 +65,6 @@ function LoginScreen({ navigation }: LoginScreenProps) {
     }
   }, [authState.error, clearError]);
 
-  // const handleSelectProvider = useCallback(
-  //   async (providerId: MusicProviderId) => {
-  //     try {
-  //       await setActiveProvider(providerId);
-  //     } catch (error) {
-  //       console.error('Failed to set active provider', error);
-  //       Alert.alert('Error', 'Unable to switch music provider. Please try again.');
-  //     }
-  //   },
-  //   [setActiveProvider]
-  // );
-
   const handleAuthenticate = useCallback(async () => {
     if (activeProviderId !== MusicProviderId.Spotify) {
       Alert.alert('Coming Soon', 'YouTube Music integration is not available yet. Please select Spotify.');
@@ -86,10 +74,6 @@ function LoginScreen({ navigation }: LoginScreenProps) {
     try {
       // Use the adapter's authorize method from MusicProviderContext
       await authorize(activeProviderId);
-
-      // Small delay to ensure state updates have propagated
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
       navigation.navigate(DETAILS);
     } catch (error) {
       if (error instanceof Error) {
