@@ -1,5 +1,4 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   MUSIC_PROVIDER_DESCRIPTORS,
   createNotImplementedAdapter,
@@ -11,15 +10,8 @@ import {
   MusicProviderId,
   ProviderAuthSession,
 } from '@services/music-providers/types';
-
-export const MUSIC_PROVIDER_STORAGE_KEYS = {
-  sessions: '@bedfellow/music-provider/sessions',
-  activeProvider: '@bedfellow/music-provider/active',
-} as const;
-
 import { createSpotifyAdapter } from '@services/music-providers/adapters/spotifyAdapter';
-
-type ProviderSessions = Partial<Record<MusicProviderId, ProviderAuthSession | null>>;
+import { useSessionStorage, type ProviderSessions } from '@hooks/useSessionStorage';
 
 type AdapterRegistry = Partial<Record<MusicProviderId, MusicProviderAdapter>>;
 
@@ -66,32 +58,6 @@ export interface MusicProviderContextProviderProps {
   adapters?: AdapterRegistry;
 }
 
-const parseStoredSessions = (raw: string | null): ProviderSessions => {
-  if (!raw) {
-    return {};
-  }
-
-  try {
-    const parsed = JSON.parse(raw) as Record<string, ProviderAuthSession | null>;
-    return Object.entries(parsed).reduce<ProviderSessions>((acc, [key, value]) => {
-      if (Object.values(MusicProviderId).includes(key as MusicProviderId)) {
-        acc[key as MusicProviderId] = value;
-      }
-      return acc;
-    }, {});
-  } catch (error) {
-    console.error('Failed to parse stored music provider sessions', error);
-    return {};
-  }
-};
-
-const resolveActiveProvider = (stored: string | null, defaultProvider: MusicProviderId): MusicProviderId => {
-  if (stored && Object.values(MusicProviderId).includes(stored as MusicProviderId)) {
-    return stored as MusicProviderId;
-  }
-  return defaultProvider;
-};
-
 const TOKEN_REFRESH_BUFFER_MS = 5 * 60 * 1000; // 5 minutes
 const TOKEN_REFRESH_CHECK_INTERVAL_MS = 60 * 1000; // 1 minute
 
@@ -100,7 +66,18 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
   initialProviderId = MusicProviderId.Spotify,
   adapters = {},
 }) => {
-  const [sessions, setSessions] = useState<ProviderSessions>({});
+  // Use session storage hook for all persistence logic
+  const {
+    sessions,
+    isHydrated,
+    storageError,
+    setSession: setStorageSession,
+    clearSession: clearStorageSession,
+    getSession: getStorageSession,
+    hydrateActiveProvider,
+    persistActiveProvider,
+  } = useSessionStorage();
+
   const [activeProviderId, setActiveProviderId] = useState<MusicProviderId>(initialProviderId);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [authState, setAuthState] = useState<AuthState>({
@@ -109,15 +86,11 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     error: null,
     isAuthenticated: false,
   });
-  const [storageError, setStorageError] = useState<string | null>(null);
 
   // Use refs for values that need synchronous access without triggering re-renders
-  const sessionsRef = useRef<ProviderSessions>({});
   const adaptersRef = useRef<Partial<Record<MusicProviderId, MusicProviderAdapter>>>({});
   // Use ref instead of module-level singleton to prevent memory leaks on unmount
   const activeRefreshPromisesRef = useRef<Partial<Record<MusicProviderId, Promise<ProviderAuthSession | null>>>>({});
-  // Queue for serializing persistence operations to prevent race conditions
-  const persistenceQueueRef = useRef<Promise<void>>(Promise.resolve());
 
   // Memoize adapters prop to prevent unnecessary rebuilds
   const adaptersOverride = useMemo(() => adapters, [adapters]);
@@ -136,7 +109,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
           if (descriptor.id === MusicProviderId.Spotify) {
             acc[descriptor.id] = createSpotifyAdapter({
-              getSession: () => sessionsRef.current[MusicProviderId.Spotify] ?? null,
+              getSession: () => getStorageSession(MusicProviderId.Spotify),
             });
             return acc;
           }
@@ -151,50 +124,29 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     };
 
     buildRegistry();
-  }, [adaptersOverride]);
+  }, [adaptersOverride, getStorageSession]);
 
-  const persistSessions = useCallback(async (nextSessions: ProviderSessions) => {
-    try {
-      await AsyncStorage.setItem(MUSIC_PROVIDER_STORAGE_KEYS.sessions, JSON.stringify(nextSessions));
-      setStorageError(null);
-    } catch (error) {
-      const message = 'Unable to save login state. You may be logged out on app restart.';
-      console.error('Failed to persist music provider sessions', error);
-      setStorageError(message);
-    }
-  }, []);
-
-  const persistActiveProvider = useCallback(async (providerId: MusicProviderId) => {
-    try {
-      await AsyncStorage.setItem(MUSIC_PROVIDER_STORAGE_KEYS.activeProvider, providerId);
-    } catch (error) {
-      console.error('Failed to persist active music provider', error);
-    }
-  }, []);
-
+  // Hydrate active provider and update auth state after sessions are hydrated
   useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
     let isMounted = true;
 
     const hydrate = async () => {
       try {
-        const [storedSessionsRaw, storedActiveRaw] = await Promise.all([
-          AsyncStorage.getItem(MUSIC_PROVIDER_STORAGE_KEYS.sessions),
-          AsyncStorage.getItem(MUSIC_PROVIDER_STORAGE_KEYS.activeProvider),
-        ]);
+        const storedActiveProvider = await hydrateActiveProvider();
 
         if (!isMounted) {
           return;
         }
 
-        const hydratedSessions = parseStoredSessions(storedSessionsRaw);
-        sessionsRef.current = hydratedSessions;
-        setSessions(hydratedSessions);
-
-        const resolvedActive = resolveActiveProvider(storedActiveRaw, initialProviderId);
+        const resolvedActive = storedActiveProvider ?? initialProviderId;
         setActiveProviderId(resolvedActive);
 
         // Update auth state based on active session
-        const activeSession = hydratedSessions[resolvedActive];
+        const activeSession = sessions[resolvedActive];
         if (activeSession) {
           const expiresAt = activeSession.expiresAt ? new Date(activeSession.expiresAt).getTime() : 0;
           const now = Date.now();
@@ -234,38 +186,28 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     return () => {
       isMounted = false;
     };
-  }, [initialProviderId]);
+  }, [isHydrated, sessions, hydrateActiveProvider, initialProviderId]);
 
   const setSession = useCallback(
     async (providerId: MusicProviderId, session: ProviderAuthSession | null) => {
-      const nextSessions = {
-        ...sessionsRef.current,
-        [providerId]: session,
-      };
-
-      sessionsRef.current = nextSessions;
-      setSessions(nextSessions);
-
-      // Serialize persistence operations to prevent race conditions
-      persistenceQueueRef.current = persistenceQueueRef.current.then(() => persistSessions(nextSessions));
-      await persistenceQueueRef.current;
+      await setStorageSession(providerId, session);
     },
-    [persistSessions]
+    [setStorageSession]
   );
 
   const clearSession = useCallback(
     async (providerId: MusicProviderId) => {
-      await setSession(providerId, null);
+      await clearStorageSession(providerId);
     },
-    [setSession]
+    [clearStorageSession]
   );
 
   const getSession = useCallback(
     (providerId?: MusicProviderId) => {
       const id = providerId ?? activeProviderId;
-      return sessionsRef.current[id] ?? null;
+      return getStorageSession(id);
     },
-    [activeProviderId]
+    [activeProviderId, getStorageSession]
   );
 
   const setActiveProvider = useCallback(
@@ -309,7 +251,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
   const isTokenExpiring = useCallback(
     (providerId?: MusicProviderId) => {
       const id = providerId ?? activeProviderId;
-      const session = sessionsRef.current[id];
+      const session = getStorageSession(id);
 
       if (!session?.expiresAt) return true;
 
@@ -317,7 +259,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
       const now = Date.now();
       return expiresAt - TOKEN_REFRESH_BUFFER_MS <= now;
     },
-    [activeProviderId]
+    [activeProviderId, getStorageSession]
   );
 
   // Authorize with a provider
@@ -369,7 +311,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
         }
       }
 
-      const session = sessionsRef.current[id];
+      const session = getStorageSession(id);
       if (!session) {
         setAuthState((prev) => ({
           ...prev,
@@ -431,7 +373,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
         return null;
       }
     },
-    [activeProviderId, getAdapter, setSession, clearSession]
+    [activeProviderId, getAdapter, getStorageSession, setSession, clearSession]
   );
 
   // Logout from a provider
@@ -439,7 +381,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     async (providerId?: MusicProviderId) => {
       const id = providerId ?? activeProviderId;
       const adapter = getAdapter(id);
-      const session = sessionsRef.current[id];
+      const session = getStorageSession(id);
 
       try {
         if (session && adapter.auth.revoke) {
@@ -459,7 +401,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
       // Clean up any active refresh promises for this provider
       delete activeRefreshPromisesRef.current[id];
     },
-    [activeProviderId, getAdapter, clearSession]
+    [activeProviderId, getAdapter, getStorageSession, clearSession]
   );
 
   // Clear error
@@ -479,7 +421,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
   // Auto-refresh token when it's about to expire
   useEffect(() => {
-    const activeSession = sessionsRef.current[activeProviderId];
+    const activeSession = getStorageSession(activeProviderId);
     if (!activeSession || authState.isRefreshing) return;
 
     const checkAndRefresh = () => {
@@ -495,7 +437,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     const interval = setInterval(checkAndRefresh, TOKEN_REFRESH_CHECK_INTERVAL_MS);
 
     return () => clearInterval(interval);
-  }, [activeProviderId, authState.isRefreshing]); // Stable dependencies only
+  }, [activeProviderId, authState.isRefreshing, getStorageSession]); // Stable dependencies only
 
   const contextValue = useMemo<MusicProviderContextValue>(
     () => ({

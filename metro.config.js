@@ -37,6 +37,7 @@ const config = {
       '@components': path.resolve(__dirname, 'src/components'),
       '@screens': path.resolve(__dirname, 'src/screens'),
       '@services': path.resolve(__dirname, 'src/services'),
+      '@hooks': path.resolve(__dirname, 'src/hooks'),
       '@types': path.resolve(__dirname, 'src/types'),
     },
   },
