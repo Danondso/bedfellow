@@ -100,8 +100,8 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
     }
 
     // Register any custom adapters (for testing)
-    const originalAdapters = new Map<MusicProviderId, MusicProviderAdapter>();
     if (adaptersOverride) {
+      const originalAdapters = new Map<MusicProviderId, MusicProviderAdapter>();
       (Object.keys(adaptersOverride) as MusicProviderId[]).forEach((id) => {
         const adapter = adaptersOverride[id];
         if (adapter) {
@@ -113,14 +113,14 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
           adapterRegistry.register(id, adapter);
         }
       });
-    }
 
-    // Cleanup: restore original adapters on unmount or when overrides change
-    return () => {
-      originalAdapters.forEach((adapter, id) => {
-        adapterRegistry.register(id, adapter);
-      });
-    };
+      // Cleanup: restore original adapters on unmount or when overrides change
+      return () => {
+        originalAdapters.forEach((adapter, id) => {
+          adapterRegistry.register(id, adapter);
+        });
+      };
+    }
   }, [adaptersOverride, getStorageSession]);
 
   // Hydrate active provider and update auth state after sessions are hydrated
