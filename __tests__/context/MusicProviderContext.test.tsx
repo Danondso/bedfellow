@@ -1,10 +1,8 @@
 import React from 'react';
 import { render, act, waitFor } from '@testing-library/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MusicProviderContextProvider, {
-  useMusicProvider,
-  MUSIC_PROVIDER_STORAGE_KEYS,
-} from '@context/MusicProviderContext';
+import MusicProviderContextProvider, { useMusicProvider } from '@context/MusicProviderContext';
+import { MUSIC_PROVIDER_STORAGE_KEYS } from '@hooks/useSessionStorage';
 import type { MusicProviderAdapter, ProviderAuthSession } from '@services/music-providers/types';
 import { MusicProviderId } from '@services/music-providers/types';
 
@@ -81,7 +79,9 @@ const buildDefaultAdapters = () => ({
 describe('MusicProviderContext', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
+    // Make AsyncStorage resolve immediately to prevent timing issues in CI
+    (AsyncStorage.getItem as jest.Mock).mockImplementation(() => Promise.resolve(null));
+    (AsyncStorage.setItem as jest.Mock).mockImplementation(() => Promise.resolve());
   });
 
   const latestContext = (callback: ContextCallback) => callback.mock.calls[callback.mock.calls.length - 1]?.[0];
