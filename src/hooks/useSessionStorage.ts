@@ -49,7 +49,15 @@ const parseStoredSessions = (raw: string | null): ProviderSessions => {
  * - Serializing persistence operations to prevent race conditions
  * - Error handling and reporting
  *
- * @returns Session storage state and methods
+ * @returns {UseSessionStorageReturn} An object containing:
+ *   - `sessions`: The current provider sessions.
+ *   - `isHydrated`: Whether the sessions have been loaded from storage.
+ *   - `storageError`: Any error encountered during storage operations.
+ *   - `setSession(providerId, session)`: Persists a session for a provider.
+ *   - `clearSession(providerId)`: Removes a provider's session.
+ *   - `getSession(providerId)`: Retrieves a session for a provider.
+ *   - `hydrateActiveProvider()`: Loads the active provider from storage.
+ *   - `persistActiveProvider(providerId)`: Persists the active provider to storage.
  */
 export const useSessionStorage = (): UseSessionStorageReturn => {
   const [sessions, setSessions] = useState<ProviderSessions>({});
@@ -94,7 +102,7 @@ export const useSessionStorage = (): UseSessionStorageReturn => {
       persistenceQueueRef.current = persistenceQueueRef.current
         .then(() => persistSessions(nextSessions))
         .catch((error) => {
-          console.error('Persistence queue error', error);
+          console.error('Failed to persist session for provider', providerId, error);
           // Don't break the queue on error
         });
 
