@@ -140,7 +140,7 @@ export const createSpotifyAdapter = ({ getSession }: SpotifyAdapterOptions): Mus
     search: {
       searchTracks: (query: string) =>
         withToken(getSession, async (token) => {
-          const response = await spotifyGETData(`/search?q=${encodeURIComponent(query)}&type=track`, token);
+          const response = await spotifyGETData(`v1/search?q=${encodeURIComponent(query)}&type=track`, token);
           return response.data;
         }),
     },

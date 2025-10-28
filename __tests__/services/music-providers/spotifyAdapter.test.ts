@@ -14,7 +14,6 @@ jest.mock('@services/spotify/SpotifyAPI.service', () => ({
   performPlaybackAction: jest.fn(),
   spotifyGETData: jest.fn(),
   spotifyPOSTData: jest.fn(),
-  spotifyPUTData: jest.fn(),
 }));
 
 jest.mock('react-native-config', () => ({
@@ -138,7 +137,7 @@ describe('createSpotifyAdapter', () => {
     await adapter.search.searchTracks('query');
 
     expect(postMock).toHaveBeenCalledWith('v1/me/player/queue?uri=spotify:track:123', expect.any(Object));
-    expect(getMock).toHaveBeenCalledWith('/search?q=query&type=track', expect.any(Object));
+    expect(getMock).toHaveBeenCalledWith('v1/search?q=query&type=track', expect.any(Object));
   });
 
   it('fetches profile information', async () => {
