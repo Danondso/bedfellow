@@ -247,12 +247,8 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
       setSessions(nextSessions);
 
       // Serialize persistence operations to prevent race conditions
-      const prev = persistenceQueueRef.current;
-      await prev;
-      persistenceQueueRef.current = persistSessions(nextSessions).catch((error) => {
-        console.error('Persistence failed', error);
-        // Don't break the queue on error
-      });
+      persistenceQueueRef.current = persistenceQueueRef.current.then(() => persistSessions(nextSessions));
+      await persistenceQueueRef.current;
     },
     [persistSessions]
   );
