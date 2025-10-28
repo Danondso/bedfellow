@@ -104,8 +104,8 @@ class AdapterRegistry {
    * Primarily used for testing.
    */
   clear(): void {
-    this.adapters.clear();
     this.isInitialized = false;
+    this.adapters.clear();
   }
 
   /**
