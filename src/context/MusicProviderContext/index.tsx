@@ -332,10 +332,18 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
 
           return refreshedSession;
         } catch (error) {
-          const errorMessage =
-            error instanceof Error && (error.message.includes('401') || error.message.includes('400'))
-              ? 'Session expired. Please log in again.'
-              : 'Failed to refresh session';
+          // Check for HTTP status code from axios error or error object
+          const isAuthError =
+            (typeof error === 'object' &&
+              error !== null &&
+              'response' in error &&
+              typeof error.response === 'object' &&
+              error.response !== null &&
+              'status' in error.response &&
+              (error.response.status === 401 || error.response.status === 400)) ||
+            (error instanceof Error && (error.message.includes('401') || error.message.includes('400')));
+
+          const errorMessage = isAuthError ? 'Session expired. Please log in again.' : 'Failed to refresh session';
 
           setAuthState((prev) => ({
             ...prev,
@@ -345,7 +353,7 @@ const MusicProviderContextProvider: React.FC<MusicProviderContextProviderProps> 
           }));
 
           // Clear session if refresh failed with auth error
-          if (errorMessage.includes('Session expired')) {
+          if (isAuthError) {
             await clearSession(id);
           }
 

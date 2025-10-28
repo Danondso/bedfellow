@@ -13,13 +13,9 @@ const usePlayer = (): UsePlayerHookResponse => {
   const [isPaused, setIsPaused] = useState<boolean>(currentTrack?.is_playing === false);
 
   const getData = useCallback(async () => {
-    // Don't attempt to fetch if auth is still loading
-    if (authIsLoading) {
+    // Don't attempt to fetch if auth is still loading or no token available
+    if (authIsLoading || !token) {
       return null;
-    }
-
-    if (!token) {
-      throw new Error('No access token available');
     }
 
     setLoading(true);

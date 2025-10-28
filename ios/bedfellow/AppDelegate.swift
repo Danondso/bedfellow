@@ -3,6 +3,7 @@ import React
 import Lottie
 
 @objc(AppDelegate)
+@UIApplicationMain
 class AppDelegate: RCTAppDelegate, RNAppAuthAuthorizationFlowManager {
 
   // MARK: - RNAppAuthAuthorizationFlowManager

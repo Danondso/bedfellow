@@ -64,7 +64,13 @@ export const useSessionStorage = (): UseSessionStorageReturn => {
   const [isHydrated, setIsHydrated] = useState<boolean>(false);
   const [storageError, setStorageError] = useState<string | null>(null);
 
-  // Use ref for synchronous access without triggering re-renders
+  /**
+   * We maintain both state (sessions) and ref (sessionsRef) for the sessions data:
+   * - sessions (state) is used to trigger re-renders and update the UI when session data changes.
+   * - sessionsRef (ref) provides synchronous access to the latest session data in async operations
+   *   without causing re-renders. This is critical for avoiding stale closures and ensuring
+   *   consistency during persistence operations and when accessed by provider adapters.
+   */
   const sessionsRef = useRef<ProviderSessions>({});
 
   // Queue for serializing persistence operations to prevent race conditions
