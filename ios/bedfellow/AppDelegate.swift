@@ -2,6 +2,14 @@ import UIKit
 import React
 import Lottie
 
+
+/**
+ AppDelegate is responsible for managing the application's lifecycle and integrating React Native.
+ 
+ It also handles OAuth authorization flows and browser-based authentication by conforming to
+ RNAppAuthAuthorizationFlowManager. This includes managing redirect URLs and user activities
+ required for external user agent flows, enabling secure authentication with external providers.
+ */
 @objc(AppDelegate)
 class AppDelegate: RCTAppDelegate, RNAppAuthAuthorizationFlowManager {
 
