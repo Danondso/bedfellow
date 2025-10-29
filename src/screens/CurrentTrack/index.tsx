@@ -7,7 +7,7 @@ import FloatingActionButton from '../../components/navigation/FloatingActionButt
 import { searchAndRetrieveParsedWhoSampledPage } from '../../services/whosampled/WhoSampled.service';
 import { DetailsScreenProps } from '../../types';
 import { createStyles } from './CurrentTrack.themed.styles';
-import SampleList from './TrackList';
+import TrackList from './TrackList';
 import CurrentSongHeader from './CurrentSongHeader';
 import FloatingPlayer from '../../components/player/FloatingPlayer';
 import useSpotify from 'src/hooks/spotify/useSpotify';
@@ -77,7 +77,7 @@ function CurrentTrackScreen({ navigation }: DetailsScreenProps) {
           animated
         />
 
-        <SampleList
+        <TrackList
           onRefresh={refresh}
           isLoading={loading || samples.loading}
           showSkeleton={showSkeleton}

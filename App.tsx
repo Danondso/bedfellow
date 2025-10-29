@@ -14,7 +14,7 @@ import { ViewStyle } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ThemeProvider from './src/context/ThemeContext';
 import RootNavigation from './src/screens';
-import SpotifyAuthContextProvider from './src/context';
+import AppContextProvider from './src/context';
 
 // Temporarily disabled - Reactotron needs update for RN 0.81
 if (__DEV__) {
@@ -31,11 +31,11 @@ function App() {
     <GestureHandlerRootView style={safeAreaStyle}>
       <ThemeProvider>
         <SafeAreaView style={safeAreaStyle}>
-          <SpotifyAuthContextProvider>
+          <AppContextProvider>
             <PaperProvider>
               <RootNavigation />
             </PaperProvider>
-          </SpotifyAuthContextProvider>
+          </AppContextProvider>
         </SafeAreaView>
       </ThemeProvider>
     </GestureHandlerRootView>

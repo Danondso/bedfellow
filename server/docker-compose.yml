@@ -4,10 +4,10 @@ services:
     command: ./bedfellow-api
     restart: always
     environment:
-      SPOTIFY_CLIENT_ID: ''
-      SPOTIFY_CLIENT_SECRET: ''
-      SPOTIFY_CLIENT_CALLBACK_IOS: org.danondso.bedfellow://callback/
-      SPOTIFY_CLIENT_CALLBACK_ANDROID: com.bedfellow://callback/
+      SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
+      SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+      SPOTIFY_CLIENT_CALLBACK_IOS: ${SPOTIFY_CLIENT_CALLBACK_IOS}
+      SPOTIFY_CLIENT_CALLBACK_ANDROID: ${SPOTIFY_CLIENT_CALLBACK_ANDROID}
       RUST_LOG: INFO
       HOST_IP: '0.0.0.0'
     build:
@@ -23,7 +23,7 @@ services:
     command: ./bedfellow-db-api
     restart: always
     environment:
-      DATABASE_URL: mysql://xxxxx:xxxxx@host.docker.internal/bedfellow
+      DATABASE_URL: ${DATABASE_URL}
     build:
       context: ./bedfellow-db-api/
       dockerfile: Dockerfile
@@ -35,7 +35,8 @@ services:
     expose:
       - 8000
   bedfellow-db:
-    image: mysql:latest
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
     healthcheck:
       test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD']
       interval: 2s
@@ -44,9 +45,9 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: bedfellow
-      MYSQL_ROOT_PASSWORD: xxxxx
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: xxxxx
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-dev_password_change_me}
+      MYSQL_USER: ${MYSQL_USER:-myuser}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-dev_password_change_me}
     ports:
       # <Port exposed> : < MySQL Port running inside container>
       - 3306:3306

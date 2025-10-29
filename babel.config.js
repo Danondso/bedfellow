@@ -20,10 +20,12 @@ module.exports = {
           '@services': './src/services',
           '@components': './src/components',
           '@context': './src/context',
+          '@hooks': './src/hooks',
           '@theme': './src/theme',
           '@types': './src/types',
         },
       },
     ],
+    'react-native-reanimated/plugin',
   ],
 };

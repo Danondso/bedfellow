@@ -1,14 +1,15 @@
 import axios from 'axios';
 import * as SpotifyServiceModule from '../../../src/services/spotify/SpotifyAPI.service';
-import { AuthResult, initialState } from '../../../src/context/SpotifyAuthContext';
+import type { SpotifyAuthToken } from '../../../src/types/auth';
 import SpotifySearchResult from '../../fixtures/api/spotify/search-result-success.0';
 import { BedfellowSample } from '../../../src/types/bedfellow-api';
 
-const mockSpotifyAuth: AuthResult = {
-  ...initialState,
+const mockSpotifyAuth: SpotifyAuthToken = {
   accessToken: 'fakeAccessToken',
-  expired: false,
   refreshToken: 'refreshingToken',
+  expiresAt: new Date(Date.now() + 3600000).toISOString(),
+  tokenType: 'Bearer',
+  scopes: [],
 };
 
 const mockHeaders = {

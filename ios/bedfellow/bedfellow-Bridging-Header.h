@@ -1,7 +1,10 @@
-#ifndef bedfellow_Bridging_Header_h
-#define bedfellow_Bridging_Header_h
+//
+//  bedfellow-Bridging-Header.h
+//  bedfellow
+//
+//  Bridging header to expose React Native Objective-C headers to Swift
+//
 
-// React Native Core
 #import <React/RCTBridgeModule.h>
 #import <React/RCTBridge.h>
 #import <React/RCTEventDispatcher.h>
@@ -10,10 +13,4 @@
 #import <React/RCTConvert.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
-#import <RCTAppDelegate.h>
-
-// Third-party libraries
-#import "RNSplashScreen.h"
-#import "RNAppAuthAuthorizationFlowManager.h"
-
-#endif
+#import <RNSplashScreen.h>

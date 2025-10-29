@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 // Types from @types/spotify-api are available globally via SpotifyApi namespace
-import { SpotifyAuthToken } from '../../context/SpotifyAuthContext';
+import { SpotifyAuthToken } from '../../types/auth';
 import findMatchingTrack from './utilities/utilities';
 import { BedfellowSample } from '../../types/bedfellow-api';
 

@@ -1,21 +1,19 @@
 import { spotifyGETData } from '@services/spotify/SpotifyAPI.service';
-import { SpotifyAuthContext, type SpotifyAuthContextData } from '@context/SpotifyAuthContext';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import type { UseGetSearchHookResponse } from './types';
+import { useAuth } from '../useAuth';
 
 /**
  * @private
  * Internal hook for searching tracks on Spotify.
  * This hook is intended to be used exclusively by the useSpotify domain hook.
  *
- * @param authState - The Spotify authentication state
  * @returns Hook response with getData method and loading/error states
  *
  * @internal
  */
 const useGetSearch = (): UseGetSearchHookResponse => {
-  const { authState } = useContext<SpotifyAuthContextData>(SpotifyAuthContext);
-  const { token } = authState;
+  const { token } = useAuth();
   const [searchResults, setSearchResults] = useState<SpotifyApi.SearchResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,7 +24,7 @@ const useGetSearch = (): UseGetSearchHookResponse => {
     if (!token) throw new Error('No access token available');
 
     try {
-      const { data } = await spotifyGETData(`/search?q=${encodeURIComponent(query)}&type=track`, token);
+      const { data } = await spotifyGETData(`v1/search?q=${encodeURIComponent(query)}&type=track`, token);
       setSearchResults(data);
       setLoading(false);
       return data;

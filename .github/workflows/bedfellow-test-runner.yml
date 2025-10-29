@@ -13,6 +13,7 @@ jobs:
       - run: yarn lint
       - run: yarn test
     env:
+      NODE_ENV: test
       SPOTIFY_CLIENT_ID: client_id
       SPOTIFY_REDIRECT_URI_ANDROID: com.bedfellow://callback/
       SPOTIFY_REDIRECT_URI: org.danondso.bedfellow://callback/
