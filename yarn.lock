@@ -3856,7 +3856,7 @@ __metadata:
     react-native-reanimated: ^4.1.2
     react-native-safe-area-context: ^5.6.0
     react-native-svg: ^15.12.1
-    react-native-worklets: latest
+    react-native-worklets: ^0.3.0
     react-test-renderer: 19.1.1
     reactotron-react-native: ^5.1.15
     readable-stream: ^4.7.0
@@ -3864,7 +3864,7 @@ __metadata:
     stream-http: ^3.2.0
     timers-browserify: ^2.0.12
     tty-browserify: ^0.0.1
-    typescript: latest
+    typescript: ^5.7.3
     url: ^0.11.4
     util: ^0.12.5
     vm-browserify: ^1.1.2
@@ -9877,9 +9877,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-worklets@npm:latest":
-  version: 0.6.1
-  resolution: "react-native-worklets@npm:0.6.1"
+"react-native-worklets@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "react-native-worklets@npm:0.3.0"
   dependencies:
     "@babel/plugin-transform-arrow-functions": ^7.0.0-0
     "@babel/plugin-transform-class-properties": ^7.0.0-0
@@ -9891,12 +9891,11 @@ __metadata:
     "@babel/plugin-transform-unicode-regex": ^7.0.0-0
     "@babel/preset-typescript": ^7.16.7
     convert-source-map: ^2.0.0
-    semver: 7.7.2
   peerDependencies:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: fee8de844ef2286dee9f81a53f9cf309424d26251953c8524204342c8531fef403c625a23632a6bb65ea57409d6f8522a60e02de772322bebb5ff4aa4cccf569
+  checksum: fb637879b7402c768bddc63411232f08c9c7b74e301cc6e545c7b967e7e3ef9b61df6399c422bf39de971e5f25a0c400ddf4c6e19f63061be3b1b8bbb480aa60
   languageName: node
   linkType: hard
 
@@ -11091,15 +11090,15 @@ __metadata:
   linkType: hard
 
 "tar@npm:^7.4.3":
-  version: 7.5.1
-  resolution: "tar@npm:7.5.1"
+  version: 7.5.6
+  resolution: "tar@npm:7.5.6"
   dependencies:
     "@isaacs/fs-minipass": ^4.0.0
     chownr: ^3.0.0
     minipass: ^7.1.2
     minizlib: ^3.1.0
     yallist: ^5.0.0
-  checksum: dbd55d4c3bd9e3c69aed137d9dc9fcb8f86afd103c28d97d52728ca80708f4c84b07e0a01d0bf1c8e820be84d37632325debf19f672a06e0c605c57a03636fd0
+  checksum: 3d0c4940b78908cf7a796fcc7c05a804f5019e74526cbce7a094d381983393a994ae7521830f36156c369bc8a1e2da0dba8f41e9eb8eb090fce1c2a2025bc505
   languageName: node
   linkType: hard
 
@@ -11367,7 +11366,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:latest":
+"typescript@npm:^5.7.3":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -11377,7 +11376,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@latest#~builtin<compat/typescript>":
+"typescript@patch:typescript@^5.7.3#~builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#~builtin<compat/typescript>::version=5.9.3&hash=29ae49"
   bin:
