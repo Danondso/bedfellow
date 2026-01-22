@@ -3856,7 +3856,7 @@ __metadata:
     react-native-reanimated: ^4.1.2
     react-native-safe-area-context: ^5.6.0
     react-native-svg: ^15.12.1
-    react-native-worklets: latest
+    react-native-worklets: ^0.3.0
     react-test-renderer: 19.1.1
     reactotron-react-native: ^5.1.15
     readable-stream: ^4.7.0
@@ -3864,7 +3864,7 @@ __metadata:
     stream-http: ^3.2.0
     timers-browserify: ^2.0.12
     tty-browserify: ^0.0.1
-    typescript: latest
+    typescript: ^5.7.3
     url: ^0.11.4
     util: ^0.12.5
     vm-browserify: ^1.1.2
@@ -7948,9 +7948,9 @@ __metadata:
   linkType: hard
 
 "lodash@npm:^4.17.20, lodash@npm:^4.17.21":
-  version: 4.17.21
-  resolution: "lodash@npm:4.17.21"
-  checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
+  version: 4.17.23
+  resolution: "lodash@npm:4.17.23"
+  checksum: 7daad39758a72872e94651630fbb54ba76868f904211089721a64516ce865506a759d9ad3d8ff22a2a49a50a09db5d27c36f22762d21766e47e3ba918d6d7bab
   languageName: node
   linkType: hard
 
@@ -9877,9 +9877,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-worklets@npm:latest":
-  version: 0.6.1
-  resolution: "react-native-worklets@npm:0.6.1"
+"react-native-worklets@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "react-native-worklets@npm:0.3.0"
   dependencies:
     "@babel/plugin-transform-arrow-functions": ^7.0.0-0
     "@babel/plugin-transform-class-properties": ^7.0.0-0
@@ -9891,12 +9891,11 @@ __metadata:
     "@babel/plugin-transform-unicode-regex": ^7.0.0-0
     "@babel/preset-typescript": ^7.16.7
     convert-source-map: ^2.0.0
-    semver: 7.7.2
   peerDependencies:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: fee8de844ef2286dee9f81a53f9cf309424d26251953c8524204342c8531fef403c625a23632a6bb65ea57409d6f8522a60e02de772322bebb5ff4aa4cccf569
+  checksum: fb637879b7402c768bddc63411232f08c9c7b74e301cc6e545c7b967e7e3ef9b61df6399c422bf39de971e5f25a0c400ddf4c6e19f63061be3b1b8bbb480aa60
   languageName: node
   linkType: hard
 
@@ -11367,7 +11366,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:latest":
+"typescript@npm:^5.7.3":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -11377,7 +11376,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@latest#~builtin<compat/typescript>":
+"typescript@patch:typescript@^5.7.3#~builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#~builtin<compat/typescript>::version=5.9.3&hash=29ae49"
   bin:
